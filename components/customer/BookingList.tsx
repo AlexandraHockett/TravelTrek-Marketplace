@@ -147,7 +147,7 @@ const BookingItem: React.FC<BookingItemProps> = ({
               className="w-12 h-12 object-cover rounded-lg flex-shrink-0"
               onError={(e) => {
                 const target = e.target as HTMLImageElement;
-                target.src = "/images/tour-placeholder.jpg";
+                target.src = "/images/placeholders/tour-placeholder.webp";
               }}
             />
 
@@ -199,7 +199,7 @@ const BookingItem: React.FC<BookingItemProps> = ({
               className="w-full h-32 lg:h-32 object-cover rounded-lg"
               onError={(e) => {
                 const target = e.target as HTMLImageElement;
-                target.src = "/images/tour-placeholder.jpg";
+                target.src = "/images/placeholders/tour-placeholder.webp";
               }}
             />
           </div>
@@ -294,7 +294,7 @@ const BookingItem: React.FC<BookingItemProps> = ({
             className="w-full h-24 object-cover rounded-lg"
             onError={(e) => {
               const target = e.target as HTMLImageElement;
-              target.src = "/images/tour-placeholder.jpg";
+              target.src = "/images/placeholders/tour-placeholder.webp";
             }}
           />
         </div>

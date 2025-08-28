@@ -70,7 +70,7 @@ const TourCard: React.FC<TourCardProps> = ({
                 className="w-20 h-20 object-cover rounded-lg"
                 onError={(e) => {
                   const target = e.target as HTMLImageElement;
-                  target.src = "/images/tour-placeholder.jpg";
+                  target.src = "/images/placeholders/tour-placeholder.webp";
                 }}
               />
               {discountPercentage > 0 && (
@@ -133,7 +133,7 @@ const TourCard: React.FC<TourCardProps> = ({
               className="w-full h-80 object-cover group-hover:scale-105 transition-transform duration-500"
               onError={(e) => {
                 const target = e.target as HTMLImageElement;
-                target.src = "/images/tour-placeholder.jpg";
+                target.src = "/images/placeholders/tour-placeholder.webp";
               }}
             />
 
@@ -212,7 +212,7 @@ const TourCard: React.FC<TourCardProps> = ({
             className="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300"
             onError={(e) => {
               const target = e.target as HTMLImageElement;
-              target.src = "/images/tour-placeholder.jpg";
+              target.src = "/images/placeholders/tour-placeholder.webp";
             }}
           />
 

@@ -1,5 +1,6 @@
 // File: app/customer/tours/page.tsx
 // Location: Create this file in the app/customer/tours/ directory
+"use client";
 
 import React from "react";
 import Link from "next/link";
@@ -17,7 +18,7 @@ const mockTours: Tour[] = [
     description:
       "Experience authentic Portuguese cuisine and local wines in the heart of Porto.",
     shortDescription: "Authentic Portuguese cuisine tour",
-    image: "/images/porto-food.jpg",
+    image: "/images/tours/porto-food.webp",
     price: 45,
     originalPrice: 60,
     currency: "EUR",
@@ -41,7 +42,7 @@ const mockTours: Tour[] = [
     description:
       "Discover the magical palaces of Sintra including Pena Palace and Quinta da Regaleira.",
     shortDescription: "Royal palaces and gardens tour",
-    image: "/images/sintra-palace.jpg",
+    image: "/images/tours/sintra-palace.webp",
     price: 65,
     originalPrice: 80,
     currency: "EUR",
@@ -65,7 +66,7 @@ const mockTours: Tour[] = [
     description:
       "Sail through the stunning Douro Valley with wine tastings and scenic views.",
     shortDescription: "River cruise with wine tastings",
-    image: "/images/douro-cruise.jpg",
+    image: "/images/tours/douro-cruise.webp",
     price: 89,
     currency: "EUR",
     duration: 10,
@@ -93,7 +94,7 @@ const mockTours: Tour[] = [
     description:
       "Explore Lisbons historic neighborhoods and viewpoints in an eco-friendly tuk-tuk.",
     shortDescription: "City tour by tuk-tuk",
-    image: "/images/lisbon-tuktuk.jpg",
+    image: "/images/tours/lisbon-tuktuk.webp",
     price: 35,
     currency: "EUR",
     duration: 3,
@@ -116,7 +117,7 @@ const mockTours: Tour[] = [
     description:
       "Discover the Venice of Portugal with traditional moliceiro boat rides and salt harvesting.",
     shortDescription: "Canals tour and salt pans visit",
-    image: "/images/aveiro-canals.jpg",
+    image: "/images/tours/aveiro-canals.webp",
     price: 42,
     currency: "EUR",
     duration: 5,
@@ -144,7 +145,7 @@ const mockTours: Tour[] = [
     description:
       "Step back in time in the medieval walled town of Óbidos with local crafts and ginjinha tasting.",
     shortDescription: "Medieval town exploration",
-    image: "/images/obidos-medieval.jpg",
+    image: "/images/tours/obidos-medieval.webp",
     price: 38,
     currency: "EUR",
     duration: 4,
@@ -318,7 +319,7 @@ const TourCard: React.FC<TourCardProps> = ({ tour }) => {
             className="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300"
             onError={(e) => {
               const target = e.target as HTMLImageElement;
-              target.src = "/images/tour-placeholder.jpg";
+              target.src = "/images/placeholders/tour-placeholder.webp";
             }}
           />
 

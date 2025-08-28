@@ -1,3 +1,5 @@
+// File: components/shared/Footer.tsx
+// Location: components/shared/Footer.tsx
 import React from "react";
 import Link from "next/link";
 
@@ -97,10 +99,14 @@ const Footer: React.FC = () => {
               <h3 className="text-white font-semibold mb-4">{section.title}</h3>
               <ul className="space-y-2">
                 {section.links.map((link) => (
-                  <Link
-                    href={link.href}
-                    className="text-sm text-gray-400 hover:text-white transition-colors"
-                  />
+                  <li key={link.href}>
+                    <Link
+                      href={link.href}
+                      className="text-sm text-gray-400 hover:text-white transition-colors"
+                    >
+                      {link.label}
+                    </Link>
+                  </li>
                 ))}
               </ul>
             </div>

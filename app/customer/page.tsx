@@ -15,7 +15,7 @@ const mockBookings: Booking[] = [
     id: "1",
     tourId: "t1",
     tourTitle: "Porto Food Tour",
-    tourImage: "/images/porto-food.jpg",
+    tourImage: "/images/tours/porto-food.webp",
     customerId: "c1",
     customerName: "João Silva",
     customerEmail: "joao@email.com",
@@ -36,7 +36,7 @@ const mockRecentTours: Tour[] = [
     title: "Sintra Royal Palaces",
     description: "Discover the magical palaces of Sintra",
     shortDescription: "Royal palaces tour",
-    image: "/images/sintra-palace.jpg",
+    image: "/images/tours/sintra-palace.webp",
     price: 65,
     originalPrice: 80,
     currency: "EUR",
@@ -136,7 +136,7 @@ const RecentBookings: React.FC<RecentBookingsProps> = ({ bookings }) => (
                 className="w-16 h-16 object-cover rounded-lg"
                 onError={(e) => {
                   const target = e.target as HTMLImageElement;
-                  target.src = "/images/tour-placeholder.jpg";
+                  target.src = "/images/placeholders/tour-placeholder.webp";
                 }}
               />
               <div>
@@ -204,7 +204,7 @@ const RecommendedTours: React.FC<RecommendedToursProps> = ({ tours }) => (
                 className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-200"
                 onError={(e) => {
                   const target = e.target as HTMLImageElement;
-                  target.src = "/images/tour-placeholder.jpg";
+                  target.src = "/images/placeholders/tour-placeholder.webp";
                 }}
               />
               {tour.originalPrice && tour.originalPrice > tour.price && (

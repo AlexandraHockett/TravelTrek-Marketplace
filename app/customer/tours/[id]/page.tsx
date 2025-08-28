@@ -18,12 +18,12 @@ const mockTours: Tour[] = [
     description:
       "Embark on a culinary journey through Portos historic streets and discover the authentic flavors of Portuguese cuisine. This guided tour takes you to family-run restaurants, traditional markets, and local wine bars where youll sample the best of what Porto has to offer. From francesinha sandwiches to port wine, experience the citys gastronomic heritage with a knowledgeable local guide who will share stories and traditions passed down through generations.",
     shortDescription: "Authentic Portuguese cuisine tour",
-    image: "/images/porto-food.jpg",
+    image: "/images/porto-food.webp",
     images: [
-      "/images/porto-food.jpg",
-      "/images/porto-food-2.jpg",
-      "/images/porto-food-3.jpg",
-      "/images/porto-food-4.jpg",
+      "/images/porto-food.webp",
+      "/images/porto-food-2.webp",
+      "/images/porto-food-3.webp",
+      "/images/porto-food-4.webp",
     ],
     price: 45,
     originalPrice: 60,
@@ -297,7 +297,7 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({ tour }) => {
           className="w-full h-full object-cover"
           onError={(e) => {
             const target = e.target as HTMLImageElement;
-            target.src = "/images/tour-placeholder.jpg";
+            target.src = "/images/placeholders/tour-placeholder.webp";
           }}
         />
         {tour.originalPrice && tour.originalPrice > tour.price && (

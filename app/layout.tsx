@@ -47,7 +47,7 @@ export const metadata: Metadata = {
     siteName: "TravelTrek",
     images: [
       {
-        url: "/images/og-image.jpg",
+        url: "/images/og-image.webp",
         width: 1200,
         height: 630,
         alt: "TravelTrek - Experiências de Viagem Autênticas",

@@ -17,7 +17,7 @@ const mockBookings: Booking[] = [
     id: "b1",
     tourId: "t1",
     tourTitle: "Porto Food & Wine Tour",
-    tourImage: "/images/porto-food.jpg",
+    tourImage: "/images/tours/porto-food.webp",
     customerId: "c1",
     customerName: "João Silva",
     customerEmail: "joao@email.com",
@@ -36,7 +36,7 @@ const mockBookings: Booking[] = [
     id: "b2",
     tourId: "t2",
     tourTitle: "Sintra Royal Palaces",
-    tourImage: "/images/sintra-palace.jpg",
+    tourImage: "/images/tours/sintra-palace.webp",
     customerId: "c1",
     customerName: "João Silva",
     customerEmail: "joao@email.com",
@@ -54,7 +54,7 @@ const mockBookings: Booking[] = [
 // Mock host contact info
 const mockHostInfo = {
   name: "Maria Santos",
-  avatar: "/images/host-avatar.jpg",
+  avatar: "/images/avatars/host-avatar.webp",
   phone: "+351 912 345 678",
   email: "maria@traveltrek.com",
   responseTime: "< 1 hora",
@@ -368,7 +368,7 @@ export default function BookingDetailPage({ params }: BookingDetailPageProps) {
                     className="w-full h-40 md:h-32 object-cover rounded-lg"
                     onError={(e) => {
                       const target = e.target as HTMLImageElement;
-                      target.src = "/images/tour-placeholder.jpg";
+                      target.src = "/images/placeholders/tour-placeholder.webp";
                     }}
                   />
                 </div>
@@ -546,7 +546,7 @@ export default function BookingDetailPage({ params }: BookingDetailPageProps) {
                   className="w-12 h-12 rounded-full object-cover"
                   onError={(e) => {
                     const target = e.target as HTMLImageElement;
-                    target.src = "/images/default-avatar.jpg";
+                    target.src = "/images/default-avatar.webp";
                   }}
                 />
                 <div className="flex-1">

@@ -1,0 +1,72 @@
+{
+  "name": "TravelTrek - Descobre Experiências Únicas",
+  "short_name": "TravelTrek",
+  "description": "Conecta-te com anfitriões locais e descobre experiências de viagem autênticas e inesquecíveis.",
+  "lang": "pt-PT",
+  "start_url": "/",
+  "display": "standalone",
+  "theme_color": "#1e40af",
+  "background_color": "#f9fafb",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "categories": ["travel", "lifestyle", "social"],
+  "icons": [
+    {
+      "src": "/favicon.ico",
+      "sizes": "48x48",
+      "type": "image/x-icon"
+    },
+    {
+      "src": "/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    },
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Explorar Tours",
+      "short_name": "Tours",
+      "description": "Descobre experiências únicas",
+      "url": "/customer/tours",
+      "icons": [
+        {
+          "src": "/favicon.ico",
+          "sizes": "48x48",
+          "type": "image/x-icon"
+        }
+      ]
+    },
+    {
+      "name": "Minhas Reservas",
+      "short_name": "Reservas",
+      "description": "Gere as tuas reservas",
+      "url": "/customer/bookings",
+      "icons": [
+        {
+          "src": "/favicon.ico",
+          "sizes": "48x48",
+          "type": "image/x-icon"
+        }
+      ]
+    },
+    {
+      "name": "Portal Anfitrião",
+      "short_name": "Host",
+      "description": "Portal para anfitriões",
+      "url": "/host",
+      "icons": [
+        {
+          "src": "/favicon.ico",
+          "sizes": "48x48",
+          "type": "image/x-icon"
+        }
+      ]
+    }
+  ]
+}

@@ -1,6 +1,6 @@
 // File: app/customer/bookings/page.tsx
 // Location: Create this file in the app/customer/bookings/ directory
-
+"use client";
 import React from "react";
 import Link from "next/link";
 import { Booking } from "@/types";
@@ -15,7 +15,7 @@ const mockBookings: Booking[] = [
     id: "b1",
     tourId: "t1",
     tourTitle: "Porto Food & Wine Tour",
-    tourImage: "/images/porto-food.jpg",
+    tourImage: "/images/tours/porto-food.webp",
     customerId: "c1",
     customerName: "João Silva",
     customerEmail: "joao@email.com",
@@ -33,7 +33,7 @@ const mockBookings: Booking[] = [
     id: "b2",
     tourId: "t2",
     tourTitle: "Sintra Royal Palaces",
-    tourImage: "/images/sintra-palace.jpg",
+    tourImage: "/images/tours/sintra-palace.webp",
     customerId: "c1",
     customerName: "João Silva",
     customerEmail: "joao@email.com",
@@ -50,7 +50,7 @@ const mockBookings: Booking[] = [
     id: "b3",
     tourId: "t3",
     tourTitle: "Douro Valley River Cruise",
-    tourImage: "/images/douro-cruise.jpg",
+    tourImage: "/images/tours/douro-cruise.webp",
     customerId: "c1",
     customerName: "João Silva",
     customerEmail: "joao@email.com",
@@ -67,7 +67,7 @@ const mockBookings: Booking[] = [
     id: "b4",
     tourId: "t4",
     tourTitle: "Lisbon Tuk-Tuk City Tour",
-    tourImage: "/images/lisbon-tuktuk.jpg",
+    tourImage: "/images/tours/lisbon-tuktuk.webp",
     customerId: "c1",
     customerName: "João Silva",
     customerEmail: "joao@email.com",
@@ -269,7 +269,7 @@ const BookingCard: React.FC<BookingCardProps> = ({ booking }) => {
             className="w-full h-32 lg:h-32 object-cover rounded-lg"
             onError={(e) => {
               const target = e.target as HTMLImageElement;
-              target.src = "/images/tour-placeholder.jpg";
+              target.src = "/images/placeholders/tour-placeholder.webp";
             }}
           />
         </div>
