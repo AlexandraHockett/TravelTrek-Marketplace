@@ -1,24 +1,48 @@
-// app/customer/tours/page.tsx
-import TourCard from "@/components/customer/TourCard";
+// File: app/customer/tours/page.tsx
+// Location: Update this file in app/customer/tours/page.tsx
+import React from "react";
 import { Tour } from "@/types";
+import TourGrid from "@/components/customer/TourGrid";
+import ErrorBoundary from "@/components/shared/ErrorBoundary";
 
 async function getTours(): Promise<Tour[]> {
-  const res = await fetch("http://localhost:3000/api/tours", {
-    cache: "no-store",
-  });
-  return res.json();
+  try {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/tours`, {
+      cache: "no-store",
+      next: { revalidate: 300 }, // Revalidate every 5 minutes
+    });
+
+    if (!res.ok) {
+      throw new Error("Failed to fetch tours");
+    }
+
+    return res.json();
+  } catch (error) {
+    console.error("Error fetching tours:", error);
+    return [];
+  }
 }
 
 export default async function ToursPage() {
   const tours = await getTours();
+
   return (
-    <div className="container mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-4">Browse Tours</h1>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        {tours.map((tour) => (
-          <TourCard key={tour.id} tour={tour} />
-        ))}
+    <ErrorBoundary>
+      <div className="container mx-auto px-4 py-8">
+        {/* Hero Section */}
+        <div className="text-center mb-12">
+          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+            Descobre Experiências <span className="text-primary">Únicas</span>
+          </h1>
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+            Conecta-te com anfitriões locais e vive aventuras autênticas que te
+            vão marcar para sempre
+          </p>
+        </div>
+
+        {/* Tours Grid */}
+        <TourGrid tours={tours} />
       </div>
-    </div>
+    </ErrorBoundary>
   );
 }

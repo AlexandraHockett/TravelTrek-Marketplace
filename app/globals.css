@@ -2,16 +2,53 @@
 
 @layer theme {
   :root {
-    --font-display: "Inter", sans-serif;
-    --color-primary: oklch(0.5 0.2 260); /* Blue shade for TravelTrek */
-    --color-secondary: oklch(0.8 0.2 70); /* Yellow shade for TravelTrek */
+    --font-display: "Inter", system-ui, -apple-system, sans-serif;
+    --color-primary: oklch(0.45 0.25 250); /* TravelTrek Blue */
+    --color-secondary: oklch(0.75 0.20 65); /* TravelTrek Gold */
+    --color-accent: oklch(0.55 0.15 180); /* Complementary Teal */
+    --color-success: oklch(0.65 0.15 140);
+    --color-warning: oklch(0.75 0.15 85);
+    --color-error: oklch(0.55 0.22 25);
+    --color-surface: oklch(0.98 0.005 250);
+    --color-surface-secondary: oklch(0.95 0.01 250);
     --breakpoint-3xl: 1920px;
-    --spacing: 0.25rem; /* Default spacing scale */
+    --spacing-base: 0.25rem;
+    --radius-base: 0.5rem;
+    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --color-surface: oklch(0.15 0.01 250);
+      --color-surface-secondary: oklch(0.12 0.01 250);
+    }
   }
 }
 
 @layer base {
+  * {
+    @apply border-gray-200;
+  }
+  
   body {
-    @apply bg-gray-100 font-display text-gray-900;
+    @apply bg-surface font-display text-gray-900 antialiased;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-semibold tracking-tight;
+  }
+
+  input, textarea, select {
+    @apply bg-white border border-gray-300 rounded-md px-3 py-2 text-sm 
+           placeholder:text-gray-500 focus:outline-none focus:ring-2 
+           focus:ring-primary focus:border-transparent transition-colors;
+  }
+
+  button {
+    @apply transition-all duration-200 ease-in-out focus:outline-none 
+           focus:ring-2 focus:ring-offset-2;
   }
 }
