@@ -99,7 +99,7 @@ const Navbar: React.FC = () => {
               </Link>
             ))}
             <div className="flex items-center space-x-3 ml-6">
-              <Button variant="outline" size="sm" className="rounded-lg">
+              <Button variant="default" size="sm" className="rounded-lg">
                 Entrar
               </Button>
               <Button
@@ -116,7 +116,7 @@ const Navbar: React.FC = () => {
             {isTabletView && (
               <div className="flex items-center space-x-2">
                 <Button
-                  variant="outline"
+                  variant="default"
                   size="sm"
                   className="rounded-lg text-xs"
                 >
@@ -131,7 +131,7 @@ const Navbar: React.FC = () => {
               </div>
             )}
             <button
-              className="p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 z-50"
+              className="p-2 rounded-md focus:default-none focus:ring-2 focus:ring-blue-500 z-50"
               onClick={toggleMenu}
               aria-label="Toggle menu"
               aria-expanded={isMenuOpen}
@@ -198,7 +198,7 @@ const Navbar: React.FC = () => {
           <div className="mt-auto pt-6 border-t border-gray-200">
             <div className="flex flex-col space-y-3">
               <Button
-                variant="outline"
+                variant="default"
                 size="sm"
                 className="w-full justify-center rounded-lg"
                 onClick={() => setIsMenuOpen(false)}

@@ -1,145 +1,283 @@
+// File: components/customer/PaymentButton.tsx
+// Location: Create this file in the components/customer/ directory
+
 "use client";
 
 import React, { useState } from "react";
-import { Booking } from "@/types";
-import { formatCurrency } from "@/lib/utils";
 import Button from "@/components/ui/Button";
+import { formatCurrency } from "@/lib/utils";
 
 interface PaymentButtonProps {
-  booking: Booking;
-  onSuccess?: () => void;
-  onError?: (error: string) => void;
+  bookingId?: string;
+  amount: number;
+  currency?: string;
+  variant?: "default" | "primary" | "success";
+  size?: "sm" | "md" | "lg";
+  disabled?: boolean;
+  onPaymentSuccess?: (paymentData: any) => void;
+  onPaymentError?: (error: string) => void;
+  className?: string;
+  children?: React.ReactNode;
+  tourTitle?: string;
+  tourId?: string;
+  participants?: number;
+  date?: string;
+}
+
+interface PaymentData {
+  bookingId?: string;
+  tourId?: string;
+  amount: number;
+  currency: string;
+  participants?: number;
+  date?: string;
+  successUrl?: string;
+  cancelUrl?: string;
 }
 
 const PaymentButton: React.FC<PaymentButtonProps> = ({
-  booking,
-  onSuccess,
-  onError,
+  bookingId,
+  amount,
+  currency = "EUR",
+  variant = "default",
+  size = "md",
+  disabled = false,
+  onPaymentSuccess,
+  onPaymentError,
+  className = "",
+  children,
+  tourTitle,
+  tourId,
+  participants,
+  date,
 }) => {
-  const [loading, setLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const handlePayment = async () => {
-    setLoading(true);
+    if (disabled || isLoading) return;
+
+    setIsLoading(true);
+    setError(null);
 
     try {
+      // Prepare payment data
+      const paymentData: PaymentData = {
+        amount: Math.round(amount * 100), // Convert to cents for Stripe
+        currency: currency.toLowerCase(),
+        successUrl: `${window.location.origin}/customer/bookings/${bookingId || "success"}?payment=success`,
+        cancelUrl: `${window.location.origin}/customer/bookings/${bookingId || "cancelled"}?payment=cancelled`,
+      };
+
+      // Add optional fields
+      if (bookingId) paymentData.bookingId = bookingId;
+      if (tourId) paymentData.tourId = tourId;
+      if (participants) paymentData.participants = participants;
+      if (date) paymentData.date = date;
+
+      // Call Stripe checkout API
       const response = await fetch("/api/stripe/checkout", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          bookingId: booking.id,
-          successUrl: `${window.location.origin}/customer/bookings/${booking.id}?payment=success`,
-          cancelUrl: `${window.location.origin}/customer/bookings/${booking.id}?payment=cancelled`,
-        }),
+        body: JSON.stringify(paymentData),
       });
 
       if (!response.ok) {
-        throw new Error("Falha ao criar sessão de pagamento");
+        const errorData = await response.json();
+        throw new Error(errorData.error || "Erro ao processar pagamento");
       }
 
-      const { url } = await response.json();
+      const { url, sessionId } = await response.json();
 
       if (url) {
+        // Redirect to Stripe Checkout
         window.location.href = url;
+      } else if (sessionId) {
+        // Alternative: handle with Stripe JS SDK
+        handleStripeRedirect(sessionId);
       } else {
-        throw new Error("URL de pagamento não recebida");
+        throw new Error("Resposta inválida do servidor");
       }
-    } catch (error) {
-      const errorMessage =
-        error instanceof Error
-          ? error.message
-          : "Erro desconhecido no pagamento";
+    } catch (error: any) {
       console.error("Payment error:", error);
-      onError?.(errorMessage);
+      const errorMessage =
+        error.message || "Erro ao processar pagamento. Tenta novamente.";
+
+      setError(errorMessage);
+
+      if (onPaymentError) {
+        onPaymentError(errorMessage);
+      }
     } finally {
-      setLoading(false);
+      setIsLoading(false);
     }
   };
 
-  if (booking.paymentStatus === "paid") {
-    return (
-      <div className="flex items-center text-success">
-        <svg
-          className="h-5 w-5 mr-2"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M5 13l4 4L19 7"
-          />
-        </svg>
-        Pagamento Concluído
-      </div>
-    );
-  }
+  const handleStripeRedirect = async (sessionId: string) => {
+    try {
+      // In a real app, you would import Stripe here
+      // import { loadStripe } from '@stripe/stripe-js';
+      // const stripe = await loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
+      // await stripe?.redirectToCheckout({ sessionId });
+
+      // For now, just simulate the redirect
+      window.location.href = `/customer/bookings/${bookingId}?session_id=${sessionId}`;
+    } catch (error) {
+      console.error("Stripe redirect error:", error);
+      setError("Erro ao redirecionar para o pagamento");
+    }
+  };
+
+  // Handle successful payment (called from URL params)
+  React.useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const paymentStatus = urlParams.get("payment");
+    const sessionId = urlParams.get("session_id");
+
+    if (paymentStatus === "success" && sessionId) {
+      if (onPaymentSuccess) {
+        onPaymentSuccess({ sessionId, bookingId });
+      }
+    }
+  }, [bookingId, onPaymentSuccess]);
+
+  const getButtonVariant = () => {
+    if (error) return "error";
+    return variant === "success" ? "default" : variant;
+  };
+
+  const getButtonText = () => {
+    if (isLoading) {
+      return (
+        <span className="flex items-center justify-center">
+          <svg
+            className="animate-spin -ml-1 mr-2 h-4 w-4 text-current"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <circle
+              className="opacity-25"
+              cx="12"
+              cy="12"
+              r="10"
+              stroke="currentColor"
+              strokeWidth="4"
+            ></circle>
+            <path
+              className="opacity-75"
+              fill="currentColor"
+              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+            ></path>
+          </svg>
+          A processar...
+        </span>
+      );
+    }
+
+    if (error) {
+      return "Tentar Novamente";
+    }
+
+    if (children) {
+      return children;
+    }
+
+    return `Pagar ${formatCurrency(amount)}`;
+  };
 
   return (
-    <div className="space-y-3">
-      <div className="bg-blue-50 p-4 rounded-lg">
-        <div className="flex items-center justify-between mb-2">
-          <span className="font-medium">Total a pagar:</span>
-          <span className="text-xl font-bold text-primary">
-            {formatCurrency(booking.totalAmount)}
-          </span>
-        </div>
-        <p className="text-sm text-gray-600">
-          Pagamento seguro processado pelo Stripe
-        </p>
-      </div>
-
+    <div className="space-y-2">
       <Button
         onClick={handlePayment}
-        loading={loading}
-        size="lg"
-        className="w-full"
-        leftIcon={
-          <svg
-            className="h-5 w-5"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"
-            />
-          </svg>
-        }
+        variant={getButtonVariant() as any}
+        size={size}
+        disabled={disabled || isLoading}
+        className={`relative ${
+          variant === "success" ? "bg-green-600 hover:bg-green-700" : ""
+        } ${className}`}
       >
-        {loading ? "A redirecionar..." : "Pagar com Stripe"}
+        {getButtonText()}
       </Button>
 
-      <div className="flex items-center justify-center space-x-4 text-xs text-gray-500">
-        <div className="flex items-center">
-          <svg
-            className="h-4 w-4 mr-1"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
-            />
-          </svg>
-          SSL Seguro
+      {error && (
+        <div className="bg-red-50 border border-red-200 rounded-lg p-3">
+          <div className="flex items-start">
+            <span className="text-red-600 text-sm mr-2">⚠️</span>
+            <div className="flex-1">
+              <p className="text-red-800 text-sm font-medium">
+                Erro no Pagamento
+              </p>
+              <p className="text-red-700 text-sm mt-1">{error}</p>
+            </div>
+          </div>
         </div>
-        <span>•</span>
-        <span>256-bit encryption</span>
-        <span>•</span>
-        <span>Powered by Stripe</span>
+      )}
+
+      {/* Payment Security Info */}
+      <div className="flex items-center justify-center text-xs text-gray-500 mt-3">
+        <span className="mr-1">🔒</span>
+        <span>Pagamento seguro processado via Stripe</span>
       </div>
     </div>
   );
 };
+
+// Specialized variants for common use cases
+
+interface QuickPaymentProps
+  extends Omit<PaymentButtonProps, "variant" | "children"> {
+  label?: string;
+}
+
+export const QuickPayment: React.FC<QuickPaymentProps> = ({
+  label = "Pagar Agora",
+  ...props
+}) => (
+  <PaymentButton {...props} variant="primary" size="lg">
+    <span className="flex items-center">
+      <span className="mr-2">💳</span>
+      {label}
+    </span>
+  </PaymentButton>
+);
+
+interface CompleteBookingPaymentProps
+  extends Omit<PaymentButtonProps, "variant" | "children"> {
+  tourTitle: string;
+}
+
+export const CompleteBookingPayment: React.FC<CompleteBookingPaymentProps> = ({
+  tourTitle,
+  ...props
+}) => (
+  <PaymentButton {...props} variant="success" size="lg">
+    <span className="flex items-center">
+      <span className="mr-2">✅</span>
+      Confirmar e Pagar
+    </span>
+  </PaymentButton>
+);
+
+interface InstantBookingPaymentProps
+  extends Omit<PaymentButtonProps, "variant" | "children"> {
+  showAmount?: boolean;
+}
+
+export const InstantBookingPayment: React.FC<InstantBookingPaymentProps> = ({
+  amount,
+  showAmount = true,
+  ...props
+}) => (
+  <PaymentButton {...props} amount={amount} variant="primary" size="lg">
+    <span className="flex items-center">
+      <span className="mr-2">⚡</span>
+      Reserva Instantânea
+      {showAmount && ` - ${formatCurrency(amount)}`}
+    </span>
+  </PaymentButton>
+);
 
 export default PaymentButton;

@@ -71,7 +71,7 @@ class ErrorBoundary extends React.Component<Props, State> {
             </div>
 
             <div className="flex space-x-3 justify-center">
-              <Button variant="outline" onClick={this.handleReset}>
+              <Button variant="default" onClick={this.handleReset}>
                 Tentar Novamente
               </Button>
               <Button onClick={this.handleReload}>Recarregar Página</Button>

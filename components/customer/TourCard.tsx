@@ -1,163 +1,334 @@
-"use client";
+// File: components/customer/TourCard.tsx
+// Location: Create this file in the components/customer/ directory
 
 import React from "react";
 import Link from "next/link";
-import Image from "next/image";
 import { Tour } from "@/types";
-import { cn, formatCurrency } from "@/lib/utils";
 import Card from "@/components/ui/Card";
+import Button from "@/components/ui/Button";
+import Badge from "@/components/ui/Badge";
+import { formatCurrency } from "@/lib/utils";
 
 interface TourCardProps {
   tour: Tour;
+  variant?: "default" | "compact" | "featured";
+  showBookButton?: boolean;
   className?: string;
 }
 
-const TourCard: React.FC<TourCardProps> = ({ tour, className }) => {
-  const discountPercentage = tour.originalPrice
-    ? Math.round((1 - tour.price / tour.originalPrice) * 100)
-    : 0;
+const TourCard: React.FC<TourCardProps> = ({
+  tour,
+  variant = "default",
+  showBookButton = true,
+  className = "",
+}) => {
+  const getDifficultyColor = (difficulty: string) => {
+    switch (difficulty) {
+      case "Easy":
+        return "success";
+      case "Moderate":
+        return "warning";
+      case "Challenging":
+        return "error";
+      default:
+        return "default";
+    }
+  };
 
-  return (
-    <Link href={`/customer/tours/${tour.id}`}>
+  const getDifficultyLabel = (difficulty: string) => {
+    switch (difficulty) {
+      case "Easy":
+        return "Fácil";
+      case "Moderate":
+        return "Moderada";
+      case "Challenging":
+        return "Desafiante";
+      default:
+        return difficulty;
+    }
+  };
+
+  const discountPercentage =
+    tour.originalPrice && tour.originalPrice > tour.price
+      ? Math.round(
+          ((tour.originalPrice - tour.price) / tour.originalPrice) * 100
+        )
+      : 0;
+
+  // Compact variant for dashboard/sidebar usage
+  if (variant === "compact") {
+    return (
       <Card
-        padding="none"
-        hover
-        className={cn("overflow-hidden group", className)}
+        className={`overflow-hidden hover:shadow-md transition-all duration-200 ${className}`}
       >
-        {/* Image Container */}
-        <div className="relative aspect-[4/3] overflow-hidden">
-          <Image
+        <Link href={`/customer/tours/${tour.id}`}>
+          <div className="flex space-x-4 p-4">
+            <div className="relative flex-shrink-0">
+              <img
+                src={tour.image}
+                alt={tour.title}
+                className="w-20 h-20 object-cover rounded-lg"
+                onError={(e) => {
+                  const target = e.target as HTMLImageElement;
+                  target.src = "/images/tour-placeholder.jpg";
+                }}
+              />
+              {discountPercentage > 0 && (
+                <div className="absolute -top-2 -right-2">
+                  <Badge
+                    variant="error"
+                    size="sm"
+                    className="bg-red-500 text-xs"
+                  >
+                    -{discountPercentage}%
+                  </Badge>
+                </div>
+              )}
+            </div>
+
+            <div className="flex-1 min-w-0">
+              <h3 className="font-semibold text-gray-900 text-sm mb-1 line-clamp-1">
+                {tour.title}
+              </h3>
+              <p className="text-xs text-gray-600 mb-2 flex items-center">
+                <span className="mr-1">📍</span>
+                {tour.location}
+              </p>
+
+              <div className="flex items-center justify-between">
+                <div className="flex items-center text-xs">
+                  <span className="text-yellow-500 mr-1">★</span>
+                  <span>{tour.rating}</span>
+                </div>
+
+                <div className="text-right">
+                  {tour.originalPrice && (
+                    <p className="text-xs text-gray-500 line-through">
+                      {formatCurrency(tour.originalPrice)}
+                    </p>
+                  )}
+                  <p className="font-semibold text-sm text-gray-900">
+                    {formatCurrency(tour.price)}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </Link>
+      </Card>
+    );
+  }
+
+  // Featured variant for hero sections
+  if (variant === "featured") {
+    return (
+      <Card
+        className={`overflow-hidden hover:shadow-2xl transition-all duration-300 group ${className}`}
+      >
+        <Link href={`/customer/tours/${tour.id}`}>
+          <div className="relative">
+            <img
+              src={tour.image}
+              alt={tour.title}
+              className="w-full h-80 object-cover group-hover:scale-105 transition-transform duration-500"
+              onError={(e) => {
+                const target = e.target as HTMLImageElement;
+                target.src = "/images/tour-placeholder.jpg";
+              }}
+            />
+
+            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+
+            {/* Badges overlay */}
+            <div className="absolute top-4 left-4 right-4 flex justify-between items-start">
+              <div className="flex flex-wrap gap-2">
+                <Badge
+                  variant={getDifficultyColor(tour.difficulty) as any}
+                  className="bg-white/90 text-gray-800"
+                >
+                  {getDifficultyLabel(tour.difficulty)}
+                </Badge>
+                <Badge variant="default" className="bg-white/90 text-gray-800">
+                  {tour.duration}h
+                </Badge>
+              </div>
+
+              {discountPercentage > 0 && (
+                <Badge variant="error" className="bg-red-500 animate-pulse">
+                  -{discountPercentage}% OFF
+                </Badge>
+              )}
+            </div>
+
+            {/* Content overlay */}
+            <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
+              <h3 className="text-2xl font-bold mb-2 line-clamp-2">
+                {tour.title}
+              </h3>
+              <p className="text-white/90 mb-3 flex items-center">
+                <span className="mr-1">📍</span>
+                {tour.location}
+              </p>
+
+              <div className="flex items-center justify-between">
+                <div className="flex items-center space-x-4">
+                  <div className="flex items-center">
+                    <span className="text-yellow-400 mr-1">★</span>
+                    <span className="font-medium">{tour.rating}</span>
+                    <span className="ml-1 opacity-75">
+                      ({tour.reviewCount})
+                    </span>
+                  </div>
+                </div>
+
+                <div className="text-right">
+                  {tour.originalPrice && (
+                    <p className="text-white/70 line-through text-sm">
+                      {formatCurrency(tour.originalPrice)}
+                    </p>
+                  )}
+                  <p className="text-2xl font-bold">
+                    {formatCurrency(tour.price)}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </Link>
+      </Card>
+    );
+  }
+
+  // Default variant - standard tour card
+  return (
+    <Card
+      className={`overflow-hidden hover:shadow-xl transition-all duration-300 group ${className}`}
+    >
+      <Link href={`/customer/tours/${tour.id}`}>
+        <div className="relative">
+          <img
             src={tour.image}
             alt={tour.title}
-            fill
-            className="object-cover group-hover:scale-105 transition-transform duration-300"
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            className="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300"
+            onError={(e) => {
+              const target = e.target as HTMLImageElement;
+              target.src = "/images/tour-placeholder.jpg";
+            }}
           />
 
           {/* Discount Badge */}
           {discountPercentage > 0 && (
-            <div className="absolute top-3 left-3">
-              <span className="bg-error text-white text-xs font-semibold px-2 py-1 rounded-full">
+            <div className="absolute top-3 right-3">
+              <Badge variant="error" className="bg-red-500 animate-pulse">
                 -{discountPercentage}%
-              </span>
+              </Badge>
             </div>
           )}
 
-          {/* Difficulty Badge */}
-          <div className="absolute top-3 right-3">
-            <span
-              className={cn("text-xs font-medium px-2 py-1 rounded-full", {
-                "bg-success text-white": tour.difficulty === "Easy",
-                "bg-warning text-white": tour.difficulty === "Moderate",
-                "bg-error text-white": tour.difficulty === "Challenging",
-              })}
-            >
-              {tour.difficulty}
-            </span>
-          </div>
-
-          {/* Quick Info Overlay */}
-          <div className="absolute bottom-3 left-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity">
-            <div className="bg-black/70 text-white text-xs px-2 py-1 rounded backdrop-blur-sm">
-              {tour.duration}h • Máx. {tour.maxParticipants} pessoas
-            </div>
+          {/* Duration Badge */}
+          <div className="absolute top-3 left-3">
+            <Badge variant="default" className="bg-white/90 text-gray-800">
+              {tour.duration}h
+            </Badge>
           </div>
         </div>
 
-        {/* Content */}
-        <div className="p-4">
-          {/* Location */}
-          <div className="flex items-center text-xs text-gray-500 mb-1">
-            <svg
-              className="h-3 w-3 mr-1"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
-              />
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
-              />
-            </svg>
-            {tour.location}
-          </div>
-
-          {/* Title */}
-          <h3 className="font-semibold text-gray-900 line-clamp-2 mb-2 group-hover:text-primary transition-colors">
-            {tour.title}
-          </h3>
-
-          {/* Short Description */}
-          {tour.shortDescription && (
-            <p className="text-sm text-gray-600 line-clamp-2 mb-3">
-              {tour.shortDescription}
+        <div className="p-6">
+          {/* Title & Location */}
+          <div className="mb-3">
+            <h3 className="text-xl font-semibold text-gray-900 mb-1 group-hover:text-blue-600 transition-colors line-clamp-1">
+              {tour.title}
+            </h3>
+            <p className="text-sm text-gray-600 flex items-center">
+              <span className="mr-1">📍</span>
+              {tour.location}
             </p>
-          )}
-
-          {/* Rating & Reviews */}
-          <div className="flex items-center mb-3">
-            <div className="flex items-center">
-              <svg
-                className="h-4 w-4 text-yellow-400 fill-current"
-                viewBox="0 0 20 20"
-              >
-                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-              </svg>
-              <span className="text-sm font-medium text-gray-900 ml-1">
-                {tour.rating.toFixed(1)}
-              </span>
-            </div>
-            <span className="text-sm text-gray-500 ml-2">
-              ({tour.reviewCount} avaliações)
-            </span>
           </div>
+
+          {/* Description */}
+          <p className="text-gray-600 text-sm mb-4 line-clamp-2">
+            {tour.shortDescription || tour.description}
+          </p>
 
           {/* Tags */}
-          {tour.tags.length > 0 && (
-            <div className="flex flex-wrap gap-1 mb-3">
-              {tour.tags.slice(0, 3).map((tag, index) => (
-                <span
-                  key={index}
-                  className="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded-full"
-                >
-                  {tag}
-                </span>
-              ))}
-              {tour.tags.length > 3 && (
-                <span className="text-xs text-gray-500">
-                  +{tour.tags.length - 3} mais
-                </span>
-              )}
-            </div>
-          )}
+          <div className="flex flex-wrap gap-2 mb-4">
+            {tour.tags.slice(0, 3).map((tag) => (
+              <Badge key={tag} variant="default" size="sm">
+                {tag}
+              </Badge>
+            ))}
+            {tour.tags.length > 3 && (
+              <Badge variant="default" size="sm" className="text-gray-400">
+                +{tour.tags.length - 3}
+              </Badge>
+            )}
+          </div>
 
-          {/* Price */}
-          <div className="flex items-end justify-between">
+          {/* Stats Row */}
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center space-x-4">
+              {/* Rating */}
+              <div className="flex items-center">
+                <span className="text-yellow-500 mr-1">★</span>
+                <span className="text-sm font-medium">{tour.rating}</span>
+                <span className="text-sm text-gray-500 ml-1">
+                  ({tour.reviewCount})
+                </span>
+              </div>
+
+              {/* Difficulty */}
+              <Badge
+                variant={getDifficultyColor(tour.difficulty) as any}
+                size="sm"
+              >
+                {getDifficultyLabel(tour.difficulty)}
+              </Badge>
+            </div>
+
+            {/* Participants */}
+            <div className="text-sm text-gray-500">
+              <span className="mr-1">👥</span>
+              Até {tour.maxParticipants}
+            </div>
+          </div>
+
+          {/* Price & CTA */}
+          <div className="flex items-center justify-between">
             <div>
               {tour.originalPrice && (
-                <span className="text-sm text-gray-500 line-through mr-2">
+                <p className="text-sm text-gray-500 line-through">
                   {formatCurrency(tour.originalPrice)}
-                </span>
+                </p>
               )}
-              <span className="text-lg font-bold text-gray-900">
+              <p className="text-2xl font-bold text-gray-900">
                 {formatCurrency(tour.price)}
-              </span>
-              <span className="text-sm text-gray-500 ml-1">por pessoa</span>
+                <span className="text-sm font-normal text-gray-600 ml-1">
+                  /pessoa
+                </span>
+              </p>
             </div>
 
-            <div className="text-xs text-gray-500">{tour.duration}h</div>
+            {showBookButton && (
+              <div onClick={(e) => e.stopPropagation()}>
+                <Link href={`/customer/tours/${tour.id}`}>
+                  <Button className="group-hover:bg-blue-600 transition-colors">
+                    Ver Detalhes
+                  </Button>
+                </Link>
+              </div>
+            )}
+          </div>
+
+          {/* Additional Info */}
+          <div className="mt-4 pt-4 border-t border-gray-100 flex items-center justify-between text-xs text-gray-500">
+            <span>
+              {tour.minimumAge ? `+${tour.minimumAge} anos` : "Todas as idades"}
+            </span>
+            <span>Cancelamento gratuito</span>
           </div>
         </div>
-      </Card>
-    </Link>
+      </Link>
+    </Card>
   );
 };
 

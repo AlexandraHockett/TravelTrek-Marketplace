@@ -146,7 +146,7 @@ const TourGrid: React.FC<TourGridProps> = ({
 
         <div className="flex items-center gap-3">
           <Button
-            variant="outline"
+            variant="default"
             onClick={() => setShowFilters(!showFilters)}
             leftIcon={
               <svg
@@ -328,7 +328,7 @@ const TourGrid: React.FC<TourGridProps> = ({
           <p className="text-gray-600 mb-4">
             Não encontrámos tours com estes critérios. Tenta ajustar os filtros.
           </p>
-          <Button variant="outline" onClick={resetFilters}>
+          <Button variant="default" onClick={resetFilters}>
             Limpar Filtros
           </Button>
         </div>

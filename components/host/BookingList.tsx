@@ -269,7 +269,7 @@ const BookingList: React.FC<BookingListProps> = ({
                 {/* Actions */}
                 <div className="flex flex-wrap gap-2 pt-4 border-t">
                   <Button
-                    variant="outline"
+                    variant="default"
                     size="sm"
                     onClick={() => setSelectedBooking(booking)}
                   >
@@ -288,7 +288,7 @@ const BookingList: React.FC<BookingListProps> = ({
                         Confirmar
                       </Button>
                       <Button
-                        variant="outline"
+                        variant="default"
                         size="sm"
                         loading={loading === booking.id}
                         onClick={() =>
