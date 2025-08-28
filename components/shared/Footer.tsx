@@ -35,16 +35,16 @@ const Footer: React.FC = () => {
   return (
     <footer className="bg-gray-900 text-gray-300">
       <div className="container mx-auto px-4 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* Brand Section */}
-          <div className="space-y-4">
-            <div className="flex items-center space-x-2">
-              <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-sm">TT</span>
+          <div className="space-y-6">
+            <div className="flex items-center space-x-3">
+              <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center">
+                <span className="text-white font-bold text-lg">TT</span>
               </div>
-              <span className="text-xl font-bold text-white">TravelTrek</span>
+              <span className="text-2xl font-bold text-white">TravelTrek</span>
             </div>
-            <p className="text-sm text-gray-400">
+            <p className="text-sm text-gray-400 max-w-xs">
               Descobre as melhores experiências de viagem e conecta-te com
               anfitriões locais únicos.
             </p>
@@ -93,18 +93,14 @@ const Footer: React.FC = () => {
 
           {/* Links Sections */}
           {footerSections.map((section) => (
-            <div key={section.title}>
+            <div key={section.title} className="space-y-3">
               <h3 className="text-white font-semibold mb-4">{section.title}</h3>
               <ul className="space-y-2">
                 {section.links.map((link) => (
-                  <li key={link.href}>
-                    <Link
-                      href={link.href}
-                      className="text-sm text-gray-400 hover:text-white transition-colors"
-                    >
-                      {link.label}
-                    </Link>
-                  </li>
+                  <Link
+                    href={link.href}
+                    className="text-sm text-gray-400 hover:text-white transition-colors"
+                  />
                 ))}
               </ul>
             </div>
@@ -112,11 +108,11 @@ const Footer: React.FC = () => {
         </div>
 
         {/* Bottom Bar */}
-        <div className="border-t border-gray-800 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
-          <p className="text-sm text-gray-400">
+        <div className="border-t border-gray-800 mt-8 pt-6 flex flex-col sm:flex-row justify-between items-center gap-4">
+          <p className="text-sm text-gray-400 text-center sm:text-left">
             © {currentYear} TravelTrek. Todos os direitos reservados.
           </p>
-          <div className="flex space-x-6 mt-4 md:mt-0">
+          <div className="flex flex-wrap justify-center sm:justify-end space-x-6">
             <Link
               href="/privacy"
               className="text-sm text-gray-400 hover:text-white transition-colors"
