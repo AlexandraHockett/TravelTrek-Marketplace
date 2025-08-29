@@ -33,6 +33,7 @@ export interface ItineraryItem {
   description: string;
 }
 
+// File: app/types.ts
 export interface Booking {
   id: string;
   tourId: string;
@@ -45,7 +46,7 @@ export interface Booking {
   date: string;
   participants: number;
   totalAmount: number;
-  status: "pending" | "confirmed" | "cancelled" | "completed";
+  status: "pending" | "confirmed" | "completed" | "cancelled";
   paymentStatus: "pending" | "paid" | "refunded";
   specialRequests?: string;
   createdAt: string;
