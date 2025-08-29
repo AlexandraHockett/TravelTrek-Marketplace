@@ -1,0 +1,21 @@
+{
+  "nav": {
+    "exploreTours": "Explore Tours",
+    "myBookings": "My Bookings",
+    "hostPortal": "Host Portal",
+    "login": "Login",
+    "signup": "Sign Up"
+  },
+  "hero": {
+    "title": "Discover the Extraordinary",
+    "subtitle": "Connect with local hosts and discover authentic experiences.",
+    "searchPlaceholder": "Where in Portugal do you want to go?",
+    "searchButton": "Search"
+  },
+  "benefits": {
+    "localExperiences": {
+      "title": "Local Experiences",
+      "description": "Discover the city's secrets through the eyes of those who know it best."
+    }
+  }
+}

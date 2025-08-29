@@ -1,0 +1,71 @@
+{
+  "nav": {
+    "exploreTours": "Explorar Tours",
+    "myBookings": "Mis Reservas",
+    "hostPortal": "Portal Anfitrión",
+    "login": "Iniciar Sesión",
+    "signup": "Registrarse"
+  },
+  "hero": {
+    "title": "Descubre lo Extraordinario",
+    "subtitle": "Conéctate con anfitriones locales y descubre experiencias auténticas. Desde paseos urbanos hasta expediciones naturales.",
+    "exploreToursButton": "Explorar Tours",
+    "becomeHostButton": "Convertirse en Anfitrión"
+  },
+  "search": {
+    "title": "Encuentra tu Tour Perfecto",
+    "destinationLabel": "Destino",
+    "destinationPlaceholder": "¿A dónde?",
+    "checkInLabel": "Check-in",
+    "participantsLabel": "Participantes",
+    "participantsOptions": {
+      "one": "1 persona",
+      "two": "2 personas",
+      "three": "3 personas",
+      "fourPlus": "4+ personas"
+    },
+    "searchButton": "Buscar"
+  },
+  "benefits": {
+    "title": "¿Por qué Elegir TravelTrek?",
+    "subtitle": "Facilitamos el descubrimiento y reserva de experiencias de viaje increíbles",
+    "localExperiences": {
+      "title": "Experiencias Locales",
+      "description": "Descubre los secretos de la ciudad a través de los ojos de quienes mejor la conocen."
+    },
+    "verifiedHosts": {
+      "title": "Anfitriones Verificados",
+      "description": "Todos nuestros guías locales están verificados y altamente cualificados."
+    },
+    "fairPrices": {
+      "title": "Precios Justos",
+      "description": "Sin tarifas ocultas. Lo que ves es lo que pagas."
+    },
+    "qualityGuaranteed": {
+      "title": "Calidad Garantizada",
+      "description": "Experiencias únicas con calificaciones de 5 estrellas."
+    }
+  },
+  "hostCta": {
+    "title": "Comparte tu Conocimiento Local",
+    "subtitle": "Únete a nuestra comunidad de anfitriones locales y convierte tu pasión por tu ciudad en ingresos. Crea tours únicos y comparte experiencias inolvidables con viajeros.",
+    "startTodayButton": "Comenzar Hoy",
+    "learnEarningsButton": "Saber Sobre Ganancias"
+  },
+  "statistics": {
+    "happyTravelers": "Viajeros Felices",
+    "uniqueTours": "Tours Únicos",
+    "citiesWorldwide": "Ciudades Mundial"
+  },
+  "common": {
+    "person": "persona",
+    "persons": "personas",
+    "hours": "horas",
+    "hour": "hora",
+    "from": "Desde",
+    "to": "hasta",
+    "loading": "Cargando...",
+    "error": "Error",
+    "success": "Éxito"
+  }
+}

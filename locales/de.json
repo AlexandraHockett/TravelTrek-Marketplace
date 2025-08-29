@@ -1,0 +1,71 @@
+{
+  "nav": {
+    "exploreTours": "Touren Erkunden",
+    "myBookings": "Meine Buchungen",
+    "hostPortal": "Gastgeber Portal",
+    "login": "Anmelden",
+    "signup": "Registrieren"
+  },
+  "hero": {
+    "title": "Entdecke das Außergewöhnliche",
+    "subtitle": "Verbinde dich mit lokalen Gastgebern und entdecke authentische Erfahrungen. Von Stadtspaziergängen bis zu Naturexpeditionen.",
+    "exploreToursButton": "Touren Erkunden",
+    "becomeHostButton": "Gastgeber Werden"
+  },
+  "search": {
+    "title": "Finde deine Perfekte Tour",
+    "destinationLabel": "Reiseziel",
+    "destinationPlaceholder": "Wohin?",
+    "checkInLabel": "Check-in",
+    "participantsLabel": "Teilnehmer",
+    "participantsOptions": {
+      "one": "1 Person",
+      "two": "2 Personen",
+      "three": "3 Personen",
+      "fourPlus": "4+ Personen"
+    },
+    "searchButton": "Suchen"
+  },
+  "benefits": {
+    "title": "Warum TravelTrek Wählen?",
+    "subtitle": "Wir erleichtern die Entdeckung und Buchung erstaunlicher Reiseerfahrungen",
+    "localExperiences": {
+      "title": "Lokale Erfahrungen",
+      "description": "Entdecke die Geheimnisse der Stadt durch die Augen derer, die sie am besten kennen."
+    },
+    "verifiedHosts": {
+      "title": "Verifizierte Gastgeber",
+      "description": "Alle unsere lokalen Guides sind verifiziert und hochqualifiziert."
+    },
+    "fairPrices": {
+      "title": "Faire Preise",
+      "description": "Keine versteckten Gebühren. Was du siehst, ist was du zahlst."
+    },
+    "qualityGuaranteed": {
+      "title": "Qualität Garantiert",
+      "description": "Einzigartige Erfahrungen mit 5-Sterne-Bewertungen."
+    }
+  },
+  "hostCta": {
+    "title": "Teile dein Lokales Wissen",
+    "subtitle": "Tritt unserer Gemeinschaft lokaler Gastgeber bei und verwandle deine Leidenschaft für deine Stadt in Einkommen. Erstelle einzigartige Touren und teile unvergessliche Erfahrungen mit Reisenden.",
+    "startTodayButton": "Heute Beginnen",
+    "learnEarningsButton": "Über Verdienste Lernen"
+  },
+  "statistics": {
+    "happyTravelers": "Glückliche Reisende",
+    "uniqueTours": "Einzigartige Touren",
+    "citiesWorldwide": "Städte Weltweit"
+  },
+  "common": {
+    "person": "Person",
+    "persons": "Personen",
+    "hours": "Stunden",
+    "hour": "Stunde",
+    "from": "Ab",
+    "to": "bis",
+    "loading": "Lädt...",
+    "error": "Fehler",
+    "success": "Erfolg"
+  }
+}

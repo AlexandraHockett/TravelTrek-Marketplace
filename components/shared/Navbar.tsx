@@ -1,3 +1,6 @@
+// File: components/shared/Navbar.tsx (App Router Compatible)
+// Location: Replace the existing components/shared/Navbar.tsx
+
 "use client";
 
 import React, { useState, useEffect } from "react";
@@ -5,15 +8,33 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import Button from "@/components/ui/Button";
+import {
+  languages,
+  getLocaleFromPathname,
+  getLocalizedHref,
+  getLocaleFromCookie,
+  setLocaleCookie,
+} from "@/lib/i18n";
 
 const Navbar: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [windowWidth, setWindowWidth] = useState(0);
+  const [currentLocale, setCurrentLocale] = useState("pt");
+
   const pathname = usePathname();
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
+  // Get current locale from pathname or cookie
+  useEffect(() => {
+    const pathLocale = getLocaleFromPathname(pathname);
+    const cookieLocale = getLocaleFromCookie();
+    const locale = pathLocale !== "pt" ? pathLocale : cookieLocale;
+    setCurrentLocale(locale);
+  }, [pathname]);
+
+  // Navigation links - will be translated later
   const navLinks = [
     { href: "/customer/tours", label: "Explorar Tours" },
     { href: "/customer/bookings", label: "As Minhas Reservas" },
@@ -57,6 +78,28 @@ const Navbar: React.FC = () => {
 
   const isTabletView = windowWidth >= 768 && windowWidth <= 1024;
 
+  // Language switcher function
+  const switchLanguage = (newLocale: string) => {
+    // Set cookie
+    setLocaleCookie(newLocale);
+
+    // Navigate to new locale
+    const currentPath =
+      getLocaleFromPathname(pathname) !== "pt"
+        ? pathname.replace(/^\/[a-z]{2}/, "") || "/"
+        : pathname;
+
+    const newPath = getLocalizedHref(currentPath, newLocale);
+
+    // Use window.location for immediate redirect
+    window.location.href = newPath;
+  };
+
+  // Get localized href for navigation
+  const getHref = (href: string) => {
+    return getLocalizedHref(href, currentLocale);
+  };
+
   return (
     <>
       <nav
@@ -70,7 +113,7 @@ const Navbar: React.FC = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
           {/* Logo */}
           <Link
-            href="/"
+            href={getHref("/")}
             className="flex items-center space-x-2 z-50"
             onClick={() => setIsMenuOpen(false)}
           >
@@ -84,20 +127,41 @@ const Navbar: React.FC = () => {
 
           {/* Desktop Navigation and Actions */}
           <div className="hidden lg:flex items-center space-x-8">
-            {navLinks.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className={cn(
-                  "text-gray-700 hover:text-blue-600 transition-colors font-medium relative py-2",
-                  pathname === link.href
-                    ? "text-blue-600 font-semibold after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-blue-600 after:rounded-full"
-                    : "hover:after:absolute hover:after:bottom-0 hover:after:left-0 hover:after:w-full hover:after:h-0.5 hover:after:bg-blue-400 hover:after:rounded-full after:transition-all after:duration-300"
-                )}
+            {navLinks.map((link) => {
+              const href = getHref(link.href);
+              const isActive = pathname === href || pathname === link.href;
+
+              return (
+                <Link
+                  key={link.href}
+                  href={href}
+                  className={cn(
+                    "text-gray-700 hover:text-blue-600 transition-colors font-medium relative py-2",
+                    isActive
+                      ? "text-blue-600 font-semibold after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-blue-600 after:rounded-full"
+                      : "hover:after:absolute hover:after:bottom-0 hover:after:left-0 hover:after:w-full hover:after:h-0.5 hover:after:bg-blue-400 hover:after:rounded-full after:transition-all after:duration-300"
+                  )}
+                >
+                  {link.label}
+                </Link>
+              );
+            })}
+
+            {/* Language Selector */}
+            <div className="relative">
+              <select
+                value={currentLocale}
+                onChange={(e) => switchLanguage(e.target.value)}
+                className="text-sm border border-gray-200 rounded-lg px-3 py-2 bg-white hover:border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent cursor-pointer"
               >
-                {link.label}
-              </Link>
-            ))}
+                {Object.entries(languages).map(([code, lang]) => (
+                  <option key={code} value={code}>
+                    {lang.flag} {lang.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+
             <div className="flex items-center space-x-3 ml-6">
               <Button variant="default" size="sm" className="rounded-lg">
                 Entrar
@@ -130,8 +194,22 @@ const Navbar: React.FC = () => {
                 </Button>
               </div>
             )}
+
+            {/* Mobile Language Selector */}
+            <select
+              value={currentLocale}
+              onChange={(e) => switchLanguage(e.target.value)}
+              className="text-xs border border-gray-200 rounded px-2 py-1 bg-white"
+            >
+              {Object.entries(languages).map(([code, lang]) => (
+                <option key={code} value={code}>
+                  {lang.flag}
+                </option>
+              ))}
+            </select>
+
             <button
-              className="p-2 rounded-md focus:default-none focus:ring-2 focus:ring-blue-500 z-50"
+              className="p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 z-50"
               onClick={toggleMenu}
               aria-label="Toggle menu"
               aria-expanded={isMenuOpen}
@@ -179,21 +257,26 @@ const Navbar: React.FC = () => {
       >
         <div className="flex flex-col h-full pt-20 pb-6 px-6 overflow-y-auto">
           <div className="flex flex-col space-y-6 mb-8">
-            {navLinks.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className={cn(
-                  "text-lg font-medium py-2 px-3 rounded-lg transition-colors",
-                  pathname === link.href
-                    ? "bg-blue-50 text-blue-600"
-                    : "text-gray-700 hover:bg-gray-100"
-                )}
-                onClick={() => setIsMenuOpen(false)}
-              >
-                {link.label}
-              </Link>
-            ))}
+            {navLinks.map((link) => {
+              const href = getHref(link.href);
+              const isActive = pathname === href || pathname === link.href;
+
+              return (
+                <Link
+                  key={link.href}
+                  href={href}
+                  className={cn(
+                    "text-lg font-medium py-2 px-3 rounded-lg transition-colors",
+                    isActive
+                      ? "bg-blue-50 text-blue-600"
+                      : "text-gray-700 hover:bg-gray-100"
+                  )}
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  {link.label}
+                </Link>
+              );
+            })}
           </div>
           <div className="mt-auto pt-6 border-t border-gray-200">
             <div className="flex flex-col space-y-3">

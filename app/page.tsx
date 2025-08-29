@@ -1,7 +1,14 @@
+// File: app/page.tsx (App Router Compatible)
+// Location: Replace the existing app/page.tsx
+
+import React from "react";
 import Link from "next/link";
 import Button from "@/components/ui/Button";
 
 export default function HomePage() {
+  // For now, keep it simple in Portuguese until we set up the full i18n structure
+  // The middleware will handle language redirects
+
   const benefits = [
     {
       icon: "🗺️",
@@ -42,7 +49,7 @@ export default function HomePage() {
             Das caminhadas urbanas às expedições na natureza.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link href="/customers/tours">
+            <Link href="/customer/tours">
               <Button
                 size="lg"
                 variant="primary"
@@ -84,7 +91,7 @@ export default function HomePage() {
                   <input
                     type="text"
                     placeholder="Para onde?"
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   />
                 </div>
                 <div>
@@ -93,14 +100,14 @@ export default function HomePage() {
                   </label>
                   <input
                     type="date"
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   />
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
                     Participantes
                   </label>
-                  <select className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                  <select className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
                     <option>1 pessoa</option>
                     <option>2 pessoas</option>
                     <option>3 pessoas</option>

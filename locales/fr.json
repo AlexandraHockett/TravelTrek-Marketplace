@@ -1,0 +1,71 @@
+{
+  "nav": {
+    "exploreTours": "Explorer Tours",
+    "myBookings": "Mes Réservations", 
+    "hostPortal": "Portail Hôte",
+    "login": "Se Connecter",
+    "signup": "S'inscrire"
+  },
+  "hero": {
+    "title": "Découvrez l'Extraordinaire",
+    "subtitle": "Connectez-vous avec des hôtes locaux et découvrez des expériences authentiques. Des promenades urbaines aux expéditions nature.",
+    "exploreToursButton": "Explorer Tours",
+    "becomeHostButton": "Devenir Hôte"
+  },
+  "search": {
+    "title": "Trouvez votre Tour Parfait",
+    "destinationLabel": "Destination",
+    "destinationPlaceholder": "Où aller?",
+    "checkInLabel": "Check-in", 
+    "participantsLabel": "Participants",
+    "participantsOptions": {
+      "one": "1 personne",
+      "two": "2 personnes", 
+      "three": "3 personnes",
+      "fourPlus": "4+ personnes"
+    },
+    "searchButton": "Rechercher"
+  },
+  "benefits": {
+    "title": "Pourquoi Choisir TravelTrek?",
+    "subtitle": "Nous facilitons la découverte et la réservation d'expériences de voyage incroyables",
+    "localExperiences": {
+      "title": "Expériences Locales",
+      "description": "Découvrez les secrets de la ville à travers les yeux de ceux qui la connaissent le mieux."
+    },
+    "verifiedHosts": {
+      "title": "Hôtes Vérifiés", 
+      "description": "Tous nos guides locaux sont vérifiés et hautement qualifiés."
+    },
+    "fairPrices": {
+      "title": "Prix Justes",
+      "description": "Pas de frais cachés. Ce que vous voyez est ce que vous payez."
+    },
+    "qualityGuaranteed": {
+      "title": "Qualité Garantie",
+      "description": "Expériences uniques avec des notes 5 étoiles."
+    }
+  },
+  "hostCta": {
+    "title": "Partagez vos Connaissances Locales",
+    "subtitle": "Rejoignez notre communauté d'hôtes locaux et transformez votre passion pour votre ville en revenus. Créez des tours uniques et partagez des expériences inoubliables avec les voyageurs.",
+    "startTodayButton": "Commencer Aujourd'hui",
+    "learnEarningsButton": "En Savoir Plus sur les Gains"
+  },
+  "statistics": {
+    "happyTravelers": "Voyageurs Heureux",
+    "uniqueTours": "Tours Uniques", 
+    "citiesWorldwide": "Villes dans le Monde"
+  },
+  "common": {
+    "person": "personne",
+    "persons": "personnes",
+    "hours": "heures",
+    "hour": "heure",
+    "from": "À partir de",
+    "to": "à",
+    "loading": "Chargement...",
+    "error": "Erreur",
+    "success": "Succès"
+  }
+}
