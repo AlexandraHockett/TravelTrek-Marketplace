@@ -7,7 +7,8 @@
     "signup": "Registrarse"
   },
   "hero": {
-    "title": "Descubre lo Extraordinario",
+    "title": "Descubre lo ",
+    "highlight": "Extraordinario",
     "subtitle": "Conéctate con anfitriones locales y descubre experiencias auténticas. Desde paseos urbanos hasta expediciones naturales.",
     "exploreToursButton": "Explorar Tours",
     "becomeHostButton": "Convertirse en Anfitrión"
@@ -67,5 +68,42 @@
     "loading": "Cargando...",
     "error": "Error",
     "success": "Éxito"
+  },
+  "footer": {
+    "explore": {
+      "title": "Explorar",
+      "links": {
+        "tours": "Tours",
+        "destinations": "Destinos",
+        "experiences": "Experiencias"
+      }
+    },
+    "host": {
+      "title": "Anfitrión",
+      "links": {
+        "portal": "Portal Anfitrión",
+        "earnings": "Ganancias",
+        "bookings": "Reservas"
+      }
+    },
+    "support": {
+      "title": "Soporte",
+      "links": {
+        "help": "Centro de Ayuda",
+        "contact": "Contactar",
+        "terms": "Términos de Uso",
+        "privacy": "Privacidad"
+      }
+    },
+    "brand": {
+      "description": "Descubre las mejores experiencias de viaje y conéctate con anfitriones locales únicos.",
+      "copyright": "TravelTrek",
+      "rights": "Todos los derechos reservados."
+    },
+    "bottom": {
+      "privacy": "Política de Privacidad",
+      "terms": "Términos de Servicio",
+      "cookies": "Cookies"
+    }
   }
 }

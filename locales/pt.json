@@ -7,15 +7,103 @@
     "signup": "Registar"
   },
   "hero": {
-    "title": "Descobre o Extraordinário",
+    "title": "Descobre o ",
+    "highlight": "Extraordinário",
     "subtitle": "Conecta-te com anfitriões locais e descobre experiências autênticas.",
     "searchPlaceholder": "Para onde queres ir em Portugal?",
     "searchButton": "Pesquisar"
   },
+  "search": {
+    "title": "Encontra o Teu Tour Perfeito",
+    "destinationLabel": "Destino",
+    "destinationPlaceholder": "Para onde?",
+    "checkInLabel": "Check-in",
+    "participantsLabel": "Participantes",
+    "participantsOptions": {
+      "one": "1 pessoa",
+      "two": "2 pessoas",
+      "three": "3 pessoas",
+      "fourPlus": "4+ pessoas"
+    },
+    "searchButton": "Pesquisar"
+  },
   "benefits": {
+    "title": "Porque Escolher a TravelTrek?",
+    "subtitle": "Facilitamos a descoberta e reserva de experiências de viagem incríveis",
     "localExperiences": {
       "title": "Experiências Locais",
       "description": "Descobre os segredos da cidade através dos olhos de quem a conhece melhor."
+    },
+    "verifiedHosts": {
+      "title": "Anfitriões Verificados",
+      "description": "Todos os nossos guias locais são verificados e altamente qualificados."
+    },
+    "fairPrices": {
+      "title": "Preços Justos",
+      "description": "Sem taxas escondidas. O que vês é o que pagas."
+    },
+    "qualityGuaranteed": {
+      "title": "Qualidade Garantida",
+      "description": "Experiências únicas com classificações de 5 estrelas."
+    }
+  },
+  "hostCta": {
+    "title": "Partilha o Teu Conhecimento Local",
+    "subtitle": "Junta-te à nossa comunidade de anfitriões locais e transforma a tua paixão pela tua cidade em rendimento. Cria tours únicos e partilha experiências inesquecíveis com viajantes.",
+    "startTodayButton": "Começar Hoje",
+    "learnEarningsButton": "Saber Sobre Ganhos"
+  },
+  "statistics": {
+    "happyTravelers": "Viajantes Felizes",
+    "uniqueTours": "Tours Únicos",
+    "citiesWorldwide": "Cidades Mundialmente"
+  },
+  "common": {
+    "person": "pessoa",
+    "persons": "pessoas",
+    "hours": "horas",
+    "hour": "hora",
+    "from": "de",
+    "to": "até",
+    "loading": "A carregar...",
+    "error": "Erro",
+    "success": "Sucesso"
+  },
+  "footer": {
+    "explore": {
+      "title": "Explorar",
+      "links": {
+        "tours": "Tours",
+        "destinations": "Destinos",
+        "experiences": "Experiências"
+      }
+    },
+    "host": {
+      "title": "Anfitrião",
+      "links": {
+        "portal": "Portal Anfitrião",
+        "earnings": "Ganhos",
+        "bookings": "Reservas"
+      }
+    },
+    "support": {
+      "title": "Suporte",
+      "links": {
+        "help": "Centro de Ajuda",
+        "contact": "Contactar",
+        "terms": "Termos de Uso",
+        "privacy": "Privacidade"
+      }
+    },
+    "brand": {
+      "description": "Descobre as melhores experiências de viagem e conecta-te com anfitriões locais únicos.",
+      "copyright": "TravelTrek",
+      "rights": "Todos os direitos reservados."
+    },
+    "bottom": {
+      "privacy": "Política de Privacidade",
+      "terms": "Termos de Serviço",
+      "cookies": "Cookies"
     }
   }
 }

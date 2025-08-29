@@ -1,36 +1,55 @@
-// File: app/page.tsx (App Router Compatible)
-// Location: Replace the existing app/page.tsx
-
-import React from "react";
 import Link from "next/link";
 import Button from "@/components/ui/Button";
 
-export default function HomePage() {
-  // For now, keep it simple in Portuguese until we set up the full i18n structure
-  // The middleware will handle language redirects
+// Função para obter traduções no server-side
+async function getTranslations(locale: string) {
+  try {
+    const translations = await import(`@/locales/${locale}.json`);
+    return translations.default;
+  } catch {
+    // Fallback para inglês (en.json)
+    const translations = await import(`@/locales/en.json`);
+    return translations.default;
+  }
+}
 
+export default async function HomePage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  const t = await getTranslations(locale);
+
+  // Definição da variável benefits usando as traduções do dicionário
   const benefits = [
     {
       icon: "🗺️",
-      title: "Experiências Locais",
+      title: t.benefits?.localExperiences?.title || "Local Experiences",
       description:
-        "Descobre os segredos da cidade através dos olhos de quem a conhece melhor.",
+        t.benefits?.localExperiences?.description ||
+        "Discover the city's secrets through the eyes of those who know it best.",
     },
     {
       icon: "👥",
-      title: "Anfitriões Verificados",
+      title: t.benefits?.verifiedHosts?.title || "Verified Hosts",
       description:
-        "Todos os nossos guias locais são verificados e altamente qualificados.",
+        t.benefits?.verifiedHosts?.description ||
+        "All our local guides are verified and highly qualified.",
     },
     {
       icon: "💰",
-      title: "Preços Justos",
-      description: "Sem taxas escondidas. O que vês é o que pagas.",
+      title: t.benefits?.fairPrices?.title || "Fair Prices",
+      description:
+        t.benefits?.fairPrices?.description ||
+        "No hidden fees. What you see is what you pay.",
     },
     {
       icon: "🌟",
-      title: "Qualidade Garantida",
-      description: "Experiências únicas com classificações de 5 estrelas.",
+      title: t.benefits?.qualityGuaranteed?.title || "Quality Guaranteed",
+      description:
+        t.benefits?.qualityGuaranteed?.description ||
+        "Unique experiences with 5-star ratings.",
     },
   ];
 
@@ -41,30 +60,33 @@ export default function HomePage() {
         <div className="absolute inset-0 bg-black/20"></div>
 
         <div className="relative z-10 container mx-auto px-4 text-center">
-          <h1 className="text-5xl md:text-7xl font-bold mb-6 tracking-tight">
-            Descobre o <span className="gradient-text">Extraordinário</span>
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-bold mb-6 tracking-tight">
+            {t.hero?.title || "Discover the "}
+            <span className="gradient-text">
+              {t.hero?.highlight || "Extraordinary"}
+            </span>
           </h1>
-          <p className="text-xl md:text-2xl mb-8 opacity-90 max-w-3xl mx-auto leading-relaxed">
-            Conecta-te com anfitriões locais e descobre experiências autênticas.
-            Das caminhadas urbanas às expedições na natureza.
+          <p className="text-base sm:text-lg md:text-xl lg:text-2xl mb-8 opacity-90 max-w-2xl sm:max-w-3xl mx-auto leading-relaxed">
+            {t.hero?.subtitle ||
+              "Connect with local hosts and discover authentic experiences. From urban walks to nature expeditions."}
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link href="/customer/tours">
+            <Link href={`/${locale}/customer/tours`}>
               <Button
                 size="lg"
                 variant="primary"
                 className="transform hover:scale-105 transition-all duration-300"
               >
-                Explorar Tours
+                {t.nav?.exploreTours || "Explore Tours"}
               </Button>
             </Link>
-            <Link href="/host">
+            <Link href={`/${locale}/host`}>
               <Button
                 size="lg"
                 variant="secondary"
                 className="transform hover:scale-105 transition-all duration-300"
               >
-                Tornar-me Anfitrião
+                {t.hero?.becomeHostButton || "Become a Host"}
               </Button>
             </Link>
           </div>
@@ -81,42 +103,52 @@ export default function HomePage() {
           <div className="max-w-4xl mx-auto">
             <div className="bg-white rounded-2xl p-8 shadow-lg border">
               <h2 className="text-2xl font-semibold mb-6 text-center text-gray-900">
-                Encontra o Teu Tour Perfeito
+                {t.search?.title || "Find Your Perfect Tour"}
               </h2>
               <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Destino
+                    {t.search?.destinationLabel || "Destination"}
                   </label>
                   <input
                     type="text"
-                    placeholder="Para onde?"
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    placeholder={
+                      t.search?.destinationPlaceholder || "Where to?"
+                    }
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   />
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Check-in
+                    {t.search?.checkInLabel || "Check-in"}
                   </label>
                   <input
                     type="date"
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   />
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Participantes
+                    {t.search?.participantsLabel || "Participants"}
                   </label>
-                  <select className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                    <option>1 pessoa</option>
-                    <option>2 pessoas</option>
-                    <option>3 pessoas</option>
-                    <option>4+ pessoas</option>
+                  <select className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                    <option>
+                      {t.search?.participantsOptions?.one || "1 person"}
+                    </option>
+                    <option>
+                      {t.search?.participantsOptions?.two || "2 people"}
+                    </option>
+                    <option>
+                      {t.search?.participantsOptions?.three || "3 people"}
+                    </option>
+                    <option>
+                      {t.search?.participantsOptions?.fourPlus || "4+ people"}
+                    </option>
                   </select>
                 </div>
                 <div className="flex items-end">
                   <Button className="w-full" size="lg" variant="primary">
-                    Pesquisar
+                    {t.search?.searchButton || "Search"}
                   </Button>
                 </div>
               </div>
@@ -130,11 +162,11 @@ export default function HomePage() {
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold text-gray-900 mb-4">
-              Porque Escolher a TravelTrek?
+              {t.benefits?.title || "Why Choose TravelTrek?"}
             </h2>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              Facilitamos a descoberta e reserva de experiências de viagem
-              incríveis
+              {t.benefits?.subtitle ||
+                "We make it easy to discover and book incredible travel experiences"}
             </p>
           </div>
 
@@ -161,30 +193,29 @@ export default function HomePage() {
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center text-white">
             <h2 className="text-4xl md:text-5xl font-bold mb-6">
-              Partilha o Teu Conhecimento Local
+              {t.hostCta?.title || "Share Your Local Knowledge"}
             </h2>
             <p className="text-xl mb-8 opacity-90 leading-relaxed">
-              Junta-te à nossa comunidade de anfitriões locais e transforma a
-              tua paixão pela tua cidade em rendimento. Cria tours únicos e
-              partilha experiências inesquecíveis com viajantes.
+              {t.hostCta?.subtitle ||
+                "Join our community of local hosts and turn your passion for your city into income. Create unique tours and share unforgettable experiences with travelers."}
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link href="/host">
+              <Link href={`/${locale}/host`}>
                 <Button
                   size="lg"
                   variant="primary"
                   className="transform hover:scale-105 transition-all duration-300"
                 >
-                  Começar Hoje
+                  {t.hostCta?.startTodayButton || "Start Today"}
                 </Button>
               </Link>
-              <Link href="/host/earnings">
+              <Link href={`/${locale}/host/earnings`}>
                 <Button
                   size="lg"
                   variant="secondary"
                   className="transform hover:scale-105 transition-all duration-300"
                 >
-                  Saber Sobre Ganhos
+                  {t.hostCta?.learnEarningsButton || "Learn About Earnings"}
                 </Button>
               </Link>
             </div>
@@ -200,20 +231,24 @@ export default function HomePage() {
               <div className="text-4xl font-bold text-blue-600 mb-2 group-hover:scale-110 transition-transform">
                 10k+
               </div>
-              <div className="text-gray-600 font-medium">Viajantes Felizes</div>
+              <div className="text-gray-600 font-medium">
+                {t.statistics?.happyTravelers || "Happy Travelers"}
+              </div>
             </div>
             <div className="group">
               <div className="text-4xl font-bold text-blue-600 mb-2 group-hover:scale-110 transition-transform">
                 500+
               </div>
-              <div className="text-gray-600 font-medium">Tours Únicos</div>
+              <div className="text-gray-600 font-medium">
+                {t.statistics?.uniqueTours || "Unique Tours"}
+              </div>
             </div>
             <div className="group">
               <div className="text-4xl font-bold text-blue-600 mb-2 group-hover:scale-110 transition-transform">
                 50+
               </div>
               <div className="text-gray-600 font-medium">
-                Cidades Mundialmente
+                {t.statistics?.citiesWorldwide || "Cities Worldwide"}
               </div>
             </div>
           </div>

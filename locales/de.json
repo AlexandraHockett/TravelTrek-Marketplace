@@ -7,7 +7,8 @@
     "signup": "Registrieren"
   },
   "hero": {
-    "title": "Entdecke das Außergewöhnliche",
+    "title": "Entdecke das ",
+    "highlight":"Außergewöhnliche",
     "subtitle": "Verbinde dich mit lokalen Gastgebern und entdecke authentische Erfahrungen. Von Stadtspaziergängen bis zu Naturexpeditionen.",
     "exploreToursButton": "Touren Erkunden",
     "becomeHostButton": "Gastgeber Werden"
@@ -67,5 +68,42 @@
     "loading": "Lädt...",
     "error": "Fehler",
     "success": "Erfolg"
+  },
+  "footer": {
+    "explore": {
+      "title": "Erkunden",
+      "links": {
+        "tours": "Touren",
+        "destinations": "Ziele",
+        "experiences": "Erfahrungen"
+      }
+    },
+    "host": {
+      "title": "Gastgeber",
+      "links": {
+        "portal": "Gastgeber Portal",
+        "earnings": "Verdienste",
+        "bookings": "Buchungen"
+      }
+    },
+    "support": {
+      "title": "Support",
+      "links": {
+        "help": "Hilfezentrum",
+        "contact": "Kontakt",
+        "terms": "Nutzungsbedingungen",
+        "privacy": "Datenschutz"
+      }
+    },
+    "brand": {
+      "description": "Entdecke die besten Reiseerlebnisse und verbinde dich mit einzigartigen lokalen Gastgebern.",
+      "copyright": "TravelTrek",
+      "rights": "Alle Rechte vorbehalten."
+    },
+    "bottom": {
+      "privacy": "Datenschutzrichtlinie",
+      "terms": "Nutzungsbedingungen",
+      "cookies": "Cookies"
+    }
   }
 }

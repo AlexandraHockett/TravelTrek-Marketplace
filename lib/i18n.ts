@@ -1,24 +1,26 @@
-// File: lib/i18n.ts (App Router Compatible)
-// Location: Create this file in lib/i18n.ts
+// File: lib/i18n.ts
+// Location: SUBSTITUIR o arquivo existente lib/i18n.ts
 
 "use client";
 
-// Supported languages configuration
+// Configuração de idiomas suportados
 export const languages = {
-  pt: { name: "Português", flag: "🇵🇹", code: "pt" },
-  en: { name: "English", flag: "🇬🇧", code: "en" },
-  es: { name: "Español", flag: "🇪🇸", code: "es" },
-  fr: { name: "Français", flag: "🇫🇷", code: "fr" },
-  de: { name: "Deutsch", flag: "🇩🇪", code: "de" },
-};
+  pt: { name: "Português", flag: "🇵🇹", code: "pt", htmlLang: "pt-PT" },
+  en: { name: "English", flag: "🇬🇧", code: "en", htmlLang: "en-GB" },
+  es: { name: "Español", flag: "🇪🇸", code: "es", htmlLang: "es-ES" },
+  fr: { name: "Français", flag: "🇫🇷", code: "fr", htmlLang: "fr-FR" },
+  de: { name: "Deutsch", flag: "🇩🇪", code: "de", htmlLang: "de-DE" },
+} as const;
 
-export const locales = Object.keys(languages);
-export const defaultLocale = "pt";
+export const locales = Object.keys(languages) as Array<keyof typeof languages>;
+export const defaultLocale = "pt" as const;
 
-// Load translation files
+export type Locale = keyof typeof languages;
+
+// Carrega arquivos de tradução (para uso client-side)
 export function loadTranslations(locale: string) {
   try {
-    // Dynamic import for client-side
+    // Para client-side, usar import dinâmico
     const translations = require(`../locales/${locale}.json`);
     return translations;
   } catch (error) {
@@ -34,7 +36,7 @@ export function loadTranslations(locale: string) {
   }
 }
 
-// Get translation function
+// Hook para obter função de tradução (client-side)
 export function useTranslations(locale: string) {
   const translations = loadTranslations(locale);
 
@@ -54,7 +56,7 @@ export function useTranslations(locale: string) {
   };
 }
 
-// Get language from pathname for client components
+// Obtém idioma do pathname (client-side)
 export function getLocaleFromPathname(pathname: string): string {
   const segments = pathname.split("/");
   const potentialLocale = segments[1];
@@ -66,7 +68,7 @@ export function getLocaleFromPathname(pathname: string): string {
   return defaultLocale;
 }
 
-// Remove locale from pathname for navigation
+// Remove locale do pathname
 export function removeLocaleFromPathname(pathname: string): string {
   const segments = pathname.split("/");
   const potentialLocale = segments[1];
@@ -78,40 +80,41 @@ export function removeLocaleFromPathname(pathname: string): string {
   return pathname;
 }
 
-// Get localized href
+// Obtém href localizado
 export function getLocalizedHref(href: string, locale: string): string {
-  if (locale === defaultLocale) {
-    return href;
-  }
+  // Remove locale actual se existir
+  const cleanHref = removeLocaleFromPathname(href);
 
-  // Ensure href starts with /
-  const cleanHref = href.startsWith("/") ? href : "/" + href;
-  return `/${locale}${cleanHref}`;
+  // Adiciona novo locale
+  return `/${locale}${cleanHref === "/" ? "" : cleanHref}`;
 }
 
-// Get locale from cookie (client-side)
+// Utilitários para cookies (client-side)
 export function getLocaleFromCookie(): string {
-  if (typeof document === "undefined") return defaultLocale;
+  if (typeof window === "undefined") return defaultLocale;
 
-  const cookies = document.cookie.split(";");
-  const localeCookie = cookies.find((cookie) =>
-    cookie.trim().startsWith("locale=")
+  const cookies = document.cookie.split(";").reduce(
+    (acc, cookie) => {
+      const [key, value] = cookie.trim().split("=");
+      acc[key] = value;
+      return acc;
+    },
+    {} as Record<string, string>
   );
 
-  if (localeCookie) {
-    const locale = localeCookie.split("=")[1];
-    if (Object.keys(languages).includes(locale)) {
-      return locale;
-    }
-  }
-
-  return defaultLocale;
+  const cookieLocale = cookies["NEXT_LOCALE"];
+  return cookieLocale && Object.keys(languages).includes(cookieLocale)
+    ? cookieLocale
+    : defaultLocale;
 }
 
-// Set locale cookie (client-side)
 export function setLocaleCookie(locale: string): void {
-  if (typeof document === "undefined") return;
+  if (typeof window === "undefined") return;
 
-  const maxAge = 60 * 60 * 24 * 30; // 30 days
-  document.cookie = `locale=${locale}; max-age=${maxAge}; path=/; samesite=lax`;
+  document.cookie = `NEXT_LOCALE=${locale}; max-age=${60 * 60 * 24 * 30}; path=/; SameSite=Lax`;
+}
+
+// Validação de locale
+export function isValidLocale(locale: string): locale is Locale {
+  return Object.keys(languages).includes(locale);
 }

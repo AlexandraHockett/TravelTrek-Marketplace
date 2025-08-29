@@ -1,63 +1,116 @@
-// File: components/shared/Footer.tsx
-// Location: components/shared/Footer.tsx
 import React from "react";
 import Link from "next/link";
 
-const Footer: React.FC = () => {
+// Definindo o tipo das props
+interface FooterProps {
+  params: {
+    locale: string;
+  };
+}
+
+// Função para obter traduções no server-side
+async function getTranslations(locale: string) {
+  try {
+    const translations = await import(`@/locales/${locale}.json`);
+    return translations.default;
+  } catch {
+    // Fallback para inglês (en.json)
+    const translations = await import(`@/locales/en.json`);
+    return translations.default;
+  }
+}
+
+const Footer: React.FC<FooterProps> = async ({ params }) => {
+  const { locale } = params;
+  const t = await getTranslations(locale);
   const currentYear = new Date().getFullYear();
 
   const footerSections = [
     {
-      title: "Explorar",
+      title: t.footer?.explore?.title || "Explorar",
       links: [
-        { href: "/customer/tours", label: "Tours" },
-        { href: "/customer/destinations", label: "Destinos" },
-        { href: "/customer/experiences", label: "Experiências" },
+        {
+          href: "/customer/tours",
+          label: t.footer?.explore?.links?.tours || "Tours",
+        },
+        {
+          href: "/customer/destinations",
+          label: t.footer?.explore?.links?.destinations || "Destinos",
+        },
+        {
+          href: "/customer/experiences",
+          label: t.footer?.explore?.links?.experiences || "Experiências",
+        },
       ],
     },
     {
-      title: "Anfitrião",
+      title: t.footer?.host?.title || "Anfitrião",
       links: [
-        { href: "/host", label: "Portal Anfitrião" },
-        { href: "/host/earnings", label: "Ganhos" },
-        { href: "/host/bookings", label: "Reservas" },
+        {
+          href: "/host",
+          label: t.footer?.host?.links?.portal || "Portal Anfitrião",
+        },
+        {
+          href: "/host/earnings",
+          label: t.footer?.host?.links?.earnings || "Ganhos",
+        },
+        {
+          href: "/host/bookings",
+          label: t.footer?.host?.links?.bookings || "Reservas",
+        },
       ],
     },
     {
-      title: "Suporte",
+      title: t.footer?.support?.title || "Suporte",
       links: [
-        { href: "/help", label: "Centro de Ajuda" },
-        { href: "/contact", label: "Contactar" },
-        { href: "/terms", label: "Termos de Uso" },
-        { href: "/privacy", label: "Privacidade" },
+        {
+          href: "/help",
+          label: t.footer?.support?.links?.help || "Centro de Ajuda",
+        },
+        {
+          href: "/contact",
+          label: t.footer?.support?.links?.contact || "Contactar",
+        },
+        {
+          href: "/terms",
+          label: t.footer?.support?.links?.terms || "Termos de Uso",
+        },
+        {
+          href: "/privacy",
+          label: t.footer?.support?.links?.privacy || "Privacidade",
+        },
       ],
     },
   ];
 
   return (
     <footer className="bg-gray-900 text-gray-300">
-      <div className="container mx-auto px-4 py-12">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+      <div className="container mx-auto px-4 py-8 sm:py-10 lg:py-12">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
           {/* Brand Section */}
-          <div className="space-y-6">
+          <div className="space-y-4 sm:space-y-6">
             <div className="flex items-center space-x-3">
-              <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-lg">TT</span>
+              <div className="w-8 h-8 sm:w-10 sm:h-10 bg-blue-600 rounded-lg flex items-center justify-center">
+                <span className="text-white font-bold text-base sm:text-lg">
+                  TT
+                </span>
               </div>
-              <span className="text-2xl font-bold text-white">TravelTrek</span>
+              <span className="text-xl sm:text-2xl lg:text-3xl font-bold text-white">
+                TravelTrek
+              </span>
             </div>
-            <p className="text-sm text-gray-400 max-w-xs">
-              Descobre as melhores experiências de viagem e conecta-te com
-              anfitriões locais únicos.
+            <p className="text-xs sm:text-sm lg:text-base text-gray-400 max-w-xs sm:max-w-sm">
+              {t.footer?.brand?.description ||
+                "Descobre as melhores experiências de viagem e conecta-te com anfitriões locais únicos."}
             </p>
-            <div className="flex space-x-4">
+            <div className="flex space-x-3 sm:space-x-4">
               <Link
                 href="#"
                 className="text-gray-400 hover:text-white transition-colors"
               >
                 <span className="sr-only">Facebook</span>
                 <svg
-                  className="h-6 w-6"
+                  className="h-5 sm:h-6 w-5 sm:w-6"
                   fill="currentColor"
                   viewBox="0 0 24 24"
                 >
@@ -70,7 +123,7 @@ const Footer: React.FC = () => {
               >
                 <span className="sr-only">Instagram</span>
                 <svg
-                  className="h-6 w-6"
+                  className="h-5 sm:h-6 w-5 sm:w-6"
                   fill="currentColor"
                   viewBox="0 0 24 24"
                 >
@@ -83,7 +136,7 @@ const Footer: React.FC = () => {
               >
                 <span className="sr-only">Twitter</span>
                 <svg
-                  className="h-6 w-6"
+                  className="h-5 sm:h-6 w-5 sm:w-6"
                   fill="currentColor"
                   viewBox="0 0 24 24"
                 >
@@ -96,13 +149,15 @@ const Footer: React.FC = () => {
           {/* Links Sections */}
           {footerSections.map((section) => (
             <div key={section.title} className="space-y-3">
-              <h3 className="text-white font-semibold mb-4">{section.title}</h3>
+              <h3 className="text-white font-semibold text-base sm:text-lg lg:text-xl mb-3 sm:mb-4">
+                {section.title}
+              </h3>
               <ul className="space-y-2">
                 {section.links.map((link) => (
                   <li key={link.href}>
                     <Link
                       href={link.href}
-                      className="text-sm text-gray-400 hover:text-white transition-colors"
+                      className="text-xs sm:text-sm lg:text-base text-gray-400 hover:text-white transition-colors"
                     >
                       {link.label}
                     </Link>
@@ -114,28 +169,29 @@ const Footer: React.FC = () => {
         </div>
 
         {/* Bottom Bar */}
-        <div className="border-t border-gray-800 mt-8 pt-6 flex flex-col sm:flex-row justify-between items-center gap-4">
-          <p className="text-sm text-gray-400 text-center sm:text-left">
-            © {currentYear} TravelTrek. Todos os direitos reservados.
+        <div className="border-t border-gray-800 mt-6 sm:mt-8 pt-4 sm:pt-6 flex flex-col sm:flex-row justify-between items-center gap-4">
+          <p className="text-xs sm:text-sm lg:text-base text-gray-400 text-center sm:text-left">
+            © {currentYear} {t.footer?.brand?.copyright || "TravelTrek"}.{" "}
+            {t.footer?.brand?.rights || "Todos os direitos reservados."}
           </p>
-          <div className="flex flex-wrap justify-center sm:justify-end space-x-6">
+          <div className="flex flex-wrap justify-center sm:justify-end space-x-3 sm:space-x-6">
             <Link
               href="/privacy"
-              className="text-sm text-gray-400 hover:text-white transition-colors"
+              className="text-xs sm:text-sm lg:text-base text-gray-400 hover:text-white transition-colors"
             >
-              Política de Privacidade
+              {t.footer?.bottom?.privacy || "Política de Privacidade"}
             </Link>
             <Link
               href="/terms"
-              className="text-sm text-gray-400 hover:text-white transition-colors"
+              className="text-xs sm:text-sm lg:text-base text-gray-400 hover:text-white transition-colors"
             >
-              Termos de Serviço
+              {t.footer?.bottom?.terms || "Termos de Serviço"}
             </Link>
             <Link
               href="/cookies"
-              className="text-sm text-gray-400 hover:text-white transition-colors"
+              className="text-xs sm:text-sm lg:text-base text-gray-400 hover:text-white transition-colors"
             >
-              Cookies
+              {t.footer?.bottom?.cookies || "Cookies"}
             </Link>
           </div>
         </div>

@@ -7,15 +7,103 @@
     "signup": "Sign Up"
   },
   "hero": {
-    "title": "Discover the Extraordinary",
+    "title": "Discover the ",
+    "highlight": "Extraordinary",
     "subtitle": "Connect with local hosts and discover authentic experiences.",
     "searchPlaceholder": "Where in Portugal do you want to go?",
     "searchButton": "Search"
   },
+  "search": {
+    "title": "Find Your Perfect Tour",
+    "destinationLabel": "Destination",
+    "destinationPlaceholder": "Where to?",
+    "checkInLabel": "Check-in",
+    "participantsLabel": "Participants",
+    "participantsOptions": {
+      "one": "1 person",
+      "two": "2 people",
+      "three": "3 people",
+      "fourPlus": "4+ people"
+    },
+    "searchButton": "Search"
+  },
   "benefits": {
+    "title": "Why Choose TravelTrek?",
+    "subtitle": "We make it easy to discover and book incredible travel experiences",
     "localExperiences": {
       "title": "Local Experiences",
       "description": "Discover the city's secrets through the eyes of those who know it best."
+    },
+    "verifiedHosts": {
+      "title": "Verified Hosts",
+      "description": "All our local guides are verified and highly qualified."
+    },
+    "fairPrices": {
+      "title": "Fair Prices",
+      "description": "No hidden fees. What you see is what you pay."
+    },
+    "qualityGuaranteed": {
+      "title": "Quality Guaranteed",
+      "description": "Unique experiences with 5-star ratings."
+    }
+  },
+  "hostCta": {
+    "title": "Share Your Local Knowledge",
+    "subtitle": "Join our community of local hosts and turn your passion for your city into income. Create unique tours and share unforgettable experiences with travelers.",
+    "startTodayButton": "Start Today",
+    "learnEarningsButton": "Learn About Earnings"
+  },
+  "statistics": {
+    "happyTravelers": "Happy Travelers",
+    "uniqueTours": "Unique Tours",
+    "citiesWorldwide": "Cities Worldwide"
+  },
+  "common": {
+    "person": "person",
+    "persons": "people",
+    "hours": "hours",
+    "hour": "hour",
+    "from": "from",
+    "to": "to",
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success"
+  },
+  "footer": {
+    "explore": {
+      "title": "Explore",
+      "links": {
+        "tours": "Tours",
+        "destinations": "Destinations",
+        "experiences": "Experiences"
+      }
+    },
+    "host": {
+      "title": "Host",
+      "links": {
+        "portal": "Host Portal",
+        "earnings": "Earnings",
+        "bookings": "Bookings"
+      }
+    },
+    "support": {
+      "title": "Support",
+      "links": {
+        "help": "Help Center",
+        "contact": "Contact",
+        "terms": "Terms of Use",
+        "privacy": "Privacy"
+      }
+    },
+    "brand": {
+      "description": "Discover the best travel experiences and connect with unique local hosts.",
+      "copyright": "TravelTrek",
+      "rights": "All rights reserved."
+    },
+    "bottom": {
+      "privacy": "Privacy Policy",
+      "terms": "Terms of Service",
+      "cookies": "Cookies"
     }
   }
 }

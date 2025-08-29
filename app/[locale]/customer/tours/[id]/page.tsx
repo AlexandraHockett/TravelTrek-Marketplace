@@ -1,5 +1,6 @@
 // File: app/customer/tours/[id]/page.tsx
 // Location: Create this file in the app/customer/tours/[id]/ directory
+"use client";
 
 import React from "react";
 import Link from "next/link";

@@ -1,10 +1,14 @@
-// File: components/ui/Button.tsx
-// Location: Create this file in components/ui/Button.tsx
 import React from "react";
 import { cn } from "@/lib/utils";
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: "primary" | "secondary" | "default" | "ghost" | "danger";
+  variant?:
+    | "primary"
+    | "secondary"
+    | "default"
+    | "ghost"
+    | "danger"
+    | "outline";
   size?: "sm" | "md" | "lg";
   loading?: boolean;
   leftIcon?: React.ReactNode;
@@ -48,6 +52,8 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       ghost: "text-gray-700 hover:bg-gray-100 focus:ring-gray-300",
       danger:
         "bg-error text-white hover:bg-error/90 focus:ring-error shadow-sm",
+      outline:
+        "border border-gray-300 text-gray-700 hover:bg-gray-50 focus:ring-primary", // Novo estilo para outline
     };
 
     const isDisabled = disabled || loading;

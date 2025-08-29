@@ -1,9 +1,8 @@
-// app/layout.tsx
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import "./globals.css";
 import Navbar from "@/components/shared/Navbar";
 import Footer from "@/components/shared/Footer";
+import "../globals.css";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -11,26 +10,28 @@ const inter = Inter({
   display: "swap",
 });
 
-// Dynamic metadata baseado no locale (se necessário)
 export const metadata: Metadata = {
   title: {
     default: "TravelTrek - Discover Unique Experiences",
     template: "%s | TravelTrek",
   },
-  description:
-    "Connect with local hosts and discover authentic travel experiences.",
-  // ... resto mantém-se
+  description: "Connect with local hosts and discover authentic travel experiences.",
 };
+
+// Definindo o tipo de params manualmente
+interface LayoutParams {
+  locale: string;
+}
 
 export default function RootLayout({
   children,
+  params,
 }: {
   children: React.ReactNode;
+  params: LayoutParams; // Tipo explícito para params
 }) {
   return (
-    <html lang="en" className={inter.variable}>
-      {" "}
-      {/* Será automaticamente alterado */}
+    <html lang={params.locale} className={inter.variable}>
       <head>
         <link rel="icon" href="/favicon.ico" sizes="any" />
         <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
@@ -41,7 +42,7 @@ export default function RootLayout({
       <body className="min-h-screen flex flex-col bg-gray-50 antialiased font-sans">
         <Navbar />
         <main className="flex-1 relative">{children}</main>
-        <Footer />
+        <Footer params={params} />
       </body>
     </html>
   );

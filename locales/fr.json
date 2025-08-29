@@ -1,13 +1,14 @@
 {
   "nav": {
     "exploreTours": "Explorer Tours",
-    "myBookings": "Mes Réservations", 
+    "myBookings": "Mes Réservations",
     "hostPortal": "Portail Hôte",
     "login": "Se Connecter",
     "signup": "S'inscrire"
   },
   "hero": {
-    "title": "Découvrez l'Extraordinaire",
+    "title": "Découvrez l'",
+    "highlight": "Extraordinaire",
     "subtitle": "Connectez-vous avec des hôtes locaux et découvrez des expériences authentiques. Des promenades urbaines aux expéditions nature.",
     "exploreToursButton": "Explorer Tours",
     "becomeHostButton": "Devenir Hôte"
@@ -16,11 +17,11 @@
     "title": "Trouvez votre Tour Parfait",
     "destinationLabel": "Destination",
     "destinationPlaceholder": "Où aller?",
-    "checkInLabel": "Check-in", 
+    "checkInLabel": "Check-in",
     "participantsLabel": "Participants",
     "participantsOptions": {
       "one": "1 personne",
-      "two": "2 personnes", 
+      "two": "2 personnes",
       "three": "3 personnes",
       "fourPlus": "4+ personnes"
     },
@@ -34,7 +35,7 @@
       "description": "Découvrez les secrets de la ville à travers les yeux de ceux qui la connaissent le mieux."
     },
     "verifiedHosts": {
-      "title": "Hôtes Vérifiés", 
+      "title": "Hôtes Vérifiés",
       "description": "Tous nos guides locaux sont vérifiés et hautement qualifiés."
     },
     "fairPrices": {
@@ -54,7 +55,7 @@
   },
   "statistics": {
     "happyTravelers": "Voyageurs Heureux",
-    "uniqueTours": "Tours Uniques", 
+    "uniqueTours": "Tours Uniques",
     "citiesWorldwide": "Villes dans le Monde"
   },
   "common": {
@@ -67,5 +68,42 @@
     "loading": "Chargement...",
     "error": "Erreur",
     "success": "Succès"
+  },
+  "footer": {
+    "explore": {
+      "title": "Explorer",
+      "links": {
+        "tours": "Tours",
+        "destinations": "Destinations",
+        "experiences": "Expériences"
+      }
+    },
+    "host": {
+      "title": "Hôte",
+      "links": {
+        "portal": "Portail Hôte",
+        "earnings": "Gains",
+        "bookings": "Réservations"
+      }
+    },
+    "support": {
+      "title": "Support",
+      "links": {
+        "help": "Centre d'Aide",
+        "contact": "Contact",
+        "terms": "Conditions d'Utilisation",
+        "privacy": "Confidentialité"
+      }
+    },
+    "brand": {
+      "description": "Découvrez les meilleures expériences de voyage et connectez-vous avec des hôtes locaux uniques.",
+      "copyright": "TravelTrek",
+      "rights": "Tous droits réservés."
+    },
+    "bottom": {
+      "privacy": "Politique de Confidentialité",
+      "terms": "Conditions d'Utilisation",
+      "cookies": "Cookies"
+    }
   }
 }
