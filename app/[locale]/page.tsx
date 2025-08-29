@@ -1,17 +1,7 @@
+// File: app/page.tsx
 import Link from "next/link";
 import Button from "@/components/ui/Button";
-
-// Função para obter traduções no server-side
-async function getTranslations(locale: string) {
-  try {
-    const translations = await import(`@/locales/${locale}.json`);
-    return translations.default;
-  } catch {
-    // Fallback para inglês (en.json)
-    const translations = await import(`@/locales/en.json`);
-    return translations.default;
-  }
-}
+import { getTranslations } from "@/lib/utils";
 
 export default async function HomePage({
   params,
@@ -21,7 +11,6 @@ export default async function HomePage({
   const { locale } = await params;
   const t = await getTranslations(locale);
 
-  // Definição da variável benefits usando as traduções do dicionário
   const benefits = [
     {
       icon: "🗺️",
@@ -58,7 +47,6 @@ export default async function HomePage({
       {/* Hero Section */}
       <section className="relative min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-600 via-teal-500 to-blue-700 text-white overflow-hidden">
         <div className="absolute inset-0 bg-black/20"></div>
-
         <div className="relative z-10 container mx-auto px-4 text-center">
           <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-bold mb-6 tracking-tight">
             {t.hero?.title || "Discover the "}
@@ -91,8 +79,6 @@ export default async function HomePage({
             </Link>
           </div>
         </div>
-
-        {/* Floating Elements */}
         <div className="absolute top-20 left-10 w-20 h-20 bg-teal-500/20 rounded-full blur-xl animate-pulse"></div>
         <div className="absolute bottom-32 right-16 w-32 h-32 bg-blue-600/20 rounded-full blur-2xl animate-pulse delay-1000"></div>
       </section>
@@ -169,7 +155,6 @@ export default async function HomePage({
                 "We make it easy to discover and book incredible travel experiences"}
             </p>
           </div>
-
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-6xl mx-auto">
             {benefits.map((benefit, index) => (
               <div key={index} className="text-center group">

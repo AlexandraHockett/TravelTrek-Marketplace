@@ -6,34 +6,7 @@
 import React, { useState } from "react";
 import Button from "@/components/ui/Button";
 import { formatCurrency } from "@/lib/utils";
-
-interface PaymentButtonProps {
-  bookingId?: string;
-  amount: number;
-  currency?: string;
-  variant?: "default" | "primary" | "success";
-  size?: "sm" | "md" | "lg";
-  disabled?: boolean;
-  onPaymentSuccess?: (paymentData: any) => void;
-  onPaymentError?: (error: string) => void;
-  className?: string;
-  children?: React.ReactNode;
-  tourTitle?: string;
-  tourId?: string;
-  participants?: number;
-  date?: string;
-}
-
-interface PaymentData {
-  bookingId?: string;
-  tourId?: string;
-  amount: number;
-  currency: string;
-  participants?: number;
-  date?: string;
-  successUrl?: string;
-  cancelUrl?: string;
-}
+import { PaymentButtonProps, PaymentData } from "@/types";
 
 const PaymentButton: React.FC<PaymentButtonProps> = ({
   bookingId,

@@ -3,12 +3,18 @@
 
 "use client";
 
-import React, { useState } from "react";
-import { Tour } from "@/types";
-import { formatCurrency } from "@/lib/utils";
+import React, { useState, useEffect } from "react";
+import { Tour, Translations } from "@/types";
+import { formatCurrency, getTranslations } from "@/lib/utils";
 import Button from "@/components/ui/Button";
 import Card from "@/components/ui/Card";
 import Badge from "@/components/ui/Badge";
+import { usePathname } from "next/navigation";
+import {
+  getLocaleFromPathname,
+  getLocaleFromCookie,
+  type Locale,
+} from "@/lib/i18n";
 
 interface BookingFormProps {
   tour: Tour;
@@ -49,6 +55,21 @@ const BookingForm: React.FC<BookingFormProps> = ({
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState<BookingFormErrors>({});
   const [showDatePicker, setShowDatePicker] = useState(false);
+  const [currentLocale, setCurrentLocale] = useState<Locale>("pt");
+  const [t, setTranslations] = useState<Translations>({});
+
+  const pathname = usePathname();
+
+  useEffect(() => {
+    const loadTranslations = async () => {
+      const pathLocale =
+        getLocaleFromPathname(pathname) || getLocaleFromCookie() || "pt";
+      setCurrentLocale(pathLocale as Locale);
+      const translations = await getTranslations(pathLocale);
+      setTranslations(translations);
+    };
+    loadTranslations();
+  }, [pathname]);
 
   // Calculate dates
   const minDate = new Date();
@@ -64,32 +85,37 @@ const BookingForm: React.FC<BookingFormProps> = ({
 
     // Date validation
     if (!formData.date) {
-      newErrors.date = "Por favor selecciona uma data";
+      newErrors.date =
+        t.bookingForm?.requiredDate || "Por favor selecciona uma data";
     } else {
       const selectedDate = new Date(formData.date);
       const today = new Date();
       today.setHours(0, 0, 0, 0);
 
       if (selectedDate <= today) {
-        newErrors.date = "A data deve ser pelo menos amanhã";
+        newErrors.date =
+          t.bookingForm?.minDateTomorrow || "A data deve ser pelo menos amanhã";
       }
 
       if (selectedDate > maxDate) {
         newErrors.date =
+          t.bookingForm?.maxDateThreeMonths ||
           "Não é possível reservar com mais de 3 meses de antecedência";
       }
     }
 
     // Participants validation
     if (formData.participants < 1) {
-      newErrors.participants = "Número mínimo de 1 participante";
+      newErrors.participants =
+        t.bookingForm?.minParticipants || "Número mínimo de 1 participante";
     } else if (formData.participants > tour.maxParticipants) {
-      newErrors.participants = `Máximo de ${tour.maxParticipants} participantes`;
+      newErrors.participants = `${t.bookingForm?.maxParticipants || "Máximo de"} ${tour.maxParticipants} participantes`;
     }
 
     // Special requests validation (optional but with length limit)
     if (formData.specialRequests && formData.specialRequests.length > 500) {
       newErrors.specialRequests =
+        t.bookingForm?.maxSpecialRequestsLength ||
         "Pedidos especiais não podem exceder 500 caracteres";
     }
 
@@ -139,7 +165,9 @@ const BookingForm: React.FC<BookingFormProps> = ({
     } catch (error) {
       console.error("Booking error:", error);
       setErrors({
-        general: "Erro ao criar reserva. Por favor tenta novamente.",
+        general:
+          t.bookingForm?.bookingError ||
+          "Erro ao criar reserva. Por favor tenta novamente.",
       });
     } finally {
       setLoading(false);
@@ -205,7 +233,9 @@ const BookingForm: React.FC<BookingFormProps> = ({
               <span className="text-3xl font-bold text-gray-900">
                 {formatCurrency(tour.price)}
               </span>
-              <span className="text-gray-600">/pessoa</span>
+              <span className="text-gray-600">
+                {t.bookingForm?.perPerson || "/pessoa"}
+              </span>
             </div>
             {tour.originalPrice && (
               <div className="flex items-center gap-2">
@@ -217,7 +247,8 @@ const BookingForm: React.FC<BookingFormProps> = ({
                   size="sm"
                   className="bg-green-100 text-green-800"
                 >
-                  Poupa {formatCurrency(tour.originalPrice - tour.price)}!
+                  {t.bookingForm?.save || "Poupa"}{" "}
+                  {formatCurrency(tour.originalPrice - tour.price)}!
                 </Badge>
               </div>
             )}
@@ -227,7 +258,7 @@ const BookingForm: React.FC<BookingFormProps> = ({
             {/* Date Selection */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Data da Experiência *
+                {t.bookingForm?.experienceDate || "Data da Experiência"} *
               </label>
 
               {/* Suggested Dates */}
@@ -248,13 +279,15 @@ const BookingForm: React.FC<BookingFormProps> = ({
                       }`}
                     >
                       <div className="font-medium">
-                        {date.toLocaleDateString("pt-PT", {
+                        {date.toLocaleDateString(currentLocale, {
                           day: "numeric",
                           month: "short",
                         })}
                       </div>
                       <div className="opacity-75">
-                        {date.toLocaleDateString("pt-PT", { weekday: "short" })}
+                        {date.toLocaleDateString(currentLocale, {
+                          weekday: "short",
+                        })}
                       </div>
                     </button>
                   );
@@ -279,7 +312,7 @@ const BookingForm: React.FC<BookingFormProps> = ({
             {/* Participants */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Participantes *
+                {t.bookingForm?.participants || "Participantes"} *
               </label>
               <div className="flex items-center space-x-3">
                 <button
@@ -307,7 +340,8 @@ const BookingForm: React.FC<BookingFormProps> = ({
                 </button>
               </div>
               <p className="text-xs text-gray-500 mt-1">
-                Máximo: {tour.maxParticipants} pessoas
+                {t.bookingForm?.maxPersons || "Máximo"}: {tour.maxParticipants}{" "}
+                pessoas
               </p>
               {errors.participants && (
                 <p className="text-red-600 text-sm mt-1">
@@ -319,7 +353,8 @@ const BookingForm: React.FC<BookingFormProps> = ({
             {/* Special Requests */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Pedidos Especiais (Opcional)
+                {t.bookingForm?.specialRequests || "Pedidos Especiais"}{" "}
+                (Opcional)
               </label>
               <textarea
                 value={formData.specialRequests}
@@ -329,7 +364,10 @@ const BookingForm: React.FC<BookingFormProps> = ({
                 className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none ${
                   errors.specialRequests ? "border-red-500" : "border-gray-300"
                 }`}
-                placeholder="Alergias, necessidades especiais, etc."
+                placeholder={
+                  t.bookingForm?.allergiesPlaceholder ||
+                  "Alergias, necessidades especiais, etc."
+                }
               />
               <div className="flex justify-between items-center mt-1">
                 {errors.specialRequests ? (
@@ -357,8 +395,12 @@ const BookingForm: React.FC<BookingFormProps> = ({
                   </span>
                 </div>
                 <div className="flex justify-between items-center text-xs text-gray-600">
-                  <span>Taxas incluídas</span>
-                  <span>Cancelamento gratuito</span>
+                  <span>
+                    {t.bookingForm?.includedTaxes || "Taxas incluídas"}
+                  </span>
+                  <span>
+                    {t.bookingForm?.freeCancellation || "Cancelamento gratuito"}
+                  </span>
                 </div>
               </div>
             )}
@@ -399,16 +441,16 @@ const BookingForm: React.FC<BookingFormProps> = ({
                       d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                     ></path>
                   </svg>
-                  A processar...
+                  {t.bookingForm?.processing || "A processar..."}
                 </span>
               ) : (
-                `Reservar${formData.participants > 1 ? ` (${formatCurrency(totalAmount)})` : ""}`
+                `${t.bookingForm?.bookButton || "Reservar"}${formData.participants > 1 ? ` (${formatCurrency(totalAmount)})` : ""}`
               )}
             </Button>
 
             <p className="text-xs text-gray-600 text-center">
-              Não será cobrado nada ainda. Confirma os detalhes antes do
-              pagamento.
+              {t.bookingForm?.noChargeYet ||
+                "Não será cobrado nada ainda. Confirma os detalhes antes do pagamento."}
             </p>
           </form>
         </div>
@@ -420,7 +462,7 @@ const BookingForm: React.FC<BookingFormProps> = ({
   return (
     <Card className={`p-6 ${className}`}>
       <h3 className="text-xl font-semibold text-gray-900 mb-6">
-        Reservar Experiência
+        {t.bookingForm?.bookExperience || "Reservar Experiência"}
       </h3>
 
       <form onSubmit={handleSubmit} className="space-y-6">
@@ -430,11 +472,13 @@ const BookingForm: React.FC<BookingFormProps> = ({
             <span className="text-2xl font-bold text-gray-900">
               {formatCurrency(tour.price)}
             </span>
-            <span className="text-gray-600">por pessoa</span>
+            <span className="text-gray-600">
+              {t.bookingForm?.perPerson || "por pessoa"}
+            </span>
           </div>
           {tour.originalPrice && (
             <p className="text-sm text-gray-500 mt-1">
-              Preço original:{" "}
+              {t.bookingForm?.originalPrice || "Preço original"}:{" "}
               <span className="line-through">
                 {formatCurrency(tour.originalPrice)}
               </span>
@@ -445,7 +489,7 @@ const BookingForm: React.FC<BookingFormProps> = ({
         {/* Date Selection */}
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
-            Data da Experiência *
+            {t.bookingForm?.experienceDate || "Data da Experiência"} *
           </label>
           <input
             type="date"
@@ -466,7 +510,7 @@ const BookingForm: React.FC<BookingFormProps> = ({
         {/* Participants */}
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
-            Número de Participantes *
+            {t.bookingForm?.participants || "Número de Participantes"} *
           </label>
           <select
             value={formData.participants}
@@ -476,7 +520,8 @@ const BookingForm: React.FC<BookingFormProps> = ({
             {Array.from({ length: tour.maxParticipants }, (_, i) => i + 1).map(
               (num) => (
                 <option key={num} value={num}>
-                  {num} pessoa{num > 1 ? "s" : ""}
+                  {num} {t.bookingForm?.bookForMultiple || "pessoa"}
+                  {num > 1 ? "s" : ""}
                 </option>
               )
             )}
@@ -489,7 +534,7 @@ const BookingForm: React.FC<BookingFormProps> = ({
         {/* Special Requests */}
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
-            Pedidos Especiais (Opcional)
+            {t.bookingForm?.specialRequests || "Pedidos Especiais (Opcional)"}
           </label>
           <textarea
             value={formData.specialRequests}
@@ -499,7 +544,10 @@ const BookingForm: React.FC<BookingFormProps> = ({
             className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none ${
               errors.specialRequests ? "border-red-500" : "border-gray-300"
             }`}
-            placeholder="Alergias, necessidades especiais, pedidos específicos, etc."
+            placeholder={
+              t.bookingForm?.allergiesPlaceholder ||
+              "Alergias, necessidades especiais, pedidos específicos, etc."
+            }
           />
           <div className="flex justify-between items-center mt-1">
             {errors.specialRequests && (
@@ -516,7 +564,8 @@ const BookingForm: React.FC<BookingFormProps> = ({
           <div className="space-y-2">
             <div className="flex justify-between items-center">
               <span className="text-gray-700">
-                {formatCurrency(tour.price)} × {formData.participants} pessoa
+                {formatCurrency(tour.price)} × {formData.participants}{" "}
+                {t.bookingForm?.bookForMultiple || "pessoa"}
                 {formData.participants > 1 ? "s" : ""}
               </span>
               <span className="text-gray-900">
@@ -524,11 +573,17 @@ const BookingForm: React.FC<BookingFormProps> = ({
               </span>
             </div>
             <div className="flex justify-between items-center text-sm">
-              <span className="text-gray-600">Taxas de serviço</span>
-              <span className="text-gray-600">Incluídas</span>
+              <span className="text-gray-600">
+                {t.bookingForm?.serviceFees || "Taxas de serviço"}
+              </span>
+              <span className="text-gray-600">
+                {t.bookingForm?.included || "Incluídas"}
+              </span>
             </div>
             <div className="border-t pt-2 flex justify-between items-center">
-              <span className="font-semibold text-gray-900">Total</span>
+              <span className="font-semibold text-gray-900">
+                {t.bookingForm?.total || "Total"}
+              </span>
               <span className="font-semibold text-xl text-gray-900">
                 {formatCurrency(totalAmount)}
               </span>
@@ -545,17 +600,20 @@ const BookingForm: React.FC<BookingFormProps> = ({
 
         {/* Submit Button */}
         <Button type="submit" className="w-full" size="lg" disabled={loading}>
-          {loading ? "A processar..." : "Continuar para Pagamento"}
+          {loading
+            ? t.bookingForm?.processing || "A processar..."
+            : t.bookingForm?.continueToPayment || "Continuar para Pagamento"}
         </Button>
 
         <p className="text-xs text-gray-600 text-center">
-          Ao continuar, concordas com os nossos{" "}
+          {t.bookingForm?.agreeToTerms ||
+            "Ao continuar, concordas com os nossos"}{" "}
           <a href="/terms" className="text-blue-600 hover:underline">
-            Termos de Serviço
+            {t.bookingForm?.termsOfService || "Termos de Serviço"}
           </a>{" "}
-          e{" "}
+          {t.common?.to || "e"}{" "}
           <a href="/privacy" className="text-blue-600 hover:underline">
-            Política de Privacidade
+            {t.bookingForm?.privacyPolicy || "Política de Privacidade"}
           </a>
         </p>
       </form>

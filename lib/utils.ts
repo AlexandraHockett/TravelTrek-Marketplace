@@ -31,3 +31,14 @@ export function formatDateTime(date: string | Date): string {
     minute: "2-digit",
   }).format(new Date(date));
 }
+
+export async function getTranslations(locale: string) {
+  try {
+    const translations = await import(`@/locales/${locale}.json`);
+    return translations.default;
+  } catch {
+    // Fallback to English (en.json)
+    const translations = await import(`@/locales/en.json`);
+    return translations.default;
+  }
+}

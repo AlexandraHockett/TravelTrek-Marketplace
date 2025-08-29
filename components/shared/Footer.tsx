@@ -1,33 +1,19 @@
-import React from "react";
+// File: app/components/Footer.tsx
+import { getTranslations } from "@/lib/utils";
 import Link from "next/link";
 
-// Definindo o tipo das props
 interface FooterProps {
-  params: {
-    locale: string;
-  };
+  params: { locale: string };
 }
 
-// Função para obter traduções no server-side
-async function getTranslations(locale: string) {
-  try {
-    const translations = await import(`@/locales/${locale}.json`);
-    return translations.default;
-  } catch {
-    // Fallback para inglês (en.json)
-    const translations = await import(`@/locales/en.json`);
-    return translations.default;
-  }
-}
-
-const Footer: React.FC<FooterProps> = async ({ params }) => {
+export default async function Footer({ params }: FooterProps) {
   const { locale } = params;
   const t = await getTranslations(locale);
   const currentYear = new Date().getFullYear();
 
   const footerSections = [
     {
-      title: t.footer?.explore?.title || "Explorar",
+      title: t.footer?.explore?.title || "Explore",
       links: [
         {
           href: "/customer/tours",
@@ -35,49 +21,49 @@ const Footer: React.FC<FooterProps> = async ({ params }) => {
         },
         {
           href: "/customer/destinations",
-          label: t.footer?.explore?.links?.destinations || "Destinos",
+          label: t.footer?.explore?.links?.destinations || "Destinations",
         },
         {
           href: "/customer/experiences",
-          label: t.footer?.explore?.links?.experiences || "Experiências",
+          label: t.footer?.explore?.links?.experiences || "Experiences",
         },
       ],
     },
     {
-      title: t.footer?.host?.title || "Anfitrião",
+      title: t.footer?.host?.title || "Host",
       links: [
         {
           href: "/host",
-          label: t.footer?.host?.links?.portal || "Portal Anfitrião",
+          label: t.footer?.host?.links?.portal || "Host Portal",
         },
         {
           href: "/host/earnings",
-          label: t.footer?.host?.links?.earnings || "Ganhos",
+          label: t.footer?.host?.links?.earnings || "Earnings",
         },
         {
           href: "/host/bookings",
-          label: t.footer?.host?.links?.bookings || "Reservas",
+          label: t.footer?.host?.links?.bookings || "Bookings",
         },
       ],
     },
     {
-      title: t.footer?.support?.title || "Suporte",
+      title: t.footer?.support?.title || "Support",
       links: [
         {
           href: "/help",
-          label: t.footer?.support?.links?.help || "Centro de Ajuda",
+          label: t.footer?.support?.links?.help || "Help Center",
         },
         {
           href: "/contact",
-          label: t.footer?.support?.links?.contact || "Contactar",
+          label: t.footer?.support?.links?.contact || "Contact",
         },
         {
           href: "/terms",
-          label: t.footer?.support?.links?.terms || "Termos de Uso",
+          label: t.footer?.support?.links?.terms || "Terms of Use",
         },
         {
           href: "/privacy",
-          label: t.footer?.support?.links?.privacy || "Privacidade",
+          label: t.footer?.support?.links?.privacy || "Privacy",
         },
       ],
     },
@@ -87,7 +73,6 @@ const Footer: React.FC<FooterProps> = async ({ params }) => {
     <footer className="bg-gray-900 text-gray-300">
       <div className="container mx-auto px-4 py-8 sm:py-10 lg:py-12">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
-          {/* Brand Section */}
           <div className="space-y-4 sm:space-y-6">
             <div className="flex items-center space-x-3">
               <div className="w-8 h-8 sm:w-10 sm:h-10 bg-blue-600 rounded-lg flex items-center justify-center">
@@ -101,7 +86,7 @@ const Footer: React.FC<FooterProps> = async ({ params }) => {
             </div>
             <p className="text-xs sm:text-sm lg:text-base text-gray-400 max-w-xs sm:max-w-sm">
               {t.footer?.brand?.description ||
-                "Descobre as melhores experiências de viagem e conecta-te com anfitriões locais únicos."}
+                "Discover the best travel experiences and connect with unique local hosts."}
             </p>
             <div className="flex space-x-3 sm:space-x-4">
               <Link
@@ -145,8 +130,6 @@ const Footer: React.FC<FooterProps> = async ({ params }) => {
               </Link>
             </div>
           </div>
-
-          {/* Links Sections */}
           {footerSections.map((section) => (
             <div key={section.title} className="space-y-3">
               <h3 className="text-white font-semibold text-base sm:text-lg lg:text-xl mb-3 sm:mb-4">
@@ -167,25 +150,23 @@ const Footer: React.FC<FooterProps> = async ({ params }) => {
             </div>
           ))}
         </div>
-
-        {/* Bottom Bar */}
         <div className="border-t border-gray-800 mt-6 sm:mt-8 pt-4 sm:pt-6 flex flex-col sm:flex-row justify-between items-center gap-4">
           <p className="text-xs sm:text-sm lg:text-base text-gray-400 text-center sm:text-left">
             © {currentYear} {t.footer?.brand?.copyright || "TravelTrek"}.{" "}
-            {t.footer?.brand?.rights || "Todos os direitos reservados."}
+            {t.footer?.brand?.rights || "All rights reserved."}
           </p>
           <div className="flex flex-wrap justify-center sm:justify-end space-x-3 sm:space-x-6">
             <Link
               href="/privacy"
               className="text-xs sm:text-sm lg:text-base text-gray-400 hover:text-white transition-colors"
             >
-              {t.footer?.bottom?.privacy || "Política de Privacidade"}
+              {t.footer?.bottom?.privacy || "Privacy Policy"}
             </Link>
             <Link
               href="/terms"
-              className="text-xs sm:text-sm lg:text-base text-gray-400 hover:text-white transition-colors"
+              className="text-xs sm:text-sm lg:text-base text-gray-400 hover:text-white transition- colors"
             >
-              {t.footer?.bottom?.terms || "Termos de Serviço"}
+              {t.footer?.bottom?.terms || "Terms of Service"}
             </Link>
             <Link
               href="/cookies"
@@ -198,6 +179,4 @@ const Footer: React.FC<FooterProps> = async ({ params }) => {
       </div>
     </footer>
   );
-};
-
-export default Footer;
+}

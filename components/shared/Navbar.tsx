@@ -14,14 +14,7 @@ import {
   removeLocaleFromPathname,
   type Locale,
 } from "@/lib/i18n";
-
-// Definição de tipo para as traduções
-interface Translations {
-  nav?: {
-    [key: string]: string;
-  };
-  // Adicione outras seções do dicionário, se necessário
-}
+import { Translations } from "@/types";
 
 // Função para obter traduções no client-side
 async function getTranslations(locale: string) {

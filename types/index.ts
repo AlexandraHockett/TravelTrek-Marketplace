@@ -61,3 +61,103 @@ export interface User {
   role: "customer" | "host";
   createdAt: string;
 }
+
+export interface Translations {
+  bookingForm?: {
+    requiredDate: string;
+    minDateTomorrow: string;
+    maxDateThreeMonths: string;
+    minParticipants: string;
+    maxParticipants: string;
+    maxSpecialRequestsLength: string;
+    bookButton: string;
+    processing: string;
+    perPerson: string;
+    save: string;
+    includedTaxes: string;
+    freeCancellation: string;
+    bookingError: string;
+    allergiesPlaceholder: string;
+    maxPersons: string;
+    bookForMultiple: string;
+    noChargeYet: string;
+    experienceDate: string;
+    participants: string;
+    specialRequests: string;
+    bookExperience: string;
+    originalPrice: string;
+    continueToPayment: string;
+    agreeToTerms: string;
+    termsOfService: string;
+    privacyPolicy: string;
+    total: string;
+    serviceFees: string;
+    included: string;
+  };
+  bookingList?: {
+    pending: string;
+    confirmed: string;
+    completed: string;
+    cancelled: string;
+    pendingPayment: string;
+    paid: string;
+    refunded: string;
+    viewDetails: string;
+    pay: string;
+    cancel: string;
+    rebook: string;
+    bookingNumber: string;
+    date: string;
+    participants: string;
+    totalAmount: string;
+    specialRequests: string;
+    createdAt: string;
+    next: string;
+    person: string;
+    persons: string;
+    noBookings: string;
+  };
+  common?: {
+    person: string;
+    persons: string;
+    hours: string;
+    hour: string;
+    from: string;
+    to: string;
+    loading: string;
+    error: string;
+    success: string;
+  };
+  nav?: {
+    [key: string]: string;
+  };
+  // Add other sections as needed (hero, search, benefits, etc.)
+}
+
+export interface PaymentButtonProps {
+  bookingId?: string;
+  amount: number;
+  currency?: string;
+  variant?: "default" | "primary" | "success";
+  size?: "sm" | "md" | "lg";
+  disabled?: boolean;
+  onPaymentSuccess?: (paymentData: any) => void;
+  onPaymentError?: (error: string) => void;
+  className?: string;
+  children?: React.ReactNode;
+  tourTitle?: string;
+  tourId?: string;
+  participants?: number;
+  date?: string;
+}
+
+export interface PaymentData {
+  bookingId?: string;
+  tourId?: string;
+  amount: number;
+  currency: string;
+  participants?: number;
+  date?: string;
+  successUrl?: string;
+  cancelUrl?: string;
+}
