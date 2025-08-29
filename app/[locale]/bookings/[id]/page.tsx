@@ -241,8 +241,11 @@ const PaymentSection: React.FC<PaymentSectionProps> = ({
         <div className="border-t pt-4">
           <div className="flex justify-between items-center mb-2">
             <span className="text-gray-600">
-              Subtotal ({booking.participants} pessoa
-              {booking.participants > 1 ? "s" : ""}):
+              {booking.participants}{" "}
+              {booking.participants === 1
+                ? t("common.person") || "person"
+                : t("common.persons") || "people"}
+              :
             </span>
             <span className="text-gray-900">
               {formatCurrency(booking.totalAmount)}

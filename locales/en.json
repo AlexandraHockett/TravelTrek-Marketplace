@@ -67,7 +67,10 @@
     "to": "to",
     "loading": "Loading...",
     "error": "Error",
-    "success": "Success"
+    "success": "Success",
+    "cancel": "Cancel",
+    "processing": "Processing...",
+    "total": "Total"
   },
   "footer": {
     "explore": {
@@ -164,7 +167,8 @@
     "completedLabel": "Completed",
     "cancelledLabel": "Cancelled",
     "leaveReview": "Leave Review",
-    "view": "View"
+    "view": "View",
+    "vegetarianRequest": "Vegetarian options for one participant please"
   },
   "pages": {
     "customerBookings": {
@@ -195,5 +199,40 @@
         "amountAsc": "Lowest amount first"
       }
     }
+  },
+  "bookingDetails": {
+    "bookingDetails": "Booking Details",
+    "bookingInformation": "Booking Information",
+    "hostInformation": "Host Information",
+    "importantInformation": "Important Information",
+    "actions": "Actions",
+    "paymentCompleted": "Payment Completed",
+    "paymentCompletedDescription": "Your booking is confirmed and paid.",
+    "paymentPending": "Payment Pending",
+    "paymentPendingDescription": "Complete payment to confirm your booking.",
+    "payNow": "Pay Now",
+    "serviceFees": "Service fees",
+    "included": "Included",
+    "viewTourDetails": "View Tour Details",
+    "contactHost": "Contact Host",
+    "cancelBooking": "Cancel Booking",
+    "leaveReview": "Leave Review",
+    "responseTime": "Response time",
+    "confirmedBooking": "Confirmed Booking",
+    "meetingInstructions": "Please arrive at the location 15 minutes before the experience begins.",
+    "cancellationPolicy": "Cancellation Policy",
+    "cancellationDescription": "Free cancellation up to 24 hours before the tour starts. Late cancellations may incur fees.",
+    "cancelReasonRequired": "Please provide a reason for cancellation.",
+    "cancelDescription": "Are you sure you want to cancel this booking? This action cannot be undone.",
+    "refundInfo": "Refund",
+    "willBeRefunded": "will be refunded",
+    "cancelReason": "Cancellation reason",
+    "cancelReasonPlaceholder": "Please explain the reason for cancellation...",
+    "confirmCancel": "Confirm Cancellation",
+    "cancelSuccess": "Booking cancelled successfully",
+    "cancelError": "Error cancelling booking. Please try again.",
+    "redirectingPayment": "Redirecting to payment...",
+    "paymentError": "Error processing payment. Please try again.",
+    "contactHostMessage": "Opening chat with host..."
   }
 }

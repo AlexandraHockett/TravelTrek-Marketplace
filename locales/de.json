@@ -63,11 +63,14 @@
     "persons": "Personen",
     "hours": "Stunden",
     "hour": "Stunde",
-    "from": "Ab",
+    "from": "von",
     "to": "bis",
-    "loading": "Lädt...",
+    "loading": "Laden...",
     "error": "Fehler",
-    "success": "Erfolg"
+    "success": "Erfolg",
+    "cancel": "Abbrechen",
+    "processing": "Verarbeiten...",
+    "total": "Gesamt"
   },
   "footer": {
     "explore": {
@@ -164,7 +167,8 @@
     "completedLabel": "Abgeschlossene",
     "cancelledLabel": "Stornierte",
     "leaveReview": "Bewertung Abgeben",
-    "view": "Ansehen"
+    "view": "Ansehen",
+    "vegetarianRequest": "Vegetarische Optionen für einen Teilnehmer, bitte"
   },
   "pages": {
     "customerBookings": {
@@ -195,5 +199,40 @@
         "amountAsc": "Niedrigster Betrag zuerst"
       }
     }
+  },
+  "bookingDetails": {
+    "bookingDetails": "Buchungsdetails",
+    "bookingInformation": "Buchungsinformationen",
+    "hostInformation": "Gastgeber-Informationen",
+    "importantInformation": "Wichtige Informationen",
+    "actions": "Aktionen",
+    "paymentCompleted": "Zahlung Abgeschlossen",
+    "paymentCompletedDescription": "Ihre Buchung ist bestätigt und bezahlt.",
+    "paymentPending": "Zahlung Ausstehend",
+    "paymentPendingDescription": "Schließen Sie die Zahlung ab, um Ihre Buchung zu bestätigen.",
+    "payNow": "Jetzt Bezahlen",
+    "serviceFees": "Servicegebühren",
+    "included": "Inbegriffen",
+    "viewTourDetails": "Tour-Details Ansehen",
+    "contactHost": "Gastgeber Kontaktieren",
+    "cancelBooking": "Buchung Stornieren",
+    "leaveReview": "Bewertung Hinterlassen",
+    "responseTime": "Antwortzeit",
+    "confirmedBooking": "Bestätigte Buchung",
+    "meetingInstructions": "Seien Sie 15 Minuten vor Beginn des Erlebnisses am Treffpunkt.",
+    "cancellationPolicy": "Stornierungsrichtlinie",
+    "cancellationDescription": "Kostenlose Stornierung bis zu 24 Stunden vor Tourbeginn. Späte Stornierungen können Gebühren nach sich ziehen.",
+    "cancelReasonRequired": "Bitte geben Sie einen Grund für die Stornierung an.",
+    "cancelDescription": "Sind Sie sicher, dass Sie diese Buchung stornieren möchten? Diese Aktion kann nicht rückgängig gemacht werden.",
+    "refundInfo": "Erstattung",
+    "willBeRefunded": "wird erstattet",
+    "cancelReason": "Stornierungsgrund",
+    "cancelReasonPlaceholder": "Bitte erklären Sie den Grund für die Stornierung...",
+    "confirmCancel": "Stornierung Bestätigen",
+    "cancelSuccess": "Buchung erfolgreich storniert",
+    "cancelError": "Fehler beim Stornieren der Buchung. Bitte versuchen Sie es erneut.",
+    "redirectingPayment": "Weiterleitung zur Zahlung...",
+    "paymentError": "Fehler bei der Zahlungsverarbeitung. Bitte versuchen Sie es erneut.",
+    "contactHostMessage": "Chat mit Gastgeber wird geöffnet..."
   }
 }

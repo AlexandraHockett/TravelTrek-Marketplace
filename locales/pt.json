@@ -64,10 +64,13 @@
     "hours": "horas",
     "hour": "hora",
     "from": "de",
-    "to": "até",
+    "to": "para",
     "loading": "A carregar...",
     "error": "Erro",
-    "success": "Sucesso"
+    "success": "Sucesso",
+    "cancel": "Cancelar",
+    "processing": "A processar...",
+    "total": "Total"
   },
   "footer": {
     "explore": {
@@ -164,7 +167,8 @@
     "completedLabel": "Concluídas",
     "cancelledLabel": "Canceladas",
     "leaveReview": "Deixar Avaliação",
-    "view": "Ver"
+    "view": "Ver",
+    "vegetarianRequest": "Opções vegetarianas para um participante, por favor"
   },
   "pages": {
     "customerBookings": {
@@ -195,5 +199,40 @@
         "amountAsc": "Valor mais baixo"
       }
     }
+  },
+  "bookingDetails": {
+    "bookingDetails": "Detalhes da Reserva",
+    "bookingInformation": "Informações da Reserva",
+    "hostInformation": "Informações do Anfitrião",
+    "importantInformation": "Informações Importantes",
+    "actions": "Ações",
+    "paymentCompleted": "Pagamento Concluído",
+    "paymentCompletedDescription": "A tua reserva está confirmada e paga.",
+    "paymentPending": "Pagamento Pendente",
+    "paymentPendingDescription": "Complete o pagamento para confirmar a sua reserva.",
+    "payNow": "Pagar Agora",
+    "serviceFees": "Taxas de serviço",
+    "included": "Incluídas",
+    "viewTourDetails": "Ver Detalhes do Tour",
+    "contactHost": "Contactar Anfitrião",
+    "cancelBooking": "Cancelar Reserva",
+    "leaveReview": "Deixar Avaliação",
+    "responseTime": "Tempo de resposta",
+    "confirmedBooking": "Reserva Confirmada",
+    "meetingInstructions": "Apresente-se no local 15 minutos antes do início da experiência.",
+    "cancellationPolicy": "Política de Cancelamento",
+    "cancellationDescription": "Cancelamento gratuito até 24 horas antes do início do tour. Cancelamentos tardios podem incorrer em taxas.",
+    "cancelReasonRequired": "Por favor, indica o motivo do cancelamento.",
+    "cancelDescription": "Tens a certeza que queres cancelar esta reserva? Esta ação não pode ser desfeita.",
+    "refundInfo": "Reembolso",
+    "willBeRefunded": "será reembolsado",
+    "cancelReason": "Motivo do cancelamento",
+    "cancelReasonPlaceholder": "Por favor, explica o motivo do cancelamento...",
+    "confirmCancel": "Confirmar Cancelamento",
+    "cancelSuccess": "Reserva cancelada com sucesso",
+    "cancelError": "Erro ao cancelar reserva. Tenta novamente.",
+    "redirectingPayment": "A redirecionar para o pagamento...",
+    "paymentError": "Erro ao processar pagamento. Tenta novamente.",
+    "contactHostMessage": "A abrir chat com o anfitrião..."
   }
 }

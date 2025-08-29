@@ -332,7 +332,7 @@ const BookingCard: React.FC<BookingCardProps> = ({
                   <strong>
                     {t.bookingList?.specialRequests || "Pedidos especiais"}:
                   </strong>{" "}
-                  {booking.specialRequests}
+                  {t.bookingList?.vegetarianRequest}
                 </p>
               </div>
             )}

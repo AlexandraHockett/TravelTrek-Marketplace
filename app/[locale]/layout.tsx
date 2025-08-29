@@ -15,23 +15,27 @@ export const metadata: Metadata = {
     default: "TravelTrek - Discover Unique Experiences",
     template: "%s | TravelTrek",
   },
-  description: "Connect with local hosts and discover authentic travel experiences.",
+  description:
+    "Connect with local hosts and discover authentic travel experiences.",
 };
 
-// Definindo o tipo de params manualmente
 interface LayoutParams {
   locale: string;
 }
 
-export default function RootLayout({
+// Make the layout async
+export default async function RootLayout({
   children,
   params,
 }: {
   children: React.ReactNode;
-  params: LayoutParams; // Tipo explícito para params
+  params: Promise<LayoutParams>;
 }) {
+  // Await the params promise
+  const { locale } = await params;
+
   return (
-    <html lang={params.locale} className={inter.variable}>
+    <html lang={locale} className={inter.variable}>
       <head>
         <link rel="icon" href="/favicon.ico" sizes="any" />
         <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
@@ -42,7 +46,8 @@ export default function RootLayout({
       <body className="min-h-screen flex flex-col bg-gray-50 antialiased font-sans">
         <Navbar />
         <main className="flex-1 relative">{children}</main>
-        <Footer params={params} />
+        {/* Pass resolved locale to Footer */}
+        <Footer params={{ locale }} />
       </body>
     </html>
   );

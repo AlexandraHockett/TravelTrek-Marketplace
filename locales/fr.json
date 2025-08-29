@@ -63,11 +63,14 @@
     "persons": "personnes",
     "hours": "heures",
     "hour": "heure",
-    "from": "À partir de",
+    "from": "de",
     "to": "à",
     "loading": "Chargement...",
     "error": "Erreur",
-    "success": "Succès"
+    "success": "Succès",
+    "cancel": "Annuler",
+    "processing": "En cours...",
+    "total": "Total"
   },
   "footer": {
     "explore": {
@@ -164,7 +167,8 @@
     "completedLabel": "Complétées",
     "cancelledLabel": "Annulées",
     "leaveReview": "Laisser un Avis",
-    "view": "Voir"
+    "view": "Voir",
+    "vegetarianRequest": "Options végétariennes pour un participant, s'il vous plaît"
   },
   "pages": {
     "customerBookings": {
@@ -195,5 +199,40 @@
         "amountAsc": "Montant le plus bas d'abord"
       }
     }
+  },
+  "bookingDetails": {
+    "bookingDetails": "Détails de la Réservation",
+    "bookingInformation": "Informations de Réservation",
+    "hostInformation": "Informations de l'Hôte",
+    "importantInformation": "Informations Importantes",
+    "actions": "Actions",
+    "paymentCompleted": "Paiement Terminé",
+    "paymentCompletedDescription": "Votre réservation est confirmée et payée.",
+    "paymentPending": "Paiement en Attente",
+    "paymentPendingDescription": "Complétez le paiement pour confirmer votre réservation.",
+    "payNow": "Payer Maintenant",
+    "serviceFees": "Frais de service",
+    "included": "Inclus",
+    "viewTourDetails": "Voir les Détails du Tour",
+    "contactHost": "Contacter l'Hôte",
+    "cancelBooking": "Annuler la Réservation",
+    "leaveReview": "Laisser un Avis",
+    "responseTime": "Temps de réponse",
+    "confirmedBooking": "Réservation Confirmée",
+    "meetingInstructions": "Présentez-vous sur place 15 minutes avant le début de l'expérience.",
+    "cancellationPolicy": "Politique d'Annulation",
+    "cancellationDescription": "Annulation gratuite jusqu'à 24 heures avant le début du tour. Les annulations tardives peuvent entraîner des frais.",
+    "cancelReasonRequired": "Veuillez indiquer la raison de l'annulation.",
+    "cancelDescription": "Êtes-vous sûr de vouloir annuler cette réservation ? Cette action ne peut pas être annulée.",
+    "refundInfo": "Remboursement",
+    "willBeRefunded": "sera remboursé",
+    "cancelReason": "Raison de l'annulation",
+    "cancelReasonPlaceholder": "Veuillez expliquer la raison de l'annulation...",
+    "confirmCancel": "Confirmer l'Annulation",
+    "cancelSuccess": "Réservation annulée avec succès",
+    "cancelError": "Erreur lors de l'annulation de la réservation. Veuillez réessayer.",
+    "redirectingPayment": "Redirection vers le paiement...",
+    "paymentError": "Erreur lors du traitement du paiement. Veuillez réessayer.",
+    "contactHostMessage": "Ouverture du chat avec l'hôte..."
   }
 }

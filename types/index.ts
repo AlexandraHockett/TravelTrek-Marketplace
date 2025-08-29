@@ -117,6 +117,7 @@ export interface Translations {
     persons: string;
     noBookings: string;
     view: string;
+    vegetarianRequest: string;
   };
   common?: {
     person: string;
@@ -128,6 +129,9 @@ export interface Translations {
     loading: string;
     error: string;
     success: string;
+    cancel: string;
+    processing: string;
+    total: string;
   };
   nav?: {
     [key: string]: string;
@@ -208,6 +212,41 @@ export interface Translations {
       subtitle: string;
       // ... outros campos
     };
+  };
+  bookingDetails?: {
+    bookingDetails: string;
+    bookingInformation: string;
+    hostInformation: string;
+    importantInformation: string;
+    actions: string;
+    paymentCompleted: string;
+    paymentCompletedDescription: string;
+    paymentPending: string;
+    paymentPendingDescription: string;
+    payNow: string;
+    serviceFees: string;
+    included: string;
+    viewTourDetails: string;
+    contactHost: string;
+    cancelBooking: string;
+    leaveReview: string;
+    responseTime: string;
+    confirmedBooking: string;
+    meetingInstructions: string;
+    cancellationPolicy: string;
+    cancellationDescription: string;
+    cancelReasonRequired: string;
+    cancelDescription: string;
+    refundInfo: string;
+    willBeRefunded: string;
+    cancelReason: string;
+    cancelReasonPlaceholder: string;
+    confirmCancel: string;
+    cancelSuccess: string;
+    cancelError: string;
+    redirectingPayment: string;
+    paymentError: string;
+    contactHostMessage: string;
   };
 }
 

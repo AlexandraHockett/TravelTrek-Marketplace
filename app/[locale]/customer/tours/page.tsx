@@ -414,7 +414,7 @@ const TourCard: React.FC<TourCardProps> = ({ tour }) => {
               </p>
             </div>
 
-            <Button className="group-hover:bg-blue-600 transition-colors">
+            <Button className="hover:bg-blue-600 hover:text-white transition-colors text-blue-500">
               Ver Detalhes
             </Button>
           </div>
