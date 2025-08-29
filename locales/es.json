@@ -158,6 +158,42 @@
     "next": "Próximo",
     "person": "persona",
     "persons": "personas",
-    "noBookings": "Aún no tienes reservas."
+    "noBookings": "Aún no tienes reservas.",
+    "pendingLabel": "Pendientes",
+    "confirmedLabel": "Confirmadas",
+    "completedLabel": "Completadas",
+    "cancelledLabel": "Canceladas",
+    "leaveReview": "Dejar Reseña",
+    "view": "Ver"
+  },
+  "pages": {
+    "customerBookings": {
+      "title": "Mis Reservas",
+      "description": "Gestiona todas tus reservas de experiencias de viaje",
+      "subtitle": "Gestiona tus reservas de tours y experiencias",
+      "browseTours": "Explorar Tours",
+      "noBookingsDescription": "Descubre experiencias únicas en Portugal y haz tu primera reserva!",
+      "upcomingExperiences": "Experiencias Próximas",
+      "noResultsTitle": "No se encontraron reservas",
+      "noResultsDescription": "No hay reservas con el estado \"{{status}}\".",
+      "allBookingsButton": "Ver Todas las Reservas",
+      "stats": {
+        "totalBookings": "Total de Reservas",
+        "upcoming": "Próximas",
+        "totalSpent": "Gasto Total"
+      },
+      "filters": {
+        "all": "Todas",
+        "bookingStatusLabel": "Estado de la Reserva",
+        "sortByLabel": "Ordenar por"
+      },
+      "sort": {
+        "dateDesc": "Fecha más reciente primero",
+        "dateAsc": "Fecha más antigua primero",
+        "createdDesc": "Reserva más reciente primero",
+        "amountDesc": "Cantidad más alta primero",
+        "amountAsc": "Cantidad más baja primero"
+      }
+    }
   }
 }

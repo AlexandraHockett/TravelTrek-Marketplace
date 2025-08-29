@@ -158,6 +158,42 @@
     "next": "Upcoming",
     "person": "person",
     "persons": "people",
-    "noBookings": "You have no bookings yet."
+    "noBookings": "You have no bookings yet.",
+    "pendingLabel": "Pending",
+    "confirmedLabel": "Confirmed",
+    "completedLabel": "Completed",
+    "cancelledLabel": "Cancelled",
+    "leaveReview": "Leave Review",
+    "view": "View"
+  },
+  "pages": {
+    "customerBookings": {
+      "title": "My Bookings",
+      "description": "Manage all your travel experience bookings",
+      "subtitle": "Manage your tour and experience bookings",
+      "browseTours": "Explore Tours",
+      "noBookingsDescription": "Discover unique experiences in Portugal and make your first booking!",
+      "upcomingExperiences": "Upcoming Experiences",
+      "noResultsTitle": "No bookings found",
+      "noResultsDescription": "There are no bookings with status \"{{status}}\".",
+      "allBookingsButton": "View All Bookings",
+      "stats": {
+        "totalBookings": "Total Bookings",
+        "upcoming": "Upcoming",
+        "totalSpent": "Total Spent"
+      },
+      "filters": {
+        "all": "All",
+        "bookingStatusLabel": "Booking Status",
+        "sortByLabel": "Sort By"
+      },
+      "sort": {
+        "dateDesc": "Newest date first",
+        "dateAsc": "Oldest date first",
+        "createdDesc": "Newest booking first",
+        "amountDesc": "Highest amount first",
+        "amountAsc": "Lowest amount first"
+      }
+    }
   }
 }

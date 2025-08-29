@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { cn } from "@/lib/utils";
+import { cn, getTranslations } from "@/lib/utils";
 import Button from "@/components/ui/Button";
 import {
   languages,
@@ -16,17 +16,7 @@ import {
 } from "@/lib/i18n";
 import { Translations } from "@/types";
 
-// Função para obter traduções no client-side
-async function getTranslations(locale: string) {
-  try {
-    const translations = await import(`@/locales/${locale}.json`);
-    return translations.default as Translations;
-  } catch {
-    // Fallback para inglês (en.json)
-    const translations = await import(`@/locales/en.json`);
-    return translations.default as Translations;
-  }
-}
+
 
 const Navbar: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);

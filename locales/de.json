@@ -8,7 +8,7 @@
   },
   "hero": {
     "title": "Entdecke das ",
-    "highlight":"Außergewöhnliche",
+    "highlight": "Außergewöhnliche",
     "subtitle": "Verbinde dich mit lokalen Gastgebern und entdecke authentische Erfahrungen. Von Stadtspaziergängen bis zu Naturexpeditionen.",
     "exploreToursButton": "Touren Erkunden",
     "becomeHostButton": "Gastgeber Werden"
@@ -158,6 +158,42 @@
     "next": "Bevorstehend",
     "person": "Person",
     "persons": "Personen",
-    "noBookings": "Sie haben noch keine Buchungen."
+    "noBookings": "Sie haben noch keine Buchungen.",
+    "pendingLabel": "Ausstehend",
+    "confirmedLabel": "Bestätigte",
+    "completedLabel": "Abgeschlossene",
+    "cancelledLabel": "Stornierte",
+    "leaveReview": "Bewertung Abgeben",
+    "view": "Ansehen"
+  },
+  "pages": {
+    "customerBookings": {
+      "title": "Meine Buchungen",
+      "description": "Verwalten Sie alle Ihre Reiseerlebnisbuchungen",
+      "subtitle": "Verwalten Sie Ihre Tour- und Erlebnisbuchungen",
+      "browseTours": "Touren Erkunden",
+      "noBookingsDescription": "Entdecken Sie einzigartige Erlebnisse in Portugal und machen Sie Ihre erste Buchung!",
+      "upcomingExperiences": "Bevorstehende Erlebnisse",
+      "noResultsTitle": "Keine Buchungen gefunden",
+      "noResultsDescription": "Es gibt keine Buchungen mit dem Status \"{{status}}\".",
+      "allBookingsButton": "Alle Buchungen Anzeigen",
+      "stats": {
+        "totalBookings": "Gesamtbuchungen",
+        "upcoming": "Bevorstehend",
+        "totalSpent": "Gesamtausgaben"
+      },
+      "filters": {
+        "all": "Alle",
+        "bookingStatusLabel": "Buchungsstatus",
+        "sortByLabel": "Sortieren nach"
+      },
+      "sort": {
+        "dateDesc": "Neuestes Datum zuerst",
+        "dateAsc": "Ältestes Datum zuerst",
+        "createdDesc": "Neueste Buchung zuerst",
+        "amountDesc": "Höchster Betrag zuerst",
+        "amountAsc": "Niedrigster Betrag zuerst"
+      }
+    }
   }
 }

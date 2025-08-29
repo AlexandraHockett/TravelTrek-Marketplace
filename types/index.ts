@@ -116,6 +116,7 @@ export interface Translations {
     person: string;
     persons: string;
     noBookings: string;
+    view: string;
   };
   common?: {
     person: string;
@@ -131,7 +132,83 @@ export interface Translations {
   nav?: {
     [key: string]: string;
   };
-  // Add other sections as needed (hero, search, benefits, etc.)
+  footer?: {
+    brand?: {
+      description: string;
+    };
+    explore?: {
+      title: string;
+      links?: {
+        tours: string;
+        destinations: string;
+        experiences: string;
+      };
+    };
+    host?: {
+      title: string;
+      links?: {
+        portal: string;
+        earnings: string;
+        bookings: string;
+      };
+    };
+    support?: {
+      title: string;
+      links?: {
+        help: string;
+        contact: string;
+        terms: string;
+        privacy: string;
+      };
+    };
+  };
+  // ESTA É A PROPRIEDADE QUE ESTAVA EM FALTA - ADICIONAR PAGES
+  pages?: {
+    customerBookings?: {
+      title: string;
+      subtitle: string;
+      description: string;
+      totalBookings: string;
+      noBookingsDescription: string;
+      browseTours: string;
+      confirmCancel: string;
+      cancelSuccess: string;
+      cancelError: string;
+      redirectingPayment: string;
+      paymentError: string;
+      searchPlaceholder: string;
+      noResults: string;
+      clearFilters: string;
+      filters?: {
+        all: string;
+        bookingStatusLabel: string;
+        sortByLabel: string;
+      };
+      sort?: {
+        dateDesc: string;
+        dateAsc: string;
+        amountDesc: string;
+        amountAsc: string;
+        status: string;
+      };
+      stats?: {
+        totalBookings: string;
+        upcoming: string;
+        totalSpent: string;
+      };
+    };
+    // Adicionar outras páginas conforme necessário
+    customerTours?: {
+      title: string;
+      subtitle: string;
+      // ... outros campos
+    };
+    hostDashboard?: {
+      title: string;
+      subtitle: string;
+      // ... outros campos
+    };
+  };
 }
 
 export interface PaymentButtonProps {
