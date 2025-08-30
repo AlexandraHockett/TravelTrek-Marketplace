@@ -1,36 +1,43 @@
 // File: components/customer/TourGrid.tsx
-// Location: Create this file in components/customer/TourGrid.tsx
+// Location: Substituir o ficheiro existente
+
 "use client";
 
 import React, { useState, useMemo } from "react";
-import { Tour } from "@/types";
+import { Tour, Translations } from "@/types";
 import TourCard from "./TourCard";
 import Button from "@/components/ui/Button";
-import LoadingSpinner from "@/components/ui/LoadingSpinner";
-import { cn } from "@/lib/utils";
+import { Search, Filter, X, SlidersHorizontal, Grid, List } from "lucide-react";
 
 interface TourGridProps {
   tours: Tour[];
+  locale: string;
+  translations: Translations;
   loading?: boolean;
   className?: string;
 }
 
 interface FilterOptions {
+  searchQuery: string;
   priceRange: [number, number];
   difficulty: string;
   duration: string;
   rating: number;
   location: string;
-  sortBy: "price" | "rating" | "duration" | "newest";
+  sortBy: "price" | "rating" | "duration" | "newest" | "popular";
 }
 
 const TourGrid: React.FC<TourGridProps> = ({
   tours,
+  locale,
+  translations: t,
   loading = false,
   className,
 }) => {
+  const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [showFilters, setShowFilters] = useState(false);
   const [filters, setFilters] = useState<FilterOptions>({
+    searchQuery: "",
     priceRange: [0, 1000],
     difficulty: "all",
     duration: "all",
@@ -43,9 +50,11 @@ const TourGrid: React.FC<TourGridProps> = ({
   const filterOptions = useMemo(() => {
     const locations = [...new Set(tours.map((tour) => tour.location))];
     const maxPrice = Math.max(...tours.map((tour) => tour.price));
+    const difficulties = [...new Set(tours.map((tour) => tour.difficulty))];
 
     return {
       locations,
+      difficulties,
       maxPrice: Math.ceil(maxPrice / 50) * 50, // Round to nearest 50
     };
   }, [tours]);
@@ -53,6 +62,16 @@ const TourGrid: React.FC<TourGridProps> = ({
   // Filter and sort tours
   const filteredTours = useMemo(() => {
     let filtered = tours.filter((tour) => {
+      // Search query filter
+      if (filters.searchQuery) {
+        const query = filters.searchQuery.toLowerCase();
+        const searchableText =
+          `${tour.title} ${tour.description} ${tour.location} ${tour.tags?.join(" ") || ""}`.toLowerCase();
+        if (!searchableText.includes(query)) {
+          return false;
+        }
+      }
+
       // Price range filter
       if (
         tour.price < filters.priceRange[0] ||
@@ -71,7 +90,6 @@ const TourGrid: React.FC<TourGridProps> = ({
 
       // Duration filter
       if (filters.duration !== "all") {
-        const duration = parseInt(filters.duration);
         if (filters.duration === "short" && tour.duration > 4) return false;
         if (
           filters.duration === "medium" &&
@@ -103,6 +121,8 @@ const TourGrid: React.FC<TourGridProps> = ({
           return b.rating - a.rating;
         case "duration":
           return a.duration - b.duration;
+        case "popular":
+          return b.reviewCount - a.reviewCount;
         case "newest":
         default:
           return (
@@ -116,7 +136,8 @@ const TourGrid: React.FC<TourGridProps> = ({
 
   const resetFilters = () => {
     setFilters({
-      priceRange: [0, filterOptions.maxPrice],
+      searchQuery: "",
+      priceRange: [0, 1000],
       difficulty: "all",
       duration: "all",
       rating: 0,
@@ -125,176 +146,163 @@ const TourGrid: React.FC<TourGridProps> = ({
     });
   };
 
+  const activeFiltersCount = useMemo(() => {
+    let count = 0;
+    if (filters.searchQuery) count++;
+    if (filters.difficulty !== "all") count++;
+    if (filters.duration !== "all") count++;
+    if (filters.rating > 0) count++;
+    if (filters.location !== "all") count++;
+    if (filters.priceRange[0] > 0 || filters.priceRange[1] < 1000) count++;
+    return count;
+  }, [filters]);
+
   if (loading) {
     return (
-      <div className="flex justify-center py-12">
-        <LoadingSpinner size="lg" />
+      <div className="space-y-6">
+        {/* Loading skeleton */}
+        <div className="flex justify-between items-center">
+          <div className="h-8 bg-gray-200 rounded w-48 animate-pulse"></div>
+          <div className="h-10 bg-gray-200 rounded w-32 animate-pulse"></div>
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          {[...Array(8)].map((_, i) => (
+            <div
+              key={i}
+              className="bg-gray-200 rounded-xl h-96 animate-pulse"
+            ></div>
+          ))}
+        </div>
       </div>
     );
   }
 
   return (
-    <div className={cn("space-y-6", className)}>
-      {/* Header with Filters Toggle */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div>
-          <h2 className="text-2xl font-bold text-gray-900">
-            {filteredTours.length} Tour{filteredTours.length !== 1 ? "s" : ""}
-          </h2>
-          <p className="text-gray-600">Descobre experiências incríveis</p>
+    <div className={`space-y-6 ${className}`}>
+      {/* Header with search and filters */}
+      <div className="flex flex-col lg:flex-row gap-4 lg:items-center lg:justify-between">
+        {/* Search Bar */}
+        <div className="relative flex-1 max-w-md">
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+          <input
+            type="text"
+            placeholder={t.tours?.searchPlaceholder || "Pesquisar tours..."}
+            value={filters.searchQuery}
+            onChange={(e) =>
+              setFilters({ ...filters, searchQuery: e.target.value })
+            }
+            className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          />
+          {filters.searchQuery && (
+            <button
+              onClick={() => setFilters({ ...filters, searchQuery: "" })}
+              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+            >
+              <X className="w-5 h-5" />
+            </button>
+          )}
         </div>
 
+        {/* Controls */}
         <div className="flex items-center gap-3">
-          <Button
-            variant="default"
-            onClick={() => setShowFilters(!showFilters)}
-            leftIcon={
-              <svg
-                className="h-4 w-4"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"
-                />
-              </svg>
-            }
-          >
-            Filtros
-          </Button>
+          {/* Results count */}
+          <span className="text-sm text-gray-600 whitespace-nowrap">
+            {filteredTours.length}{" "}
+            {filteredTours.length === 1
+              ? t.tours?.result
+              : t.tours?.results || "resultados"}
+          </span>
 
-          <select
-            value={filters.sortBy}
-            onChange={(e) =>
-              setFilters((prev) => ({ ...prev, sortBy: e.target.value as any }))
-            }
-            className="text-sm min-w-0"
+          {/* View toggle */}
+          <div className="flex bg-gray-100 rounded-lg p-1">
+            <button
+              onClick={() => setViewMode("grid")}
+              className={`p-2 rounded transition-colors ${
+                viewMode === "grid"
+                  ? "bg-white shadow-sm text-gray-900"
+                  : "text-gray-500 hover:text-gray-700"
+              }`}
+              aria-label="Vista em grelha"
+            >
+              <Grid className="w-4 h-4" />
+            </button>
+            <button
+              onClick={() => setViewMode("list")}
+              className={`p-2 rounded transition-colors ${
+                viewMode === "list"
+                  ? "bg-white shadow-sm text-gray-900"
+                  : "text-gray-500 hover:text-gray-700"
+              }`}
+              aria-label="Vista em lista"
+            >
+              <List className="w-4 h-4" />
+            </button>
+          </div>
+
+          {/* Filter toggle */}
+          <Button
+            variant="outline"
+            onClick={() => setShowFilters(!showFilters)}
+            className="flex items-center gap-2"
           >
-            <option value="newest">Mais Recentes</option>
-            <option value="price">Preço (Menor)</option>
-            <option value="rating">Melhor Avaliação</option>
-            <option value="duration">Duração</option>
-          </select>
+            <SlidersHorizontal className="w-4 h-4" />
+            {t.tours?.filters || "Filtros"}
+            {activeFiltersCount > 0 && (
+              <span className="bg-blue-600 text-white text-xs rounded-full px-2 py-1 ml-1">
+                {activeFiltersCount}
+              </span>
+            )}
+          </Button>
         </div>
       </div>
 
       {/* Filters Panel */}
       {showFilters && (
-        <div className="bg-gray-50 p-6 rounded-lg space-y-6">
-          <div className="flex items-center justify-between">
-            <h3 className="font-semibold text-gray-900">Filtrar Tours</h3>
-            <Button variant="ghost" size="sm" onClick={resetFilters}>
-              Limpar Filtros
-            </Button>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
+        <div className="bg-gray-50 border border-gray-200 rounded-xl p-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {/* Price Range */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Preço (€{filters.priceRange[0]} - €{filters.priceRange[1]})
+                {t.tours?.priceRange || "Preço"}
               </label>
               <div className="space-y-2">
                 <input
                   type="range"
-                  min="0"
+                  min={0}
                   max={filterOptions.maxPrice}
-                  step="10"
+                  step={10}
                   value={filters.priceRange[1]}
                   onChange={(e) =>
-                    setFilters((prev) => ({
-                      ...prev,
+                    setFilters({
+                      ...filters,
                       priceRange: [
-                        prev.priceRange[0],
+                        filters.priceRange[0],
                         parseInt(e.target.value),
                       ],
-                    }))
+                    })
                   }
                   className="w-full"
                 />
+                <div className="flex justify-between text-sm text-gray-600">
+                  <span>€0</span>
+                  <span>€{filters.priceRange[1]}</span>
+                </div>
               </div>
-            </div>
-
-            {/* Difficulty */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Dificuldade
-              </label>
-              <select
-                value={filters.difficulty}
-                onChange={(e) =>
-                  setFilters((prev) => ({
-                    ...prev,
-                    difficulty: e.target.value,
-                  }))
-                }
-                className="w-full text-sm"
-              >
-                <option value="all">Todas</option>
-                <option value="Easy">Fácil</option>
-                <option value="Moderate">Moderada</option>
-                <option value="Challenging">Desafiante</option>
-              </select>
-            </div>
-
-            {/* Duration */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Duração
-              </label>
-              <select
-                value={filters.duration}
-                onChange={(e) =>
-                  setFilters((prev) => ({ ...prev, duration: e.target.value }))
-                }
-                className="w-full text-sm"
-              >
-                <option value="all">Qualquer</option>
-                <option value="short">Até 4h</option>
-                <option value="medium">4-8h</option>
-                <option value="long">8h+</option>
-              </select>
-            </div>
-
-            {/* Rating */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Avaliação Mínima
-              </label>
-              <select
-                value={filters.rating}
-                onChange={(e) =>
-                  setFilters((prev) => ({
-                    ...prev,
-                    rating: parseFloat(e.target.value),
-                  }))
-                }
-                className="w-full text-sm"
-              >
-                <option value="0">Qualquer</option>
-                <option value="3">3+ Estrelas</option>
-                <option value="4">4+ Estrelas</option>
-                <option value="4.5">4.5+ Estrelas</option>
-              </select>
             </div>
 
             {/* Location */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Localização
+                {t.tours?.location || "Localização"}
               </label>
               <select
                 value={filters.location}
                 onChange={(e) =>
-                  setFilters((prev) => ({ ...prev, location: e.target.value }))
+                  setFilters({ ...filters, location: e.target.value })
                 }
-                className="w-full text-sm"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               >
-                <option value="all">Todas</option>
+                <option value="all">{t.tours?.allLocations || "Todas"}</option>
                 {filterOptions.locations.map((location) => (
                   <option key={location} value={location}>
                     {location}
@@ -302,40 +310,108 @@ const TourGrid: React.FC<TourGridProps> = ({
                 ))}
               </select>
             </div>
+
+            {/* Difficulty */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                {t.tours?.difficulty?.label || "Dificuldade"}
+              </label>
+              <select
+                value={filters.difficulty}
+                onChange={(e) =>
+                  setFilters({ ...filters, difficulty: e.target.value })
+                }
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              >
+                <option value="all">
+                  {t.tours?.allDifficulties || "Todas"}
+                </option>
+                {filterOptions.difficulties.map((difficulty) => (
+                  <option key={difficulty} value={difficulty}>
+                    {t.tours?.difficulty?.[difficulty.toLowerCase()] ||
+                      difficulty}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            {/* Sort */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                {t.tours?.sortBy || "Ordenar por"}
+              </label>
+              <select
+                value={filters.sortBy}
+                onChange={(e) =>
+                  setFilters({
+                    ...filters,
+                    sortBy: e.target.value as FilterOptions["sortBy"],
+                  })
+                }
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              >
+                <option value="newest">
+                  {t.tours?.sort?.newest || "Mais recentes"}
+                </option>
+                <option value="popular">
+                  {t.tours?.sort?.popular || "Mais populares"}
+                </option>
+                <option value="price">
+                  {t.tours?.sort?.priceAsc || "Preço crescente"}
+                </option>
+                <option value="rating">
+                  {t.tours?.sort?.rating || "Melhor avaliados"}
+                </option>
+                <option value="duration">
+                  {t.tours?.sort?.duration || "Duração"}
+                </option>
+              </select>
+            </div>
           </div>
+
+          {/* Clear filters */}
+          {activeFiltersCount > 0 && (
+            <div className="flex justify-end mt-4">
+              <Button variant="outline" onClick={resetFilters}>
+                {t.tours?.clearFilters || "Limpar Filtros"}
+              </Button>
+            </div>
+          )}
         </div>
       )}
 
-      {/* Tours Grid */}
+      {/* Results */}
       {filteredTours.length === 0 ? (
         <div className="text-center py-12">
-          <svg
-            className="h-16 w-16 text-gray-400 mx-auto mb-4"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M9.172 16.172a4 4 0 015.656 0M9 12h6m-6-4h6m2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-            />
-          </svg>
+          <div className="text-gray-400 mb-4">
+            <Search className="w-12 h-12 mx-auto" />
+          </div>
           <h3 className="text-lg font-medium text-gray-900 mb-2">
-            Sem resultados
+            {t.tours?.noResults || "Nenhum resultado encontrado"}
           </h3>
           <p className="text-gray-600 mb-4">
-            Não encontrámos tours com estes critérios. Tenta ajustar os filtros.
+            {t.tours?.noResultsDescription || "Tenta ajustar os filtros."}
           </p>
-          <Button variant="default" onClick={resetFilters}>
-            Limpar Filtros
+          <Button variant="outline" onClick={resetFilters}>
+            {t.tours?.clearFilters || "Limpar Filtros"}
           </Button>
         </div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        <div
+          className={`grid gap-6 ${
+            viewMode === "grid"
+              ? "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
+              : "grid-cols-1"
+          }`}
+        >
           {filteredTours.map((tour) => (
-            <TourCard key={tour.id} tour={tour} />
+            <TourCard
+              key={tour.id}
+              tour={tour}
+              locale={locale}
+              translations={t}
+              compact={viewMode === "list"}
+            />
           ))}
         </div>
       )}

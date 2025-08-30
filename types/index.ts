@@ -38,19 +38,31 @@ export interface Booking {
   id: string;
   tourId: string;
   tourTitle: string;
+  tourDescription: string; // ✅ Added missing property
   tourImage: string;
   customerId: string;
   customerName: string;
   customerEmail: string;
   hostId: string;
+  hostName: string; // ✅ Added missing property
+  hostAvatar?: string; // ✅ Added missing property
+  hostEmail: string; // ✅ Added missing property
+  hostPhone: string; // ✅ Added missing property
+  hostVerified: boolean; // ✅ Added missing property
+  hostResponseTime: string; // ✅ Added missing property
   date: string;
+  time: string; // ✅ Added missing property
   participants: number;
+  basePrice: number; // ✅ Added missing property
   totalAmount: number;
   status: "pending" | "confirmed" | "completed" | "cancelled";
   paymentStatus: "pending" | "paid" | "refunded";
   specialRequests?: string;
+  meetingPoint: string; // ✅ Added missing property
+  cancellationPolicy: string; // ✅ Added missing property
   createdAt: string;
   updatedAt: string;
+  serviceFees: number;
 }
 
 export interface User {
@@ -118,6 +130,11 @@ export interface Translations {
     noBookings: string;
     view: string;
     vegetarianRequest: string;
+    pendingLabel: string;
+    confirmedLabel: string;
+    completedLabel: string;
+    cancelledLabel: string;
+    leaveReview: string;
   };
   common?: {
     person: string;
@@ -182,6 +199,10 @@ export interface Translations {
       searchPlaceholder: string;
       noResults: string;
       clearFilters: string;
+      upcomingExperiences: string;
+      noResultsTitle: string;
+      noResultsDescription: string;
+      allBookingsButton: string;
       filters?: {
         all: string;
         bookingStatusLabel: string;
@@ -193,6 +214,7 @@ export interface Translations {
         amountDesc: string;
         amountAsc: string;
         status: string;
+        createdDesc: string;
       };
       stats?: {
         totalBookings: string;
@@ -203,10 +225,28 @@ export interface Translations {
     customerTours?: {
       title: string;
       subtitle: string;
+      description: string;
     };
     hostDashboard?: {
       title: string;
       subtitle: string;
+    };
+    bookingDetail?: {
+      title: string;
+      description: string;
+    };
+    notFound?: {
+      title: string;
+      description: string;
+    };
+    home?: {
+      title: string;
+      description: string;
+      hero: {
+        title: string;
+        subtitle: string;
+        cta: string;
+      };
     };
     status?: {
       title: string;
@@ -303,6 +343,7 @@ export interface Translations {
     serviceFees: string;
     included: string;
     viewTourDetails: string;
+    viewTour: string;
     contactHost: string;
     cancelBooking: string;
     leaveReview: string;
@@ -323,6 +364,85 @@ export interface Translations {
     redirectingPayment: string;
     paymentError: string;
     contactHostMessage: string;
+    partialRefund: string;
+    noRefund: string;
+    paymentInstructions: string;
+    pendingMessage: string;
+    confirmedMessage: string;
+    completedMessage: string;
+    cancelledMessage: string;
+    time: string;
+    meetingPoint: string;
+    needHelp: string;
+    supportMessage: string;
+    contactSupport: string;
+    tourDescription?: {
+      [key: string]: string;
+    };
+    specialRequests?: {
+      [key: string]: string;
+    };
+    meetingPointDetails?: {
+      [key: string]: string;
+    };
+    cancellationPolicyDetails?: {
+      [key: string]: string;
+    };
+  };
+  tours?: {
+    searchPlaceholder: string;
+    result: string;
+    results: string;
+    filters: string;
+    clearFilters: string;
+    noResults: string;
+    noResultsDescription: string;
+    perPerson: string;
+    upTo: string;
+    viewDetails: string;
+    addToWishlist: string;
+    removeFromWishlist: string;
+    availableTours: string;
+    averageRating: string;
+    totalReviews: string;
+    destinations: string;
+    popularCategories: string;
+    priceRange: string;
+    location: string;
+    allLocations: string;
+    allDifficulties: string;
+    sortBy: string;
+    difficulty?: {
+      label: string;
+      easy: string;
+      moderate: string;
+      challenging: string;
+      [key: string]: string; // Added index signature to allow dynamic access
+    };
+    sort?: {
+      newest: string;
+      popular: string;
+      priceAsc: string;
+      priceDesc: string;
+      rating: string;
+      duration: string;
+    };
+    categories?: {
+      food: string;
+      culture: string;
+      nature: string;
+      adventure: string;
+      history: string;
+      beaches: string;
+      wine: string;
+      walking: string;
+      family: string;
+    };
+    hostCta?: {
+      title: string;
+      description: string;
+      button: string;
+    };
   };
 }
 
@@ -352,4 +472,21 @@ export interface PaymentData {
   date?: string;
   successUrl?: string;
   cancelUrl?: string;
+}
+
+export interface PaymentButtonProps {
+  bookingId?: string;
+  amount: number;
+  currency?: string;
+  variant?: "default" | "primary" | "success";
+  size?: "sm" | "md" | "lg";
+  disabled?: boolean;
+  onPaymentSuccess?: (paymentData: any) => void;
+  onPaymentError?: (error: string) => void;
+  className?: string;
+  children?: React.ReactNode;
+  tourTitle?: string;
+  tourId?: string;
+  participants?: number;
+  date?: string;
 }
