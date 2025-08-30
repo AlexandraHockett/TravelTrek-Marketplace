@@ -68,7 +68,7 @@ const nextConfig = {
   },
 
   // Additional deployment optimizations
-  swcMinify: true,
+  
   compress: true,
   trailingSlash: false,
 };

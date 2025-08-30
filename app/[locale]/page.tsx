@@ -133,7 +133,11 @@ export default async function HomePage({
                   </select>
                 </div>
                 <div className="flex items-end">
-                  <Button className="w-full" size="lg" variant="primary">
+                  <Button
+                    className="w-full text-black"
+                    size="lg"
+                    variant="primary"
+                  >
                     {t.search?.searchButton || "Search"}
                   </Button>
                 </div>

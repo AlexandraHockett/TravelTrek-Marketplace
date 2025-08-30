@@ -10,8 +10,8 @@
     "title": "Discover the ",
     "highlight": "Extraordinary",
     "subtitle": "Connect with local hosts and discover authentic experiences.",
-    "searchPlaceholder": "Where in Portugal do you want to go?",
-    "searchButton": "Search"
+    "exploreToursButton": "Explore Tours",
+    "becomeHostButton": "Become a Host"
   },
   "search": {
     "title": "Find Your Perfect Tour",
