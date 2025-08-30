@@ -171,6 +171,86 @@
     "vegetarianRequest": "Opções vegetarianas para um participante, por favor"
   },
   "pages": {
+    "status": {
+      "title": "Estado do Projeto",
+      "subtitle": "Explora o progresso de desenvolvimento do TravelTrek Marketplace",
+      "categories": {
+        "coreInfrastructure": "Infraestrutura Base",
+        "customerPortal": "Portal do Cliente",
+        "hostPortal": "Portal do Anfitrião",
+        "integrations": "Integrações"
+      },
+      "features": {
+        "i18nSystem": "Sistema de Internacionalização",
+        "nextjsReact": "Framework Next.js & React",
+        "responsiveNavigation": "Navegação Responsiva",
+        "typescriptIntegration": "Integração com TypeScript",
+        "tourBrowsing": "Navegação de Tours",
+        "bookingSystem": "Sistema de Reservas",
+        "userDashboard": "Painel do Utilizador",
+        "reviewSystem": "Sistema de Avaliações",
+        "bookingManagement": "Gestão de Reservas",
+        "tourCreation": "Criação de Tours",
+        "earningsDashboard": "Painel de Ganhos",
+        "messagingSystem": "Sistema de Mensagens",
+        "stripeIntegration": "Integração com Stripe",
+        "databasePostgres": "Base de Dados Postgres",
+        "viatorApiIntegration": "Integração com API Viator",
+        "authenticationSystem": "Sistema de Autenticação"
+      },
+      "descriptions": {
+        "i18nSystemDesc": "Sistema de i18n totalmente implementado, suportando cinco idiomas para um público global.",
+        "nextjsReactDesc": "Construído com Next.js App Router e React para um frontend moderno e escalável.",
+        "responsiveNavigationDesc": "Navegação otimizada para dispositivos móveis e desktop com Tailwind CSS v4.",
+        "typescriptIntegrationDesc": "Código seguro com TypeScript para um desenvolvimento robusto.",
+        "tourBrowsingDesc": "Navega e filtra tours com dados em tempo real da API Viator simulada.",
+        "bookingSystemDesc": "Sistema de reservas em progresso com gestão de estados e integração com Stripe.",
+        "userDashboardDesc": "Painel do cliente para gerir reservas e configurações de perfil.",
+        "reviewSystemDesc": "Sistema planeado para os utilizadores deixarem avaliações de tours e anfitriões.",
+        "bookingManagementDesc": "Ferramentas para anfitriões gerirem reservas e comunicação com clientes.",
+        "tourCreationDesc": "Sistema em progresso para anfitriões criarem e editarem tours.",
+        "earningsDashboardDesc": "Painel para anfitriões acompanharem ganhos e métricas de desempenho.",
+        "messagingSystemDesc": "Sistema de mensagens planeado para comunicação entre anfitriões e clientes.",
+        "stripeIntegrationDesc": "Integração com Stripe em progresso para processamento seguro de pagamentos.",
+        "databasePostgresDesc": "Base de dados Postgres para armazenar tours, reservas e dados de utilizadores.",
+        "viatorApiIntegrationDesc": "Integração planeada com a API Viator para sincronização de dados de tours.",
+        "authenticationSystemDesc": "Sistema de autenticação planeado para acesso seguro dos utilizadores."
+      },
+      "status": {
+        "implemented": "Implementado",
+        "inProgress": "Em Progresso",
+        "planned": "Planeado"
+      },
+      "techStack": "Pilha Tecnológica",
+      "techStackItems": {
+        "nextjs": {
+          "title": "Next.js",
+          "subtitle": "Renderização do lado do servidor e App Router para desempenho otimizado."
+        },
+        "tailwind": {
+          "title": "Tailwind CSS",
+          "subtitle": "Framework CSS utilitário para design responsivo e moderno."
+        },
+        "typescript": {
+          "title": "TypeScript",
+          "subtitle": "Desenvolvimento seguro com tipos para código sustentável."
+        },
+        "i18n": {
+          "title": "Internacionalização",
+          "subtitle": "Suporte a múltiplos idiomas para alcançar um público global."
+        }
+      },
+      "portfolioContext": "Contexto do Portfólio",
+      "portfolioDescription": "O TravelTrek Marketplace destaca uma aplicação web moderna e escalável construída com tecnologias de ponta.",
+      "portfolioPoints": {
+        "modernReact": "Framework React Moderno: Utiliza Next.js com App Router para renderização dinâmica.",
+        "i18nExpertise": "Expertise em i18n: Suporta cinco idiomas com troca fluida de locale.",
+        "marketplaceArchitecture": "Arquitetura de Marketplace: Estrutura robusta para portais de clientes e anfitriões.",
+        "contemporaryStyling": "Estilização Contemporânea: Tailwind CSS v4 para UI moderna e responsiva.",
+        "professionalStructure": "Estrutura Profissional: Código seguro com tipos e design modular."
+      },
+      "portfolioFooter": "Este projeto demonstra expertise na construção de aplicações de marketplace escaláveis."
+    },
     "customerBookings": {
       "title": "As Minhas Reservas",
       "description": "Gere todas as suas reservas de experiências de viagem",

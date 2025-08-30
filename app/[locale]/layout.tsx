@@ -1,7 +1,11 @@
+// File: app/[locale]/layout.tsx
+// Location: REPLACE your existing app/[locale]/layout.tsx with this updated version
+
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import Navbar from "@/components/shared/Navbar";
 import Footer from "@/components/shared/Footer";
+import DevelopmentBanner from "@/components/shared/DevelopmentBanner"; // 🆕 NEW IMPORT
 import "../globals.css";
 
 const inter = Inter({
@@ -12,11 +16,11 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title: {
-    default: "TravelTrek - Discover Unique Experiences",
+    default: "TravelTrek - Discover Unique Experiences | Development Showcase", // Updated title
     template: "%s | TravelTrek",
   },
   description:
-    "Connect with local hosts and discover authentic travel experiences.",
+    "Connect with local hosts and discover authentic travel experiences. Technical demonstration of Next.js 15 + React 19 with full internationalization.",
 };
 
 interface LayoutParams {
@@ -44,6 +48,9 @@ export default async function RootLayout({
         <meta name="theme-color" content="#1e40af" />
       </head>
       <body className="min-h-screen flex flex-col bg-gray-50 antialiased font-sans">
+        {/* 🆕 ADD DEVELOPMENT BANNER HERE */}
+        <DevelopmentBanner locale={locale} />
+
         <Navbar />
         <main className="flex-1 relative">{children}</main>
         {/* Pass resolved locale to Footer */}

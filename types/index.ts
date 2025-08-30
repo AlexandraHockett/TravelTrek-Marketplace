@@ -166,7 +166,6 @@ export interface Translations {
       };
     };
   };
-  // ESTA É A PROPRIEDADE QUE ESTAVA EM FALTA - ADICIONAR PAGES
   pages?: {
     customerBookings?: {
       title: string;
@@ -201,16 +200,93 @@ export interface Translations {
         totalSpent: string;
       };
     };
-    // Adicionar outras páginas conforme necessário
     customerTours?: {
       title: string;
       subtitle: string;
-      // ... outros campos
     };
     hostDashboard?: {
       title: string;
       subtitle: string;
-      // ... outros campos
+    };
+    status?: {
+      title: string;
+      subtitle: string;
+      categories: {
+        coreInfrastructure: string;
+        customerPortal: string;
+        hostPortal: string;
+        integrations: string;
+      };
+      features: {
+        i18nSystem: string;
+        nextjsReact: string;
+        responsiveNavigation: string;
+        typescriptIntegration: string;
+        tourBrowsing: string;
+        bookingSystem: string;
+        userDashboard: string;
+        reviewSystem: string;
+        bookingManagement: string;
+        tourCreation: string;
+        earningsDashboard: string;
+        messagingSystem: string;
+        stripeIntegration: string;
+        databasePostgres: string;
+        viatorApiIntegration: string;
+        authenticationSystem: string;
+      };
+      descriptions: {
+        i18nSystemDesc: string;
+        nextjsReactDesc: string;
+        responsiveNavigationDesc: string;
+        typescriptIntegrationDesc: string;
+        tourBrowsingDesc: string;
+        bookingSystemDesc: string;
+        userDashboardDesc: string;
+        reviewSystemDesc: string;
+        bookingManagementDesc: string;
+        tourCreationDesc: string;
+        earningsDashboardDesc: string;
+        messagingSystemDesc: string;
+        stripeIntegrationDesc: string;
+        databasePostgresDesc: string;
+        viatorApiIntegrationDesc: string;
+        authenticationSystemDesc: string;
+      };
+      status: {
+        implemented: string;
+        inProgress: string;
+        planned: string;
+      };
+      techStack: string;
+      techStackItems: {
+        nextjs: {
+          title: string;
+          subtitle: string;
+        };
+        tailwind: {
+          title: string;
+          subtitle: string;
+        };
+        typescript: {
+          title: string;
+          subtitle: string;
+        };
+        i18n: {
+          title: string;
+          subtitle: string;
+        };
+      };
+      portfolioContext: string;
+      portfolioDescription: string;
+      portfolioPoints: {
+        modernReact: string;
+        i18nExpertise: string;
+        marketplaceArchitecture: string;
+        contemporaryStyling: string;
+        professionalStructure: string;
+      };
+      portfolioFooter: string;
     };
   };
   bookingDetails?: {

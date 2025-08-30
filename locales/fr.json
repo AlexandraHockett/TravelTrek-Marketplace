@@ -171,6 +171,86 @@
     "vegetarianRequest": "Options végétariennes pour un participant, s'il vous plaît"
   },
   "pages": {
+    "status": {
+      "title": "État du Projet",
+      "subtitle": "Découvrez les progrès du développement du TravelTrek Marketplace",
+      "categories": {
+        "coreInfrastructure": "Infrastructure de Base",
+        "customerPortal": "Portail Client",
+        "hostPortal": "Portail Hôte",
+        "integrations": "Intégrations"
+      },
+      "features": {
+        "i18nSystem": "Système d'Internationalisation",
+        "nextjsReact": "Framework Next.js & React",
+        "responsiveNavigation": "Navigation Responsive",
+        "typescriptIntegration": "Intégration TypeScript",
+        "tourBrowsing": "Navigation des Tours",
+        "bookingSystem": "Système de Réservation",
+        "userDashboard": "Tableau de Bord Utilisateur",
+        "reviewSystem": "Système d'Avis",
+        "bookingManagement": "Gestion des Réservations",
+        "tourCreation": "Création de Tours",
+        "earningsDashboard": "Tableau de Bord des Gains",
+        "messagingSystem": "Système de Messagerie",
+        "stripeIntegration": "Intégration Stripe",
+        "databasePostgres": "Base de Données Postgres",
+        "viatorApiIntegration": "Intégration API Viator",
+        "authenticationSystem": "Système d'Authentification"
+      },
+      "descriptions": {
+        "i18nSystemDesc": "Système d'i18n entièrement implémenté, prenant en charge cinq langues pour un public mondial.",
+        "nextjsReactDesc": "Construit avec Next.js App Router et React pour un frontend moderne et évolutif.",
+        "responsiveNavigationDesc": "Navigation optimisée pour mobile et desktop avec Tailwind CSS v4.",
+        "typescriptIntegrationDesc": "Code sécurisé avec TypeScript pour un développement robuste.",
+        "tourBrowsingDesc": "Naviguez et filtrez les tours avec des données en temps réel de l'API Viator simulée.",
+        "bookingSystemDesc": "Système de réservation en cours avec gestion d'état et intégration Stripe.",
+        "userDashboardDesc": "Tableau de bord client pour gérer les réservations et les paramètres de profil.",
+        "reviewSystemDesc": "Système planifié pour permettre aux utilisateurs de laisser des avis sur les tours et les hôtes.",
+        "bookingManagementDesc": "Outils pour les hôtes pour gérer les réservations et la communication avec les clients.",
+        "tourCreationDesc": "Système en cours pour permettre aux hôtes de créer et modifier des tours.",
+        "earningsDashboardDesc": "Tableau de bord pour les hôtes pour suivre les gains et les métriques de performance.",
+        "messagingSystemDesc": "Système de messagerie planifié pour la communication entre hôtes et clients.",
+        "stripeIntegrationDesc": "Intégration Stripe en cours pour un traitement sécurisé des paiements.",
+        "databasePostgresDesc": "Base de données Postgres pour stocker les tours, réservations et données utilisateur.",
+        "viatorApiIntegrationDesc": "Intégration planifiée avec l'API Viator pour la synchronisation des données des tours.",
+        "authenticationSystemDesc": "Système d'authentification planifié pour un accès sécurisé des utilisateurs."
+      },
+      "status": {
+        "implemented": "Implémenté",
+        "inProgress": "En Cours",
+        "planned": "Planifié"
+      },
+      "techStack": "Pile Technologique",
+      "techStackItems": {
+        "nextjs": {
+          "title": "Next.js",
+          "subtitle": "Rendu côté serveur et App Router pour des performances optimales."
+        },
+        "tailwind": {
+          "title": "Tailwind CSS",
+          "subtitle": "Framework CSS utilitaire pour un design réactif et moderne."
+        },
+        "typescript": {
+          "title": "TypeScript",
+          "subtitle": "Développement sécurisé avec types pour un code maintenable."
+        },
+        "i18n": {
+          "title": "Internationalisation",
+          "subtitle": "Support de plusieurs langues pour atteindre un public mondial."
+        }
+      },
+      "portfolioContext": "Contexte du Portfolio",
+      "portfolioDescription": "Le TravelTrek Marketplace met en avant une application web moderne et évolutive construite avec des technologies de pointe.",
+      "portfolioPoints": {
+        "modernReact": "Framework React Moderne : Utilise Next.js avec App Router pour un rendu dynamique.",
+        "i18nExpertise": "Expertise en i18n : Prend en charge cinq langues avec un changement fluide de locale.",
+        "marketplaceArchitecture": "Architecture de Marketplace : Structure robuste pour les portails clients et hôtes.",
+        "contemporaryStyling": "Style Contemporain : Tailwind CSS v4 pour une interface utilisateur moderne et réactive.",
+        "professionalStructure": "Structure Professionnelle : Code sécurisé avec types et design modulaire."
+      },
+      "portfolioFooter": "Ce projet démontre une expertise dans la construction d'applications de marketplace évolutives."
+    },
     "customerBookings": {
       "title": "Mes Réservations",
       "description": "Gérez toutes vos réservations d'expériences de voyage",
