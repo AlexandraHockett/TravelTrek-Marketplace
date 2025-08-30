@@ -1,9 +1,9 @@
 // File: components/customer/TourGrid.tsx
-// Location: Substituir o ficheiro existente
+// Location: SUBSTITUIR o ficheiro existente
 
 "use client";
 
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import { Tour, Translations } from "@/types";
 import TourCard from "./TourCard";
 import Button from "@/components/ui/Button";
@@ -15,6 +15,7 @@ interface TourGridProps {
   translations: Translations;
   loading?: boolean;
   className?: string;
+  initialCategoryFilter?: string | null; // New prop for category filtering
 }
 
 interface FilterOptions {
@@ -24,6 +25,7 @@ interface FilterOptions {
   duration: string;
   rating: number;
   location: string;
+  category: string; // New category filter
   sortBy: "price" | "rating" | "duration" | "newest" | "popular";
 }
 
@@ -33,6 +35,7 @@ const TourGrid: React.FC<TourGridProps> = ({
   translations: t,
   loading = false,
   className,
+  initialCategoryFilter = null,
 }) => {
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [showFilters, setShowFilters] = useState(false);
@@ -43,8 +46,24 @@ const TourGrid: React.FC<TourGridProps> = ({
     duration: "all",
     rating: 0,
     location: "all",
+    category: "all",
     sortBy: "newest",
   });
+
+  // Update category filter when initialCategoryFilter changes
+  useEffect(() => {
+    if (initialCategoryFilter && initialCategoryFilter !== filters.category) {
+      setFilters((prev) => ({
+        ...prev,
+        category: initialCategoryFilter,
+      }));
+    } else if (!initialCategoryFilter && filters.category !== "all") {
+      setFilters((prev) => ({
+        ...prev,
+        category: "all",
+      }));
+    }
+  }, [initialCategoryFilter]);
 
   // Get unique filter values from tours
   const filterOptions = useMemo(() => {
@@ -58,6 +77,46 @@ const TourGrid: React.FC<TourGridProps> = ({
       maxPrice: Math.ceil(maxPrice / 50) * 50, // Round to nearest 50
     };
   }, [tours]);
+
+  // Helper function to check if tour matches category
+  const tourMatchesCategory = (tour: Tour, categoryKey: string): boolean => {
+    if (categoryKey === "all") return true;
+    if (!tour.tags) return false;
+
+    return tour.tags.some((tag) => {
+      const lowerTag = tag.toLowerCase();
+      switch (categoryKey) {
+        case "food":
+          return (
+            lowerTag.includes("food") ||
+            lowerTag.includes("wine") ||
+            lowerTag.includes("gastronomy")
+          );
+        case "culture":
+          return lowerTag.includes("culture") || lowerTag.includes("cultural");
+        case "nature":
+          return lowerTag.includes("nature") || lowerTag.includes("outdoor");
+        case "adventure":
+          return lowerTag.includes("adventure") || lowerTag.includes("hiking");
+        case "history":
+          return (
+            lowerTag.includes("history") || lowerTag.includes("historical")
+          );
+        case "beaches":
+          return lowerTag.includes("beach") || lowerTag.includes("coast");
+        case "walking":
+          return lowerTag.includes("walk") || lowerTag.includes("walking");
+        case "family":
+          return lowerTag.includes("family");
+        case "art":
+          return lowerTag.includes("art") || lowerTag.includes("museum");
+        case "nightlife":
+          return lowerTag.includes("night") || lowerTag.includes("evening");
+        default:
+          return false;
+      }
+    });
+  };
 
   // Filter and sort tours
   const filteredTours = useMemo(() => {
@@ -88,32 +147,30 @@ const TourGrid: React.FC<TourGridProps> = ({
         return false;
       }
 
-      // Duration filter
-      if (filters.duration !== "all") {
-        if (filters.duration === "short" && tour.duration > 4) return false;
-        if (
-          filters.duration === "medium" &&
-          (tour.duration <= 4 || tour.duration >= 8)
-        )
-          return false;
-        if (filters.duration === "long" && tour.duration < 8) return false;
-      }
-
-      // Rating filter
-      if (tour.rating < filters.rating) {
+      // Location filter
+      if (filters.location !== "all" && tour.location !== filters.location) {
         return false;
       }
 
-      // Location filter
-      if (filters.location !== "all" && tour.location !== filters.location) {
+      // Rating filter
+      if (filters.rating > 0 && tour.rating < filters.rating) {
+        return false;
+      }
+
+      // Category filter (both from internal filter and external)
+      const categoryToCheck = initialCategoryFilter || filters.category;
+      if (
+        categoryToCheck !== "all" &&
+        !tourMatchesCategory(tour, categoryToCheck)
+      ) {
         return false;
       }
 
       return true;
     });
 
-    // Sort tours
-    filtered.sort((a, b) => {
+    // Sort filtered tours
+    return filtered.sort((a, b) => {
       switch (filters.sortBy) {
         case "price":
           return a.price - b.price;
@@ -126,64 +183,58 @@ const TourGrid: React.FC<TourGridProps> = ({
         case "newest":
         default:
           return (
-            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+            new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
           );
       }
     });
+  }, [tours, filters, initialCategoryFilter]);
 
-    return filtered;
-  }, [tours, filters]);
+  // Count active filters (excluding category if it's from external)
+  const activeFiltersCount = useMemo(() => {
+    let count = 0;
 
+    if (filters.searchQuery) count++;
+    if (filters.priceRange[1] < filterOptions.maxPrice) count++;
+    if (filters.difficulty !== "all") count++;
+    if (filters.location !== "all") count++;
+    if (filters.rating > 0) count++;
+    // Only count category filter if it's not from external source
+    if (!initialCategoryFilter && filters.category !== "all") count++;
+
+    return count;
+  }, [filters, filterOptions.maxPrice, initialCategoryFilter]);
+
+  // Reset all filters
   const resetFilters = () => {
     setFilters({
       searchQuery: "",
-      priceRange: [0, 1000],
+      priceRange: [0, filterOptions.maxPrice],
       difficulty: "all",
       duration: "all",
       rating: 0,
       location: "all",
+      category: "all",
       sortBy: "newest",
     });
   };
 
-  const activeFiltersCount = useMemo(() => {
-    let count = 0;
-    if (filters.searchQuery) count++;
-    if (filters.difficulty !== "all") count++;
-    if (filters.duration !== "all") count++;
-    if (filters.rating > 0) count++;
-    if (filters.location !== "all") count++;
-    if (filters.priceRange[0] > 0 || filters.priceRange[1] < 1000) count++;
-    return count;
-  }, [filters]);
-
   if (loading) {
     return (
-      <div className="space-y-6">
-        {/* Loading skeleton */}
-        <div className="flex justify-between items-center">
-          <div className="h-8 bg-gray-200 rounded w-48 animate-pulse"></div>
-          <div className="h-10 bg-gray-200 rounded w-32 animate-pulse"></div>
-        </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {[...Array(8)].map((_, i) => (
-            <div
-              key={i}
-              className="bg-gray-200 rounded-xl h-96 animate-pulse"
-            ></div>
-          ))}
+      <div className="flex justify-center items-center py-12">
+        <div className="text-gray-500">
+          {t.common?.loading || "A carregar..."}
         </div>
       </div>
     );
   }
 
   return (
-    <div className={`space-y-6 ${className}`}>
-      {/* Header with search and filters */}
-      <div className="flex flex-col lg:flex-row gap-4 lg:items-center lg:justify-between">
-        {/* Search Bar */}
+    <div className={`space-y-6 ${className || ""}`}>
+      {/* Header with search and view controls */}
+      <div className="flex flex-col lg:flex-row gap-4 items-center justify-between">
+        {/* Search bar */}
         <div className="relative flex-1 max-w-md">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
           <input
             type="text"
             placeholder={t.tours?.searchPlaceholder || "Pesquisar tours..."}
@@ -191,29 +242,27 @@ const TourGrid: React.FC<TourGridProps> = ({
             onChange={(e) =>
               setFilters({ ...filters, searchQuery: e.target.value })
             }
-            className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           />
           {filters.searchQuery && (
             <button
               onClick={() => setFilters({ ...filters, searchQuery: "" })}
               className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
             >
-              <X className="w-5 h-5" />
+              <X className="w-4 h-4" />
             </button>
           )}
         </div>
 
-        {/* Controls */}
         <div className="flex items-center gap-3">
           {/* Results count */}
           <span className="text-sm text-gray-600 whitespace-nowrap">
-            {filteredTours.length}{" "}
             {filteredTours.length === 1
-              ? t.tours?.result
-              : t.tours?.results || "resultados"}
+              ? `1 ${t.tours?.result || "resultado"}`
+              : `${filteredTours.length} ${t.tours?.results || "resultados"}`}
           </span>
 
-          {/* View toggle */}
+          {/* View mode toggle */}
           <div className="flex bg-gray-100 rounded-lg p-1">
             <button
               onClick={() => setViewMode("grid")}
@@ -255,6 +304,19 @@ const TourGrid: React.FC<TourGridProps> = ({
           </Button>
         </div>
       </div>
+
+      {/* Active category filter indicator */}
+      {initialCategoryFilter && (
+        <div className="flex items-center gap-2 text-sm">
+          <span className="text-gray-600">
+            {t.tours?.filteredBy || "Filtrado por:"}
+          </span>
+          <span className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full font-medium">
+            {t.tours?.categories?.[initialCategoryFilter] ||
+              initialCategoryFilter}
+          </span>
+        </div>
+      )}
 
       {/* Filters Panel */}
       {showFilters && (
@@ -302,7 +364,9 @@ const TourGrid: React.FC<TourGridProps> = ({
                 }
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               >
-                <option value="all">{t.tours?.allLocations || "Todas"}</option>
+                <option value="all">
+                  {t.tours?.allLocations || "Todas as localizações"}
+                </option>
                 {filterOptions.locations.map((location) => (
                   <option key={location} value={location}>
                     {location}
@@ -324,7 +388,7 @@ const TourGrid: React.FC<TourGridProps> = ({
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               >
                 <option value="all">
-                  {t.tours?.allDifficulties || "Todas"}
+                  {t.tours?.allDifficulties || "Todas as dificuldades"}
                 </option>
                 {filterOptions.difficulties.map((difficulty) => (
                   <option key={difficulty} value={difficulty}>

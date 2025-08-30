@@ -1,5 +1,6 @@
 // File: types/index.ts
-// Location: Make sure this file matches exactly with proper TypeScript types
+// Location: SUBSTITUIR o ficheiro existente types/index.ts
+
 export interface Tour {
   id: string;
   title: string;
@@ -33,33 +34,32 @@ export interface ItineraryItem {
   description: string;
 }
 
-// File: app/types.ts
 export interface Booking {
   id: string;
   tourId: string;
   tourTitle: string;
-  tourDescription: string; // ✅ Added missing property
+  tourDescription: string;
   tourImage: string;
   customerId: string;
   customerName: string;
   customerEmail: string;
   hostId: string;
-  hostName: string; // ✅ Added missing property
-  hostAvatar?: string; // ✅ Added missing property
-  hostEmail: string; // ✅ Added missing property
-  hostPhone: string; // ✅ Added missing property
-  hostVerified: boolean; // ✅ Added missing property
-  hostResponseTime: string; // ✅ Added missing property
+  hostName: string;
+  hostAvatar?: string;
+  hostEmail: string;
+  hostPhone: string;
+  hostVerified: boolean;
+  hostResponseTime: string;
   date: string;
-  time: string; // ✅ Added missing property
+  time: string;
   participants: number;
-  basePrice: number; // ✅ Added missing property
+  basePrice: number;
   totalAmount: number;
   status: "pending" | "confirmed" | "completed" | "cancelled";
   paymentStatus: "pending" | "paid" | "refunded";
   specialRequests?: string;
-  meetingPoint: string; // ✅ Added missing property
-  cancellationPolicy: string; // ✅ Added missing property
+  meetingPoint: string;
+  cancellationPolicy: string;
   createdAt: string;
   updatedAt: string;
   serviceFees: number;
@@ -394,6 +394,7 @@ export interface Translations {
     result: string;
     results: string;
     filters: string;
+    filteredBy: string; // ✅ ADDED - Nova propriedade para resolver erro
     clearFilters: string;
     noResults: string;
     noResultsDescription: string;
@@ -417,7 +418,7 @@ export interface Translations {
       easy: string;
       moderate: string;
       challenging: string;
-      [key: string]: string; // Added index signature to allow dynamic access
+      [key: string]: string; // ✅ Index signature para acesso dinâmico
     };
     sort?: {
       newest: string;
@@ -437,12 +438,22 @@ export interface Translations {
       wine: string;
       walking: string;
       family: string;
+      art: string; // ✅ ADDED - Nova categoria
+      nightlife: string; // ✅ ADDED - Nova categoria
+      [key: string]: string; // ✅ Index signature para acesso dinâmico
     };
     hostCta?: {
       title: string;
       description: string;
       button: string;
     };
+  };
+  errors?: {
+    generic: string;
+    network: string;
+    notFound: string;
+    unauthorized: string;
+    validation: string;
   };
 }
 
@@ -474,19 +485,39 @@ export interface PaymentData {
   cancelUrl?: string;
 }
 
-export interface PaymentButtonProps {
-  bookingId?: string;
-  amount: number;
-  currency?: string;
-  variant?: "default" | "primary" | "success";
-  size?: "sm" | "md" | "lg";
-  disabled?: boolean;
-  onPaymentSuccess?: (paymentData: any) => void;
-  onPaymentError?: (error: string) => void;
+// Export specific prop types
+export type TourCardProps = {
+  tour: Tour;
+  locale: string;
+  translations: Translations;
+  compact?: boolean;
   className?: string;
-  children?: React.ReactNode;
-  tourTitle?: string;
-  tourId?: string;
-  participants?: number;
-  date?: string;
-}
+};
+
+export type BookingFormProps = {
+  tourId: string;
+  tour?: Tour;
+  onSuccess?: (booking: Booking) => void;
+  onError?: (error: string) => void;
+  className?: string;
+};
+
+export type BookingListProps = {
+  bookings: Booking[];
+  locale: string;
+  translations: Translations;
+  onCancelBooking?: (bookingId: string) => void;
+  onPayBooking?: (bookingId: string) => void;
+  className?: string;
+};
+
+// Utility types
+export type Locale = "pt" | "en" | "es" | "fr" | "de";
+
+export type BookingStatus = "pending" | "confirmed" | "completed" | "cancelled";
+
+export type PaymentStatus = "pending" | "paid" | "refunded";
+
+export type TourDifficulty = "Easy" | "Moderate" | "Challenging";
+
+export type UserRole = "customer" | "host";
