@@ -481,5 +481,38 @@
     "notFound": "Resource not found",
     "unauthorized": "Unauthorised",
     "validation": "Invalid data"
+  },
+  "tourDetails": {
+    "backToTours": "Back to Tours",
+    "hours": "hours",
+    "upTo": "up to",
+    "people": "people",
+    "years": "years",
+    "reviews": "reviews",
+    "highlights": "Highlights",
+    "whatsIncluded": "What's Included",
+    "whatsExcluded": "What's Excluded",
+    "itinerary": "Itinerary",
+    "aboutHost": "About Your Host",
+    "responseTime": "Response time",
+    "importantInfo": "Important Information",
+    "meetingInstructions": "Please arrive at the meeting point 15 minutes before the tour starts",
+    "meetingPoint": "Meeting Point",
+    "cancellationPolicy": "Cancellation Policy",
+    "cancellationPolicies": {
+      "flexible": "Flexible - Full refund until 24h before",
+      "moderate": "Moderate - 50% refund until 48h before",
+      "strict": "Strict - No refund after 7 days"
+    },
+    "share": "Share",
+    "securePayment": "Secure payment",
+    "instantConfirmation": "Instant confirmation",
+    "flexibleCancellation": "Flexible cancellation",
+    "needHelp": "Need Help?",
+    "contactHostMessage": "Contact the host for any questions about this experience",
+    "contactHost": "Contact Host",
+    "participant": "participant",
+    "participants": "participants",
+    "availableOn": "Available on"
   }
 }

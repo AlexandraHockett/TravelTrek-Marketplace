@@ -401,5 +401,38 @@
       "description": "Junte-se à nossa plataforma e alcance milhares de viajantes interessados nas suas experiências únicas.",
       "button": "Tornar-se Anfitrião"
     }
+  },
+  "tourDetails": {
+    "backToTours": "Voltar aos Tours",
+    "hours": "horas",
+    "upTo": "até",
+    "people": "pessoas",
+    "years": "anos",
+    "reviews": "avaliações",
+    "highlights": "Destaques",
+    "whatsIncluded": "O Que Está Incluído",
+    "whatsExcluded": "O Que Não Está Incluído",
+    "itinerary": "Itinerário",
+    "aboutHost": "Sobre o Seu Anfitrião",
+    "responseTime": "Tempo de resposta",
+    "importantInfo": "Informações Importantes",
+    "meetingInstructions": "Por favor, chegue ao ponto de encontro 15 minutos antes do início do tour",
+    "meetingPoint": "Ponto de Encontro",
+    "cancellationPolicy": "Política de Cancelamento",
+    "cancellationPolicies": {
+      "flexible": "Flexível - Reembolso total até 24h antes",
+      "moderate": "Moderada - 50% de reembolso até 48h antes",
+      "strict": "Rigorosa - Sem reembolso após 7 dias"
+    },
+    "share": "Partilhar",
+    "securePayment": "Pagamento seguro",
+    "instantConfirmation": "Confirmação instantânea",
+    "flexibleCancellation": "Cancelamento flexível",
+    "needHelp": "Precisa de Ajuda?",
+    "contactHostMessage": "Contacte o anfitrião para qualquer pergunta sobre esta experiência",
+    "contactHost": "Contactar Anfitrião",
+    "participant": "participante",
+    "participants": "participantes",
+    "availableOn": "Disponível em"
   }
 }

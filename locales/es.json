@@ -51,7 +51,9 @@
     "title": "Comparte tu Conocimiento Local",
     "subtitle": "Únete a nuestra comunidad de anfitriones locales y convierte tu pasión por tu ciudad en ingresos. Crea tours únicos y comparte experiencias inolvidables con viajeros.",
     "startTodayButton": "Empezar Hoy",
-    "learnEarningsButton": "Aprender Sobre Ganancias"
+    "learnEarningsButton": "Aprender Sobre Ganancias",
+    "description": "Únete a nuestra plataforma y alcanza a miles de viajeros interesados en tus experiencias únicas.",
+    "button": "Convertirme en Anfitrión"
   },
   "statistics": {
     "happyTravelers": "Viajeros Felices",
@@ -343,64 +345,117 @@
     }
   },
   "tours": {
-    "searchPlaceholder": "Buscar tours...",
-    "result": "resultado",
-    "results": "resultados",
-    "filters": "Filtros",
-    "clearFilters": "Limpiar Filtros",
-    "noResults": "No se encontraron resultados",
-    "noResultsDescription": "Intenta ajustar los filtros para encontrar más opciones.",
-    "perPerson": "por persona",
-    "upTo": "hasta",
-    "viewDetails": "Ver Detalles",
-    "addToWishlist": "Añadir a la Lista de Deseos",
-    "removeFromWishlist": "Eliminar de la Lista de Deseos",
-    "availableTours": "Tours Disponibles",
-    "averageRating": "Calificación Promedio",
-    "totalReviews": "Reseñas",
-    "destinations": "Destinos",
-    "popularCategories": "Categorías Populares",
-    "priceRange": "Rango de Precios",
-    "location": "Ubicación",
-    "allLocations": "Todas las Ubicaciones",
-    "allDifficulties": "Todas las Dificultades",
-    "sortBy": "Ordenar por",
     "difficulty": {
-      "label": "Dificultad",
       "easy": "Fácil",
       "moderate": "Moderada",
       "challenging": "Desafiante"
     },
-    "sort": {
-      "newest": "Más Recientes",
-      "popular": "Más Populares",
-      "priceAsc": "Precio Ascendente",
-      "priceDesc": "Precio Descendente",
-      "rating": "Mejor Valorados",
-      "duration": "Duración"
-    },
     "categories": {
-      "food": "Gastronomía",
-      "culture": "Cultura",
-      "nature": "Naturaleza",
-      "adventure": "Aventura",
-      "history": "Historia",
-      "beaches": "Playas",
-      "wine": "Vino",
-      "walking": "Caminatas",
-      "family": "Familia"
+      "cultura": "Cultura",
+      "historia": "Historia",
+      "gastronomia": "Gastronomía",
+      "aventura": "Aventura",
+      "naturaleza": "Naturaleza",
+      "caminhada": "Caminatas",
+      "vinho": "Vino",
+      "familia": "Familia"
     },
-    "hostCta": {
-      "title": "¿Tienes un negocio de turismo?",
-      "description": "Únete a nuestra plataforma y alcanza a miles de viajeros interesados en tus experiencias únicas.",
-      "button": "Convertirme en Anfitrión"
-    }
+    "perPerson": "por persona",
+    "addToWishlist": "Añadir a la Lista de Deseos",
+    "removeFromWishlist": "Eliminar de la Lista de Deseos"
   },
+  "searchPlaceholder": "Buscar tours...",
+  "result": "resultado",
+  "results": "resultados",
+  "filters": "Filtros",
+  "clearFilters": "Limpiar Filtros",
+  "noResults": "No se encontraron resultados",
+  "noResultsDescription": "Intenta ajustar los filtros para encontrar más opciones.",
+  "perPerson": "por persona",
+  "upTo": "hasta",
+  "viewDetails": "Ver Detalles",
+  "addToWishlist": "Añadir a la Lista de Deseos",
+  "removeFromWishlist": "Eliminar de la Lista de Deseos",
+  "availableTours": "Tours Disponibles",
+  "averageRating": "Calificación Promedio",
+  "totalReviews": "Reseñas",
+  "destinations": "Destinos",
+  "popularCategories": "Categorías Populares",
+  "priceRange": "Rango de Precios",
+  "location": "Ubicación",
+  "allLocations": "Todas las Ubicaciones",
+  "allDifficulties": "Todas las Dificultades",
+  "sortBy": "Ordenar por",
+  "difficulty": {
+    "label": "Dificultad",
+    "easy": "Fácil",
+    "moderate": "Moderada",
+    "challenging": "Desafiante"
+  },
+  "sort": {
+    "newest": "Más Recientes",
+    "popular": "Más Populares",
+    "priceAsc": "Precio Ascendente",
+    "priceDesc": "Precio Descendente",
+    "rating": "Mejor Valorados",
+    "duration": "Duración"
+  },
+  "categories": {
+    "food": "Gastronomía",
+    "culture": "Cultura",
+    "nature": "Naturaleza",
+    "adventure": "Aventura",
+    "history": "Historia",
+    "beaches": "Playas",
+    "wine": "Vino",
+    "walking": "Caminatas",
+    "family": "Familia"
+  },
+
   "errors": {
     "generic": "Ocurrió un error inesperado",
     "network": "Error de conexión a internet",
     "notFound": "Recurso no encontrado",
     "unauthorized": "No autorizado",
     "validation": "Datos inválidos"
+  },
+  "tourDetails": {
+    "backToTours": "Volver a Tours",
+    "hours": "horas",
+    "upTo": "hasta",
+    "people": "personas",
+    "years": "años",
+    "reviews": "reseñas",
+    "highlights": "Destacados",
+    "whatsIncluded": "Qué Está Incluido",
+    "whatsExcluded": "Qué No Está Incluido",
+    "itinerary": "Itinerario",
+    "aboutHost": "Sobre Tu Anfitrión",
+    "responseTime": "Tiempo de respuesta",
+    "importantInfo": "Información Importante",
+    "meetingInstructions": "Por favor, llega al punto de encuentro 15 minutos antes del inicio del tour",
+    "meetingPoint": "Punto de Encuentro",
+    "cancellationPolicy": "Política de Cancelación",
+    "cancellationPolicies": {
+      "flexible": "Flexible - Reembolso completo hasta 24h antes",
+      "moderate": "Moderada - 50% de reembolso hasta 48h antes",
+      "strict": "Estricta - Sin reembolso después de 7 días"
+    },
+    "share": "Compartir",
+    "securePayment": "Pago seguro",
+    "instantConfirmation": "Confirmación instantánea",
+    "flexibleCancellation": "Cancelación flexible",
+    "needHelp": "¿Necesitas Ayuda?",
+    "contactHostMessage": "Contacta al anfitrión para cualquier pregunta sobre esta experiencia",
+    "contactHost": "Contactar Anfitrión",
+    "participant": "participante",
+    "participants": "participantes",
+    "availableOn": "Disponible el"
+  },
+  "booking": {
+    "totalPrice": "Precio Total",
+    "serviceFee": "Tarifa de Servicio",
+    "taxes": "Impuestos",
+    "total": "Total"
   }
 }

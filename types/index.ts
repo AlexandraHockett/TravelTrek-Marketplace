@@ -521,3 +521,7 @@ export type PaymentStatus = "pending" | "paid" | "refunded";
 export type TourDifficulty = "Easy" | "Moderate" | "Challenging";
 
 export type UserRole = "customer" | "host";
+
+interface PageProps {
+  params: Promise<{ locale: string; id: string }>;
+}

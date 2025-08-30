@@ -1,588 +1,527 @@
-// File: app/customer/tours/[id]/page.tsx
-// Location: Create this file in the app/customer/tours/[id]/ directory
+// File: app/[locale]/customer/tours/[id]/page.tsx
+// Location: Replace your existing app/[locale]/customer/tours/[id]/page.tsx
+
 "use client";
 
-import React from "react";
+import { useState, useEffect } from "react";
+import { notFound, useParams, usePathname } from "next/navigation";
 import Link from "next/link";
-import { notFound } from "next/navigation";
-import { Tour, ItineraryItem } from "@/types";
+import {
+  ChevronLeft,
+  MapPin,
+  Users,
+  Clock,
+  Star,
+  Calendar,
+  Shield,
+  Heart,
+  Info,
+  CheckCircle,
+  XCircle,
+} from "lucide-react";
+import { getTranslations } from "@/lib/utils";
+import { Tour } from "@/types";
+import Badge from "@/components/ui/Badge";
 import Card from "@/components/ui/Card";
 import Button from "@/components/ui/Button";
-import Badge from "@/components/ui/Badge";
-import { formatCurrency } from "@/lib/utils";
+import BookingForm from "@/components/customer/BookingForm";
 
-// Mock data - replace with actual API calls later
-const mockTours: Tour[] = [
-  {
-    id: "t1",
-    title: "Porto Food & Wine Tour",
-    description:
-      "Embark on a culinary journey through Portos historic streets and discover the authentic flavors of Portuguese cuisine. This guided tour takes you to family-run restaurants, traditional markets, and local wine bars where youll sample the best of what Porto has to offer. From francesinha sandwiches to port wine, experience the citys gastronomic heritage with a knowledgeable local guide who will share stories and traditions passed down through generations.",
-    shortDescription: "Authentic Portuguese cuisine tour",
-    image: "/images/porto-food.webp",
-    images: [
-      "/images/porto-food.webp",
-      "/images/porto-food-2.webp",
-      "/images/porto-food-3.webp",
-      "/images/porto-food-4.webp",
-    ],
-    price: 45,
-    originalPrice: 60,
-    currency: "EUR",
-    duration: 4,
-    location: "Porto, Portugal",
-    rating: 4.9,
-    reviewCount: 128,
-    maxParticipants: 12,
-    minimumAge: 18,
-    difficulty: "Easy" as const,
-    included: [
-      "Professional local guide",
-      "Food tastings at 5 different venues",
-      "Port wine and green wine samples",
-      "Traditional Portuguese dessert",
-      "Market visit with local produce tasting",
-      "Recipe cards to take home",
-    ],
-    excluded: [
-      "Hotel pickup and drop-off",
-      "Additional drinks beyond tastings",
-      "Gratuities",
-      "Personal expenses",
-    ],
-    itinerary: [
-      {
-        time: "10:00",
-        title: "Meeting Point - Livraria Lello",
-        description:
-          "Meet your guide at the famous Livraria Lello bookstore and receive a brief introduction to Porto's culinary history.",
-      },
-      {
-        time: "10:30",
-        title: "Mercado do Bolhão",
-        description:
-          "Explore the traditional market, meet local vendors, and taste fresh seasonal fruits and vegetables.",
-      },
-      {
-        time: "11:30",
-        title: "Traditional Tasca",
-        description:
-          "Visit an authentic Portuguese tavern for petiscos (Portuguese tapas) and green wine tasting.",
-      },
-      {
-        time: "12:30",
-        title: "Francesinha Experience",
-        description:
-          "Try Porto's most famous sandwich at a local favorite restaurant, paired with local beer.",
-      },
-      {
-        time: "13:30",
-        title: "Port Wine Cellar",
-        description:
-          "Discover the secrets of port wine production and enjoy a guided tasting of different varieties.",
-      },
-      {
-        time: "14:00",
-        title: "Sweet Finale",
-        description:
-          "End the tour with traditional Portuguese pastries and coffee at a historic café.",
-      },
-    ],
-    cancellationPolicy:
-      "Free cancellation up to 24 hours before the tour starts. 50% refund if cancelled within 24 hours. No refund for no-shows.",
-    hostId: "h1",
-    tags: ["Food", "Wine", "Culture", "Walking Tour"],
-    createdAt: "2025-08-01T00:00:00Z",
-    updatedAt: "2025-08-01T00:00:00Z",
-  },
-];
-
-// Mock reviews
-const mockReviews = [
-  {
-    id: "r1",
-    customerName: "Maria Santos",
-    rating: 5,
-    comment:
-      "Experiência fantástica! O guia conhecia todos os melhores sítios e a comida estava deliciosa. Recomendo vivamente!",
-    date: "2025-08-15",
-    verified: true,
-  },
-  {
-    id: "r2",
-    customerName: "John Smith",
-    rating: 5,
-    comment:
-      "Amazing food tour! Got to try authentic Portuguese dishes I never would have found on my own. The port wine tasting was exceptional.",
-    date: "2025-08-10",
-    verified: true,
-  },
-  {
-    id: "r3",
-    customerName: "Claire Dubois",
-    rating: 4,
-    comment:
-      "Très belle découverte culinaire! Le guide était passionné et les dégustations variées. Seul bémol: un peu trop de marche pour moi.",
-    date: "2025-08-05",
-    verified: true,
-  },
-];
-
-interface TourDetailPageProps {
-  params: {
-    id: string;
-  };
+interface ExtendedTour extends Tour {
+  longDescription?: string;
+  highlights?: string[];
+  languages?: string[];
+  hostName?: string;
+  hostAvatar?: string;
+  hostResponseTime?: string;
+  meetingPoint?: string;
+  isBookmarked?: boolean;
+  availableDates?: string[];
+  category?: string;
 }
 
-interface BookingFormProps {
-  tour: Tour;
+interface BookingFormData {
+  tourId: string;
+  date: string;
+  participants: number;
+  specialRequests: string;
+  totalAmount: number;
 }
 
-const BookingForm: React.FC<BookingFormProps> = ({ tour }) => {
-  const [selectedDate, setSelectedDate] = React.useState("");
-  const [participants, setParticipants] = React.useState(1);
-  const [specialRequests, setSpecialRequests] = React.useState("");
-  const [isLoading, setIsLoading] = React.useState(false);
+export default function TourDetailPage() {
+  const params = useParams();
+  const pathname = usePathname();
+  const [tour, setTour] = useState<ExtendedTour | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [t, setTranslations] = useState<any>({});
 
-  const totalAmount = participants * tour.price;
-  const minDate = new Date();
-  minDate.setDate(minDate.getDate() + 1); // Tomorrow
-  const maxDate = new Date();
-  maxDate.setMonth(maxDate.getMonth() + 3); // 3 months ahead
+  const locale = (params?.locale as string) || "pt";
+  const id = params?.id as string;
 
-  const handleBooking = async (e: React.FormEvent) => {
-    e.preventDefault();
+  useEffect(() => {
+    const loadData = async () => {
+      try {
+        // Load translations
+        const translations = await getTranslations(locale);
+        setTranslations(translations);
 
-    if (!selectedDate) {
-      alert("Por favor selecciona uma data.");
-      return;
-    }
+        // Load tour data
+        if (id) {
+          const response = await fetch(`/api/tours/${id}`);
+          if (response.ok) {
+            const tourData = await response.json();
+            setTour(tourData);
+          } else {
+            setTour(null);
+          }
+        }
+      } catch (error) {
+        console.error("Error loading data:", error);
+        setTour(null);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-    setIsLoading(true);
+    loadData();
+  }, [locale, id]);
 
-    try {
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-
-      // In real app, this would create a booking via API
-      alert(
-        `Reserva criada com sucesso para ${participants} pessoa${participants > 1 ? "s" : ""} em ${new Date(selectedDate).toLocaleDateString("pt-PT")}!`
-      );
-
-      // Redirect to bookings page
-      window.location.href = "/customer/bookings";
-    } catch (error) {
-      alert("Erro ao criar reserva. Tenta novamente.");
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  return (
-    <Card className="sticky top-6 p-6">
-      <div className="mb-6">
-        <div className="flex items-baseline justify-between mb-2">
-          <span className="text-3xl font-bold text-gray-900">
-            {formatCurrency(tour.price)}
-          </span>
-          <span className="text-gray-600">/pessoa</span>
-        </div>
-        {tour.originalPrice && (
-          <p className="text-sm text-gray-500">
-            Preço original:{" "}
-            <span className="line-through">
-              {formatCurrency(tour.originalPrice)}
-            </span>
-            <Badge variant="error" className="ml-2 bg-green-100 text-green-800">
-              Poupa {formatCurrency(tour.originalPrice - tour.price)}!
-            </Badge>
-          </p>
-        )}
-      </div>
-
-      <form onSubmit={handleBooking} className="space-y-4">
-        {/* Date Selection */}
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            Data da Experiência *
-          </label>
-          <input
-            type="date"
-            value={selectedDate}
-            min={minDate.toISOString().split("T")[0]}
-            max={maxDate.toISOString().split("T")[0]}
-            onChange={(e) => setSelectedDate(e.target.value)}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            required
-          />
-        </div>
-
-        {/* Participants */}
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            Número de Participantes *
-          </label>
-          <select
-            value={participants}
-            onChange={(e) => setParticipants(Number(e.target.value))}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-          >
-            {Array.from({ length: tour.maxParticipants }, (_, i) => i + 1).map(
-              (num) => (
-                <option key={num} value={num}>
-                  {num} pessoa{num > 1 ? "s" : ""}
-                </option>
-              )
-            )}
-          </select>
-        </div>
-
-        {/* Special Requests */}
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            Pedidos Especiais (Opcional)
-          </label>
-          <textarea
-            value={specialRequests}
-            onChange={(e) => setSpecialRequests(e.target.value)}
-            rows={3}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
-            placeholder="Alergias, necessidades especiais, etc."
-          />
-        </div>
-
-        {/* Total */}
-        {participants > 1 && (
-          <div className="bg-gray-50 p-4 rounded-lg">
-            <div className="flex justify-between items-center">
-              <span className="text-gray-700">
-                {formatCurrency(tour.price)} × {participants} participantes
-              </span>
-              <span className="font-semibold text-gray-900">
-                {formatCurrency(totalAmount)}
-              </span>
-            </div>
-          </div>
-        )}
-
-        {/* Submit Button */}
-        <Button type="submit" className="w-full" size="lg" disabled={isLoading}>
-          {isLoading
-            ? "A processar..."
-            : `Reservar${participants > 1 ? ` (${formatCurrency(totalAmount)})` : ""}`}
-        </Button>
-
-        <p className="text-xs text-gray-600 text-center">
-          Não será cobrado nada ainda. Confirma os detalhes antes do pagamento.
-        </p>
-      </form>
-    </Card>
-  );
-};
-
-interface ImageGalleryProps {
-  tour: Tour;
-}
-
-const ImageGallery: React.FC<ImageGalleryProps> = ({ tour }) => {
-  const [selectedImage, setSelectedImage] = React.useState(0);
-  const images = tour.images || [tour.image];
-
-  return (
-    <div className="space-y-4">
-      {/* Main Image */}
-      <div className="relative aspect-video rounded-xl overflow-hidden">
-        <img
-          src={images[selectedImage]}
-          alt={tour.title}
-          className="w-full h-full object-cover"
-          onError={(e) => {
-            const target = e.target as HTMLImageElement;
-            target.src = "/images/placeholders/tour-placeholder.webp";
-          }}
-        />
-        {tour.originalPrice && tour.originalPrice > tour.price && (
-          <div className="absolute top-4 left-4">
-            <Badge variant="error" className="bg-green-500">
-              -
-              {Math.round(
-                ((tour.originalPrice - tour.price) / tour.originalPrice) * 100
-              )}
-              % DESCONTO
-            </Badge>
-          </div>
-        )}
-      </div>
-
-      {/* Thumbnail Gallery */}
-      {images.length > 1 && (
-        <div className="grid grid-cols-4 gap-2">
-          {images.slice(0, 4).map((image, index) => (
-            <button
-              key={index}
-              onClick={() => setSelectedImage(index)}
-              className={`aspect-square rounded-lg overflow-hidden ${
-                selectedImage === index
-                  ? "ring-2 ring-blue-500"
-                  : "hover:opacity-80"
-              }`}
-            >
-              <img
-                src={image}
-                alt={`${tour.title} ${index + 1}`}
-                className="w-full h-full object-cover"
-              />
-            </button>
-          ))}
-        </div>
-      )}
-    </div>
-  );
-};
-
-interface ItineraryProps {
-  itinerary: ItineraryItem[];
-}
-
-const Itinerary: React.FC<ItineraryProps> = ({ itinerary }) => (
-  <div className="space-y-6">
-    <h3 className="text-2xl font-semibold text-gray-900">Itinerário</h3>
-    <div className="space-y-4">
-      {itinerary.map((item, index) => (
-        <div key={index} className="flex space-x-4">
-          <div className="flex-shrink-0">
-            <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
-              <span className="text-blue-600 font-semibold">{item.time}</span>
-            </div>
-          </div>
-          <div className="flex-1">
-            <h4 className="font-semibold text-gray-900 mb-1">{item.title}</h4>
-            <p className="text-gray-600">{item.description}</p>
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-50">
+        <div className="container mx-auto px-4 py-6 max-w-7xl">
+          <div className="animate-pulse">
+            <div className="h-8 bg-gray-200 rounded mb-6"></div>
+            <div className="h-96 bg-gray-200 rounded mb-6"></div>
+            <div className="h-32 bg-gray-200 rounded"></div>
           </div>
         </div>
-      ))}
-    </div>
-  </div>
-);
-
-interface ReviewsProps {
-  reviews: any[];
-  rating: number;
-  reviewCount: number;
-}
-
-const Reviews: React.FC<ReviewsProps> = ({ reviews, rating, reviewCount }) => {
-  const renderStars = (rating: number) => {
-    return "★".repeat(rating) + "☆".repeat(5 - rating);
-  };
-
-  return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <h3 className="text-2xl font-semibold text-gray-900">Avaliações</h3>
-        <div className="flex items-center space-x-2">
-          <span className="text-2xl text-yellow-500">★</span>
-          <span className="text-xl font-semibold">{rating}</span>
-          <span className="text-gray-600">({reviewCount} avaliações)</span>
-        </div>
       </div>
-
-      <div className="space-y-4">
-        {reviews.slice(0, 3).map((review) => (
-          <Card key={review.id} className="p-4">
-            <div className="flex items-start justify-between mb-3">
-              <div>
-                <h4 className="font-medium text-gray-900">
-                  {review.customerName}
-                </h4>
-                <div className="flex items-center space-x-2">
-                  <span className="text-yellow-500">
-                    {renderStars(review.rating)}
-                  </span>
-                  {review.verified && (
-                    <Badge
-                      variant="default"
-                      size="sm"
-                      className="text-green-600 border-green-200"
-                    >
-                      ✓ Verificado
-                    </Badge>
-                  )}
-                </div>
-              </div>
-              <span className="text-sm text-gray-500">
-                {new Date(review.date).toLocaleDateString("pt-PT")}
-              </span>
-            </div>
-            <p className="text-gray-700">{review.comment}</p>
-          </Card>
-        ))}
-      </div>
-
-      {reviewCount > 3 && (
-        <Button variant="default" className="w-full">
-          Ver todas as {reviewCount} avaliações
-        </Button>
-      )}
-    </div>
-  );
-};
-
-export default function TourDetailPage({ params }: TourDetailPageProps) {
-  // In a real app, fetch tour data based on params.id
-  const tour = mockTours.find((t) => t.id === params.id);
-
-  if (!tour) {
-    notFound();
+    );
   }
 
-  const getDifficultyLabel = (difficulty: string) => {
-    switch (difficulty) {
-      case "Easy":
-        return "Fácil";
-      case "Moderate":
-        return "Moderada";
-      case "Challenging":
-        return "Desafiante";
+  if (!tour) {
+    return notFound();
+  }
+
+  const discount = tour.originalPrice
+    ? Math.round(((tour.originalPrice - tour.price) / tour.originalPrice) * 100)
+    : 0;
+
+  const getDifficultyColor = (difficulty: string): string => {
+    switch (difficulty.toLowerCase()) {
+      case "easy":
+        return "bg-green-100 text-green-800 border-green-200";
+      case "moderate":
+        return "bg-yellow-100 text-yellow-800 border-yellow-200";
+      case "challenging":
+        return "bg-red-100 text-red-800 border-red-200";
       default:
-        return difficulty;
+        return "bg-gray-100 text-gray-800 border-gray-200";
     }
   };
 
-  const getDifficultyColor = (difficulty: string) => {
-    switch (difficulty) {
-      case "Easy":
-        return "success";
-      case "Moderate":
-        return "warning";
-      case "Challenging":
-        return "error";
+  const getCancellationPolicyColor = (policy: string): string => {
+    switch (policy.toLowerCase()) {
+      case "flexible":
+        return "text-green-600";
+      case "moderate":
+        return "text-yellow-600";
+      case "strict":
+        return "text-red-600";
       default:
-        return "default";
+        return "text-gray-600";
+    }
+  };
+
+  const handleImageError = (e: React.SyntheticEvent<HTMLImageElement>) => {
+    const target = e.target as HTMLImageElement;
+    target.src = "/images/placeholder.webp";
+  };
+
+  const handleBookingComplete = (bookingData: BookingFormData) => {
+    // Handle successful booking
+    window.location.href = `/${locale}/customer/bookings/${bookingData.tourId}`;
+  };
+
+  const toggleBookmark = () => {
+    console.log("Toggle bookmark");
+    // Implement bookmark toggle logic
+  };
+
+  const handleShare = () => {
+    if (navigator.share) {
+      navigator.share({
+        title: tour.title,
+        url: window.location.href,
+      });
+    } else {
+      navigator.clipboard?.writeText(window.location.href);
+      alert("Link copied to clipboard");
     }
   };
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-4 py-6 max-w-7xl">
         {/* Breadcrumb */}
-        <nav className="mb-6">
-          <div className="flex items-center space-x-2 text-sm text-gray-600">
-            <Link href="/customer/tours" className="hover:text-blue-600">
-              Tours
-            </Link>
-            <span>→</span>
-            <span className="text-gray-900">{tour.title}</span>
-          </div>
+        <nav className="flex items-center space-x-2 text-sm text-gray-600 mb-6">
+          <Link
+            href={`/${locale}/customer/tours`}
+            className="flex items-center space-x-1 hover:text-blue-600 transition-colors"
+          >
+            <ChevronLeft className="w-4 h-4" />
+            <span>{t.tourDetails?.backToTours || "Back to Tours"}</span>
+          </Link>
+          <span>→</span>
+          <span className="text-gray-900">{tour.title}</span>
         </nav>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Main Content */}
-          <div className="lg:col-span-2 space-y-8">
+          <div className="lg:col-span-2 space-y-6">
             {/* Image Gallery */}
-            <ImageGallery tour={tour} />
+            <div className="relative group mb-6">
+              <div className="w-full h-96 bg-gray-200 rounded-xl overflow-hidden">
+                <img
+                  src={tour.images?.[0] || tour.image}
+                  alt={tour.title}
+                  className="w-full h-full object-cover"
+                  onError={handleImageError}
+                />
+              </div>
+              {tour.images && tour.images.length > 1 && (
+                <div className="grid grid-cols-4 gap-2 mt-4">
+                  {tour.images.slice(1, 5).map((image, index) => (
+                    <div
+                      key={index}
+                      className="aspect-square rounded-lg overflow-hidden"
+                    >
+                      <img
+                        src={image}
+                        alt={`${tour.title} - Image ${index + 2}`}
+                        className="w-full h-full object-cover hover:opacity-80 transition-opacity cursor-pointer"
+                        onError={handleImageError}
+                      />
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
 
-            {/* Basic Info */}
-            <div>
-              <div className="flex flex-wrap items-center gap-3 mb-4">
-                <Badge variant={getDifficultyColor(tour.difficulty) as any}>
-                  {getDifficultyLabel(tour.difficulty)}
+            {/* Title and Basic Info */}
+            <Card className="bg-white rounded-xl p-6 shadow-sm border">
+              <div className="flex flex-wrap items-center gap-2 mb-4">
+                <Badge
+                  variant="default"
+                  className={getDifficultyColor(tour.difficulty)}
+                >
+                  {t.tours?.difficulty?.[tour.difficulty.toLowerCase()] ||
+                    tour.difficulty}
                 </Badge>
-                <Badge variant="default">{tour.duration} horas</Badge>
                 <Badge variant="default">
-                  Até {tour.maxParticipants} pessoas
+                  {tour.duration} {t.tourDetails?.hours || "hours"}
+                </Badge>
+                <Badge variant="default">
+                  {t.tourDetails?.upTo || "Up to"} {tour.maxParticipants}{" "}
+                  {t.tourDetails?.people || "people"}
                 </Badge>
                 {tour.minimumAge && (
-                  <Badge variant="default">+{tour.minimumAge} anos</Badge>
+                  <Badge variant="default">
+                    +{tour.minimumAge} {t.tourDetails?.years || "years"}
+                  </Badge>
+                )}
+                {tour.category && (
+                  <Badge variant="info" className="bg-blue-50 text-blue-700">
+                    {t.tours?.categories?.[tour.category] || tour.category}
+                  </Badge>
                 )}
               </div>
 
-              <h1 className="text-4xl font-bold text-gray-900 mb-4">
+              <h1 className="text-3xl font-bold text-gray-900 mb-4">
                 {tour.title}
               </h1>
 
-              <div className="flex items-center space-x-4 mb-6">
+              <div className="flex items-center space-x-4 mb-4">
                 <div className="flex items-center">
-                  <span className="text-yellow-500 text-lg mr-1">★</span>
+                  <Star className="w-5 h-5 text-yellow-500 fill-current mr-1" />
                   <span className="font-semibold">{tour.rating}</span>
-                  <span className="text-gray-600 ml-1">
-                    ({tour.reviewCount} avaliações)
+                  <span className="text-gray-600 ml-2">
+                    ({tour.reviewCount} {t.tourDetails?.reviews || "reviews"})
                   </span>
                 </div>
                 <div className="flex items-center text-gray-600">
-                  <span className="mr-1">📍</span>
+                  <MapPin className="w-4 h-4 mr-1" />
                   {tour.location}
                 </div>
+                {tour.languages && tour.languages.length > 0 && (
+                  <div className="flex items-center text-gray-600">
+                    <Users className="w-4 h-4 mr-1" />
+                    {tour.languages.join(", ")}
+                  </div>
+                )}
               </div>
 
-              <p className="text-lg text-gray-700 leading-relaxed">
+              <p className="text-lg text-gray-700 leading-relaxed mb-6">
                 {tour.description}
               </p>
-            </div>
 
-            {/* What's Included/Excluded */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              <Card className="p-6">
-                <h3 className="text-xl font-semibold text-gray-900 mb-4 flex items-center">
-                  <span className="text-green-500 mr-2">✓</span>
-                  Incluído
-                </h3>
-                <ul className="space-y-2">
-                  {tour.included.map((item, index) => (
-                    <li key={index} className="flex items-start">
-                      <span className="text-green-500 mr-2 mt-1">✓</span>
-                      <span className="text-gray-700">{item}</span>
-                    </li>
-                  ))}
-                </ul>
-              </Card>
+              {tour.longDescription && (
+                <div className="prose prose-gray max-w-none">
+                  <p className="text-gray-600">{tour.longDescription}</p>
+                </div>
+              )}
+            </Card>
 
-              {tour.excluded && tour.excluded.length > 0 && (
-                <Card className="p-6">
-                  <h3 className="text-xl font-semibold text-gray-900 mb-4 flex items-center">
-                    <span className="text-red-500 mr-2">✗</span>
-                    Não Incluído
+            {/* Highlights */}
+            {tour.highlights && tour.highlights.length > 0 && (
+              <Card>
+                <div className="p-6">
+                  <h3 className="text-xl font-semibold mb-4 flex items-center">
+                    <Star className="w-5 h-5 mr-2 text-yellow-500" />
+                    {t.tourDetails?.highlights || "Highlights"}
                   </h3>
                   <ul className="space-y-2">
-                    {tour.excluded.map((item, index) => (
+                    {tour.highlights.map((highlight: string, index: number) => (
                       <li key={index} className="flex items-start">
-                        <span className="text-red-500 mr-2 mt-1">✗</span>
-                        <span className="text-gray-700">{item}</span>
+                        <CheckCircle className="w-5 h-5 text-green-500 mr-2 mt-0.5 flex-shrink-0" />
+                        <span className="text-gray-700">{highlight}</span>
                       </li>
                     ))}
                   </ul>
+                </div>
+              </Card>
+            )}
+
+            {/* What's Included/Excluded */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <Card>
+                <div className="p-6">
+                  <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                    <CheckCircle className="w-5 h-5 text-green-500 mr-2" />
+                    {t.tourDetails?.whatsIncluded || "What's Included"}
+                  </h3>
+                  <ul className="space-y-2">
+                    {tour.included.map((item, index) => (
+                      <li key={index} className="flex items-start">
+                        <CheckCircle className="w-4 h-4 text-green-500 mr-2 mt-0.5 flex-shrink-0" />
+                        <span className="text-sm text-gray-700">{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </Card>
+
+              {tour.excluded && tour.excluded.length > 0 && (
+                <Card>
+                  <div className="p-6">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                      <XCircle className="w-5 h-5 text-red-500 mr-2" />
+                      {t.tourDetails?.whatsExcluded || "What's Excluded"}
+                    </h3>
+                    <ul className="space-y-2">
+                      {tour.excluded.map((item, index) => (
+                        <li key={index} className="flex items-start">
+                          <XCircle className="w-4 h-4 text-red-500 mr-2 mt-0.5 flex-shrink-0" />
+                          <span className="text-sm text-gray-700">{item}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
                 </Card>
               )}
             </div>
 
             {/* Itinerary */}
             {tour.itinerary && tour.itinerary.length > 0 && (
-              <Card className="p-6">
-                <Itinerary itinerary={tour.itinerary} />
+              <Card>
+                <div className="p-6">
+                  <h3 className="text-xl font-semibold mb-4 flex items-center">
+                    <Clock className="w-5 h-5 mr-2 text-blue-500" />
+                    {t.tourDetails?.itinerary || "Itinerary"}
+                  </h3>
+                  <div className="space-y-4">
+                    {tour.itinerary.map((item, index) => (
+                      <div key={index} className="flex space-x-4">
+                        <div className="flex-shrink-0 w-16 text-sm font-medium text-blue-600">
+                          {item.time}
+                        </div>
+                        <div className="flex-1">
+                          <h4 className="font-medium text-gray-900">
+                            {item.title}
+                          </h4>
+                          <p className="text-sm text-gray-600 mt-1">
+                            {item.description}
+                          </p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
               </Card>
             )}
 
-            {/* Cancellation Policy */}
-            <Card className="p-6">
-              <h3 className="text-xl font-semibold text-gray-900 mb-4">
-                Política de Cancelamento
-              </h3>
-              <p className="text-gray-700">{tour.cancellationPolicy}</p>
+            {/* Host Information */}
+            <Card>
+              <div className="p-6">
+                <h3 className="text-xl font-semibold mb-4">
+                  {t.tourDetails?.aboutHost || "About Your Host"}
+                </h3>
+                <div className="flex items-center space-x-4">
+                  <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white font-semibold">
+                    {(tour.hostName || "Host").charAt(0).toUpperCase()}
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-gray-900">
+                      {tour.hostName || "Host"}
+                    </h4>
+                    {tour.hostResponseTime && (
+                      <p className="text-sm text-gray-600">
+                        {t.tourDetails?.responseTime || "Response time"}:{" "}
+                        {tour.hostResponseTime}
+                      </p>
+                    )}
+                  </div>
+                </div>
+              </div>
             </Card>
 
-            {/* Reviews */}
-            <Card className="p-6">
-              <Reviews
-                reviews={mockReviews}
-                rating={tour.rating}
-                reviewCount={tour.reviewCount}
-              />
+            {/* Important Information */}
+            <Card className="bg-yellow-50 border-yellow-200">
+              <div className="p-6">
+                <h3 className="text-lg font-semibold mb-4 flex items-center text-yellow-800">
+                  <Info className="w-5 h-5 mr-2" />
+                  {t.tourDetails?.importantInfo || "Important Information"}
+                </h3>
+                <div className="space-y-3 text-sm text-yellow-800">
+                  <div className="flex items-start">
+                    <Calendar className="w-4 h-4 mr-2 mt-0.5 flex-shrink-0" />
+                    <span>
+                      {t.tourDetails?.meetingInstructions ||
+                        "Please arrive at the meeting point 15 minutes before the tour starts"}
+                    </span>
+                  </div>
+                  {tour.meetingPoint && (
+                    <div className="flex items-start">
+                      <MapPin className="w-4 h-4 mr-2 mt-0.5 flex-shrink-0" />
+                      <span>
+                        <strong>
+                          {t.tourDetails?.meetingPoint || "Meeting Point"}:
+                        </strong>{" "}
+                        {tour.meetingPoint}
+                      </span>
+                    </div>
+                  )}
+                  <div className="flex items-start">
+                    <Shield className="w-4 h-4 mr-2 mt-0.5 flex-shrink-0" />
+                    <span
+                      className={getCancellationPolicyColor(
+                        tour.cancellationPolicy
+                      )}
+                    >
+                      <strong>
+                        {t.tourDetails?.cancellationPolicy ||
+                          "Cancellation Policy"}
+                        :
+                      </strong>{" "}
+                      {t.tourDetails?.cancellationPolicies?.[
+                        tour.cancellationPolicy.toLowerCase()
+                      ] || tour.cancellationPolicy}
+                    </span>
+                  </div>
+                </div>
+              </div>
             </Card>
           </div>
 
-          {/* Booking Sidebar */}
+          {/* Sidebar - Booking Card */}
           <div className="lg:col-span-1">
-            <BookingForm tour={tour} />
+            <div className="sticky top-6">
+              <Card className="shadow-lg">
+                <div className="p-6">
+                  {/* Price */}
+                  <div className="mb-6">
+                    <div className="flex items-baseline space-x-2">
+                      <span className="text-3xl font-bold text-gray-900">
+                        €{tour.price.toFixed(2)}
+                      </span>
+                      {tour.originalPrice && (
+                        <>
+                          <span className="text-lg text-gray-500 line-through">
+                            €{tour.originalPrice.toFixed(2)}
+                          </span>
+                          <Badge variant="error" className="text-xs">
+                            -{discount}%
+                          </Badge>
+                        </>
+                      )}
+                    </div>
+                    <span className="text-gray-600">
+                      {t.tours?.perPerson || "per person"}
+                    </span>
+                  </div>
+
+                  {/* Booking Form */}
+                  <BookingForm
+                    tour={tour}
+                    onBookingComplete={handleBookingComplete}
+                  />
+
+                  {/* Quick Actions */}
+                  <div className="flex space-x-2 mt-4">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="flex-1"
+                      onClick={toggleBookmark}
+                    >
+                      <Heart
+                        className={`w-4 h-4 mr-2 ${tour.isBookmarked ? "fill-current text-red-500" : ""}`}
+                      />
+                      {tour.isBookmarked
+                        ? t.tours?.removeFromWishlist || "Remove"
+                        : t.tours?.addToWishlist || "Save"}
+                    </Button>
+                    <Button variant="outline" size="sm" onClick={handleShare}>
+                      {t.tourDetails?.share || "Share"}
+                    </Button>
+                  </div>
+
+                  {/* Trust indicators */}
+                  <div className="mt-6 pt-6 border-t border-gray-200 space-y-2 text-sm text-gray-600">
+                    <div className="flex items-center">
+                      <Shield className="w-4 h-4 mr-2 text-green-500" />
+                      {t.tourDetails?.securePayment || "Secure payment"}
+                    </div>
+                    <div className="flex items-center">
+                      <CheckCircle className="w-4 h-4 mr-2 text-green-500" />
+                      {t.tourDetails?.instantConfirmation ||
+                        "Instant confirmation"}
+                    </div>
+                    <div className="flex items-center">
+                      <Calendar className="w-4 h-4 mr-2 text-green-500" />
+                      {t.tourDetails?.flexibleCancellation ||
+                        "Flexible cancellation"}
+                    </div>
+                  </div>
+                </div>
+              </Card>
+
+              {/* Contact Host Card */}
+              <Card className="mt-4">
+                <div className="p-4">
+                  <h4 className="font-semibold mb-2">
+                    {t.tourDetails?.needHelp || "Need Help?"}
+                  </h4>
+                  <p className="text-sm text-gray-600 mb-3">
+                    {t.tourDetails?.contactHostMessage ||
+                      "Contact the host for any questions about this experience"}
+                  </p>
+                  <Button variant="outline" size="sm" className="w-full">
+                    {t.tourDetails?.contactHost || "Contact Host"}
+                  </Button>
+                </div>
+              </Card>
+            </div>
           </div>
         </div>
       </div>

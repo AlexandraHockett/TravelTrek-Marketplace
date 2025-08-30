@@ -73,7 +73,7 @@ export function middleware(request: NextRequest) {
     pathname.startsWith("/api/") ||
     pathname.startsWith("/_vercel/") ||
     pathname.includes("/_not-found") ||
-    /\.(ico|png|svg|jpg|jpeg|gif|webp|woff|woff2|ttf|eot|css|js|json|txt|xml|pdf)$/.test(
+    /\.(ico|png|svg|webp|jpeg|gif|webp|woff|woff2|ttf|eot|css|js|json|txt|xml|pdf)$/.test(
       pathname
     )
   ) {
