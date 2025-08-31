@@ -1,4 +1,4 @@
-// File: app/[locale]/customer/tours/[id]/client.tsx  
+// File: app/[locale]/customer/tours/[id]/client.tsx
 // Location: CREATE this NEW file in app/[locale]/customer/tours/[id]/
 
 "use client";
@@ -22,7 +22,7 @@ import {
   ArrowLeft,
   MessageCircle,
   Award,
-  Globe
+  Globe,
 } from "lucide-react";
 
 import { Tour, Translations } from "@/types";
@@ -45,7 +45,9 @@ export default function TourDetailClient({
 }: TourDetailClientProps) {
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [isWishlisted, setIsWishlisted] = useState(false);
-  const [activeTab, setActiveTab] = useState<"overview" | "itinerary" | "reviews">("overview");
+  const [activeTab, setActiveTab] = useState<
+    "overview" | "itinerary" | "reviews"
+  >("overview");
 
   const handleWishlistToggle = () => {
     setIsWishlisted(!isWishlisted);
@@ -75,7 +77,7 @@ export default function TourDetailClient({
   const tabs = [
     { key: "overview", label: t.tourDetails?.overview || "Visão Geral" },
     { key: "itinerary", label: t.tourDetails?.itinerary || "Itinerário" },
-    { key: "reviews", label: t.tourDetails?.reviews || "Avaliações" }
+    { key: "reviews", label: t.tourDetails?.reviews || "Avaliações" },
   ];
 
   return (
@@ -109,7 +111,7 @@ export default function TourDetailClient({
                     // TODO: Set fallback image
                   }}
                 />
-                
+
                 {/* Image Navigation Dots */}
                 {images.length > 1 && (
                   <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2">
@@ -137,7 +139,9 @@ export default function TourDetailClient({
                     onClick={handleWishlistToggle}
                     className="bg-white/90 hover:bg-white"
                   >
-                    <Heart className={`w-4 h-4 ${isWishlisted ? "fill-red-500 text-red-500" : ""}`} />
+                    <Heart
+                      className={`w-4 h-4 ${isWishlisted ? "fill-red-500 text-red-500" : ""}`}
+                    />
                   </Button>
                   <Button
                     size="sm"
@@ -159,7 +163,7 @@ export default function TourDetailClient({
                   </div>
                 )}
               </div>
-              
+
               {/* Thumbnail Strip */}
               {images.length > 1 && (
                 <div className="p-4 border-t">
@@ -193,15 +197,24 @@ export default function TourDetailClient({
               <div className="flex items-start justify-between">
                 <div className="flex-1">
                   <div className="flex items-center gap-2 mb-2">
-                    <Badge className={`${
-                      tour.difficulty === "Easy" ? "bg-green-100 text-green-800" :
-                      tour.difficulty === "Moderate" ? "bg-yellow-100 text-yellow-800" :
-                      "bg-red-100 text-red-800"
-                    }`}>
-                      {t.tourDetails?.difficulty?.[tour.difficulty.toLowerCase()] || tour.difficulty}
+                    <Badge
+                      className={`${
+                        tour.difficulty === "Easy"
+                          ? "bg-green-100 text-green-800"
+                          : tour.difficulty === "Moderate"
+                            ? "bg-yellow-100 text-yellow-800"
+                            : "bg-red-100 text-red-800"
+                      }`}
+                    >
+                      {t.tourDetails?.difficulty?.[
+                        tour.difficulty.toLowerCase()
+                      ] || tour.difficulty}
                     </Badge>
                     <Badge className="bg-blue-100 text-blue-800">
-                      {tour.duration} {tour.duration === 1 ? t.common?.hour || "hora" : t.common?.hours || "horas"}
+                      {tour.duration}{" "}
+                      {tour.duration === 1
+                        ? t.common?.hour || "hora"
+                        : t.common?.hours || "horas"}
                     </Badge>
                     {tour.minimumAge && (
                       <Badge className="bg-purple-100 text-purple-800">
@@ -210,14 +223,17 @@ export default function TourDetailClient({
                     )}
                   </div>
 
-                  <h1 className="text-3xl font-bold text-gray-900 mb-3">{tour.title}</h1>
-                  
+                  <h1 className="text-3xl font-bold text-gray-900 mb-3">
+                    {tour.title}
+                  </h1>
+
                   <div className="flex items-center space-x-4 text-gray-600 mb-4">
                     <div className="flex items-center">
                       <Star className="w-4 h-4 text-yellow-400 mr-1" />
                       <span className="font-medium">{tour.rating}</span>
                       <span className="ml-1">
-                        ({tour.reviewCount} {t.tourDetails?.reviews || "avaliações"})
+                        ({tour.reviewCount}{" "}
+                        {t.tourDetails?.reviews || "avaliações"})
                       </span>
                     </div>
                     <div className="flex items-center">
@@ -226,11 +242,15 @@ export default function TourDetailClient({
                     </div>
                     <div className="flex items-center">
                       <Users className="w-4 h-4 mr-1" />
-                      <span>{t.tours?.upTo || "até"} {tour.maxParticipants}</span>
+                      <span>
+                        {t.tours?.upTo || "até"} {tour.maxParticipants}
+                      </span>
                     </div>
                   </div>
 
-                  <p className="text-gray-700 leading-relaxed">{tour.description}</p>
+                  <p className="text-gray-700 leading-relaxed">
+                    {tour.description}
+                  </p>
                 </div>
               </div>
             </Card>
@@ -285,7 +305,9 @@ export default function TourDetailClient({
                         {tour.excluded.map((item, index) => (
                           <li key={index} className="flex items-start">
                             <XCircle className="w-4 h-4 text-red-500 mr-2 mt-0.5 flex-shrink-0" />
-                            <span className="text-gray-700 text-sm">{item}</span>
+                            <span className="text-gray-700 text-sm">
+                              {item}
+                            </span>
                           </li>
                         ))}
                       </ul>
@@ -296,28 +318,38 @@ export default function TourDetailClient({
                   <Card className="p-6 md:col-span-2">
                     <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
                       <Info className="w-5 h-5 text-blue-500 mr-2" />
-                      {t.tourDetails?.importantInfo || "Informações Importantes"}
+                      {t.tourDetails?.importantInfo ||
+                        "Informações Importantes"}
                     </h3>
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                       <div>
                         <span className="text-gray-600 text-sm block">
-                          {t.tourDetails?.maxParticipants || "Máx. participantes"}
+                          {t.tourDetails?.maxParticipants ||
+                            "Máx. participantes"}
                         </span>
-                        <span className="font-medium">{tour.maxParticipants} {t.common?.persons || "pessoas"}</span>
+                        <span className="font-medium">
+                          {tour.maxParticipants}{" "}
+                          {t.common?.persons || "pessoas"}
+                        </span>
                       </div>
                       {tour.minimumAge && (
                         <div>
                           <span className="text-gray-600 text-sm block">
                             {t.tourDetails?.minAge || "Idade mínima"}
                           </span>
-                          <span className="font-medium">{tour.minimumAge} {t.tourDetails?.years || "anos"}</span>
+                          <span className="font-medium">
+                            {tour.minimumAge} {t.tourDetails?.years || "anos"}
+                          </span>
                         </div>
                       )}
                       <div>
                         <span className="text-gray-600 text-sm block">
-                          {t.tourDetails?.cancellationPolicy || "Política de cancelamento"}
+                          {t.tourDetails?.cancellationPolicy ||
+                            "Política de cancelamento"}
                         </span>
-                        <span className="font-medium text-sm">{tour.cancellationPolicy}</span>
+                        <span className="font-medium text-sm">
+                          {tour.cancellationPolicy}
+                        </span>
                       </div>
                     </div>
                   </Card>
@@ -340,10 +372,16 @@ export default function TourDetailClient({
                         <div className="flex-1 pb-6 border-b border-gray-200 last:border-b-0">
                           <div className="flex items-center space-x-2 mb-2">
                             <Clock className="w-4 h-4 text-gray-500" />
-                            <span className="text-sm font-medium text-blue-600">{item.time}</span>
+                            <span className="text-sm font-medium text-blue-600">
+                              {item.time}
+                            </span>
                           </div>
-                          <h4 className="font-medium text-gray-900 mb-2">{item.title}</h4>
-                          <p className="text-gray-700 text-sm leading-relaxed">{item.description}</p>
+                          <h4 className="font-medium text-gray-900 mb-2">
+                            {item.title}
+                          </h4>
+                          <p className="text-gray-700 text-sm leading-relaxed">
+                            {item.description}
+                          </p>
                         </div>
                       </div>
                     ))}
@@ -354,25 +392,29 @@ export default function TourDetailClient({
               {activeTab === "reviews" && (
                 <Card className="p-6">
                   <h3 className="text-lg font-semibold text-gray-900 mb-6">
-                    {t.tourDetails?.customerReviews || "Avaliações dos Clientes"}
+                    {t.tourDetails?.customerReviews ||
+                      "Avaliações dos Clientes"}
                   </h3>
-                  
+
                   {/* Rating Summary */}
                   <div className="bg-gray-50 rounded-lg p-6 mb-6">
                     <div className="flex items-center justify-between mb-4">
                       <div className="flex items-center">
-                        <div className="text-4xl font-bold text-gray-900 mr-3">{tour.rating}</div>
+                        <div className="text-4xl font-bold text-gray-900 mr-3">
+                          {tour.rating}
+                        </div>
                         <div>
                           <div className="flex items-center mb-1">
                             {[...Array(5)].map((_, i) => (
-                              <Star 
-                                key={i} 
-                                className={`w-4 h-4 ${i < Math.floor(tour.rating) ? "text-yellow-400 fill-current" : "text-gray-300"}`} 
+                              <Star
+                                key={i}
+                                className={`w-4 h-4 ${i < Math.floor(tour.rating) ? "text-yellow-400 fill-current" : "text-gray-300"}`}
                               />
                             ))}
                           </div>
                           <div className="text-sm text-gray-600">
-                            {tour.reviewCount} {t.tourDetails?.reviews || "avaliações"}
+                            {tour.reviewCount}{" "}
+                            {t.tourDetails?.reviews || "avaliações"}
                           </div>
                         </div>
                       </div>
@@ -386,10 +428,12 @@ export default function TourDetailClient({
                   <div className="text-center py-8">
                     <MessageCircle className="w-12 h-12 text-gray-300 mx-auto mb-4" />
                     <p className="text-gray-500 mb-2">
-                      {t.tourDetails?.noReviewsYet || "Ainda não há avaliações para esta experiência."}
+                      {t.tourDetails?.noReviewsYet ||
+                        "Ainda não há avaliações para esta experiência."}
                     </p>
                     <p className="text-gray-400 text-sm">
-                      {t.tourDetails?.beFirstReview || "Seja o primeiro a deixar uma avaliação!"}
+                      {t.tourDetails?.beFirstReview ||
+                        "Seja o primeiro a deixar uma avaliação!"}
                     </p>
                   </div>
                 </Card>
@@ -418,7 +462,13 @@ export default function TourDetailClient({
                         {formatCurrency(tour.originalPrice)}
                       </span>
                       <Badge className="bg-red-100 text-red-800">
-                        -{Math.round(((tour.originalPrice - tour.price) / tour.originalPrice) * 100)}%
+                        -
+                        {Math.round(
+                          ((tour.originalPrice - tour.price) /
+                            tour.originalPrice) *
+                            100
+                        )}
+                        %
                       </Badge>
                     </div>
                   )}
@@ -428,11 +478,17 @@ export default function TourDetailClient({
                 <div className="flex items-center space-x-4 mb-6 text-sm text-gray-600">
                   <div className="flex items-center">
                     <Shield className="w-4 h-4 text-green-500 mr-1" />
-                    <span>{t.bookingForm?.freeCancellation || "Cancelamento gratuito"}</span>
+                    <span>
+                      {t.bookingForm?.freeCancellation ||
+                        "Cancelamento gratuito"}
+                    </span>
                   </div>
                   <div className="flex items-center">
                     <CheckCircle className="w-4 h-4 text-green-500 mr-1" />
-                    <span>{t.bookingForm?.instantConfirmation || "Confirmação instantânea"}</span>
+                    <span>
+                      {t.bookingForm?.instantConfirmation ||
+                        "Confirmação instantânea"}
+                    </span>
                   </div>
                 </div>
 
@@ -440,13 +496,19 @@ export default function TourDetailClient({
                 <BookingForm
                   tour={tour}
                   onSuccess={(booking: any) => {
+                    // Handle successful booking
                     console.log("Booking successful:", booking);
-                    // TODO: Navigate to booking confirmation page
+                    // Redirect to booking details or show success message
+                    window.location.href = `/customer/bookings/${booking.id}`;
                   }}
                   onError={(error: string) => {
+                    // Handle booking error
                     console.error("Booking error:", error);
-                    // TODO: Show error message
+                    // Show error message to user
+                    alert(t.errors?.generic || "Erro ao criar reserva");
                   }}
+                  className="w-full"
+                  variant="sidebar"
                 />
               </Card>
 
@@ -460,7 +522,9 @@ export default function TourDetailClient({
                     <Users className="w-6 h-6 text-gray-500" />
                   </div>
                   <div>
-                    <div className="font-medium text-gray-900">Maria Santos</div>
+                    <div className="font-medium text-gray-900">
+                      Maria Santos
+                    </div>
                     <div className="text-sm text-gray-600 flex items-center">
                       <Award className="w-3 h-3 mr-1" />
                       {t.tourDetails?.verified || "Verificado"}
@@ -470,11 +534,17 @@ export default function TourDetailClient({
                 <div className="space-y-2 text-sm text-gray-600">
                   <div className="flex items-center">
                     <MessageCircle className="w-4 h-4 mr-2" />
-                    <span>{t.tourDetails?.responseTime || "Tempo de resposta"}: < 1 hora</span>
+                    <span>
+                      {t.tourDetails?.responseTime || "Tempo de resposta"}: &lt;
+                      1 hora
+                    </span>
                   </div>
                   <div className="flex items-center">
                     <Globe className="w-4 h-4 mr-2" />
-                    <span>Português, English, Español</span>
+                    <span>
+                      {t.tourDetails?.language || "Idioma"}:{" "}
+                      {tour.language || "Português"}
+                    </span>
                   </div>
                 </div>
                 <Button variant="outline" size="sm" className="w-full mt-4">
@@ -489,7 +559,8 @@ export default function TourDetailClient({
                     {t.tourDetails?.needHelp || "Precisa de Ajuda?"}
                   </h4>
                   <p className="text-sm text-gray-600 mb-3">
-                    {t.tourDetails?.contactSupport || "A nossa equipa está disponível 24/7 para apoio."}
+                    {t.tourDetails?.contactSupport ||
+                      "A nossa equipa está disponível 24/7 para apoio."}
                   </p>
                   <Button variant="outline" size="sm" className="w-full">
                     {t.tourDetails?.contactUs || "Contactar-nos"}

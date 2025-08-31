@@ -2,6 +2,7 @@
 // Location: SUBSTITUIR o ficheiro existente types/index.ts
 
 export interface Tour {
+  language: string;
   id: string;
   title: string;
   description: string;
@@ -479,8 +480,9 @@ export type BookingFormProps = {
   tour: Tour;
   onSuccess?: (booking: Booking) => void;
   onError?: (error: string) => void;
+  onBookingComplete?: (bookingData: any) => void;
   className?: string;
-  variant?: "default" | "compact" | "minimal";
+  variant?: "default" | "compact" | "minimal" | "sidebar";
 };
 
 export interface PaymentButtonProps {

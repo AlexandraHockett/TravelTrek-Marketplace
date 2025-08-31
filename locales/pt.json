@@ -403,6 +403,9 @@
     }
   },
   "tourDetails": {
+    
+    "language": "Idioma",
+    "duration": "Duração",
     "difficulty": {
       "easy": "Fácil",
       "moderate": "Moderado",

@@ -16,6 +16,10 @@ import {
   type Locale,
 } from "@/lib/i18n";
 
+interface BookingFormComponentProps extends BookingFormProps {
+  t?: Translations;
+}
+
 interface BookingFormProps {
   tour: Tour;
   variant?: "default" | "sidebar" | "modal";
