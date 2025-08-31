@@ -267,9 +267,9 @@
       }
     },
     "customerTours": {
-      "title": "Tours e Experiências",
-      "subtitle": "Descubra experiências únicas em Portugal com anfitriões locais verificados",
-      "description": "Descubra experiências únicas em Portugal com anfitriões locais verificados"
+      "title": "Experiências Únicas",
+      "subtitle": "Descubra aventuras extraordinárias", 
+      "description": "Explore experiências autênticas criadas por anfitriões locais apaixonados."
     }
   },
   "bookingDetails": {
@@ -403,22 +403,45 @@
     }
   },
   "tourDetails": {
+    "difficulty": {
+      "easy": "Fácil",
+      "moderate": "Moderado",
+      "challenging": "Desafiante"
+    },
+    "reviews": "Avaliações",
+    "overview": "Visão Geral",
+    "itinerary": "Itinerário",
+    "included": "Incluído",
+    "excluded": "Não Incluído",
+    "importantInfo": "Informações Importantes",
+    "maxParticipants": "Máx. participantes",
+    "minAge": "Idade mínima",
+    "years": "anos",
+    "cancellationPolicy": "Política de cancelamento",
+    "detailedItinerary": "Itinerário Detalhado",
+    "customerReviews": "Avaliações dos Clientes",
+    "noReviewsYet": "Ainda não há avaliações para esta experiência.",
+    "beFirstReview": "Seja o primeiro a deixar uma avaliação!",
+    "needHelp": "Precisa de Ajuda?",
+    "contactSupport": "A nossa equipa está disponível 24/7 para apoio.",
+    "contactUs": "Contactar-nos",
+    "hostInfo": "Sobre o Anfitrião",
+    "verified": "Verificado",
+    "responseTime": "Tempo de resposta",
     "backToTours": "Voltar aos Tours",
     "hours": "horas",
     "upTo": "até",
     "people": "pessoas",
-    "years": "anos",
-    "reviews": "avaliações",
+
     "highlights": "Destaques",
     "whatsIncluded": "O Que Está Incluído",
     "whatsExcluded": "O Que Não Está Incluído",
-    "itinerary": "Itinerário",
+
     "aboutHost": "Sobre o Seu Anfitrião",
-    "responseTime": "Tempo de resposta",
-    "importantInfo": "Informações Importantes",
+
     "meetingInstructions": "Por favor, chegue ao ponto de encontro 15 minutos antes do início do tour",
     "meetingPoint": "Ponto de Encontro",
-    "cancellationPolicy": "Política de Cancelamento",
+
     "cancellationPolicies": {
       "flexible": "Flexível - Reembolso total até 24h antes",
       "moderate": "Moderada - 50% de reembolso até 48h antes",
@@ -428,7 +451,6 @@
     "securePayment": "Pagamento seguro",
     "instantConfirmation": "Confirmação instantânea",
     "flexibleCancellation": "Cancelamento flexível",
-    "needHelp": "Precisa de Ajuda?",
     "contactHostMessage": "Contacte o anfitrião para qualquer pergunta sobre esta experiência",
     "contactHost": "Contactar Anfitrião",
     "participant": "participante",
