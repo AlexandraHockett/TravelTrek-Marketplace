@@ -1,10 +1,60 @@
 {
   "nav": {
+    "home": "Accueil",
+    "tours": "Tours",
+    "bookings": "Réservations",
+    "profile": "Profil",
+    "host": "Hôte",
+    "login": "Se Connecter",
+    "signup": "S'inscrire",
     "exploreTours": "Explorer les Tours",
     "myBookings": "Mes Réservations",
     "hostPortal": "Portail Hôte",
-    "login": "Se Connecter",
-    "signup": "S'inscrire"
+    "dashboard": "Tableau de Bord",
+    "earnings": "Gains",
+    "messages": "Messages",
+    "settings": "Paramètres",
+    "logout": "Se Déconnecter",
+    "help": "Aide",
+    "contact": "Contact",
+    "about": "À propos",
+    "terms": "Conditions",
+    "privacy": "Confidentialité"
+  },
+  "common": {
+    "welcome": "Bienvenue",
+    "person": "personne",
+    "persons": "personnes",
+    "hours": "heures",
+    "hour": "heure",
+    "from": "à partir de",
+    "to": "jusqu'à",
+    "loading": "Chargement...",
+    "error": "Erreur",
+    "success": "Succès",
+    "cancel": "Annuler",
+    "confirm": "Confirmer",
+    "processing": "Traitement...",
+    "total": "Total",
+    "back": "Retour",
+    "next": "Suivant",
+    "previous": "Précédent",
+    "and": "et",
+    "optional": "Optionnel",
+    "save": "Sauvegarder",
+    "edit": "Modifier",
+    "delete": "Supprimer",
+    "view": "Voir",
+    "close": "Fermer",
+    "search": "Rechercher",
+    "filter": "Filtrer",
+    "sort": "Trier",
+    "date": "Date",
+    "time": "Heure",
+    "price": "Prix",
+    "currency": "€",
+    "yes": "Oui",
+    "no": "Non"
   },
   "hero": {
     "title": "Découvrez l'",
@@ -16,7 +66,7 @@
   "search": {
     "title": "Trouvez Votre Tour Parfait",
     "destinationLabel": "Destination",
-    "destinationPlaceholder": "Où aller ?",
+    "destinationPlaceholder": "Où aller?",
     "checkInLabel": "Arrivée",
     "participantsLabel": "Participants",
     "participantsOptions": {
@@ -28,7 +78,7 @@
     "searchButton": "Rechercher"
   },
   "benefits": {
-    "title": "Pourquoi Choisir TravelTrek ?",
+    "title": "Pourquoi Choisir TravelTrek?",
     "subtitle": "Nous facilitons la découverte et la réservation d'expériences de voyage incroyables",
     "localExperiences": {
       "title": "Expériences Locales",
@@ -44,51 +94,185 @@
     },
     "qualityGuaranteed": {
       "title": "Qualité Garantie",
-      "description": "Expériences uniques avec des notes 5 étoiles."
+      "description": "Expériences uniques avec des évaluations 5 étoiles."
     }
   },
   "hostCta": {
     "title": "Partagez Vos Connaissances Locales",
     "subtitle": "Rejoignez notre communauté d'hôtes locaux et transformez votre passion pour votre ville en revenus. Créez des tours uniques et partagez des expériences inoubliables avec les voyageurs.",
     "startTodayButton": "Commencer Aujourd'hui",
-    "learnEarningsButton": "En Savoir Plus sur les Revenus"
+    "learnEarningsButton": "En Savoir Plus Sur Les Gains"
   },
   "statistics": {
     "happyTravelers": "Voyageurs Heureux",
     "uniqueTours": "Tours Uniques",
     "citiesWorldwide": "Villes dans le Monde"
   },
-  "common": {
-    "welcome": "Bienvenue",
-    "loading": "Chargement...",
-    "error": "Erreur",
-    "success": "Succès",
-    "cancel": "Annuler",
-    "confirm": "Confirmer",
-    "save": "Sauvegarder",
-    "edit": "Modifier",
-    "delete": "Supprimer",
-    "view": "Voir",
-    "back": "Retour",
-    "next": "Suivant",
-    "previous": "Précédent",
-    "search": "Rechercher",
-    "filter": "Filtrer",
-    "sort": "Trier",
-    "total": "Total",
-    "person": "personne",
-    "persons": "personnes",
-    "date": "Date",
-    "time": "Heure",
-    "price": "Prix",
-    "currency": "€",
-    "yes": "Oui",
-    "no": "Non",
-    "hours": "heures",
-    "hour": "heure",
-    "from": "de",
-    "to": "à",
-    "processing": "Traitement..."
+  "pages": {
+    "home": {
+      "title": "TravelTrek - Expériences Uniques au Portugal",
+      "description": "Découvrez des expériences authentiques avec des hôtes locaux",
+      "hero": {
+        "title": "Découvrez le Portugal de manière authentique",
+        "subtitle": "Expériences uniques avec des hôtes locaux vérifiés",
+        "cta": "Explorer les Expériences",
+        "searchPlaceholder": "Où voulez-vous aller?",
+        "searchButton": "Rechercher des Tours"
+      },
+      "features": {
+        "discover": {
+          "title": "Découvrez",
+          "description": "Explorez des expériences uniques créées par des guides locaux spécialisés"
+        },
+        "book": {
+          "title": "Réservez",
+          "description": "Processus de réservation simple et sécurisé avec confirmation instantanée"
+        },
+        "experience": {
+          "title": "Vivez",
+          "description": "Profitez d'aventures inoubliables avec garantie de qualité"
+        }
+      },
+      "stats": {
+        "tours": "Tours Disponibles",
+        "customers": "Clients Satisfaits",
+        "locations": "Destinations",
+        "satisfaction": "Satisfaction"
+      }
+    },
+    "bookingDetail": {
+      "title": "Détails de la Réservation",
+      "description": "Informations détaillées sur votre réservation"
+    },
+    "notFound": {
+      "title": "Page non trouvée",
+      "description": "La page demandée n'a pas été trouvée"
+    },
+    "customerBookings": {
+      "title": "Mes Réservations",
+      "subtitle": "Gérez vos réservations de tours et expériences",
+      "description": "Gérez toutes vos réservations d'expériences de voyage",
+      "browseTours": "Explorer Plus de Tours",
+      "noBookings": "Vous n'avez pas encore de réservations",
+      "noBookingsDescription": "Découvrez des expériences uniques au Portugal et faites votre première réservation!",
+      "upcomingBookings": "Prochaines Réservations",
+      "upcomingExperiences": "Prochaines Expériences",
+      "pastBookings": "Réservations Passées",
+      "noResultsTitle": "Aucune réservation trouvée",
+      "noResultsDescription": "Il n'y a pas de réservations avec le statut \"{{status}}\".",
+      "allBookingsButton": "Voir Toutes les Réservations",
+      "confirmCancel": "Confirmer l'Annulation",
+      "cancelSuccess": "Réservation annulée avec succès",
+      "cancelError": "Erreur lors de l'annulation de la réservation",
+      "redirectingPayment": "Redirection vers le paiement...",
+      "paymentError": "Erreur lors du traitement du paiement",
+      "searchPlaceholder": "Rechercher des réservations...",
+      "noResults": "Aucun résultat trouvé",
+      "clearFilters": "Effacer les filtres",
+      "stats": {
+        "totalBookings": "Total des Réservations",
+        "upcoming": "À venir",
+        "totalSpent": "Total Dépensé"
+      },
+      "filters": {
+        "all": "Toutes",
+        "bookingStatusLabel": "Statut de la Réservation",
+        "sortByLabel": "Trier par"
+      },
+      "sort": {
+        "dateDesc": "Date la plus récente",
+        "dateAsc": "Date la plus ancienne",
+        "createdDesc": "Réservation la plus récente",
+        "amountDesc": "Montant le plus élevé",
+        "amountAsc": "Montant le plus bas",
+        "status": "Statut"
+      }
+    },
+    "customerTours": {
+      "title": "Expériences Uniques",
+      "subtitle": "Découvrez des aventures extraordinaires",
+      "description": "Explorez des expériences authentiques créées par des hôtes locaux passionnés."
+    },
+    "status": {
+      "title": "État du Projet",
+      "subtitle": "Démonstration de développement du TravelTrek Marketplace",
+      "categories": {
+        "coreInfrastructure": "Infrastructure de Base",
+        "customerPortal": "Portail Client",
+        "hostPortal": "Portail Hôte",
+        "integrations": "Intégrations"
+      },
+      "features": {
+        "i18nSystem": "Système d'Internationalisation",
+        "nextjsReact": "Next.js 15 + React 19",
+        "responsiveNavigation": "Navigation Responsive",
+        "typescriptIntegration": "Intégration TypeScript",
+        "tourBrowsing": "Navigation des Tours",
+        "bookingSystem": "Système de Réservations",
+        "userDashboard": "Tableau de Bord Utilisateur",
+        "reviewSystem": "Système d'Avis",
+        "bookingManagement": "Gestion des Réservations",
+        "tourCreation": "Création de Tours",
+        "earningsDashboard": "Tableau de Bord des Gains",
+        "messagingSystem": "Système de Messagerie",
+        "stripeIntegration": "Intégration Stripe",
+        "databasePostgres": "Base de Données Postgres",
+        "viatorApiIntegration": "Intégration API Viator",
+        "authenticationSystem": "Système d'Authentification"
+      },
+      "descriptions": {
+        "i18nSystemDesc": "Support complet pour 5 langues avec navigation fluide entre locales.",
+        "nextjsReactDesc": "Construit avec Next.js App Router et React pour un frontend moderne et évolutif.",
+        "responsiveNavigationDesc": "Navigation optimisée pour mobile et ordinateur avec Tailwind CSS v4.",
+        "typescriptIntegrationDesc": "Code type-safe avec TypeScript pour un développement robuste.",
+        "tourBrowsingDesc": "Naviguez et filtrez les tours avec des données en temps réel d'API Viator simulée.",
+        "bookingSystemDesc": "Système de réservations en cours avec gestion d'état et intégration Stripe.",
+        "userDashboardDesc": "Tableau de bord client pour gérer les réservations et paramètres de profil.",
+        "reviewSystemDesc": "Système planifié pour les utilisateurs laissent des avis sur tours et hôtes.",
+        "bookingManagementDesc": "Outils pour hôtes pour gérer réservations et communication avec clients.",
+        "tourCreationDesc": "Système en cours pour hôtes pour créer et modifier tours.",
+        "earningsDashboardDesc": "Tableau de bord pour hôtes pour suivre gains et métriques de performance.",
+        "messagingSystemDesc": "Système de messagerie planifié pour communication hôte-client.",
+        "stripeIntegrationDesc": "Intégration Stripe en cours pour traitement sécurisé des paiements.",
+        "databasePostgresDesc": "Base de données Postgres pour stocker tours, réservations et données utilisateur.",
+        "viatorApiIntegrationDesc": "Intégration planifiée avec API Viator pour synchronisation données tours.",
+        "authenticationSystemDesc": "Système d'authentification planifié pour accès sécurisé utilisateurs."
+      },
+      "status": {
+        "implemented": "Implémenté",
+        "inProgress": "En Cours",
+        "planned": "Planifié"
+      },
+      "techStack": "Stack Technologique",
+      "techStackItems": {
+        "nextjs": {
+          "title": "Next.js",
+          "subtitle": "Rendu côté serveur et App Router pour performance optimisée."
+        },
+        "tailwind": {
+          "title": "Tailwind CSS",
+          "subtitle": "Framework CSS utility-first pour design responsive et moderne."
+        },
+        "typescript": {
+          "title": "TypeScript",
+          "subtitle": "Développement type-safe pour code maintenable."
+        },
+        "i18n": {
+          "title": "Internationalisation",
+          "subtitle": "Support multi-langues pour atteindre audience globale."
+        }
+      },
+      "portfolioContext": "Contexte Portfolio",
+      "portfolioDescription": "TravelTrek Marketplace démontre une application web moderne et évolutive construite avec technologies de pointe.",
+      "portfolioPoints": {
+        "modernReact": "Framework React Moderne: Utilise Next.js avec App Router pour rendu dynamique.",
+        "i18nExpertise": "Expertise i18n: Supporte cinq langues avec changement fluide de locale.",
+        "marketplaceArchitecture": "Architecture Marketplace: Structure robuste pour portails client et hôte.",
+        "contemporaryStyling": "Style Contemporain: Tailwind CSS v4 pour UI moderne et responsive.",
+        "professionalStructure": "Structure Professionnelle: Code type-safe et design modulaire."
+      },
+      "portfolioFooter": "Ce projet démontre expertise dans construction d'applications marketplace évolutives."
+    }
   },
   "navigation": {
     "home": "Accueil",
@@ -101,7 +285,7 @@
     "dashboard": "Tableau de Bord",
     "help": "Aide",
     "contact": "Contact",
-    "about": "À Propos",
+    "about": "À propos",
     "terms": "Conditions",
     "privacy": "Confidentialité"
   },
@@ -118,7 +302,7 @@
       "title": "Hôte",
       "links": {
         "portal": "Portail Hôte",
-        "earnings": "Revenus",
+        "earnings": "Gains",
         "bookings": "Réservations"
       }
     },
@@ -126,7 +310,7 @@
       "title": "Support",
       "links": {
         "help": "Centre d'Aide",
-        "contact": "Contacter",
+        "contact": "Contact",
         "terms": "Conditions d'Utilisation",
         "privacy": "Confidentialité"
       }
@@ -142,23 +326,142 @@
       "cookies": "Cookies"
     }
   },
+  "tours": {
+    "searchPlaceholder": "Rechercher des tours...",
+    "result": "résultat",
+    "results": "résultats",
+    "filters": "Filtres",
+    "clearFilters": "Effacer les Filtres",
+    "noResults": "Aucun résultat trouvé",
+    "noResultsDescription": "Essayez d'ajuster les filtres pour trouver plus d'options.",
+    "from": "à partir de",
+    "perPerson": "par personne",
+    "upTo": "jusqu'à",
+    "viewDetails": "Voir les Détails",
+    "addToWishlist": "Ajouter à la Liste de Souhaits",
+    "removeFromWishlist": "Supprimer de la Liste de Souhaits",
+    "availableTours": "Tours Disponibles",
+    "averageRating": "Note Moyenne",
+    "totalReviews": "Avis",
+    "destinations": "Destinations",
+    "popularCategories": "Catégories Populaires",
+    "priceRange": "Gamme de Prix",
+    "location": "Localisation",
+    "allLocations": "Toutes les Localisations",
+    "allDifficulties": "Toutes les Difficultés",
+    "sortBy": "Trier par",
+    "difficulty": {
+      "label": "Difficulté",
+      "easy": "Facile",
+      "moderate": "Modéré",
+      "challenging": "Difficile"
+    },
+    "sort": {
+      "newest": "Plus Récents",
+      "popular": "Plus Populaires",
+      "priceAsc": "Prix Croissant",
+      "priceDesc": "Prix Décroissant",
+      "rating": "Mieux Notés",
+      "duration": "Durée"
+    },
+    "categories": {
+      "food": "Gastronomie",
+      "culture": "Culture",
+      "nature": "Nature",
+      "adventure": "Aventure",
+      "history": "Histoire",
+      "beaches": "Plages",
+      "wine": "Vin",
+      "walking": "Marche",
+      "family": "Famille",
+      "art": "Art",
+      "nightlife": "Vie Nocturne"
+    },
+    "hostCta": {
+      "title": "Gérez une entreprise touristique?",
+      "description": "Rejoignez notre plateforme et atteignez des milliers de voyageurs intéressés par vos expériences uniques.",
+      "button": "Devenir Hôte"
+    }
+  },
+  "tourDetails": {
+    "language": "Langue",
+    "duration": "Durée",
+    "difficulty": {
+      "easy": "Facile",
+      "moderate": "Modéré",
+      "challenging": "Difficile"
+    },
+    "reviews": "Avis",
+    "overview": "Aperçu",
+    "itinerary": "Itinéraire",
+    "included": "Inclus",
+    "excluded": "Non Inclus",
+    "importantInfo": "Informations Importantes",
+    "maxParticipants": "Max. participants",
+    "minAge": "Âge minimum",
+    "years": "ans",
+    "cancellationPolicy": "Politique d'annulation",
+    "detailedItinerary": "Itinéraire Détaillé",
+    "customerReviews": "Avis Clients",
+    "noReviewsYet": "Pas encore d'avis pour cette expérience.",
+    "beFirstReview": "Soyez le premier à laisser un avis!",
+    "needHelp": "Besoin d'Aide?",
+    "contactSupport": "Notre équipe est disponible 24/7 pour le support.",
+    "contactUs": "Nous contacter",
+    "hostInfo": "À propos de l'Hôte",
+    "verified": "Vérifié",
+    "responseTime": "Temps de réponse",
+    "backToTours": "Retour aux Tours",
+    "hours": "heures",
+    "upTo": "jusqu'à",
+    "people": "personnes",
+    "highlights": "Points Forts",
+    "whatsIncluded": "Ce Qui Est Inclus",
+    "whatsExcluded": "Ce Qui N'Est Pas Inclus",
+    "aboutHost": "À Propos de Votre Hôte",
+    "meetingInstructions": "Veuillez arriver au point de rendez-vous 15 minutes avant le début du tour",
+    "meetingPoint": "Point de Rendez-vous",
+    "cancellationPolicies": {
+      "flexible": "Flexible - Remboursement complet jusqu'à 24h avant",
+      "moderate": "Modérée - 50% remboursement jusqu'à 48h avant",
+      "strict": "Stricte - Pas de remboursement après 7 jours"
+    },
+    "share": "Partager",
+    "securePayment": "Paiement sécurisé",
+    "instantConfirmation": "Confirmation instantanée",
+    "flexibleCancellation": "Annulation flexible",
+    "contactHostMessage": "Contactez l'hôte pour toute question sur cette expérience",
+    "contactHost": "Contacter l'Hôte",
+    "participant": "participant",
+    "participants": "participants",
+    "availableOn": "Disponible le"
+  },
   "bookingForm": {
-    "title": "Réserver une Expérience",
+    "title": "Réserver l'Expérience",
+    "bookTour": "Réserver le Tour",
     "selectDate": "Sélectionner la Date",
     "selectTime": "Sélectionner l'Heure",
     "participants": "Nombre de Participants",
+    "addParticipant": "Ajouter un Participant",
+    "removeParticipant": "Supprimer un Participant",
     "specialRequests": "Demandes Spéciales (Optionnel)",
+    "specialRequestsPlaceholder": "Avez-vous des besoins spéciaux ou demandes spécifiques?",
+    "allergiesPlaceholder": "Allergies, besoins spéciaux, etc.",
+    "proceedToPayment": "Procéder au Paiement",
+    "continueToPayment": "Continuer vers le Paiement",
+    "bookingNotAvailable": "Réservation non disponible pour cette date",
+    "priceBreakdown": "Détail du Prix",
+    "basePrice": "Prix de Base",
+    "serviceFee": "Frais de Service",
+    "totalPrice": "Prix Total",
     "bookNow": "Réserver Maintenant",
     "pricePerPerson": "par personne",
-    "totalPrice": "Prix Total",
     "processingFee": "Frais de Traitement",
     "bookingError": "Erreur lors du traitement de la réservation. Veuillez réessayer.",
-    "allergiesPlaceholder": "Allergies, besoins spéciaux, etc.",
     "maxPersons": "Maximum",
     "bookForMultiple": "personne",
-    "noChargeYet": "Rien ne sera facturé pour le moment. Confirmez les détails avant le paiement.",
+    "noChargeYet": "Vous ne serez pas facturé pour le moment. Confirmez les détails avant le paiement.",
     "experienceDate": "Date de l'Expérience",
-    "continueToPayment": "Continuer vers le Paiement",
     "agreeToTerms": "En continuant, vous acceptez nos",
     "termsOfService": "Conditions de Service",
     "privacyPolicy": "Politique de Confidentialité",
@@ -176,7 +479,7 @@
     "save": "Économisez",
     "includedTaxes": "Taxes incluses",
     "freeCancellation": "Annulation gratuite",
-    "bookExperience": "Réserver une Expérience",
+    "bookExperience": "Réserver l'Expérience",
     "originalPrice": "Prix original",
     "total": "Total"
   },
@@ -198,7 +501,7 @@
     "specialRequests": "Demandes spéciales",
     "createdAt": "Créée le",
     "noBookings": "Vous n'avez pas encore de réservations.",
-    "bookFirstTour": "Réserver la Première Expérience",
+    "bookFirstTour": "Réserver Première Expérience",
     "vegetarianRequest": "Options végétariennes, s'il vous plaît",
     "date": "Date",
     "next": "Suivant",
@@ -211,77 +514,16 @@
     "leaveReview": "Laisser un Avis",
     "view": "Voir"
   },
-  "pages": {
-    "customerTours": {
-      "title": "Tours et Expériences",
-      "subtitle": "Découvrez des expériences uniques au Portugal avec des hôtes locaux vérifiés",
-      "description": "Découvrez des expériences uniques au Portugal avec des hôtes locaux vérifiés"
-    },
-    "home": {
-      "title": "TravelTrek - Expériences Uniques au Portugal",
-      "description": "Découvrez des expériences authentiques avec des hôtes locaux",
-      "hero": {
-        "title": "Découvrez le Portugal de manière authentique",
-        "subtitle": "Expériences uniques avec des hôtes locaux vérifiés",
-        "cta": "Explorer les Expériences"
-      }
-    },
-    "bookingDetail": {
-      "title": "Détails de la Réservation",
-      "description": "Informations détaillées sur votre réservation"
-    },
-    "notFound": {
-      "title": "Page non trouvée",
-      "description": "La page demandée n'a pas été trouvée"
-    },
-    "customerBookings": {
-      "title": "Mes Réservations",
-      "subtitle": "Gérez vos réservations de tours et d'expériences",
-      "description": "Gérez toutes vos réservations d'expériences de voyage",
-      "browseTours": "Explorer Plus de Tours",
-      "noBookingsDescription": "Découvrez des expériences uniques au Portugal et faites votre première réservation !",
-      "upcomingExperiences": "Expériences à Venir",
-      "noResultsTitle": "Aucune réservation trouvée",
-      "noResultsDescription": "Il n'y a pas de réservations avec le statut \"{{status}}\".",
-      "allBookingsButton": "Voir Toutes les Réservations",
-      "confirmCancel": "Confirmer l'Annulation",
-      "cancelSuccess": "Réservation annulée avec succès",
-      "cancelError": "Erreur lors de l'annulation de la réservation",
-      "redirectingPayment": "Redirection vers le paiement...",
-      "paymentError": "Erreur lors du traitement du paiement",
-      "searchPlaceholder": "Rechercher des réservations...",
-      "noResults": "Aucun résultat trouvé",
-      "clearFilters": "Effacer les filtres",
-      "stats": {
-        "totalBookings": "Total des Réservations",
-        "upcoming": "À Venir",
-        "totalSpent": "Total Dépensé"
-      },
-      "filters": {
-        "all": "Toutes",
-        "bookingStatusLabel": "Statut de la Réservation",
-        "sortByLabel": "Trier par"
-      },
-      "sort": {
-        "dateDesc": "Date la plus récente d'abord",
-        "dateAsc": "Date la plus ancienne d'abord",
-        "createdDesc": "Réservation la plus récente d'abord",
-        "amountDesc": "Montant le plus élevé d'abord",
-        "amountAsc": "Montant le plus bas d'abord",
-        "status": "Statut"
-      }
-    }
-  },
   "bookingDetails": {
     "bookingDetails": "Détails de la Réservation",
-    "bookingInformation": "Informations de la Réservation",
-    "hostInformation": "Informations de l'Hôte",
+    "bookingInformation": "Informations de Réservation",
+    "hostInformation": "Informations sur l'Hôte",
     "importantInformation": "Informations Importantes",
     "actions": "Actions",
     "paymentCompleted": "Paiement Terminé",
     "paymentCompletedDescription": "Votre réservation est confirmée et payée.",
     "paymentPending": "Paiement en Attente",
-    "paymentPendingDescription": "Terminez le paiement pour confirmer votre réservation.",
+    "paymentPendingDescription": "Complétez le paiement pour confirmer votre réservation.",
     "payNow": "Payer Maintenant",
     "serviceFees": "Frais de service",
     "included": "Inclus",
@@ -294,12 +536,12 @@
     "confirmedBooking": "Réservation Confirmée",
     "meetingInstructions": "Veuillez arriver sur le lieu 15 minutes avant le début de l'expérience.",
     "cancellationPolicy": "Politique d'Annulation",
-    "cancellationDescription": "Annulation gratuite jusqu'à 24 heures avant le début du tour. Les annulations tardives peuvent entraîner des frais.",
-    "cancelReasonRequired": "Veuillez indiquer la raison de l'annulation.",
-    "cancelDescription": "Êtes-vous sûr de vouloir annuler cette réservation ? Cette action ne peut pas être annulée.",
+    "cancellationDescription": "Annulation gratuite jusqu'à 24 heures avant le début du tour. Les annulations tardives peuvent encourir des frais.",
+    "cancelReasonRequired": "Veuillez fournir une raison pour l'annulation.",
+    "cancelDescription": "Êtes-vous sûr de vouloir annuler cette réservation? Cette action ne peut pas être annulée.",
     "refundInfo": "Remboursement",
     "willBeRefunded": "sera remboursé",
-    "cancelReason": "Raison de l'annulation",
+    "cancelReason": "Raison d'annulation",
     "cancelReasonPlaceholder": "Veuillez expliquer la raison de l'annulation...",
     "confirmCancel": "Confirmer l'Annulation",
     "cancelSuccess": "Réservation annulée avec succès",
@@ -309,22 +551,21 @@
     "contactHostMessage": "Ouverture du chat avec l'hôte...",
     "partialRefund": "Remboursement partiel de",
     "noRefund": "Aucun remboursement disponible",
-    "paymentInstructions": "Terminez le paiement pour confirmer votre réservation.",
+    "paymentInstructions": "Complétez le paiement pour confirmer votre réservation.",
     "pendingMessage": "En attente de confirmation de l'hôte",
-    "confirmedMessage": "Votre réservation a été confirmée !",
+    "confirmedMessage": "Votre réservation a été confirmée!",
     "completedMessage": "Expérience terminée",
     "cancelledMessage": "Réservation annulée",
     "time": "Heure",
     "meetingPoint": "Point de Rendez-vous",
-    "needHelp": "Besoin d'Aide ?",
-    "supportMessage": "Notre équipe est disponible 24 h/24 et 7 j/7 pour vous assister.",
+    "needHelp": "Besoin d'Aide?",
+    "supportMessage": "Notre équipe est disponible 24/7 pour le support.",
     "contactSupport": "Contacter le Support",
     "tourDescription": {
-      "description": "Description de la visite",
       "portoFoodWine": "Découvrez les saveurs authentiques de Porto dans une expérience gastronomique unique avec des vins locaux.",
-      "sintraPalaces": "Visitez les palais majestueux de Sintra, sites du patrimoine mondial de l'UNESCO, avec un guide spécialisé.",
+      "sintraPalaces": "Visitez les majestueux palais de Sintra, site du patrimoine mondial de l'UNESCO, avec un guide spécialisé.",
       "douroCruise": "Croisière panoramique sur le fleuve Douro avec de magnifiques paysages de vignobles.",
-      "lisbonTukTuk": "Explorez Lisbonne de manière amusante en tuk-tuk, en découvrant les coins cachés de la ville."
+      "lisbonTukTuk": "Explorez Lisbonne de manière amusante en tuk-tuk, découvrant des coins cachés de la ville."
     },
     "specialRequests": {
       "vegetarian": "Options végétariennes, s'il vous plaît",
@@ -338,62 +579,8 @@
     },
     "cancellationPolicyDetails": {
       "flexible": "Flexible - Remboursement complet jusqu'à 24h avant",
-      "moderate": "Modérée - 50% de remboursement jusqu'à 48h avant",
+      "moderate": "Modérée - 50% remboursement jusqu'à 48h avant",
       "strict": "Stricte - Pas de remboursement 7 jours avant"
-    }
-  },
-  "tours": {
-    "searchPlaceholder": "Rechercher des tours...",
-    "result": "résultat",
-    "results": "résultats",
-    "filters": "Filtres",
-    "clearFilters": "Effacer les Filtres",
-    "noResults": "Aucun résultat trouvé",
-    "noResultsDescription": "Essayez d'ajuster les filtres pour trouver plus d'options.",
-    "perPerson": "par personne",
-    "upTo": "jusqu'à",
-    "viewDetails": "Voir les Détails",
-    "addToWishlist": "Ajouter à la Liste de Souhaits",
-    "removeFromWishlist": "Retirer de la Liste de Souhaits",
-    "availableTours": "Tours Disponibles",
-    "averageRating": "Note Moyenne",
-    "totalReviews": "Avis",
-    "destinations": "Destinations",
-    "popularCategories": "Catégories Populaires",
-    "priceRange": "Fourchette de Prix",
-    "location": "Lieu",
-    "allLocations": "Tous les Lieux",
-    "allDifficulties": "Toutes les Difficultés",
-    "sortBy": "Trier par",
-    "difficulty": {
-      "label": "Difficulté",
-      "easy": "Facile",
-      "moderate": "Modérée",
-      "challenging": "Exigeante"
-    },
-    "sort": {
-      "newest": "Plus Récent",
-      "popular": "Plus Populaire",
-      "priceAsc": "Prix Croissant",
-      "priceDesc": "Prix Décroissant",
-      "rating": "Mieux Notés",
-      "duration": "Durée"
-    },
-    "categories": {
-      "food": "Gastronomie",
-      "culture": "Culture",
-      "nature": "Nature",
-      "adventure": "Aventure",
-      "history": "Histoire",
-      "beaches": "Plages",
-      "wine": "Vin",
-      "walking": "Marche",
-      "family": "Famille"
-    },
-    "hostCta": {
-      "title": "Vous dirigez une entreprise de tourisme ?",
-      "description": "Rejoignez notre plateforme et touchez des milliers de voyageurs intéressés par vos expériences uniques.",
-      "button": "Devenir Hôte"
     }
   },
   "errors": {
