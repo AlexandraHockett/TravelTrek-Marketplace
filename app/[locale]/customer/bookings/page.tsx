@@ -1,6 +1,10 @@
+// File: app/[locale]/customer/bookings/page.tsx
+// Location: SUBSTITUIR o ficheiro existente app/[locale]/customer/bookings/page.tsx
+
 import { Metadata } from "next";
 import { getTranslations } from "@/lib/utils";
 import CustomerBookingsClient from "./client";
+import { Booking } from "@/types";
 
 // Tipagem para os params
 interface PageProps {
@@ -21,9 +25,9 @@ export async function generateMetadata({
   const t = await getTranslations(locale);
 
   return {
-    title: t("pages.customerBookings.title") || "My Bookings",
+    title: t.pages?.customerBookings?.title || "My Bookings",
     description:
-      t("pages.customerBookings.description") ||
+      t.pages?.customerBookings?.description ||
       "Manage all your travel experience bookings",
   };
 }
@@ -36,8 +40,8 @@ export default async function CustomerBookingsPage({ params }: PageProps) {
   // Carrega as traduções no servidor
   const t = await getTranslations(locale);
 
-  // Mock data - atualizado para corresponder ao tipo Booking
-  const mockBookings = [
+  // Mock data - CORRIGIDO com todas as propriedades necessárias
+  const mockBookings: Booking[] = [
     {
       id: "b1",
       tourId: "t1",
@@ -49,16 +53,24 @@ export default async function CustomerBookingsPage({ params }: PageProps) {
       customerEmail: "joao@email.com",
       hostId: "h1",
       hostName: "Maria Santos",
+      hostAvatar: "/images/avatars/host-maria.webp",
       hostEmail: "maria@host.com",
       hostPhone: "+351 912 345 678",
+      hostVerified: true, // ✅ ADICIONADO
+      hostResponseTime: "< 1 hora", // ✅ ADICIONADO
       date: "2025-09-15",
+      time: "10:00", // ✅ ADICIONADO
       participants: 2,
+      basePrice: 44.99, // ✅ ADICIONADO
       totalAmount: 89.98,
+      serviceFees: 0, // ✅ ADICIONADO
       status: "confirmed" as const,
       paymentStatus: "paid" as const,
-      specialRequests: "bookingDetails.specialRequests.vegetarian",
-      meetingPoint: "bookingDetails.meetingPointDetails.portoCathedral",
-      cancellationPolicy: "bookingDetails.cancellationPolicyDetails.flexible",
+      specialRequests:
+        "One participant is vegetarian, please provide suitable food options.",
+      meetingPoint: "Mercado do Bolhão, Porto",
+      cancellationPolicy:
+        "Free cancellation up to 24 hours before the tour starts.",
       createdAt: "2025-08-20T10:00:00Z",
       updatedAt: "2025-08-20T10:00:00Z",
     },
@@ -72,65 +84,86 @@ export default async function CustomerBookingsPage({ params }: PageProps) {
       customerName: "João Silva",
       customerEmail: "joao@email.com",
       hostId: "h2",
-      hostName: "Ana Costa",
-      hostEmail: "ana@host.com",
-      hostPhone: "+351 923 456 789",
+      hostName: "Carlos Pereira",
+      hostAvatar: "/images/avatars/host-carlos.webp",
+      hostEmail: "carlos@host.com",
+      hostPhone: "+351 913 456 789",
+      hostVerified: true, // ✅ ADICIONADO
+      hostResponseTime: "< 2 horas", // ✅ ADICIONADO
       date: "2025-09-22",
+      time: "09:30", // ✅ ADICIONADO
       participants: 3,
+      basePrice: 65.0, // ✅ ADICIONADO
       totalAmount: 195.0,
+      serviceFees: 0, // ✅ ADICIONADO
       status: "pending" as const,
       paymentStatus: "pending" as const,
-      specialRequests: undefined,
-      meetingPoint: "bookingDetails.meetingPointDetails.sintraStation",
-      cancellationPolicy: "bookingDetails.cancellationPolicyDetails.moderate",
+      specialRequests:
+        "We would like to take lots of photos, please allow extra time.",
+      meetingPoint: "Estação de Sintra, Largo da Estação",
+      cancellationPolicy:
+        "Free cancellation up to 48 hours before the tour starts.",
       createdAt: "2025-08-22T14:30:00Z",
       updatedAt: "2025-08-22T14:30:00Z",
     },
     {
       id: "b3",
       tourId: "t3",
-      tourTitle: "Douro Valley River Cruise",
-      tourImage: "/images/tours/douro-cruise.webp",
-      tourDescription: "bookingDetails.tourDescription.douroCruise",
+      tourTitle: "Lisbon Sunset River Cruise",
+      tourImage: "/images/tours/lisbon-sunset.webp",
+      tourDescription: "bookingDetails.tourDescription.lisbonSunset",
       customerId: "c1",
       customerName: "João Silva",
       customerEmail: "joao@email.com",
       hostId: "h3",
-      hostName: "Pedro Almeida",
-      hostEmail: "pedro@host.com",
-      hostPhone: "+351 934 567 890",
-      date: "2025-08-10",
+      hostName: "Ana Costa",
+      hostAvatar: "/images/avatars/host-ana.webp",
+      hostEmail: "ana@host.com",
+      hostPhone: "+351 914 567 890",
+      hostVerified: true, // ✅ ADICIONADO
+      hostResponseTime: "< 30 minutos", // ✅ ADICIONADO
+      date: "2025-08-25",
+      time: "18:00", // ✅ ADICIONADO
       participants: 2,
-      totalAmount: 178.0,
+      basePrice: 35.0, // ✅ ADICIONADO
+      totalAmount: 70.0,
+      serviceFees: 0, // ✅ ADICIONADO
       status: "completed" as const,
       paymentStatus: "paid" as const,
-      specialRequests: undefined,
-      meetingPoint: "bookingDetails.meetingPointDetails.douroPort",
-      cancellationPolicy: "bookingDetails.cancellationPolicyDetails.strict",
-      createdAt: "2025-07-25T09:15:00Z",
-      updatedAt: "2025-08-11T16:00:00Z",
+      specialRequests: "",
+      meetingPoint: "Cais do Sodré, Terminal de Cruzeiros",
+      cancellationPolicy:
+        "Free cancellation up to 12 hours before the tour starts.",
+      createdAt: "2025-07-20T11:45:00Z",
+      updatedAt: "2025-08-25T20:00:00Z",
     },
     {
       id: "b4",
       tourId: "t4",
-      tourTitle: "Lisbon Tuk-Tuk City Tour",
-      tourImage: "/images/tours/lisbon-tuktuk.webp",
-      tourDescription: "bookingDetails.tourDescription.lisbonTukTuk",
+      tourTitle: "Óbidos Medieval Village",
+      tourImage: "/images/tours/obidos-medieval.webp",
+      tourDescription: "bookingDetails.tourDescription.obidosMedieval",
       customerId: "c1",
       customerName: "João Silva",
       customerEmail: "joao@email.com",
       hostId: "h4",
-      hostName: "Sofia Mendes",
-      hostEmail: "sofia@host.com",
-      hostPhone: "+351 945 678 901",
-      date: "2025-08-05",
+      hostName: "Pedro Santos",
+      hostAvatar: "/images/avatars/host-pedro.webp",
+      hostEmail: "pedro@host.com",
+      hostPhone: "+351 915 678 901",
+      hostVerified: false, // ✅ ADICIONADO
+      hostResponseTime: "< 4 horas", // ✅ ADICIONADO
+      date: "2025-07-30",
+      time: "14:00", // ✅ ADICIONADO
       participants: 1,
+      basePrice: 35.0, // ✅ ADICIONADO
       totalAmount: 35.0,
+      serviceFees: 0, // ✅ ADICIONADO
       status: "cancelled" as const,
       paymentStatus: "refunded" as const,
-      specialRequests: "bookingDetails.specialRequests.wheelchair",
-      meetingPoint: "bookingDetails.meetingPointDetails.lisbonSquare",
-      cancellationPolicy: "bookingDetails.cancellationPolicyDetails.flexible",
+      specialRequests: "",
+      meetingPoint: "Entrada Principal de Óbidos",
+      cancellationPolicy: "Moderate cancellation policy applies.",
       createdAt: "2025-07-20T11:45:00Z",
       updatedAt: "2025-08-04T08:00:00Z",
     },
