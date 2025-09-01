@@ -7,11 +7,11 @@ export interface Tour {
   description: string;
   image: string;
   location: string;
-  duration: number; // ✅ CORRIGIDO: number em vez de string
-  maxParticipants: number; // ✅ CORRIGIDO: obrigatório em vez de opcional
-  rating: number; // ✅ CORRIGIDO: obrigatório em vez de opcional
-  reviewCount: number; // Note: reviewCount, not reviewsCount
-  amenities?: string[]; // Added amenities property
+  duration: number;
+  maxParticipants: number;
+  rating: number;
+  reviewCount: number;
+  amenities?: string[];
   shortDescription?: string;
   images?: string[];
   price: number;
@@ -37,11 +37,12 @@ export interface ItineraryItem {
 }
 
 export interface Booking {
-  // ✅ CORRIGIDO: Propriedades em ordem correta
+  // ✅ CORRIGIDO: Adicionada propriedade location em falta
   id: string;
-  userId: string; // ✅ ADICIONADO: obrigatório
-  totalPrice: number; // ✅ ADICIONADO: obrigatório
-  currency: string; // ✅ ADICIONADO: obrigatório
+  userId: string;
+  totalPrice: number;
+  currency: string;
+  location: string; // 🆕 ADICIONADO: location property para corrigir erros TypeScript
   tourId: string;
   tourTitle: string;
   tourDescription: string;
@@ -140,6 +141,7 @@ export interface Translations {
     currency?: string;
     yes?: string;
     no?: string;
+    location?: string; // 🆕 ADICIONADO: translation key para location
   };
   bookingForm?: {
     selectDate?: string;
@@ -208,6 +210,7 @@ export interface Translations {
     person?: string;
     persons?: string;
     cancellationPolicy?: string;
+    location?: string; // 🆕 ADICIONADO: translation key para location
   };
   bookingDetails?: {
     bookingDetails: string;
@@ -256,6 +259,7 @@ export interface Translations {
     needHelp: string;
     supportMessage: string;
     contactSupport: string;
+    location: string; // 🆕 ADICIONADO: translation key para location
   };
   bookingList?: {
     pending: string;
@@ -286,114 +290,41 @@ export interface Translations {
     completedLabel: string;
     cancelledLabel: string;
     leaveReview: string;
+    bookFirstTour: string;
+    location: string; // 🆕 ADICIONADO: translation key para location
   };
   pages?: {
     customerBookings?: {
       title: string;
-      subtitle: string;
       description: string;
-      totalBookings: string;
-      noBookingsDescription: string;
-      browseTours: string;
-      confirmCancel: string;
-      cancelSuccess: string;
-      cancelError: string;
-      redirectingPayment: string;
-      paymentError: string;
-      searchPlaceholder: string;
-      noResults: string;
-      clearFilters: string;
-      upcomingExperiences: string;
-      noResultsTitle: string;
-      noResultsDescription: string;
-      allBookingsButton: string;
-      filters?: {
-        all: string;
-        bookingStatusLabel: string;
-        sortByLabel: string;
-      };
-      sort?: {
-        dateDesc: string;
-        dateAsc: string;
-        amountDesc: string;
-        amountAsc: string;
-        status: string;
-        createdDesc: string;
-      };
-      stats?: {
-        totalBookings: string;
-        upcoming: string;
-        totalSpent: string;
-      };
     };
     customerTours?: {
       title: string;
-      subtitle: string;
       description: string;
     };
-    hostDashboard?: {
-      title: string;
-      subtitle: string;
-    };
-    bookingDetail?: {
+    customerDashboard?: {
       title: string;
       description: string;
-    };
-    notFound?: {
-      title: string;
-      description: string;
-    };
-    home?: {
-      title: string;
-      description: string;
-      hero: {
-        title: string;
-        subtitle: string;
-        cta: string;
-      };
-      [key: string]: string | object;
     };
   };
   footer?: {
-    top?: {
-      explore?: string;
-      host?: string;
-      support?: string;
-      company?: string;
-      popularDestinations?: string;
-      allDestinations?: string;
-      tourCategories?: string;
-      becomeHost?: string;
-      hostResources?: string;
-      responsibleHosting?: string;
-      helpCenter?: string;
-      safetyInfo?: string;
-      cancellationOptions?: string;
-      aboutUs?: string;
-      newsroom?: string;
-      careers?: string;
-      investors?: string;
-      copyright?: string;
-      rights?: string;
-    };
-    support?: {
-      title?: string;
+    company?: {
+      title: string;
       links?: {
-        help?: string;
-        contact?: string;
-        terms?: string;
-        privacy?: string;
+        about: string;
+        careers: string;
+        press: string;
+        blog: string;
       };
     };
-    brand?: {
-      description?: string;
-      copyright?: string;
-      rights?: string;
-    };
-    bottom?: {
-      privacy?: string;
-      terms?: string;
-      cookies?: string;
+    support?: {
+      title: string;
+      links?: {
+        help: string;
+        contact: string;
+        trust: string;
+        safety: string;
+      };
     };
     explore?: {
       title: string;
@@ -494,6 +425,8 @@ export interface PaymentButtonProps {
   tourId?: string;
   participants?: number;
   date?: string;
+  successUrl?: string;
+  cancelUrl?: string;
 }
 
 export interface PaymentData {
