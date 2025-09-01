@@ -21,7 +21,78 @@
     "terms": "Termos",
     "privacy": "Privacidade"
   },
+  "bookings": {
+    "myBookings": "As Minhas Reservas",
+    "upcomingBookings": "Próximas Reservas",
+    "pastBookings": "Reservas Anteriores",
+    "noBookings": "Ainda não tens reservas",
+    "bookFirstTour": "Reserva a tua primeira experiência",
+    "status": {
+      "pending": "Pendente",
+      "confirmed": "Confirmada",
+      "paid": "Paga",
+      "completed": "Concluída",
+      "cancelled": "Cancelada"
+    },
+    "paymentStatus": {
+      "pending": "Pagamento Pendente",
+      "paid": "Pago",
+      "failed": "Falha no Pagamento",
+      "refunded": "Reembolsado"
+    },
+    "actions": {
+      "viewDetails": "Ver Detalhes",
+      "payNow": "Pagar Agora",
+      "cancelBooking": "Cancelar Reserva",
+      "contactHost": "Contactar Anfitrião",
+      "leaveReview": "Deixar Avaliação"
+    }
+  },
+  "payment": {
+    "securePayment": "Pagamento Seguro",
+    "payWithStripe": "Pagar com Stripe",
+    "redirectingToPayment": "A redirecionar para o pagamento...",
+    "paymentFailed": "Falha no pagamento",
+    "paymentSuccess": "Pagamento bem-sucedido!",
+    "processingPayment": "A processar pagamento...",
+    "paymentRequired": "Pagamento necessário para confirmar a reserva"
+  },
+  "host": {
+    "dashboard": "Dashboard do Anfitrião",
+    "totalBookings": "Total de Reservas",
+    "monthlyEarnings": "Ganhos Mensais",
+    "avgRating": "Classificação Média",
+    "activeListings": "Experiências Activas",
+    "recentBookings": "Reservas Recentes",
+    "viewAllBookings": "Ver Todas as Reservas",
+    "manageListings": "Gerir Experiências",
+    "earnings": {
+      "title": "Relatório de Ganhos",
+      "thisMonth": "Este Mês",
+      "lastMonth": "Mês Anterior",
+      "totalEarnings": "Total de Ganhos",
+      "pendingPayouts": "Pagamentos Pendentes",
+      "completedPayouts": "Pagamentos Concluídos",
+      "chartTitle": "Ganhos ao Longo do Tempo"
+    },
+    "bookings": {
+      "manageBookings": "Gerir Reservas",
+      "newBookings": "Novas Reservas",
+      "confirmedBookings": "Reservas Confirmadas",
+      "completedBookings": "Reservas Concluídas",
+      "customerName": "Nome do Cliente",
+      "tourName": "Nome da Experiência",
+      "date": "Data",
+      "participants": "Participantes",
+      "status": "Estado",
+      "amount": "Valor",
+      "actions": "Acções"
+    }
+  },
   "common": {
+    "book": "Reservar",
+    "bookNow": "Reservar Agora",
+    "payNow": "Pagar Agora",
     "viewAll": "Ver todas",
     "reviews": "avaliações",
     "review": "avaliação",
@@ -114,6 +185,8 @@
     "citiesWorldwide": "Cidades Mundialmente"
   },
   "navigation": {
+    "earnings": "Ganhos",
+    "messages": "Mensagens",
     "home": "Início",
     "tours": "Tours",
     "bookings": "Reservas",
@@ -187,6 +260,20 @@
     }
   },
   "tours": {
+    "title": "Descobre Experiências Únicas",
+    "subtitle": "Conecta-te com anfitriões locais autênticos",
+    "duration": "Duração",
+    "category": "Categoria",
+    "rating": "Classificação",
+    "showMore": "Mostrar mais",
+    "showLess": "Mostrar menos",
+    "loadMore": "Carregar mais experiências",
+    "reviewsCount": "avaliações",
+    "fromPrice": "a partir de",
+    "freeWifi": "Wi-Fi Gratuito",
+    "breakfast": "Pequeno-almoço",
+    "transport": "Transporte",
+    "guide": "Guia Local",
     "createSuccess": "Tour criado com sucesso",
     "searchPlaceholder": "Pesquisar tours...",
     "result": "resultado",
@@ -245,6 +332,13 @@
     }
   },
   "tourDetails": {
+    "whatToExpect": "O que esperar",
+    "bookThisTour": "Reservar esta Experiência",
+    "selectDate": "Seleccionar Data",
+    "totalPrice": "Preço Total",
+    "bookingError": "Erro ao processar reserva",
+    "bookingSuccess": "Reserva criada com sucesso!",
+    "unavailableDate": "Data indisponível",
     "bookNow": "Reservar Agora",
     "checkAvailability": "Verificar Disponibilidade",
     "addToWishlist": "Adicionar aos Favoritos",
@@ -313,6 +407,19 @@
     "availableOn": "Disponível em"
   },
   "bookingForm": {
+    "contactInfo": "Informações de Contacto",
+    "fullName": "Nome Completo",
+    "email": "Email",
+    "phone": "Telefone",
+    "errors": {
+      "dateRequired": "Por favor selecciona uma data",
+      "participantsRequired": "Número de participantes inválido",
+      "nameRequired": "Nome completo é obrigatório",
+      "emailRequired": "Email é obrigatório",
+      "phoneRequired": "Telefone é obrigatório",
+      "networkError": "Erro de rede. Tenta novamente.",
+      "serverError": "Erro do servidor. Contacta o suporte."
+    },
     "invalidParticipants": "Número de participantes inválido",
     "paymentError": "Falha no processamento do pagamento",
     "instantConfirmation": "Confirmação Instantânea",
@@ -606,6 +713,9 @@
     }
   },
   "errors": {
+    "serverError": "Erro do servidor. Contacta o suporte.",
+    "paymentFailed": "Falha no processamento do pagamento.",
+    "bookingFailed": "Não foi possível processar a reserva.",
     "unauthorized": "Não autorizado",
     "validation": "Dados inválidos",
     "generic": "Ocorreu um erro inesperado",

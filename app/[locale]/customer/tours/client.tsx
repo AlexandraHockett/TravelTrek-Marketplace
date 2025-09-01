@@ -1,395 +1,412 @@
 // File: app/[locale]/customer/tours/client.tsx
-// Location: SUBSTITUIR o ficheiro existente
+// Location: CREATE in app/[locale]/customer/tours/client.tsx
 
 "use client";
 
-import React, { useState } from "react";
-import type { Tour, Translations } from "@/types";
-import TourGrid from "@/components/customer/TourGrid";
-import { MapPin, Star, Calendar, Users } from "lucide-react";
+import { useState, useEffect, useMemo } from "react";
+import {
+  Search,
+  Filter,
+  MapPin,
+  Star,
+  Loader2,
+  Grid,
+  List,
+} from "lucide-react";
+import { Tour } from "@/types";
+import { useTranslations } from "@/lib/i18n";
+import TourCard from "@/components/customer/TourCard";
 
-interface CustomerToursClientProps {
-  initialTours: Tour[];
-  translations: Translations;
+interface ToursClientProps {
   locale: string;
+  searchParams: { [key: string]: string | string[] | undefined };
 }
 
-// Categoria interface para tipagem
-interface CategoryData {
-  name: string;
-  count: number;
-  icon: string;
-  key: string;
-}
+type SortOption = "price-asc" | "price-desc" | "rating" | "newest";
+type ViewMode = "grid" | "list";
 
-export default function CustomerToursClient({
-  initialTours,
-  translations: t,
+export default function ToursClient({
   locale,
-}: CustomerToursClientProps) {
-  const [loading, setLoading] = useState(false);
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  searchParams,
+}: ToursClientProps) {
+  const t = useTranslations(locale);
 
-  // Statistics
-  const totalTours = initialTours.length;
-  const averageRating =
-    totalTours > 0
-      ? (
-          initialTours.reduce((sum, tour) => sum + tour.rating, 0) / totalTours
-        ).toFixed(1)
-      : "0.0";
-  const totalReviews = initialTours.reduce(
-    (sum, tour) => sum + tour.reviewCount,
-    0
+  // State management
+  const [tours, setTours] = useState<Tour[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [searchQuery, setSearchQuery] = useState(
+    (searchParams.search as string) || ""
   );
-  const uniqueLocations = new Set(initialTours.map((tour) => tour.location))
-    .size;
+  const [sortBy, setSortBy] = useState<SortOption>("newest");
+  const [viewMode, setViewMode] = useState<ViewMode>("grid");
+  const [showFilters, setShowFilters] = useState(false);
 
-  // Calculate dynamic popular categories from tour tags/data
-  const calculatePopularCategories = (): CategoryData[] => {
-    const categoryMap = new Map<string, number>();
+  // Filter states
+  const [priceRange, setPriceRange] = useState<[number, number]>([0, 1000]);
+  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+  const [minRating, setMinRating] = useState<number>(0);
+  const [selectedLocation, setSelectedLocation] = useState<string>("");
 
-    // Count occurrences of each category based on tour tags
-    initialTours.forEach((tour) => {
-      if (tour.tags) {
-        tour.tags.forEach((tag) => {
-          const lowerTag = tag.toLowerCase();
-          // Map common tags to category keys
-          let categoryKey = "";
+  // Available filter options (would come from API in real app)
+  const categories = [
+    "Cultural",
+    "Adventure",
+    "Food & Drink",
+    "Nature",
+    "Historical",
+  ];
+  const locations = ["Lisbon", "Porto", "Sintra", "Óbidos", "Coimbra"];
 
-          if (
-            lowerTag.includes("food") ||
-            lowerTag.includes("wine") ||
-            lowerTag.includes("gastronomy")
-          ) {
-            categoryKey = "food";
-          } else if (
-            lowerTag.includes("culture") ||
-            lowerTag.includes("cultural")
-          ) {
-            categoryKey = "culture";
-          } else if (
-            lowerTag.includes("nature") ||
-            lowerTag.includes("outdoor")
-          ) {
-            categoryKey = "nature";
-          } else if (
-            lowerTag.includes("adventure") ||
-            lowerTag.includes("hiking")
-          ) {
-            categoryKey = "adventure";
-          } else if (
-            lowerTag.includes("history") ||
-            lowerTag.includes("historical")
-          ) {
-            categoryKey = "history";
-          } else if (lowerTag.includes("beach") || lowerTag.includes("coast")) {
-            categoryKey = "beaches";
-          } else if (
-            lowerTag.includes("walk") ||
-            lowerTag.includes("walking")
-          ) {
-            categoryKey = "walking";
-          } else if (lowerTag.includes("family")) {
-            categoryKey = "family";
-          } else if (lowerTag.includes("art") || lowerTag.includes("museum")) {
-            categoryKey = "art";
-          } else if (
-            lowerTag.includes("night") ||
-            lowerTag.includes("evening")
-          ) {
-            categoryKey = "nightlife";
-          }
+  // Fetch tours from API
+  const fetchTours = async () => {
+    try {
+      setLoading(true);
+      setError(null);
 
-          if (categoryKey) {
-            categoryMap.set(
-              categoryKey,
-              (categoryMap.get(categoryKey) || 0) + 1
-            );
-          }
-        });
+      const params = new URLSearchParams();
+
+      if (searchQuery) params.append("search", searchQuery);
+      if (selectedLocation) params.append("location", selectedLocation);
+      if (selectedCategories.length > 0) {
+        params.append("categories", selectedCategories.join(","));
       }
-    });
+      if (minRating > 0) params.append("minRating", minRating.toString());
+      params.append("minPrice", priceRange[0].toString());
+      params.append("maxPrice", priceRange[1].toString());
+      params.append("sortBy", sortBy);
 
-    // Create categories with translations and icons
-    const categories: CategoryData[] = [
-      {
-        key: "food",
-        name: t.tours?.categories?.food || "Gastronomia",
-        count: categoryMap.get("food") || 0,
-        icon: "🍷",
-      },
-      {
-        key: "culture",
-        name: t.tours?.categories?.culture || "Cultura",
-        count: categoryMap.get("culture") || 0,
-        icon: "🏛️",
-      },
-      {
-        key: "nature",
-        name: t.tours?.categories?.nature || "Natureza",
-        count: categoryMap.get("nature") || 0,
-        icon: "🌿",
-      },
-      {
-        key: "adventure",
-        name: t.tours?.categories?.adventure || "Aventura",
-        count: categoryMap.get("adventure") || 0,
-        icon: "🚴",
-      },
-      {
-        key: "history",
-        name: t.tours?.categories?.history || "História",
-        count: categoryMap.get("history") || 0,
-        icon: "📜",
-      },
-      {
-        key: "beaches",
-        name: t.tours?.categories?.beaches || "Praias",
-        count: categoryMap.get("beaches") || 0,
-        icon: "🏖️",
-      },
-      {
-        key: "walking",
-        name: t.tours?.categories?.walking || "Caminhadas",
-        count: categoryMap.get("walking") || 0,
-        icon: "🚶",
-      },
-      {
-        key: "family",
-        name: t.tours?.categories?.family || "Família",
-        count: categoryMap.get("family") || 0,
-        icon: "👨‍👩‍👧‍👦",
-      },
-      {
-        key: "art",
-        name: t.tours?.categories?.art || "Arte",
-        count: categoryMap.get("art") || 0,
-        icon: "🎨",
-      },
-      {
-        key: "nightlife",
-        name: t.tours?.categories?.nightlife || "Vida Noturna",
-        count: categoryMap.get("nightlife") || 0,
-        icon: "🌙",
-      },
-    ];
+      const response = await fetch(`/api/tours?${params.toString()}`);
 
-    // Return only categories with tours, sorted by count
-    return categories
-      .filter((cat) => cat.count > 0)
-      .sort((a, b) => b.count - a.count)
-      .slice(0, 8); // Show max 8 categories
-  };
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+      }
 
-  const popularCategories = calculatePopularCategories();
-
-  // Filter tours based on selected category
-  const getFilteredTours = () => {
-    if (!selectedCategory) return initialTours;
-
-    return initialTours.filter((tour) => {
-      if (!tour.tags) return false;
-
-      return tour.tags.some((tag) => {
-        const lowerTag = tag.toLowerCase();
-        switch (selectedCategory) {
-          case "food":
-            return (
-              lowerTag.includes("food") ||
-              lowerTag.includes("wine") ||
-              lowerTag.includes("gastronomy")
-            );
-          case "culture":
-            return (
-              lowerTag.includes("culture") || lowerTag.includes("cultural")
-            );
-          case "nature":
-            return lowerTag.includes("nature") || lowerTag.includes("outdoor");
-          case "adventure":
-            return (
-              lowerTag.includes("adventure") || lowerTag.includes("hiking")
-            );
-          case "history":
-            return (
-              lowerTag.includes("history") || lowerTag.includes("historical")
-            );
-          case "beaches":
-            return lowerTag.includes("beach") || lowerTag.includes("coast");
-          case "walking":
-            return lowerTag.includes("walk") || lowerTag.includes("walking");
-          case "family":
-            return lowerTag.includes("family");
-          case "art":
-            return lowerTag.includes("art") || lowerTag.includes("museum");
-          case "nightlife":
-            return lowerTag.includes("night") || lowerTag.includes("evening");
-          default:
-            return false;
-        }
-      });
-    });
-  };
-
-  const handleCategoryClick = (categoryKey: string) => {
-    if (selectedCategory === categoryKey) {
-      // If clicking the same category, deselect it
-      setSelectedCategory(null);
-    } else {
-      setSelectedCategory(categoryKey);
+      const data = await response.json();
+      setTours(Array.isArray(data) ? data : []);
+    } catch (error) {
+      console.error("Error fetching tours:", error);
+      setError(error instanceof Error ? error.message : t("errors.generic"));
+      setTours([]);
+    } finally {
+      setLoading(false);
     }
+  };
+
+  // Initial load and when filters change
+  useEffect(() => {
+    fetchTours();
+  }, [
+    searchQuery,
+    selectedLocation,
+    selectedCategories,
+    minRating,
+    priceRange,
+    sortBy,
+  ]);
+
+  // Filter tours (client-side additional filtering if needed)
+  const filteredTours = useMemo(() => {
+    return tours.filter((tour) => {
+      if (
+        searchQuery &&
+        !tour.title.toLowerCase().includes(searchQuery.toLowerCase())
+      ) {
+        return false;
+      }
+      return true;
+    });
+  }, [tours, searchQuery]);
+
+  // Handle category toggle
+  const toggleCategory = (category: string) => {
+    setSelectedCategories((prev) =>
+      prev.includes(category)
+        ? prev.filter((c) => c !== category)
+        : [...prev, category]
+    );
+  };
+
+  // Handle quick book
+  const handleQuickBook = (tour: Tour) => {
+    // Navigate to tour detail page for booking
+    window.location.href = `/${locale}/customer/tours/${tour.id}`;
   };
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <div className="max-w-7xl mx-auto px-4 py-8">
-        {/* Header */}
-        <div className="text-center mb-8">
-          <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-            {t.pages?.customerTours?.title || "Tours e Experiências"}
+      {/* Header */}
+      <div className="bg-white border-b border-gray-200">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">
+            {t("tours.title")}
           </h1>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            {t.pages?.customerTours?.subtitle ||
-              "Descubra experiências únicas em Portugal com anfitriões locais verificados"}
-          </p>
+          <p className="text-lg text-gray-600 mb-6">{t("tours.subtitle")}</p>
+
+          {/* Search and Filters Bar */}
+          <div className="flex flex-col sm:flex-row gap-4">
+            {/* Search Input */}
+            <div className="flex-1 relative">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+              <input
+                type="text"
+                placeholder={t("tours.searchPlaceholder")}
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              />
+            </div>
+
+            {/* Filters Toggle */}
+            <button
+              onClick={() => setShowFilters(!showFilters)}
+              className="flex items-center px-6 py-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+            >
+              <Filter className="w-5 h-5 mr-2" />
+              {t("tours.filters")}
+            </button>
+
+            {/* View Mode Toggle */}
+            <div className="flex border border-gray-300 rounded-lg overflow-hidden">
+              <button
+                onClick={() => setViewMode("grid")}
+                className={`px-3 py-3 ${
+                  viewMode === "grid"
+                    ? "bg-blue-600 text-white"
+                    : "bg-white text-gray-600 hover:bg-gray-50"
+                } transition-colors`}
+              >
+                <Grid className="w-5 h-5" />
+              </button>
+              <button
+                onClick={() => setViewMode("list")}
+                className={`px-3 py-3 ${
+                  viewMode === "list"
+                    ? "bg-blue-600 text-white"
+                    : "bg-white text-gray-600 hover:bg-gray-50"
+                } transition-colors`}
+              >
+                <List className="w-5 h-5" />
+              </button>
+            </div>
+          </div>
+
+          {/* Filters Panel */}
+          {showFilters && (
+            <div className="mt-6 p-6 bg-gray-50 rounded-lg border border-gray-200">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                {/* Location Filter */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <MapPin className="w-4 h-4 inline mr-1" />
+                    Location
+                  </label>
+                  <select
+                    value={selectedLocation}
+                    onChange={(e) => setSelectedLocation(e.target.value)}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  >
+                    <option value="">All Locations</option>
+                    {locations.map((location) => (
+                      <option key={location} value={location}>
+                        {location}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                {/* Category Filter */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    {t("tours.category")}
+                  </label>
+                  <div className="space-y-2 max-h-32 overflow-y-auto">
+                    {categories.map((category) => (
+                      <label key={category} className="flex items-center">
+                        <input
+                          type="checkbox"
+                          checked={selectedCategories.includes(category)}
+                          onChange={() => toggleCategory(category)}
+                          className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                        />
+                        <span className="ml-2 text-sm text-gray-700">
+                          {category}
+                        </span>
+                      </label>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Rating Filter */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <Star className="w-4 h-4 inline mr-1" />
+                    {t("tours.rating")}
+                  </label>
+                  <select
+                    value={minRating}
+                    onChange={(e) => setMinRating(Number(e.target.value))}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  >
+                    <option value={0}>Any Rating</option>
+                    <option value={3}>3+ Stars</option>
+                    <option value={4}>4+ Stars</option>
+                    <option value={4.5}>4.5+ Stars</option>
+                  </select>
+                </div>
+
+                {/* Price Range */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    {t("tours.priceRange")}
+                  </label>
+                  <div className="space-y-2">
+                    <input
+                      type="range"
+                      min="0"
+                      max="1000"
+                      step="10"
+                      value={priceRange[1]}
+                      onChange={(e) =>
+                        setPriceRange([priceRange[0], Number(e.target.value)])
+                      }
+                      className="w-full"
+                    />
+                    <div className="flex justify-between text-sm text-gray-600">
+                      <span>€{priceRange[0]}</span>
+                      <span>€{priceRange[1]}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Clear Filters */}
+              <div className="mt-4 flex justify-end">
+                <button
+                  onClick={() => {
+                    setSelectedLocation("");
+                    setSelectedCategories([]);
+                    setMinRating(0);
+                    setPriceRange([0, 1000]);
+                    setSearchQuery("");
+                  }}
+                  className="px-4 py-2 text-sm text-gray-600 hover:text-gray-900 transition-colors"
+                >
+                  Clear All Filters
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* Results */}
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Results Header */}
+        <div className="flex justify-between items-center mb-6">
+          <div className="text-sm text-gray-600">
+            {loading ? (
+              <span>Loading tours...</span>
+            ) : (
+              <span>
+                Showing {filteredTours.length} of {tours.length} tours
+              </span>
+            )}
+          </div>
+
+          <div className="flex items-center space-x-4">
+            <label className="text-sm text-gray-600">
+              {t("tours.sortBy")}:
+            </label>
+            <select
+              value={sortBy}
+              onChange={(e) => setSortBy(e.target.value as SortOption)}
+              className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            >
+              <option value="newest">Newest</option>
+              <option value="price-asc">Price: Low to High</option>
+              <option value="price-desc">Price: High to Low</option>
+              <option value="rating">Highest Rated</option>
+            </select>
+          </div>
         </div>
 
-        {/* Statistics */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-          <div className="bg-white rounded-lg p-4 text-center border border-gray-200">
-            <div className="flex items-center justify-center mb-2">
-              <Calendar className="w-5 h-5 text-blue-600" />
-            </div>
-            <div className="text-2xl font-bold text-gray-900">{totalTours}</div>
-            <div className="text-sm text-gray-600">
-              {t.tours?.availableTours || "Tours Disponíveis"}
-            </div>
-          </div>
-
-          <div className="bg-white rounded-lg p-4 text-center border border-gray-200">
-            <div className="flex items-center justify-center mb-2">
-              <Star className="w-5 h-5 text-yellow-500" />
-            </div>
-            <div className="text-2xl font-bold text-gray-900">
-              {averageRating}
-            </div>
-            <div className="text-sm text-gray-600">
-              {t.tours?.averageRating || "Avaliação Média"}
-            </div>
-          </div>
-
-          <div className="bg-white rounded-lg p-4 text-center border border-gray-200">
-            <div className="flex items-center justify-center mb-2">
-              <Users className="w-5 h-5 text-green-600" />
-            </div>
-            <div className="text-2xl font-bold text-gray-900">
-              {totalReviews.toLocaleString()}
-            </div>
-            <div className="text-sm text-gray-600">
-              {t.tours?.totalReviews || "Avaliações"}
-            </div>
-          </div>
-
-          <div className="bg-white rounded-lg p-4 text-center border border-gray-200">
-            <div className="flex items-center justify-center mb-2">
-              <MapPin className="w-5 h-5 text-red-600" />
-            </div>
-            <div className="text-2xl font-bold text-gray-900">
-              {uniqueLocations}
-            </div>
-            <div className="text-sm text-gray-600">
-              {t.tours?.destinations || "Destinos"}
-            </div>
-          </div>
-        </div>
-
-        {/* Popular Categories */}
-        {popularCategories.length > 0 && (
-          <div className="mb-8">
-            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4">
-              <h2 className="text-2xl font-semibold text-gray-900">
-                {t.tours?.popularCategories || "Categorias Populares"}
-              </h2>
-              {selectedCategory && (
-                <button
-                  onClick={() => setSelectedCategory(null)}
-                  className="mt-2 sm:mt-0 text-sm text-blue-600 hover:text-blue-800 transition-colors"
-                >
-                  {t.tours?.clearFilters || "Limpar Filtro"}
-                </button>
-              )}
-            </div>
-            <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 gap-3">
-              {popularCategories.map((category) => (
-                <button
-                  key={category.key}
-                  onClick={() => handleCategoryClick(category.key)}
-                  className={`bg-white border rounded-lg p-4 hover:shadow-md transition-all duration-200 text-center group ${
-                    selectedCategory === category.key
-                      ? "border-blue-500 bg-blue-50 shadow-md"
-                      : "border-gray-200 hover:border-blue-300"
-                  }`}
-                  aria-pressed={selectedCategory === category.key}
-                >
-                  <div
-                    className={`text-2xl mb-2 transition-transform ${
-                      selectedCategory === category.key
-                        ? "scale-110"
-                        : "group-hover:scale-110"
-                    }`}
-                  >
-                    {category.icon}
-                  </div>
-                  <div
-                    className={`font-medium text-sm mb-1 ${
-                      selectedCategory === category.key
-                        ? "text-blue-900"
-                        : "text-gray-900"
-                    }`}
-                  >
-                    {category.name}
-                  </div>
-                  <div
-                    className={`text-xs ${
-                      selectedCategory === category.key
-                        ? "text-blue-600"
-                        : "text-gray-500"
-                    }`}
-                  >
-                    {category.count} {category.count === 1 ? "tour" : "tours"}
-                  </div>
-                </button>
-              ))}
-            </div>
+        {/* Loading State */}
+        {loading && (
+          <div className="flex justify-center items-center py-12">
+            <Loader2 className="w-8 h-8 animate-spin text-blue-600" />
+            <span className="ml-2 text-gray-600">Loading tours...</span>
           </div>
         )}
 
-        {/* Tours Grid with Filters */}
-        <div className="bg-white rounded-xl border border-gray-200 p-6">
-          <TourGrid
-            tours={getFilteredTours()}
-            locale={locale}
-            translations={t}
-            loading={loading}
-            initialCategoryFilter={selectedCategory}
-          />
-        </div>
-
-        {/* Call to Action */}
-        <div className="mt-12 text-center">
-          <div className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl p-8 text-white">
-            <h3 className="text-2xl font-bold mb-4">
-              {t.tours?.hostCta?.title || "Tens um negócio de turismo?"}
-            </h3>
-            <p className="text-blue-100 mb-6 max-w-2xl mx-auto">
-              {t.tours?.hostCta?.description ||
-                "Junta-te à nossa plataforma e alcança milhares de viajantes interessados nas tuas experiências únicas."}
-            </p>
-            <button className="bg-white text-blue-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors">
-              {t.tours?.hostCta?.button || "Tornar-me Anfitrião"}
+        {/* Error State */}
+        {error && (
+          <div className="bg-red-50 border border-red-200 rounded-lg p-6 text-center">
+            <p className="text-red-800 mb-4">{error}</p>
+            <button
+              onClick={fetchTours}
+              className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
+            >
+              Try Again
             </button>
           </div>
-        </div>
+        )}
+
+        {/* Empty State */}
+        {!loading && !error && filteredTours.length === 0 && (
+          <div className="text-center py-12">
+            <MapPin className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+            <h3 className="text-lg font-medium text-gray-900 mb-2">
+              {t("tours.noResults")}
+            </h3>
+            <p className="text-gray-600 mb-4">
+              Try adjusting your search criteria or browse all available tours.
+            </p>
+            <button
+              onClick={() => {
+                setSearchQuery("");
+                setSelectedLocation("");
+                setSelectedCategories([]);
+                setMinRating(0);
+                setPriceRange([0, 1000]);
+              }}
+              className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+            >
+              Clear Filters
+            </button>
+          </div>
+        )}
+
+        {/* Tours Grid/List */}
+        {!loading && !error && filteredTours.length > 0 && (
+          <div
+            className={
+              viewMode === "grid"
+                ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+                : "space-y-6"
+            }
+          >
+            {filteredTours.map((tour) => (
+              <TourCard
+                key={tour.id}
+                tour={tour}
+                locale={locale}
+                compact={viewMode === "list"}
+                showQuickBook={true}
+                onQuickBook={handleQuickBook}
+              />
+            ))}
+          </div>
+        )}
+
+        {/* Load More Button */}
+        {!loading && filteredTours.length > 0 && (
+          <div className="text-center mt-8">
+            <button className="px-6 py-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
+              {t("tours.loadMore")}
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );

@@ -1,52 +1,100 @@
 // File: components/customer/PaymentButton.tsx
-// Location: Create this file in the components/customer/ directory
+// Location: REPLACE the existing components/customer/PaymentButton.tsx
 
 "use client";
 
-import React, { useState } from "react";
-import Button from "@/components/ui/Button";
+import { useState } from "react";
+import { CreditCard, Loader2, Shield, Lock } from "lucide-react";
+import { useTranslations } from "@/lib/i18n";
 import { formatCurrency } from "@/lib/utils";
-import { PaymentButtonProps, PaymentData } from "@/types";
 
-const PaymentButton: React.FC<PaymentButtonProps> = ({
+interface PaymentButtonProps {
+  bookingId?: string;
+  tourId?: string;
+  amount: number;
+  currency?: string;
+  participants?: number;
+  date?: string;
+  tourTitle?: string;
+  locale: string;
+  variant?: "default" | "primary" | "success";
+  size?: "sm" | "md" | "lg";
+  disabled?: boolean;
+  onPaymentSuccess?: (paymentData: any) => void;
+  onPaymentError?: (error: string) => void;
+  className?: string;
+  children?: React.ReactNode;
+}
+
+export default function PaymentButton({
   bookingId,
+  tourId,
   amount,
   currency = "EUR",
-  variant = "default",
+  participants = 1,
+  date,
+  tourTitle,
+  locale,
+  variant = "primary",
   size = "md",
   disabled = false,
   onPaymentSuccess,
   onPaymentError,
   className = "",
   children,
-  tourTitle,
-  tourId,
-  participants,
-  date,
-}) => {
-  const [isLoading, setIsLoading] = useState(false);
+}: PaymentButtonProps) {
+  const t = useTranslations(locale);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const handlePayment = async () => {
-    if (disabled || isLoading) return;
+  // Variant styles
+  const getVariantStyles = () => {
+    switch (variant) {
+      case "success":
+        return "bg-green-600 hover:bg-green-700 text-white";
+      case "default":
+        return "bg-gray-600 hover:bg-gray-700 text-white";
+      case "primary":
+      default:
+        return "bg-blue-600 hover:bg-blue-700 text-white";
+    }
+  };
 
-    setIsLoading(true);
+  // Size styles
+  const getSizeStyles = () => {
+    switch (size) {
+      case "sm":
+        return "px-3 py-2 text-sm";
+      case "lg":
+        return "px-8 py-4 text-lg";
+      case "md":
+      default:
+        return "px-6 py-3 text-base";
+    }
+  };
+
+  const handlePayment = async () => {
+    setLoading(true);
     setError(null);
 
     try {
       // Prepare payment data
-      const paymentData: PaymentData = {
-        amount: Math.round(amount * 100), // Convert to cents for Stripe
+      const paymentData = {
+        bookingId,
+        tourId,
+        amount: Math.round(amount * 100), // Convert to cents
         currency: currency.toLowerCase(),
-        successUrl: `${window.location.origin}/customer/bookings/${bookingId || "success"}?payment=success`,
-        cancelUrl: `${window.location.origin}/customer/bookings/${bookingId || "cancelled"}?payment=cancelled`,
+        participants,
+        date,
+        tourTitle,
+        // Generate success/cancel URLs
+        successUrl: `${window.location.origin}/${locale}/customer/bookings?payment=success${
+          bookingId ? `&booking=${bookingId}` : ""
+        }`,
+        cancelUrl: `${window.location.origin}/${locale}/customer/bookings?payment=cancelled${
+          bookingId ? `&booking=${bookingId}` : ""
+        }`,
       };
-
-      // Add optional fields
-      if (bookingId) paymentData.bookingId = bookingId;
-      if (tourId) paymentData.tourId = tourId;
-      if (participants) paymentData.participants = participants;
-      if (date) paymentData.date = date;
 
       // Call Stripe checkout API
       const response = await fetch("/api/stripe/checkout", {
@@ -58,25 +106,27 @@ const PaymentButton: React.FC<PaymentButtonProps> = ({
       });
 
       if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || "Erro ao processar pagamento");
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.error || t("payment.paymentFailed"));
       }
 
-      const { url, sessionId } = await response.json();
+      const { sessionId, url } = await response.json();
 
+      // Success callback before redirect
+      if (onPaymentSuccess) {
+        onPaymentSuccess({ sessionId, url, bookingId, amount, currency });
+      }
+
+      // Redirect to Stripe checkout
       if (url) {
-        // Redirect to Stripe Checkout
         window.location.href = url;
-      } else if (sessionId) {
-        // Alternative: handle with Stripe JS SDK
-        handleStripeRedirect(sessionId);
       } else {
-        throw new Error("Resposta inválida do servidor");
+        throw new Error("No payment URL received");
       }
-    } catch (error: any) {
+    } catch (error) {
       console.error("Payment error:", error);
       const errorMessage =
-        error.message || "Erro ao processar pagamento. Tenta novamente.";
+        error instanceof Error ? error.message : t("payment.paymentFailed");
 
       setError(errorMessage);
 
@@ -84,173 +134,208 @@ const PaymentButton: React.FC<PaymentButtonProps> = ({
         onPaymentError(errorMessage);
       }
     } finally {
-      setIsLoading(false);
+      setLoading(false);
     }
-  };
-
-  const handleStripeRedirect = async (sessionId: string) => {
-    try {
-      // In a real app, you would import Stripe here
-      // import { loadStripe } from '@stripe/stripe-js';
-      // const stripe = await loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
-      // await stripe?.redirectToCheckout({ sessionId });
-
-      // For now, just simulate the redirect
-      window.location.href = `/customer/bookings/${bookingId}?session_id=${sessionId}`;
-    } catch (error) {
-      console.error("Stripe redirect error:", error);
-      setError("Erro ao redirecionar para o pagamento");
-    }
-  };
-
-  // Handle successful payment (called from URL params)
-  React.useEffect(() => {
-    const urlParams = new URLSearchParams(window.location.search);
-    const paymentStatus = urlParams.get("payment");
-    const sessionId = urlParams.get("session_id");
-
-    if (paymentStatus === "success" && sessionId) {
-      if (onPaymentSuccess) {
-        onPaymentSuccess({ sessionId, bookingId });
-      }
-    }
-  }, [bookingId, onPaymentSuccess]);
-
-  const getButtonVariant = () => {
-    if (error) return "error";
-    return variant === "success" ? "default" : variant;
-  };
-
-  const getButtonText = () => {
-    if (isLoading) {
-      return (
-        <span className="flex items-center justify-center">
-          <svg
-            className="animate-spin -ml-1 mr-2 h-4 w-4 text-current"
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-          >
-            <circle
-              className="opacity-25"
-              cx="12"
-              cy="12"
-              r="10"
-              stroke="currentColor"
-              strokeWidth="4"
-            ></circle>
-            <path
-              className="opacity-75"
-              fill="currentColor"
-              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-            ></path>
-          </svg>
-          A processar...
-        </span>
-      );
-    }
-
-    if (error) {
-      return "Tentar Novamente";
-    }
-
-    if (children) {
-      return children;
-    }
-
-    return `Pagar ${formatCurrency(amount)}`;
   };
 
   return (
-    <div className="space-y-2">
-      <Button
+    <div>
+      <button
         onClick={handlePayment}
-        variant={getButtonVariant() as any}
-        size={size}
-        disabled={disabled || isLoading}
-        className={`relative ${
-          variant === "success" ? "bg-green-600 hover:bg-green-700" : ""
-        } ${className}`}
+        disabled={disabled || loading}
+        className={`
+          relative inline-flex items-center justify-center
+          rounded-lg font-medium transition-all duration-200
+          focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500
+          disabled:opacity-50 disabled:cursor-not-allowed
+          ${getVariantStyles()}
+          ${getSizeStyles()}
+          ${className}
+        `}
       >
-        {getButtonText()}
-      </Button>
+        {loading ? (
+          <>
+            <Loader2 className="w-4 h-4 animate-spin mr-2" />
+            {t("payment.processingPayment")}
+          </>
+        ) : (
+          <>
+            {children || (
+              <>
+                <CreditCard className="w-4 h-4 mr-2" />
+                {t("payment.payWithStripe")} {formatCurrency(amount, currency)}
+              </>
+            )}
+          </>
+        )}
+      </button>
 
-      {error && (
-        <div className="bg-red-50 border border-red-200 rounded-lg p-3">
-          <div className="flex items-start">
-            <span className="text-red-600 text-sm mr-2">⚠️</span>
-            <div className="flex-1">
-              <p className="text-red-800 text-sm font-medium">
-                Erro no Pagamento
-              </p>
-              <p className="text-red-700 text-sm mt-1">{error}</p>
-            </div>
-          </div>
+      {/* Security Badge */}
+      {!children && (
+        <div className="flex items-center justify-center mt-2 text-xs text-gray-500">
+          <Lock className="w-3 h-3 mr-1" />
+          {t("payment.securePayment")}
+          <Shield className="w-3 h-3 ml-1" />
         </div>
       )}
 
-      {/* Payment Security Info */}
-      <div className="flex items-center justify-center text-xs text-gray-500 mt-3">
-        <span className="mr-1">🔒</span>
-        <span>Pagamento seguro processado via Stripe</span>
-      </div>
+      {/* Error Message */}
+      {error && (
+        <div className="mt-2 p-2 bg-red-50 border border-red-200 rounded text-sm text-red-800">
+          {error}
+        </div>
+      )}
     </div>
   );
-};
-
-// Specialized variants for common use cases
-
-interface QuickPaymentProps
-  extends Omit<PaymentButtonProps, "variant" | "children"> {
-  label?: string;
 }
 
-export const QuickPayment: React.FC<QuickPaymentProps> = ({
-  label = "Pagar Agora",
-  ...props
-}) => (
-  <PaymentButton {...props} variant="primary" size="lg">
-    <span className="flex items-center">
-      <span className="mr-2">💳</span>
-      {label}
-    </span>
-  </PaymentButton>
-);
-
-interface CompleteBookingPaymentProps
-  extends Omit<PaymentButtonProps, "variant" | "children"> {
-  tourTitle: string;
-}
-
-export const CompleteBookingPayment: React.FC<CompleteBookingPaymentProps> = ({
-  tourTitle,
-  ...props
-}) => (
-  <PaymentButton {...props} variant="success" size="lg">
-    <span className="flex items-center">
-      <span className="mr-2">✅</span>
-      Confirmar e Pagar
-    </span>
-  </PaymentButton>
-);
-
-interface InstantBookingPaymentProps
-  extends Omit<PaymentButtonProps, "variant" | "children"> {
-  showAmount?: boolean;
-}
-
-export const InstantBookingPayment: React.FC<InstantBookingPaymentProps> = ({
+// Quick Payment Component (for booking confirmations)
+export function QuickPayment({
+  bookingId,
   amount,
-  showAmount = true,
-  ...props
-}) => (
-  <PaymentButton {...props} amount={amount} variant="primary" size="lg">
-    <span className="flex items-center">
-      <span className="mr-2">⚡</span>
-      Reserva Instantânea
-      {showAmount && ` - ${formatCurrency(amount)}`}
-    </span>
-  </PaymentButton>
-);
+  currency = "EUR",
+  locale,
+  onSuccess,
+  onError,
+}: {
+  bookingId: string;
+  amount: number;
+  currency?: string;
+  locale: string;
+  onSuccess?: (data: any) => void;
+  onError?: (error: string) => void;
+}) {
+  const t = useTranslations(locale);
 
-export default PaymentButton;
+  return (
+    <PaymentButton
+      bookingId={bookingId}
+      amount={amount}
+      currency={currency}
+      locale={locale}
+      variant="success"
+      size="lg"
+      onPaymentSuccess={onSuccess}
+      onPaymentError={onError}
+      className="w-full"
+    >
+      <CreditCard className="w-5 h-5 mr-3" />
+      {t("common.payNow")} - {formatCurrency(amount, currency)}
+    </PaymentButton>
+  );
+}
+
+// Complete Booking Payment (for checkout process)
+export function CompleteBookingPayment({
+  tourTitle,
+  tourId,
+  bookingId,
+  amount,
+  currency = "EUR",
+  participants,
+  date,
+  locale,
+  onSuccess,
+  onError,
+}: {
+  tourTitle: string;
+  tourId: string;
+  bookingId?: string;
+  amount: number;
+  currency?: string;
+  participants: number;
+  date: string;
+  locale: string;
+  onSuccess?: (data: any) => void;
+  onError?: (error: string) => void;
+}) {
+  const t = useTranslations(locale);
+
+  return (
+    <div className="bg-white rounded-lg border border-gray-200 p-6">
+      <div className="flex items-center justify-between mb-4">
+        <h3 className="text-lg font-medium text-gray-900">
+          {t("payment.securePayment")}
+        </h3>
+        <div className="flex items-center text-sm text-gray-500">
+          <Shield className="w-4 h-4 mr-1" />
+          Stripe
+        </div>
+      </div>
+
+      <div className="space-y-2 mb-6 text-sm">
+        <div className="flex justify-between">
+          <span className="text-gray-600">{tourTitle}</span>
+          <span className="font-medium">
+            {formatCurrency(amount, currency)}
+          </span>
+        </div>
+        <div className="flex justify-between">
+          <span className="text-gray-600">
+            {participants}{" "}
+            {participants === 1 ? t("common.person") : t("common.persons")}
+          </span>
+          <span className="text-gray-600">{date}</span>
+        </div>
+      </div>
+
+      <PaymentButton
+        bookingId={bookingId}
+        tourId={tourId}
+        amount={amount}
+        currency={currency}
+        participants={participants}
+        date={date}
+        tourTitle={tourTitle}
+        locale={locale}
+        variant="primary"
+        size="lg"
+        onPaymentSuccess={onSuccess}
+        onPaymentError={onError}
+        className="w-full"
+      />
+    </div>
+  );
+}
+
+// Instant Booking Payment (for direct bookings)
+export function InstantBookingPayment({
+  tourId,
+  tourTitle,
+  amount,
+  currency = "EUR",
+  participants,
+  date,
+  locale,
+  onSuccess,
+  onError,
+}: {
+  tourId: string;
+  tourTitle: string;
+  amount: number;
+  currency?: string;
+  participants: number;
+  date: string;
+  locale: string;
+  onSuccess?: (data: any) => void;
+  onError?: (error: string) => void;
+}) {
+  return (
+    <PaymentButton
+      tourId={tourId}
+      amount={amount}
+      currency={currency}
+      participants={participants}
+      date={date}
+      tourTitle={tourTitle}
+      locale={locale}
+      variant="success"
+      size="md"
+      onPaymentSuccess={onSuccess}
+      onPaymentError={onError}
+    >
+      <Lock className="w-4 h-4 mr-2" />
+      {useTranslations(locale)("common.bookNow")}
+    </PaymentButton>
+  );
+}
