@@ -30,7 +30,7 @@ const createMockRecentTours = (locale: string): Tour[] => [
     price: 65,
     originalPrice: 80,
     currency: "EUR",
-    duration: 8,
+    duration: 480, // ✅ CORRIGIDO: número em minutos (8 horas = 480 min)
     location: "Sintra, Portugal",
     rating: 4.8,
     reviewCount: 156,
@@ -69,7 +69,7 @@ const createMockRecentTours = (locale: string): Tour[] => [
     price: 89,
     originalPrice: 110,
     currency: "EUR",
-    duration: 10,
+    duration: 600, // ✅ CORRIGIDO: número em minutos (10 horas = 600 min)
     location: "Douro Valley, Portugal",
     rating: 4.9,
     reviewCount: 203,
@@ -107,7 +107,7 @@ const createMockRecentTours = (locale: string): Tour[] => [
     images: ["/images/tours/lisbon-tuktuk.webp"],
     price: 35,
     currency: "EUR",
-    duration: 3,
+    duration: 180, // ✅ CORRIGIDO: número em minutos (3 horas = 180 min)
     location: "Lisbon, Portugal",
     rating: 4.7,
     reviewCount: 89,
@@ -137,10 +137,15 @@ const createMockRecentTours = (locale: string): Tour[] => [
   },
 ];
 
-// Mock data para bookings - CORRIGIDO com todas as propriedades necessárias
+// ✅ CORRIGIDO: Mock data para bookings com TODAS as propriedades obrigatórias
 const mockBookings: Booking[] = [
   {
     id: "1",
+    // ✅ ADICIONADO: Propriedades obrigatórias em falta
+    userId: "c1",
+    totalPrice: 89.98,
+    currency: "EUR",
+    // Propriedades existentes
     tourId: "t1",
     tourTitle: "Porto Food Tour",
     tourImage: "/images/tours/porto-food.webp",
@@ -168,6 +173,40 @@ const mockBookings: Booking[] = [
     cancellationPolicy: "Free cancellation up to 24 hours", // ✅ ADICIONADO
     createdAt: "2025-08-20T10:00:00Z",
     updatedAt: "2025-08-20T10:00:00Z",
+  },
+  {
+    id: "2",
+    // ✅ ADICIONADO: Segunda booking para mostrar mais dados
+    userId: "c1",
+    totalPrice: 195.0,
+    currency: "EUR",
+    tourId: "t2",
+    tourTitle: "Sintra Royal Palaces",
+    tourImage: "/images/tours/sintra-palace.webp",
+    tourDescription: "Discover the magical palaces of Sintra",
+    customerId: "c1",
+    customerName: "João Silva",
+    customerEmail: "joao@email.com",
+    hostId: "h2",
+    hostName: "Carlos Mendes",
+    hostAvatar: "/images/avatars/host-carlos.webp",
+    hostEmail: "carlos@host.com",
+    hostPhone: "+351 923 456 789",
+    hostVerified: true,
+    hostResponseTime: "< 2 horas",
+    date: "2025-09-22",
+    time: "09:00",
+    participants: 3,
+    basePrice: 65.0,
+    totalAmount: 195.0,
+    serviceFees: 0,
+    status: "pending" as const,
+    paymentStatus: "pending" as const,
+    specialRequests: "Family with children",
+    meetingPoint: "Sintra Train Station",
+    cancellationPolicy: "Free cancellation up to 24 hours",
+    createdAt: "2025-08-25T14:30:00Z",
+    updatedAt: "2025-08-25T14:30:00Z",
   },
 ];
 
@@ -422,8 +461,8 @@ export default async function CustomerDashboardPage({ params }: PageProps) {
                         {new Date(booking.date).toLocaleDateString("pt-PT")} •{" "}
                         {booking.participants}{" "}
                         {booking.participants === 1
-                          ? t.common?.person
-                          : t.common?.persons}
+                          ? t.common?.person || "pessoa"
+                          : t.common?.persons || "pessoas"}
                       </p>
                     </div>
                     <div className="text-right">

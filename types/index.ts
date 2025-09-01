@@ -7,10 +7,10 @@ export interface Tour {
   description: string;
   image: string;
   location: string;
-  duration?: string;
-  maxParticipants?: number;
-  rating?: number;
-  reviewCount?: number; // Note: reviewCount, not reviewsCount
+  duration: number; // ✅ CORRIGIDO: number em vez de string
+  maxParticipants: number; // ✅ CORRIGIDO: obrigatório em vez de opcional
+  rating: number; // ✅ CORRIGIDO: obrigatório em vez de opcional
+  reviewCount: number; // Note: reviewCount, not reviewsCount
   amenities?: string[]; // Added amenities property
   shortDescription?: string;
   images?: string[];
@@ -37,11 +37,11 @@ export interface ItineraryItem {
 }
 
 export interface Booking {
-  
-  userId: string;
-  totalPrice: number;
-  currency: string; // Added currency property
+  // ✅ CORRIGIDO: Propriedades em ordem correta
   id: string;
+  userId: string; // ✅ ADICIONADO: obrigatório
+  totalPrice: number; // ✅ ADICIONADO: obrigatório
+  currency: string; // ✅ ADICIONADO: obrigatório
   tourId: string;
   tourTitle: string;
   tourDescription: string;
@@ -79,9 +79,6 @@ export interface User {
   role: "customer" | "host";
   createdAt: string;
 }
-
-// File: types/index.ts
-// Location: ACTUALIZAR a interface Translations existente
 
 export interface Translations {
   nav?: {
@@ -177,7 +174,7 @@ export interface Translations {
     total: string;
     serviceFees: string;
     included: string;
-    instantConfirmation: string; // ✅ ADICIONADO
+    instantConfirmation: string;
   };
   auth?: {
     pleaseLogin?: string;
@@ -196,125 +193,21 @@ export interface Translations {
     };
   };
   tourDetails?: {
-    // ✅ ADICIONADO COMPLETO
-    difficulty: {
-      easy: string;
-      moderate: string;
-      challenging: string;
-    };
-    reviews: string;
-    overview: string;
-    itinerary: string;
-    included: string;
-    excluded: string;
-    importantInfo: string;
-    maxParticipants: string;
-    minAge: string;
-    years: string;
-    cancellationPolicy: string;
-    detailedItinerary: string;
-    customerReviews: string;
-    noReviewsYet: string;
-    beFirstReview: string;
-    needHelp: string;
-    contactSupport: string;
-    contactUs: string;
-    hostInfo: string;
-    verified: string;
-    responseTime: string;
-    bookNow: string;
-    checkAvailability: string;
-    addToWishlist: string;
-    removeFromWishlist: string;
-    shareExperience: string;
-    whatYouWillDo: string;
-    meetingPoint: string;
-    duration: string;
-    groupSize: string;
-    languages: string;
-    provided: string;
-    bring: string;
-    notSuitableFor: string;
-    weatherDependent: string;
-    accessibilityInfo: string;
-    safetyMeasures: string;
-    experience: string;
-    viewDetails?: string;
-    host?: string;
-    contactHost?: string;
-    similarTours?: string;
-    reviewsTitle?: string;
-    writeReview?: string;
-    rating?: string;
-    submitReview?: string;
-    reviewPlaceholder?: string;
-  };
-  tours?: {
-    searchPlaceholder: string;
-    result: string;
-    results: string;
-    filters: string;
-    filteredBy: string;
-    clearFilters: string;
-    noResults: string;
-    noResultsDescription: string;
-    perPerson: string;
-    upTo: string;
-    viewDetails: string;
-    addToWishlist: string;
-    removeFromWishlist: string;
-    availableTours: string;
-    averageRating: string;
-    totalReviews: string;
-    destinations: string;
-    popularCategories: string;
-    priceRange: string;
-    location: string;
-    allLocations: string;
-    allDifficulties: string;
-    sortBy: string;
-    difficulty?: {
-      [key: string]: string; // Allow any string key
-      label: string;
-      easy: string;
-      moderate: string;
-      challenging: string;
-    };
-    sort?: {
-      newest: string;
-      popular: string;
-      priceAsc: string;
-      priceDesc: string;
-      rating: string;
-      duration: string;
-    };
-    categories?: {
-      [key: string]: string;
-      food: string;
-      culture: string;
-      nature: string;
-      adventure: string;
-      history: string;
-      beaches: string;
-      wine: string;
-      walking: string;
-      family: string;
-      art: string;
-      nightlife: string;
-    };
-    hostCta?: {
-      title: string;
-      description: string;
-      button: string;
-    };
-    tryDifferent?: string;
+    bookingSuccess?: string;
+    backToTours?: string;
     duration?: string;
+    participants?: string;
+    included?: string;
+    excluded?: string;
+    meetingPoint?: string;
+    difficulty?: string;
     rating?: string;
-    applyFilters?: string;
-    popularity?: string;
-    priceLowHigh?: string;
-    priceHighLow?: string;
-    ratingHighLow?: string;
+    reviews?: string;
+    bookNow?: string;
+    from?: string;
+    person?: string;
+    persons?: string;
+    cancellationPolicy?: string;
   };
   bookingDetails?: {
     bookingDetails: string;
@@ -363,10 +256,6 @@ export interface Translations {
     needHelp: string;
     supportMessage: string;
     contactSupport: string;
-    tourDescription?: {};
-    specialRequests?: {};
-    meetingPointDetails?: {};
-    cancellationPolicyDetails?: {};
   };
   bookingList?: {
     pending: string;
@@ -438,7 +327,6 @@ export interface Translations {
       };
     };
     customerTours?: {
-      // ✅ ADICIONADO
       title: string;
       subtitle: string;
       description: string;
@@ -463,9 +351,6 @@ export interface Translations {
         subtitle: string;
         cta: string;
       };
-      [key: string]: string | object;
-    };
-    status?: {
       [key: string]: string | object;
     };
   };
@@ -593,16 +478,7 @@ export interface Translations {
   };
 }
 
-// ✅ CORRIGIR BookingFormProps para aceitar tour
-export type BookingFormProps = {
-  tour: Tour;
-  onSuccess?: (booking: Booking) => void;
-  onError?: (error: string) => void;
-  onBookingComplete?: (bookingData: any) => void;
-  className?: string;
-  variant?: "default" | "compact" | "minimal" | "sidebar";
-};
-
+// Component Props Types
 export interface PaymentButtonProps {
   bookingId?: string;
   amount: number;
@@ -631,13 +507,21 @@ export interface PaymentData {
   cancelUrl?: string;
 }
 
-// Export specific prop types
 export type TourCardProps = {
   tour: Tour;
   locale: string;
   translations: Translations;
   compact?: boolean;
   className?: string;
+};
+
+export type BookingFormProps = {
+  tour: Tour;
+  onSuccess?: (booking: Booking) => void;
+  onError?: (error: string) => void;
+  onBookingComplete?: (bookingData: any) => void;
+  className?: string;
+  variant?: "default" | "compact" | "minimal" | "sidebar";
 };
 
 export type BookingListProps = {
@@ -659,10 +543,6 @@ export type PaymentStatus = "pending" | "paid" | "refunded";
 export type TourDifficulty = "Easy" | "Moderate" | "Challenging";
 
 export type UserRole = "customer" | "host";
-
-interface PageProps {
-  params: Promise<{ locale: string; id: string }>;
-}
 
 export interface BasePageProps {
   params: Promise<{ locale: string }>;
