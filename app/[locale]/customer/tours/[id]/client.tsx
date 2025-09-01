@@ -3,7 +3,7 @@
 
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, JSX } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import {
@@ -193,7 +193,10 @@ export default function TourDetailClient({
 
         {/* Title and Location */}
         <div className="absolute bottom-8 left-6 right-6 text-white">
-          <h1 className="text-3xl md:text-4xl font-bold mb-2 text-shadow">
+          <h1
+            className="text-3xl md:text-4xl font-bold mb-2"
+            style={{ textShadow: "0 2px 4px rgba(0, 0, 0, 0.5)" }}
+          >
             {tour.title}
           </h1>
           <div className="flex items-center text-lg opacity-90">
@@ -225,10 +228,10 @@ export default function TourDetailClient({
                     : t("common.persons")}
                 </div>
               )}
-              {tour.rating && tour.reviewsCount && (
+              {tour.rating && tour.reviewCount && (
                 <div className="flex items-center">
                   <Star className="w-4 h-4 mr-2 text-yellow-400 fill-current" />
-                  {tour.rating} ({tour.reviewsCount} {t("tours.reviewsCount")})
+                  {tour.rating} ({tour.reviewCount} {t("tours.reviewsCount")})
                 </div>
               )}
             </div>
@@ -305,10 +308,10 @@ export default function TourDetailClient({
             </div>
 
             {/* Reviews Section */}
-            {tour.rating && tour.reviewsCount && (
+            {tour.rating && tour.reviewCount && (
               <div className="bg-white rounded-lg shadow-md p-6">
                 <h2 className="text-2xl font-bold text-gray-900 mb-4">
-                  {t("tourDetails.reviews")} ({tour.reviewsCount})
+                  {t("tourDetails.reviews")} ({tour.reviewCount})
                 </h2>
 
                 {/* Overall Rating */}
@@ -330,7 +333,7 @@ export default function TourDetailClient({
                       ))}
                     </div>
                     <p className="text-sm text-gray-600">
-                      Based on {tour.reviewsCount} reviews
+                      Based on {tour.reviewCount} reviews
                     </p>
                   </div>
                 </div>
@@ -376,13 +379,6 @@ export default function TourDetailClient({
           </div>
         </div>
       </div>
-
-      {/* Custom styles for text shadow */}
-      <style jsx>{`
-        .text-shadow {
-          text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-        }
-      `}</style>
     </div>
   );
 }

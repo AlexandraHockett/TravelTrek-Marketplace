@@ -404,7 +404,6 @@ export default function HostDashboard({ params }: HostDashboardProps) {
             {activeTab === "bookings" && (
               <BookingList hostId={hostId} locale={locale} />
             )}
-
             {activeTab === "earnings" && (
               <EarningsChart hostId={hostId} locale={locale} />
             )}

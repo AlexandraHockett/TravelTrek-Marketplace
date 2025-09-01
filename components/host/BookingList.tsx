@@ -10,6 +10,8 @@ import Modal from "@/components/ui/Modal";
 interface BookingListProps {
   bookings: Booking[];
   onUpdateBooking?: (bookingId: string, status: Booking["status"]) => void;
+  hostId: string; // Added hostId to props
+  locale: string; // Added locale for i18n
 }
 
 interface BookingFilters {

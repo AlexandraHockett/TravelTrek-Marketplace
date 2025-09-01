@@ -24,6 +24,7 @@ interface BookingListProps {
   hostId?: string;
   locale: string;
   className?: string;
+  bookings: Booking[];
 }
 
 type BookingStatus =

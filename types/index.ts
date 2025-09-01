@@ -5,17 +5,18 @@ export interface Tour {
   id: string;
   title: string;
   description: string;
-  shortDescription?: string;
   image: string;
+  location: string;
+  duration?: string;
+  maxParticipants?: number;
+  rating?: number;
+  reviewCount?: number; // Note: reviewCount, not reviewsCount
+  amenities?: string[]; // Added amenities property
+  shortDescription?: string;
   images?: string[];
   price: number;
   originalPrice?: number;
   currency: string;
-  duration: number; // in hours
-  location: string;
-  rating: number;
-  reviewCount: number;
-  maxParticipants: number;
   minimumAge?: number;
   difficulty: "Easy" | "Moderate" | "Challenging";
   included: string[];
@@ -36,6 +37,10 @@ export interface ItineraryItem {
 }
 
 export interface Booking {
+  
+  userId: string;
+  totalPrice: number;
+  currency: string; // Added currency property
   id: string;
   tourId: string;
   tourTitle: string;
