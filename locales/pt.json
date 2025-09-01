@@ -170,8 +170,8 @@
       "title": "Suporte",
       "links": {
         "help": "Centro de Ajuda",
-        "contact": "Contactar",
-        "terms": "Termos de Uso",
+        "contact": "Contacto",
+        "terms": "Termos de Utilização",
         "privacy": "Privacidade"
       }
     },
@@ -187,6 +187,7 @@
     }
   },
   "tours": {
+    "createSuccess": "Tour criado com sucesso",
     "searchPlaceholder": "Pesquisar tours...",
     "result": "resultado",
     "results": "resultados",
@@ -312,6 +313,8 @@
     "availableOn": "Disponível em"
   },
   "bookingForm": {
+    "invalidParticipants": "Número de participantes inválido",
+    "paymentError": "Falha no processamento do pagamento",
     "instantConfirmation": "Confirmação Instantânea",
     "title": "Reservar Experiência",
     "bookTour": "Reservar Tour",
@@ -603,10 +606,25 @@
     }
   },
   "errors": {
+    "unauthorized": "Não autorizado",
+    "validation": "Dados inválidos",
     "generic": "Ocorreu um erro inesperado",
     "network": "Erro de ligação à internet",
     "notFound": "Recurso não encontrado",
-    "unauthorized": "Não autorizado",
-    "validation": "Dados inválidos"
+    "invalidPriceFormat": "Formato de preço inválido",
+    "invalidOriginalPriceFormat": "Formato de preço original inválido"
+  },
+  "api": {
+    "errors": {
+      "tourNotFound": "Tour não encontrado",
+      "bookingNotFound": "Reserva não encontrada",
+      "invalidData": "Dados inválidos",
+      "maxParticipantsExceeded": "Máximo de participantes excedido",
+      "bookingNotCancellable": "Reserva não pode ser cancelada",
+      "paymentFailed": "Pagamento falhou",
+      "serverError": "Erro do servidor",
+      "unauthorised": "Não autorizado",
+      "validationFailed": "Validação falhou"
+    }
   }
 }

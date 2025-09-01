@@ -186,7 +186,24 @@
       "cookies": "Cookies"
     }
   },
+  "auth": {
+    "pleaseLogin": "Please log in to make a booking"
+  },
+  "api": {
+    "errors": {
+      "tourNotFound": "Tour not found",
+      "bookingNotFound": "Booking not found",
+      "invalidData": "Invalid data",
+      "maxParticipantsExceeded": "Maximum participants exceeded",
+      "bookingNotCancellable": "Booking cannot be cancelled",
+      "paymentFailed": "Payment failed",
+      "serverError": "Server error",
+      "unauthorised": "Unauthorised",
+      "validationFailed": "Validation failed"
+    }
+  },
   "tours": {
+    "createSuccess": "Tour created successfully",
     "searchPlaceholder": "Search tours...",
     "result": "result",
     "results": "results",
@@ -312,6 +329,8 @@
     "availableOn": "Available on"
   },
   "bookingForm": {
+    "invalidParticipants": "Invalid number of participants",
+    "paymentError": "Payment processing failed",
     "instantConfirmation": "Instant Confirmation",
     "title": "Book Experience",
     "bookTour": "Book Tour",
@@ -607,6 +626,9 @@
     "network": "Internet connection error",
     "notFound": "Resource not found",
     "unauthorized": "Unauthorised",
-    "validation": "Invalid data"
+    "validation": "Invalid data",
+    "invalidPriceFormat": "Invalid price format",
+    "invalidOriginalPriceFormat": "Invalid original price format"
+    
   }
 }

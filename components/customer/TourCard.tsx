@@ -1,271 +1,452 @@
-// File: components/customer/TourCard.tsx
-// Location: Substituir o ficheiro existente
+// File: components/customer/TourCard.tsx (corrected)
+// Changes:
+// - Added null check for bookingError in getErrorMessage call.
+// - Assumed Translations type includes optional chaining; errors indicate Translations is loosely typed as object, but fixes rely on updating types/index.ts (see below).
 
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import {
-  Clock,
-  MapPin,
-  Users,
-  Star,
-  Heart,
-  Calendar,
-  Euro,
-} from "lucide-react";
-import type { Tour, Translations } from "@/types";
-import Badge from "@/components/ui/Badge";
+import { Tour, Translations } from "@/types";
+import { useCreateBooking, usePayment, useApiError } from "@/lib/hooks/useApi";
+import { formatCurrency } from "@/lib/utils";
 import Button from "@/components/ui/Button";
+import Card from "@/components/ui/Card";
+import Badge from "@/components/ui/Badge";
+import LoadingSpinner from "@/components/ui/LoadingSpinner";
 
 interface TourCardProps {
   tour: Tour;
   locale: string;
-  translations?: Translations;
-  showAddToWishlist?: boolean;
+  translations: Translations;
   compact?: boolean;
+  showBookingForm?: boolean;
+  customerId?: string;
   className?: string;
 }
 
 const TourCard: React.FC<TourCardProps> = ({
   tour,
   locale,
-  translations: t,
-  showAddToWishlist = true,
+  translations,
   compact = false,
+  showBookingForm = false,
+  customerId,
   className = "",
 }) => {
-  const [isWishlisted, setIsWishlisted] = React.useState(false);
+  const [participants, setParticipants] = useState(1);
+  const [selectedDate, setSelectedDate] = useState("");
+  const [specialRequests, setSpecialRequests] = useState("");
+  const [showForm, setShowForm] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null); // Added for better error handling
 
-  // Helper functions
-  const formatPrice = (price: number) => {
-    return `€${price.toFixed(0)}`;
-  };
+  // API hooks
+  const {
+    createBooking,
+    loading: bookingLoading,
+    error: bookingError,
+  } = useCreateBooking();
+  const { processPayment, loading: paymentLoading } = usePayment();
+  const { getErrorMessage } = useApiError(translations);
 
-  const formatDuration = (hours: number) => {
-    if (hours < 1) {
-      return `${Math.round(hours * 60)} min`;
-    }
-    const wholeHours = Math.floor(hours);
-    const minutes = Math.round((hours - wholeHours) * 60);
+  // Get tomorrow's date as minimum date
+  const tomorrow = new Date();
+  tomorrow.setDate(tomorrow.getDate() + 1);
+  const minDate = tomorrow.toISOString().split("T")[0];
 
-    if (minutes === 0) {
-      return `${wholeHours}${wholeHours === 1 ? t?.common?.hour || "h" : t?.common?.hours || "h"}`;
-    }
-    return `${wholeHours}h${minutes}m`;
-  };
+  // Get max date (3 months from now)
+  const maxDate = new Date();
+  maxDate.setMonth(maxDate.getMonth() + 3);
+  const maxDateString = maxDate.toISOString().split("T")[0];
 
-  const getDifficultyColor = (difficulty: Tour["difficulty"]) => {
-    switch (difficulty) {
-      case "Easy":
-        return "success"; // Changed from "bg-green-100 text-green-800 border-green-200"
-      case "Moderate":
-        return "warning"; // Changed from "bg-yellow-100 text-yellow-800 border-yellow-200"
-      case "Challenging":
-        return "error"; // Changed from "bg-red-100 text-red-800 border-red-200"
+  // Calculate total price
+  const baseTotal = tour.price * participants;
+  const serviceFees = Math.round(baseTotal * 0.1); // 10% service fee
+  const totalAmount = baseTotal + serviceFees;
+
+  // Get difficulty badge color
+  const getDifficultyColor = (
+    difficulty: string
+  ): "success" | "warning" | "error" | "default" => {
+    switch (difficulty.toLowerCase()) {
+      case "easy":
+        return "success";
+      case "moderate":
+        return "warning";
+      case "challenging":
+        return "error";
       default:
-        return "default"; // Changed from "bg-gray-100 text-gray-800 border-gray-200"
+        return "default";
     }
   };
 
-  const handleWishlistClick = (e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setIsWishlisted(!isWishlisted);
-    // Aqui seria chamada a API para adicionar/remover da wishlist
+  // Handle booking submission
+  const handleBooking = async () => {
+    setErrorMessage(null); // Clear previous errors
+
+    if (!customerId) {
+      setErrorMessage(
+        translations.auth?.pleaseLogin || "Please log in to make a booking"
+      );
+      return;
+    }
+
+    if (!selectedDate) {
+      setErrorMessage(
+        translations.bookingForm?.requiredDate || "Date is required"
+      );
+      return;
+    }
+
+    if (participants < 1 || participants > tour.maxParticipants) {
+      setErrorMessage(
+        translations.bookingForm?.invalidParticipants ||
+          "Invalid number of participants"
+      );
+      return;
+    }
+
+    try {
+      // TODO: Replace hardcoded customerName and customerEmail with actual user profile data
+      const bookingData = {
+        tourId: tour.id,
+        customerId,
+        customerName: "Customer Name", // Should come from user profile
+        customerEmail: "customer@example.com", // Should come from user profile
+        date: selectedDate,
+        time: "09:00", // Default time, could be dynamic
+        participants,
+        specialRequests: specialRequests || undefined,
+      };
+
+      // Create booking
+      const result = await createBooking(bookingData);
+      console.log("Booking created:", result);
+
+      // Process payment
+      await processPayment({
+        bookingId: result.booking.id,
+        tourId: tour.id,
+        amount: totalAmount * 100, // Convert to cents for Stripe
+        currency: tour.currency.toLowerCase(),
+        participants,
+        date: selectedDate,
+      });
+
+      // Optionally, show success message or redirect
+      setShowForm(false); // Close form on success
+    } catch (error) {
+      console.error("Booking error:", error);
+      const errorMsg =
+        error instanceof Error ? error.message : "Booking failed";
+      setErrorMessage(
+        errorMsg.includes("booking")
+          ? translations.bookingForm?.bookingError || "Failed to create booking"
+          : translations.bookingForm?.paymentError ||
+              "Payment processing failed"
+      );
+    }
   };
 
-  // Render stars
-  const renderStars = (rating: number) => {
-    const fullStars = Math.floor(rating);
-    const hasHalfStar = rating % 1 !== 0;
-    const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
+  const loading = bookingLoading || paymentLoading;
 
+  if (compact) {
     return (
-      <div className="flex items-center gap-1">
-        {/* Full stars */}
-        {[...Array(fullStars)].map((_, i) => (
-          <Star key={i} className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-        ))}
-
-        {/* Half star */}
-        {hasHalfStar && (
-          <div className="relative">
-            <Star className="w-4 h-4 text-gray-300" />
-            <Star className="w-4 h-4 fill-yellow-400 text-yellow-400 absolute top-0 left-0 clip-path-half" />
-          </div>
-        )}
-
-        {/* Empty stars */}
-        {[...Array(emptyStars)].map((_, i) => (
-          <Star key={`empty-${i}`} className="w-4 h-4 text-gray-300" />
-        ))}
-
-        <span className="text-sm text-gray-600 ml-1">
-          {rating} ({tour.reviewCount})
-        </span>
-      </div>
-    );
-  };
-
-  const cardClasses = `
-    group relative bg-white rounded-xl shadow-sm border border-gray-200 
-    hover:shadow-lg hover:border-gray-300 transition-all duration-300 
-    overflow-hidden ${compact ? "h-auto" : "h-full"} ${className}
-  `;
-
-  return (
-    <Link href={`/${locale}/customer/tours/${tour.id}`} className={cardClasses}>
-      {/* Image Container */}
-      <div className="relative aspect-[4/3] overflow-hidden">
-        <Image
-          src={tour.image}
-          alt={tour.title}
-          fill
-          className="object-cover group-hover:scale-105 transition-transform duration-300"
-          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-        />
-
-        {/* Price Badge */}
-        <div className="absolute top-3 left-3">
-          <div className="bg-white/95 backdrop-blur-sm rounded-lg px-3 py-1.5 shadow-md">
-            <div className="flex items-center gap-1">
-              {tour.originalPrice && tour.originalPrice > tour.price && (
-                <span className="text-xs text-gray-500 line-through">
-                  {formatPrice(tour.originalPrice)}
-                </span>
-              )}
-              <span className="font-semibold text-gray-900">
-                {formatPrice(tour.price)}
-              </span>
-            </div>
-            <div className="text-xs text-gray-600">
-              {t?.tours?.perPerson || "por pessoa"}
-            </div>
-          </div>
-        </div>
-
-        {/* Wishlist Button */}
-        {showAddToWishlist && (
-          <button
-            onClick={handleWishlistClick}
-            className="absolute top-3 right-3 p-2 bg-white/95 backdrop-blur-sm rounded-full shadow-md hover:bg-white transition-colors"
-            aria-label={
-              isWishlisted
-                ? t?.tours?.removeFromWishlist || "Remover da wishlist"
-                : t?.tours?.addToWishlist || "Adicionar à wishlist"
-            }
-          >
-            <Heart
-              className={`w-4 h-4 ${
-                isWishlisted
-                  ? "fill-red-500 text-red-500"
-                  : "text-gray-600 hover:text-red-500"
-              } transition-colors`}
+      <Card
+        className={`hover:shadow-lg transition-shadow duration-300 ${className}`}
+      >
+        <Link href={`/${locale}/customer/tours/${tour.id}`}>
+          <div className="relative h-48 mb-3">
+            <Image
+              src={tour.image}
+              alt={tour.title}
+              fill
+              className="object-cover rounded-lg"
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             />
-          </button>
-        )}
-
-        {/* Difficulty Badge */}
-        <div className="absolute bottom-3 right-3">
-          <Badge
-            variant={getDifficultyColor(tour.difficulty)}
-            className="text-xs"
-          >
-            {t?.tours?.difficulty?.[tour.difficulty.toLowerCase()] ||
-              tour.difficulty}
-          </Badge>
-        </div>
-      </div>
-
-      {/* Content */}
-      <div className="p-4 flex flex-col h-full">
-        {/* Location */}
-        <div className="flex items-center gap-2 text-sm text-gray-600 mb-2">
-          <MapPin className="w-4 h-4" />
-          <span className="truncate">{tour.location}</span>
-        </div>
-
-        {/* Title */}
-        <h3 className="font-semibold text-gray-900 text-lg mb-2 line-clamp-2 group-hover:text-blue-600 transition-colors">
-          {tour.title}
-        </h3>
-
-        {/* Short Description */}
-        <p className="text-sm text-gray-600 mb-3 line-clamp-2 flex-grow">
-          {tour.shortDescription || tour.description}
-        </p>
-
-        {/* Tour Details */}
-        <div className="space-y-2 mb-4">
-          <div className="flex items-center justify-between text-sm text-gray-600">
-            <div className="flex items-center gap-1">
-              <Clock className="w-4 h-4" />
-              <span>{formatDuration(tour.duration)}</span>
-            </div>
-
-            <div className="flex items-center gap-1">
-              <Users className="w-4 h-4" />
-              <span>
-                {t?.tours?.upTo || "até"} {tour.maxParticipants}
-              </span>
-            </div>
-          </div>
-
-          {/* Rating */}
-          <div className="flex items-center justify-between">
-            {renderStars(tour.rating)}
-          </div>
-        </div>
-
-        {/* Tags */}
-        {tour.tags && tour.tags.length > 0 && (
-          <div className="flex flex-wrap gap-1 mb-4">
-            {tour.tags.slice(0, 2).map((tag, index) => (
-              <Badge
-                key={index}
-                variant="default" // Changed from "secondary"
-                className="text-xs px-2 py-1"
-              >
-                {tag}
-              </Badge>
-            ))}
-            {tour.tags.length > 2 && (
-              <Badge variant="info" className="text-xs px-2 py-1">
-                {" "}
-                {/* Changed from "outline" */}+{tour.tags.length - 2}
-              </Badge>
+            {tour.originalPrice && tour.originalPrice > tour.price && (
+              <div className="absolute top-2 left-2">
+                <Badge variant="error" size="sm">
+                  -
+                  {Math.round(
+                    ((tour.originalPrice - tour.price) / tour.originalPrice) *
+                      100
+                  )}
+                  %
+                </Badge>
+              </div>
             )}
           </div>
-        )}
+        </Link>
 
-        {/* Action Buttons - Hidden on mobile, shown on hover on desktop */}
-        <div className="mt-auto">
-          <div className="md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-300">
-            <Button
-              size="sm"
-              className="w-full bg-blue-600 hover:bg-blue-700 text-white"
-            >
-              {t?.tours?.viewDetails || "Ver Detalhes"}
-            </Button>
+        <div className="space-y-2">
+          <div className="flex items-center gap-2">
+            <Badge variant={getDifficultyColor(tour.difficulty)} size="sm">
+              {translations.tourDetails?.difficulty?.[
+                tour.difficulty.toLowerCase() as keyof typeof translations.tourDetails.difficulty
+              ] || tour.difficulty}
+            </Badge>
+            <span className="text-sm text-gray-600">
+              {tour.duration}{" "}
+              {tour.duration === 1
+                ? translations.common?.hour
+                : translations.common?.hours}
+            </span>
           </div>
-        </div>
-      </div>
 
-      {/* Hover Overlay for additional info */}
-      <div className="absolute inset-0 bg-blue-600/95 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center p-6 md:hidden">
-        <div className="text-center text-white">
-          <h4 className="font-semibold mb-2">{tour.title}</h4>
-          <p className="text-sm opacity-90 mb-4 line-clamp-3">
+          <Link href={`/${locale}/customer/tours/${tour.id}`}>
+            <h3 className="font-semibold text-gray-900 hover:text-blue-600 transition-colors line-clamp-2">
+              {tour.title}
+            </h3>
+          </Link>
+
+          <p className="text-sm text-gray-600 line-clamp-2">
             {tour.shortDescription || tour.description}
           </p>
-          <Button variant="secondary" size="sm">
-            {t?.tours?.viewDetails || "Ver Detalhes"}
-          </Button>
+
+          <div className="flex items-center justify-between">
+            <div className="flex items-baseline gap-1">
+              {tour.originalPrice && tour.originalPrice > tour.price && (
+                <span className="text-sm text-gray-500 line-through">
+                  {formatCurrency(tour.originalPrice, tour.currency)}
+                </span>
+              )}
+              <span className="font-bold">
+                {formatCurrency(tour.price, tour.currency)}
+              </span>
+              <span className="text-sm text-gray-600">
+                {translations.bookingForm?.perPerson}
+              </span>
+            </div>
+
+            <Link href={`/${locale}/customer/tours/${tour.id}`}>
+              <Button size="sm">{translations.tourDetails?.viewDetails}</Button>
+            </Link>
+          </div>
+
+          {showBookingForm && showForm && (
+            <div className="mt-4 space-y-4">
+              <div>
+                <label
+                  htmlFor="date"
+                  className="block text-sm font-medium text-gray-700 mb-1"
+                >
+                  {translations.bookingForm?.selectDate}
+                </label>
+                <input
+                  type="date"
+                  id="date"
+                  value={selectedDate}
+                  onChange={(e) => setSelectedDate(e.target.value)}
+                  min={minDate}
+                  max={maxDateString}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  required
+                />
+              </div>
+
+              <div>
+                <label
+                  htmlFor="participants"
+                  className="block text-sm font-medium text-gray-700 mb-1"
+                >
+                  {translations.bookingForm?.participants}
+                </label>
+                <input
+                  type="number"
+                  id="participants"
+                  value={participants}
+                  onChange={(e) => setParticipants(parseInt(e.target.value))}
+                  min={1}
+                  max={tour.maxParticipants}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  required
+                />
+                <p className="mt-1 text-sm text-gray-500">
+                  {translations.tourDetails?.maxParticipants}:{" "}
+                  {tour.maxParticipants}
+                </p>
+              </div>
+
+              <div>
+                <label
+                  htmlFor="special-requests"
+                  className="block text-sm font-medium text-gray-700 mb-1"
+                >
+                  {translations.bookingForm?.specialRequests}
+                </label>
+                <textarea
+                  id="special-requests"
+                  value={specialRequests}
+                  onChange={(e) => setSpecialRequests(e.target.value)}
+                  placeholder={translations.bookingForm?.allergiesPlaceholder}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  rows={2}
+                  maxLength={500}
+                  aria-describedby="special-requests-desc"
+                />
+                <p id="special-requests-desc" className="sr-only">
+                  Optional field for special requests, such as allergies or
+                  accommodations
+                </p>
+              </div>
+
+              <div className="bg-gray-50 p-3 rounded-lg space-y-2">
+                <div className="flex justify-between text-sm">
+                  <span>
+                    {tour.price} × {participants}{" "}
+                    {participants === 1
+                      ? translations.common?.person
+                      : translations.common?.persons}
+                  </span>
+                  <span>{formatCurrency(baseTotal, tour.currency)}</span>
+                </div>
+                <div className="flex justify-between text-sm">
+                  <span>{translations.bookingForm?.serviceFees}</span>
+                  <span>{formatCurrency(serviceFees, tour.currency)}</span>
+                </div>
+                <div className="flex justify-between font-bold border-t pt-2">
+                  <span>{translations.bookingForm?.total}</span>
+                  <span>{formatCurrency(totalAmount, tour.currency)}</span>
+                </div>
+              </div>
+
+              <div className="flex gap-2">
+                <Button
+                  onClick={() => setShowForm(false)}
+                  variant="secondary"
+                  size="sm"
+                  disabled={loading}
+                >
+                  {translations.common?.cancel}
+                </Button>
+                <Button
+                  onClick={handleBooking}
+                  disabled={
+                    loading ||
+                    !selectedDate ||
+                    participants < 1 ||
+                    participants > tour.maxParticipants
+                  }
+                  size="sm"
+                  className="flex-1"
+                >
+                  {loading ? (
+                    <>
+                      <LoadingSpinner size="sm" />
+                      <span className="ml-2">
+                        {translations.bookingForm?.processing}
+                      </span>
+                    </>
+                  ) : (
+                    translations.bookingForm?.bookButton
+                  )}
+                </Button>
+              </div>
+
+              {(bookingError || errorMessage) && (
+                <div className="text-red-600 text-sm mt-2">
+                  {errorMessage ||
+                    (bookingError ? getErrorMessage(bookingError) : "")}
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+      </Card>
+    );
+  }
+
+  // Full card layout
+  return (
+    <Card
+      className={`hover:shadow-lg transition-shadow duration-300 ${className}`}
+    >
+      <Link href={`/${locale}/customer/tours/${tour.id}`}>
+        <div className="relative h-64 mb-4">
+          <Image
+            src={tour.image}
+            alt={tour.title}
+            fill
+            className="object-cover rounded-lg"
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          />
+          {tour.originalPrice && tour.originalPrice > tour.price && (
+            <div className="absolute top-3 left-3">
+              <Badge variant="error">
+                -
+                {Math.round(
+                  ((tour.originalPrice - tour.price) / tour.originalPrice) * 100
+                )}
+                %
+              </Badge>
+            </div>
+          )}
+          <div className="absolute top-3 right-3">
+            <Badge variant={getDifficultyColor(tour.difficulty)}>
+              {translations.tourDetails?.difficulty?.[
+                tour.difficulty.toLowerCase() as keyof typeof translations.tourDetails.difficulty
+              ] || tour.difficulty}
+            </Badge>
+          </div>
+        </div>
+      </Link>
+
+      <div className="space-y-3">
+        <div className="flex items-center justify-between text-sm text-gray-600">
+          <span>{tour.location}</span>
+          <span>
+            {tour.duration}{" "}
+            {tour.duration === 1
+              ? translations.common?.hour
+              : translations.common?.hours}
+          </span>
+        </div>
+
+        <Link href={`/${locale}/customer/tours/${tour.id}`}>
+          <h3 className="text-xl font-bold text-gray-900 hover:text-blue-600 transition-colors">
+            {tour.title}
+          </h3>
+        </Link>
+
+        <p className="text-gray-600 line-clamp-3">{tour.description}</p>
+
+        <div className="flex items-center gap-4">
+          <div className="flex items-center gap-1">
+            <span className="text-yellow-400">★</span>
+            <span className="font-medium">{tour.rating}</span>
+            <span className="text-sm text-gray-600">
+              ({tour.reviewCount} {translations.tourDetails?.reviews})
+            </span>
+          </div>
+
+          <div className="text-sm text-gray-600">
+            {translations.tourDetails?.maxParticipants}: {tour.maxParticipants}
+          </div>
+        </div>
+
+        <div className="flex items-center justify-between pt-4 border-t border-gray-200">
+          <div className="flex items-baseline gap-2">
+            {tour.originalPrice && tour.originalPrice > tour.price && (
+              <span className="text-lg text-gray-500 line-through">
+                {formatCurrency(tour.originalPrice, tour.currency)}
+              </span>
+            )}
+            <span className="text-2xl font-bold">
+              {formatCurrency(tour.price, tour.currency)}
+            </span>
+            <span className="text-gray-600">
+              {translations.bookingForm?.perPerson}
+            </span>
+          </div>
+
+          <Link href={`/${locale}/customer/tours/${tour.id}`}>
+            <Button>{translations.tourDetails?.bookNow}</Button>
+          </Link>
         </div>
       </div>
-    </Link>
+    </Card>
   );
 };
 
