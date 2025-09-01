@@ -21,13 +21,47 @@
     "terms": "Terms",
     "privacy": "Privacy"
   },
+  "host": {
+    "bookings": {
+      "manageBookings": "Manage Bookings",
+      "customerName": "Customer",
+      "tourName": "Tour",
+      "participants": "Participants",
+      "amount": "Amount",
+      "status": "Status",
+      "actions": "Actions",
+      "confirm": "Confirm",
+      "complete": "Complete",
+      "noBookings": "You don't have any bookings yet",
+      "noResults": "No bookings match your filters",
+      "noBookingsDesc": "Your bookings will appear here when customers start booking your tours.",
+      "updateStatus": "Update Status",
+      "updateStatusDesc": "Are you sure you want to update the status of this booking?"
+    }
+  },
   "common": {
+    "search": "Search",
+    "export": "Export",
+    "refresh": "Refresh",
+    "all": "All",
+    "date": "Date",
+    "person": "person",
+    "persons": "persons",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "processing": "Processing...",
+    "retry": "Try again",
+    "sort": {
+      "dateDesc": "Most recent date",
+      "dateAsc": "Oldest date",
+      "amountDesc": "Highest amount",
+      "amountAsc": "Lowest amount",
+      "status": "Status"
+    },
     "viewAll": "View All",
     "reviews": "Reviews",
     "review": "Review",
     "welcome": "Welcome",
-    "person": "Person",
-    "persons": "People",
     "hours": "Hours",
     "hour": "Hour",
     "from": "From",
@@ -35,9 +69,6 @@
     "loading": "Loading...",
     "error": "Error",
     "success": "Success",
-    "cancel": "Cancel",
-    "confirm": "Confirm",
-    "processing": "Processing...",
     "total": "Total",
     "back": "Back",
     "next": "Next",
@@ -49,10 +80,7 @@
     "delete": "Delete",
     "view": "View",
     "close": "Close",
-    "search": "Search",
     "filter": "Filter",
-    "sort": "Sort",
-    "date": "Date",
     "time": "Time",
     "price": "Price",
     "currency": "£",
@@ -261,6 +289,7 @@
     }
   },
   "tourDetails": {
+    "title": "Porto Walking Tour",
     "bookNow": "Book Now",
     "checkAvailability": "Check Availability",
     "addToWishlist": "Add to Favourites",
@@ -629,6 +658,5 @@
     "validation": "Invalid data",
     "invalidPriceFormat": "Invalid price format",
     "invalidOriginalPriceFormat": "Invalid original price format"
-    
   }
 }
