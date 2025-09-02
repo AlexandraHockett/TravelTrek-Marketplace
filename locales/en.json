@@ -58,8 +58,15 @@
     "paymentRequired": "Payment required to confirm the booking"
   },
   "host": {
+    "welcome": "Welcome to your host dashboard",
+    "tabs": {
+      "overview": "Overview",
+      "bookings": "Bookings",
+      "earnings": "Earnings",
+      "tours": "Tours",
+      "messages": "Messages"
+    },
     "dashboard": "Host Dashboard",
-    "welcome": "Welcome to your control panel",
     "stats": {
       "totalBookings": "Total Bookings",
       "monthlyEarnings": "Monthly Earnings",
@@ -225,6 +232,10 @@
     "citiesWorldwide": "Cities Worldwide"
   },
   "navigation": {
+    "customer": "Customer",
+    "host": "Host",
+    "language": "Language",
+    "status": "Project Status",
     "earnings": "Earnings",
     "messages": "Messages",
     "home": "Home",
@@ -644,6 +655,138 @@
     "professionalStructure": "Professional Structure: Type-safe code and modular design."
   },
   "pages": {
+    "home": {
+      "title": "TravelTrek Marketplace",
+      "subtitle": "Discover authentic experiences with local hosts",
+      "description": "We connect travellers to unique experiences created by passionate hosts.",
+      "cta": "Explore Tours",
+      "features": {
+        "authentic": "Authentic Experiences",
+        "local": "Local Hosts",
+        "secure": "Secure Payments"
+      }
+    },
+    "status": {
+      "title": "Project Status",
+      "subtitle": "TravelTrek Marketplace - Development Showcase",
+      "overallProgress": "Overall Progress",
+      "featuresCompleted": "completed",
+      "featuresInProgress": "in development",
+      "featuresPlanned": "planned",
+      "progress": "Progress",
+      "categories": {
+        "coreInfrastructure": "Core Infrastructure",
+        "customerPortal": "Customer Portal",
+        "hostPortal": "Host Portal",
+        "backendApi": "Backend & API",
+        "integrations": "Integrations",
+        "testingQuality": "Testing & Quality"
+      },
+      "features": {
+        "i18nSystem": "Internationalization System",
+        "nextjsReact": "Next.js 15 + React 19",
+        "responsiveNavigation": "Responsive Navigation",
+        "typescriptIntegration": "TypeScript Integration",
+        "projectStructure": "Project Structure",
+        "tourBrowsing": "Tour Browsing",
+        "bookingSystem": "Booking System",
+        "userDashboard": "User Dashboard",
+        "reviewSystem": "Review System",
+        "bookingManagement": "Booking Management",
+        "tourCreation": "Tour Creation",
+        "earningsDashboard": "Earnings Dashboard",
+        "messagingSystem": "Messaging System",
+        "databaseSchema": "Database Schema",
+        "apiRoutes": "API Routes",
+        "dataValidation": "Data Validation",
+        "stripeIntegration": "Stripe Integration",
+        "authenticationSystem": "Authentication System",
+        "viatorApiIntegration": "Viator API Integration",
+        "emailSystem": "Email System",
+        "unitTesting": "Unit Testing",
+        "e2eTesting": "E2E Testing",
+        "cicdPipeline": "CI/CD Pipeline"
+      },
+      "descriptions": {
+        "i18nSystemDesc": "Full support for 5 languages with smooth locale switching.",
+        "nextjsReactDesc": "Built with Next.js App Router and React for a modern, scalable frontend.",
+        "responsiveNavigationDesc": "Mobile and desktop navigation optimised with Tailwind CSS v4.",
+        "typescriptIntegrationDesc": "Type-safe code with TypeScript for robust development.",
+        "projectStructureDesc": "Well-organised architecture following Next.js best practices.",
+        "tourBrowsingDesc": "Browse and filter tours with real-time data from the simulated Viator API.",
+        "bookingSystemDesc": "Planned booking system with state management and Stripe integration.",
+        "userDashboardDesc": "Customer dashboard for managing bookings and profile settings.",
+        "reviewSystemDesc": "Planned system for users to leave reviews of tours and hosts.",
+        "bookingManagementDesc": "Tools for hosts to manage bookings and communicate with customers.",
+        "tourCreationDesc": "Planned system for hosts to create and edit tours.",
+        "earningsDashboardDesc": "Dashboard for hosts to track earnings and performance metrics.",
+        "messagingSystemDesc": "Planned messaging system for host-customer communication.",
+        "databaseSchemaDesc": "Postgres schema for tours, bookings, and user data.",
+        "apiRoutesDesc": "RESTful APIs for all marketplace CRUD operations.",
+        "dataValidationDesc": "Robust data validation using Zod or similar.",
+        "stripeIntegrationDesc": "Planned Stripe integration for secure payment processing.",
+        "authenticationSystemDesc": "Planned authentication system for secure user access.",
+        "viatorApiIntegrationDesc": "Planned integration with Viator API for tour data synchronisation.",
+        "emailSystemDesc": "Email notification system for confirmations and updates.",
+        "unitTestingDesc": "Comprehensive unit testing for components and functions.",
+        "e2eTestingDesc": "End-to-end testing for critical user flows.",
+        "cicdPipelineDesc": "Automated continuous integration and deployment pipeline."
+      },
+      "status": {
+        "implemented": "Implemented",
+        "inProgress": "In Development",
+        "planned": "Planned"
+      },
+      "techStack": "Tech Stack",
+      "techStackItems": {
+        "nextjs": {
+          "title": "Next.js",
+          "subtitle": "Server-side rendering and App Router for optimised performance."
+        },
+        "tailwind": {
+          "title": "Tailwind CSS",
+          "subtitle": "Utility-first CSS framework for modern, responsive design."
+        },
+        "typescript": {
+          "title": "TypeScript",
+          "subtitle": "Type-safe development for sustainable code."
+        },
+        "i18n": {
+          "title": "Internationalisation",
+          "subtitle": "Multi-language support to reach a global audience."
+        }
+      },
+      "portfolioContext": "Portfolio Context",
+      "portfolioDescription": "TravelTrek Marketplace demonstrates a modern, scalable web application built with cutting-edge technologies.",
+      "portfolioPoints": {
+        "modernReact": "Modern React Framework: Uses Next.js with App Router for dynamic rendering.",
+        "i18nExpertise": "i18n Expertise: Supports five languages with smooth locale switching.",
+        "marketplaceArchitecture": "Marketplace Architecture: Robust structure for customer and host portals.",
+        "contemporaryStyling": "Contemporary Styling: Tailwind CSS v4 for modern, responsive UI.",
+        "professionalStructure": "Professional Structure: Type-safe code and modular design."
+      },
+      "nextSteps": {
+        "title": "Next Steps",
+        "thisWeek": "This Week",
+        "nextWeek": "Next Week",
+        "thisMonth": "This Month",
+        "thisWeekItems": {
+          "database": "Set up database",
+          "envSetup": "Environment variables",
+          "firstApi": "First functional API"
+        },
+        "nextWeekItems": {
+          "auth": "Authentication system",
+          "tourPages": "Tour pages",
+          "uiComponents": "UI components"
+        },
+        "thisMonthItems": {
+          "customerPortal": "Customer portal",
+          "bookingSystem": "Booking system",
+          "hostDashboard": "Host dashboard"
+        }
+      }
+    },
     "bookingDetail": {
       "title": "Booking Details",
       "description": "View and manage your booking details"
