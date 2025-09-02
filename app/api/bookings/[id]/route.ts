@@ -1,8 +1,10 @@
-// File: app/api/bookings/[id]/route.ts
-// Location: SUBSTITUIR o ficheiro existente app/api/bookings/[id]/route.ts
+// ===================================================================
+// 📁 app/api/bookings/[id]/route.ts
+// Location: REPLACE the entire content of app/api/bookings/[id]/route.ts
+// ===================================================================
 
 import { NextRequest, NextResponse } from "next/server";
-import { mockBookings } from "@/lib/db/mockData";
+import { bookingQueries } from "@/lib/db/queries";
 
 interface RouteParams {
   params: Promise<{ id: string }>;
@@ -12,17 +14,35 @@ interface RouteParams {
 export async function GET(request: NextRequest, { params }: RouteParams) {
   try {
     const { id } = await params;
-    const booking = mockBookings.find((b) => b.id === id);
 
-    if (!booking) {
-      return NextResponse.json({ error: "Booking not found" }, { status: 404 });
+    const result = await bookingQueries.getById(id);
+
+    if (!result) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: "Booking not found",
+          code: "BOOKING_NOT_FOUND",
+          timestamp: new Date().toISOString(),
+        },
+        { status: 404 }
+      );
     }
 
-    return NextResponse.json(booking);
+    return NextResponse.json({
+      success: true,
+      data: result,
+      timestamp: new Date().toISOString(),
+    });
   } catch (error) {
     console.error("Error fetching booking:", error);
     return NextResponse.json(
-      { error: "Failed to fetch booking" },
+      {
+        success: false,
+        error: "Failed to fetch booking",
+        code: "FETCH_BOOKING_ERROR",
+        timestamp: new Date().toISOString(),
+      },
       { status: 500 }
     );
   }
@@ -34,107 +54,161 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
     const { id } = await params;
     const body = await request.json();
 
-    const bookingIndex = mockBookings.findIndex((b) => b.id === id);
-    if (bookingIndex === -1) {
-      return NextResponse.json({ error: "Booking not found" }, { status: 404 });
+    const existingBooking = await bookingQueries.getById(id);
+    if (!existingBooking) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: "Booking not found",
+          code: "BOOKING_NOT_FOUND",
+          timestamp: new Date().toISOString(),
+        },
+        { status: 404 }
+      );
     }
 
     // Validate status if provided
-    const validStatuses = ["pending", "confirmed", "completed", "cancelled"];
+    const validStatuses = ["pending", "confirmed", "cancelled", "completed"];
     if (body.status && !validStatuses.includes(body.status)) {
       return NextResponse.json(
         {
-          error: "Invalid status. Must be one of: " + validStatuses.join(", "),
+          success: false,
+          error: `Status must be one of: ${validStatuses.join(", ")}`,
+          code: "INVALID_STATUS",
+          timestamp: new Date().toISOString(),
         },
         { status: 400 }
       );
     }
 
-    // Validate paymentStatus if provided
-    const validPaymentStatuses = ["pending", "paid", "refunded"];
+    // Validate payment status if provided
+    const validPaymentStatuses = ["pending", "paid", "failed", "refunded"];
     if (
       body.paymentStatus &&
       !validPaymentStatuses.includes(body.paymentStatus)
     ) {
       return NextResponse.json(
         {
-          error:
-            "Invalid payment status. Must be one of: " +
-            validPaymentStatuses.join(", "),
+          success: false,
+          error: `Payment status must be one of: ${validPaymentStatuses.join(", ")}`,
+          code: "INVALID_PAYMENT_STATUS",
+          timestamp: new Date().toISOString(),
         },
         { status: 400 }
       );
     }
 
-    // Validate participants if provided
+    const updateData: any = {};
+
+    const allowedFields = [
+      "customerName",
+      "customerEmail",
+      "date",
+      "time",
+      "participants",
+      "status",
+      "paymentStatus",
+      "paymentId",
+      "specialRequests",
+    ];
+
+    allowedFields.forEach((field) => {
+      if (body[field] !== undefined) {
+        updateData[field] = body[field];
+      }
+    });
+
+    // Update total price if participants changed
     if (
       body.participants !== undefined &&
-      (typeof body.participants !== "number" || body.participants <= 0)
+      existingBooking.booking &&
+      existingBooking.tour
     ) {
+      const newTotalPrice =
+        Number(existingBooking.tour.price) * body.participants;
+      updateData.totalPrice = newTotalPrice.toString();
+    }
+
+    const updatedBooking = await bookingQueries.update(id, updateData);
+
+    if (!updatedBooking) {
       return NextResponse.json(
-        { error: "Participants must be a positive number" },
-        { status: 400 }
+        {
+          success: false,
+          error: "Failed to update booking",
+          code: "UPDATE_BOOKING_ERROR",
+          timestamp: new Date().toISOString(),
+        },
+        { status: 500 }
       );
     }
 
-    // ✅ CORRIGIDO: All bookings already have required fields from mockData
-    const updatedBooking = {
-      ...mockBookings[bookingIndex],
-      ...body,
-      id, // Keep original ID
-      updatedAt: new Date().toISOString(),
-    };
-
-    mockBookings[bookingIndex] = updatedBooking;
-
-    return NextResponse.json(updatedBooking);
+    return NextResponse.json({
+      success: true,
+      data: updatedBooking,
+      message: "Booking updated successfully",
+      timestamp: new Date().toISOString(),
+    });
   } catch (error) {
     console.error("Error updating booking:", error);
     return NextResponse.json(
-      { error: "Failed to update booking" },
+      {
+        success: false,
+        error: "Failed to update booking",
+        code: "UPDATE_BOOKING_ERROR",
+        timestamp: new Date().toISOString(),
+      },
       { status: 500 }
     );
   }
 }
 
-// DELETE - Cancel/Delete a booking
+// DELETE - Delete a booking
 export async function DELETE(request: NextRequest, { params }: RouteParams) {
   try {
     const { id } = await params;
-    const bookingIndex = mockBookings.findIndex((b) => b.id === id);
 
-    if (bookingIndex === -1) {
-      return NextResponse.json({ error: "Booking not found" }, { status: 404 });
-    }
-
-    const booking = mockBookings[bookingIndex];
-
-    // Check if booking can be cancelled
-    if (booking.status === "completed" || booking.status === "cancelled") {
+    const existingBooking = await bookingQueries.getById(id);
+    if (!existingBooking) {
       return NextResponse.json(
-        { error: "Cannot cancel a completed or already cancelled booking" },
-        { status: 400 }
+        {
+          success: false,
+          error: "Booking not found",
+          code: "BOOKING_NOT_FOUND",
+          timestamp: new Date().toISOString(),
+        },
+        { status: 404 }
       );
     }
 
-    // Update booking status to cancelled
-    const cancelledBooking = {
-      ...booking,
-      status: "cancelled" as const,
-      paymentStatus:
-        booking.paymentStatus === "paid"
-          ? ("refunded" as const)
-          : ("pending" as const),
-      updatedAt: new Date().toISOString(),
-    };
+    const deleted = await bookingQueries.delete(id);
 
-    mockBookings[bookingIndex] = cancelledBooking;
+    if (!deleted) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: "Failed to delete booking",
+          code: "DELETE_BOOKING_ERROR",
+          timestamp: new Date().toISOString(),
+        },
+        { status: 500 }
+      );
+    }
 
-    return NextResponse.json(cancelledBooking);
+    return NextResponse.json({
+      success: true,
+      message: "Booking deleted successfully",
+      timestamp: new Date().toISOString(),
+    });
   } catch (error) {
-    console.error("Error cancelling booking:", error);
+    console.error("Error deleting booking:", error);
     return NextResponse.json(
-      { error: "Failed to cancel booking" },
+      {
+        success: false,
+        error: "Failed to delete booking",
+        code: "DELETE_BOOKING_ERROR",
+        timestamp: new Date().toISOString(),
+      },
       { status: 500 }
     );
   }

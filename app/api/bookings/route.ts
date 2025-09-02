@@ -1,64 +1,61 @@
-// File: app/api/bookings/route.ts
-// Location: SUBSTITUIR o ficheiro existente app/api/bookings/route.ts
+// ===================================================================
+// 📁 app/api/bookings/route.ts
+// Location: REPLACE the existing app/api/bookings/route.ts
+// ===================================================================
 
 import { NextRequest, NextResponse } from "next/server";
-import { mockBookings, mockTours, createBookingData } from "@/lib/db/mockData";
-import { Booking } from "@/types";
+import { bookingQueries, tourQueries, userQueries } from "@/lib/db/queries";
 
-// GET - Fetch bookings with optional filters
+// GET - Fetch all bookings with optional filters
 export async function GET(request: NextRequest) {
   try {
     const searchParams = request.nextUrl.searchParams;
-    const customerId = searchParams.get("customerId");
-    const hostId = searchParams.get("hostId");
-    const status = searchParams.get("status");
-    const limit = parseInt(searchParams.get("limit") || "10", 10);
-    const offset = parseInt(searchParams.get("offset") || "0", 10);
 
-    let filteredBookings = [...mockBookings];
+    // Extract query parameters
+    const filters = {
+      customerId: searchParams.get("customerId") || undefined,
+      hostId: searchParams.get("hostId") || undefined,
+      tourId: searchParams.get("tourId") || undefined,
+      status: searchParams.get("status") || undefined,
+      limit: searchParams.get("limit") ? Number(searchParams.get("limit")) : 10,
+      offset: searchParams.get("offset")
+        ? Number(searchParams.get("offset"))
+        : 0,
+    };
 
-    // Apply filters
-    if (customerId) {
-      filteredBookings = filteredBookings.filter(
-        (booking) => booking.customerId === customerId
-      );
-    }
+    // Remove undefined values
+    Object.keys(filters).forEach((key) => {
+      if (filters[key as keyof typeof filters] === undefined) {
+        delete filters[key as keyof typeof filters];
+      }
+    });
 
-    if (hostId) {
-      filteredBookings = filteredBookings.filter(
-        (booking) => booking.hostId === hostId
-      );
-    }
-
-    if (status) {
-      filteredBookings = filteredBookings.filter(
-        (booking) => booking.status === status
-      );
-    }
-
-    // Sort by creation date (newest first)
-    filteredBookings.sort(
-      (a, b) =>
-        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-    );
-
-    // Apply pagination
-    const total = filteredBookings.length;
-    const paginatedBookings = filteredBookings.slice(offset, offset + limit);
+    // Fetch bookings from real database
+    const result = await bookingQueries.getAll(filters);
 
     return NextResponse.json({
-      bookings: paginatedBookings,
+      success: true,
+      data: result.bookings,
       pagination: {
-        total,
-        offset,
-        limit,
-        hasMore: offset + limit < total,
+        total: result.total,
+        limit: filters.limit || 10,
+        offset: filters.offset || 0,
+        hasMore: (filters.offset || 0) + (filters.limit || 10) < result.total,
+        currentPage:
+          Math.floor((filters.offset || 0) / (filters.limit || 10)) + 1,
+        totalPages: Math.ceil(result.total / (filters.limit || 10)),
       },
+      timestamp: new Date().toISOString(),
     });
   } catch (error) {
     console.error("Error fetching bookings:", error);
     return NextResponse.json(
-      { error: "Failed to fetch bookings" },
+      {
+        success: false,
+        error: "Failed to fetch bookings",
+        code: "FETCH_BOOKINGS_ERROR",
+        timestamp: new Date().toISOString(),
+      },
       { status: 500 }
     );
   }
@@ -69,69 +66,153 @@ export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
 
-    // Validation
+    // Validate required fields
     const requiredFields = [
       "tourId",
       "customerId",
       "customerName",
       "customerEmail",
       "date",
+      "time",
       "participants",
     ];
-    for (const field of requiredFields) {
-      if (!body[field]) {
-        return NextResponse.json(
-          { error: `Missing required field: ${field}` },
-          { status: 400 }
-        );
-      }
-    }
+    const missingFields = requiredFields.filter((field) => !body[field]);
 
-    // Find the tour to get details
-    const tour = mockTours.find((t) => t.id === body.tourId);
-    if (!tour) {
-      return NextResponse.json({ error: "Tour not found" }, { status: 404 });
-    }
-
-    // ✅ CORRIGIDO: Validação com verificação de undefined
-    const maxParticipants = tour.maxParticipants; // Agora obrigatório
-    if (body.participants > maxParticipants) {
+    if (missingFields.length > 0) {
       return NextResponse.json(
         {
-          error: `Maximum ${maxParticipants} participants allowed for this tour`,
+          success: false,
+          error: `Missing required fields: ${missingFields.join(", ")}`,
+          code: "MISSING_FIELDS",
+          timestamp: new Date().toISOString(),
         },
         { status: 400 }
       );
     }
 
-    // Create booking data using helper function
-    const bookingData = createBookingData(
-      body.tourId,
-      body.customerId,
-      body.customerName,
-      body.customerEmail,
-      body.date,
-      body.participants,
-      body.specialRequests
-    );
+    // Validate tour exists
+    const tour = await tourQueries.getById(body.tourId);
+    if (!tour) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: "Tour not found",
+          code: "TOUR_NOT_FOUND",
+          timestamp: new Date().toISOString(),
+        },
+        { status: 404 }
+      );
+    }
 
-    // Generate new booking with ID and timestamps
-    const newBooking: Booking = {
-      ...bookingData,
-      id: `b${Date.now()}`,
-      time: body.time || "14:00",
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
+    // Validate customer exists
+    const customer = await userQueries.getById(body.customerId);
+    if (!customer) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: "Customer not found",
+          code: "CUSTOMER_NOT_FOUND",
+          timestamp: new Date().toISOString(),
+        },
+        { status: 404 }
+      );
+    }
+
+    // Validate participants
+    if (typeof body.participants !== "number" || body.participants <= 0) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: "Participants must be a positive number",
+          code: "INVALID_PARTICIPANTS",
+          timestamp: new Date().toISOString(),
+        },
+        { status: 400 }
+      );
+    }
+
+    if (body.participants > tour.maxParticipants) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: `Maximum ${tour.maxParticipants} participants allowed for this tour`,
+          code: "TOO_MANY_PARTICIPANTS",
+          timestamp: new Date().toISOString(),
+        },
+        { status: 400 }
+      );
+    }
+
+    // Validate date format (YYYY-MM-DD)
+    const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
+    if (!dateRegex.test(body.date)) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: "Date must be in YYYY-MM-DD format",
+          code: "INVALID_DATE_FORMAT",
+          timestamp: new Date().toISOString(),
+        },
+        { status: 400 }
+      );
+    }
+
+    // Validate time format (HH:mm)
+    const timeRegex = /^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/;
+    if (!timeRegex.test(body.time)) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: "Time must be in HH:mm format",
+          code: "INVALID_TIME_FORMAT",
+          timestamp: new Date().toISOString(),
+        },
+        { status: 400 }
+      );
+    }
+
+    // Calculate total price
+    const totalPrice = Number(tour.price) * body.participants;
+
+    // Create booking data object
+    const bookingData = {
+      tourId: body.tourId,
+      customerId: body.customerId,
+      hostId: tour.hostId,
+      customerName: body.customerName,
+      customerEmail: body.customerEmail,
+      date: body.date,
+      time: body.time,
+      participants: body.participants,
+      totalPrice: totalPrice.toString(),
+      currency: tour.currency,
+      status: "pending" as const,
+      paymentStatus: "pending" as const,
+      paymentId: null,
+      specialRequests: body.specialRequests || null,
     };
 
-    // Add to mock database (in real app, this would be a DB insert)
-    mockBookings.push(newBooking);
+    // Create booking in database
+    const newBooking = await bookingQueries.create(bookingData);
 
-    return NextResponse.json(newBooking, { status: 201 });
+    return NextResponse.json(
+      {
+        success: true,
+        data: newBooking,
+        message: "Booking created successfully",
+        timestamp: new Date().toISOString(),
+      },
+      { status: 201 }
+    );
   } catch (error) {
     console.error("Error creating booking:", error);
     return NextResponse.json(
-      { error: "Failed to create booking" },
+      {
+        success: false,
+        error: "Failed to create booking",
+        code: "CREATE_BOOKING_ERROR",
+        timestamp: new Date().toISOString(),
+      },
       { status: 500 }
     );
   }

@@ -1,90 +1,65 @@
-// File: app/api/tours/route.ts
-// Location: SUBSTITUIR o ficheiro existente app/api/tours/route.ts
+// ===================================================================
+// 📁 app/api/tours/route.ts
+// Location: REPLACE the existing app/api/tours/route.ts
+// ===================================================================
 
 import { NextRequest, NextResponse } from "next/server";
-import { mockTours } from "@/lib/db/mockData";
-import { Tour } from "@/types";
+import { tourQueries } from "@/lib/db/queries";
 
-// GET - Fetch tours with optional filters
+// GET - Fetch all tours with optional filters
 export async function GET(request: NextRequest) {
   try {
     const searchParams = request.nextUrl.searchParams;
-    const location = searchParams.get("location");
-    const maxPrice = searchParams.get("maxPrice");
-    const difficulty = searchParams.get("difficulty");
-    const minRating = searchParams.get("minRating");
-    const limit = parseInt(searchParams.get("limit") || "10", 10);
-    const offset = parseInt(searchParams.get("offset") || "0", 10);
-    const sortBy = searchParams.get("sortBy") || "newest";
 
-    let filteredTours = [...mockTours];
+    // Extract query parameters
+    const filters = {
+      location: searchParams.get("location") || undefined,
+      maxPrice: searchParams.get("maxPrice")
+        ? Number(searchParams.get("maxPrice"))
+        : undefined,
+      difficulty: searchParams.get("difficulty") || undefined,
+      minRating: searchParams.get("minRating")
+        ? Number(searchParams.get("minRating"))
+        : undefined,
+      limit: searchParams.get("limit") ? Number(searchParams.get("limit")) : 10,
+      offset: searchParams.get("offset")
+        ? Number(searchParams.get("offset"))
+        : 0,
+    };
 
-    // Apply filters
-    if (location) {
-      filteredTours = filteredTours.filter((tour) =>
-        tour.location.toLowerCase().includes(location.toLowerCase())
-      );
-    }
+    // Remove undefined values
+    Object.keys(filters).forEach((key) => {
+      if (filters[key as keyof typeof filters] === undefined) {
+        delete filters[key as keyof typeof filters];
+      }
+    });
 
-    if (maxPrice) {
-      const maxPriceNum = parseFloat(maxPrice);
-      filteredTours = filteredTours.filter((tour) => tour.price <= maxPriceNum);
-    }
-
-    if (difficulty) {
-      filteredTours = filteredTours.filter(
-        (tour) => tour.difficulty.toLowerCase() === difficulty.toLowerCase()
-      );
-    }
-
-    if (minRating) {
-      const minRatingNum = parseFloat(minRating);
-      // ✅ CORRIGIDO: rating agora é obrigatório, não precisa verificar undefined
-      filteredTours = filteredTours.filter(
-        (tour) => tour.rating >= minRatingNum
-      );
-    }
-
-    // Apply sorting
-    switch (sortBy) {
-      case "price-asc":
-        filteredTours.sort((a, b) => a.price - b.price);
-        break;
-      case "price-desc":
-        filteredTours.sort((a, b) => b.price - a.price);
-        break;
-      case "rating":
-        filteredTours.sort((a, b) => b.rating - a.rating);
-        break;
-      case "popular":
-        filteredTours.sort((a, b) => b.reviewCount - a.reviewCount);
-        break;
-      case "newest":
-      default:
-        filteredTours.sort(
-          (a, b) =>
-            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-        );
-        break;
-    }
-
-    // Apply pagination
-    const total = filteredTours.length;
-    const paginatedTours = filteredTours.slice(offset, offset + limit);
+    // Fetch tours from real database
+    const result = await tourQueries.getAll(filters);
 
     return NextResponse.json({
-      tours: paginatedTours,
+      success: true,
+      data: result.tours,
       pagination: {
-        total,
-        offset,
-        limit,
-        hasMore: offset + limit < total,
+        total: result.total,
+        limit: filters.limit || 10,
+        offset: filters.offset || 0,
+        hasMore: (filters.offset || 0) + (filters.limit || 10) < result.total,
+        currentPage:
+          Math.floor((filters.offset || 0) / (filters.limit || 10)) + 1,
+        totalPages: Math.ceil(result.total / (filters.limit || 10)),
       },
+      timestamp: new Date().toISOString(),
     });
   } catch (error) {
     console.error("Error fetching tours:", error);
     return NextResponse.json(
-      { error: "Failed to fetch tours" },
+      {
+        success: false,
+        error: "Failed to fetch tours",
+        code: "FETCH_TOURS_ERROR",
+        timestamp: new Date().toISOString(),
+      },
       { status: 500 }
     );
   }
@@ -95,82 +70,134 @@ export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
 
-    // Validation
+    // Validate required fields
     const requiredFields = [
       "title",
       "description",
       "location",
-      "duration", // ✅ CORRIGIDO: duration deve ser number
-      "price",
-      "currency",
-      "difficulty",
+      "duration",
+      "maxParticipants",
       "hostId",
+      "price",
     ];
+    const missingFields = requiredFields.filter((field) => !body[field]);
 
-    for (const field of requiredFields) {
-      if (body[field] === undefined || body[field] === null) {
-        return NextResponse.json(
-          { error: `Missing required field: ${field}` },
-          { status: 400 }
-        );
-      }
+    if (missingFields.length > 0) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: `Missing required fields: ${missingFields.join(", ")}`,
+          code: "MISSING_FIELDS",
+          timestamp: new Date().toISOString(),
+        },
+        { status: 400 }
+      );
     }
 
-    // Validate duration is a number
+    // Validate data types
     if (typeof body.duration !== "number" || body.duration <= 0) {
       return NextResponse.json(
-        { error: "Duration must be a positive number (in minutes)" },
+        {
+          success: false,
+          error: "Duration must be a positive number (in hours)",
+          code: "INVALID_DURATION",
+          timestamp: new Date().toISOString(),
+        },
         { status: 400 }
       );
     }
 
-    // Validate price is a number
     if (typeof body.price !== "number" || body.price <= 0) {
       return NextResponse.json(
-        { error: "Price must be a positive number" },
+        {
+          success: false,
+          error: "Price must be a positive number",
+          code: "INVALID_PRICE",
+          timestamp: new Date().toISOString(),
+        },
         { status: 400 }
       );
     }
 
-    // Create new tour
-    const newTour: Tour = {
-      id: `t${Date.now()}`,
+    if (typeof body.maxParticipants !== "number" || body.maxParticipants <= 0) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: "MaxParticipants must be a positive number",
+          code: "INVALID_MAX_PARTICIPANTS",
+          timestamp: new Date().toISOString(),
+        },
+        { status: 400 }
+      );
+    }
+
+    // Validate difficulty enum
+    const validDifficulties = ["Easy", "Moderate", "Hard"];
+    if (body.difficulty && !validDifficulties.includes(body.difficulty)) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: `Difficulty must be one of: ${validDifficulties.join(", ")}`,
+          code: "INVALID_DIFFICULTY",
+          timestamp: new Date().toISOString(),
+        },
+        { status: 400 }
+      );
+    }
+
+    // Create tour data object
+    const tourData = {
       title: body.title,
       description: body.description,
-      image: body.image || "/images/tours/placeholder.webp",
-      location: body.location,
-      duration: body.duration, // ✅ CORRIGIDO: number
-      maxParticipants: body.maxParticipants || 10, // ✅ CORRIGIDO: obrigatório com default
-      rating: body.rating || 0, // ✅ CORRIGIDO: obrigatório com default
-      reviewCount: body.reviewCount || 0,
-      amenities: body.amenities || [],
       shortDescription: body.shortDescription,
-      images: body.images || [],
-      price: body.price,
-      originalPrice: body.originalPrice,
-      currency: body.currency,
-      minimumAge: body.minimumAge || 0,
-      difficulty: body.difficulty,
-      included: body.included || [],
-      excluded: body.excluded || [],
-      itinerary: body.itinerary || [],
+      image: body.image || "/images/tours/placeholder.jpg",
+      images: Array.isArray(body.images)
+        ? body.images
+        : [body.image || "/images/tours/placeholder.jpg"],
+      price: body.price.toString(),
+      originalPrice: body.originalPrice
+        ? body.originalPrice.toString()
+        : undefined,
+      currency: body.currency || "EUR",
+      duration: body.duration,
+      location: body.location,
+      rating: "0",
+      reviewCount: 0,
+      maxParticipants: body.maxParticipants,
+      minimumAge: body.minimumAge || null,
+      difficulty: (body.difficulty || "Easy") as "Easy" | "Moderate" | "Hard",
+      included: Array.isArray(body.included) ? body.included : [],
+      excluded: Array.isArray(body.excluded) ? body.excluded : [],
+      itinerary: Array.isArray(body.itinerary) ? body.itinerary : [],
       cancellationPolicy:
-        body.cancellationPolicy || "Free cancellation up to 24 hours before",
+        body.cancellationPolicy ||
+        "Free cancellation up to 24 hours before the experience starts",
       hostId: body.hostId,
-      tags: body.tags || [],
+      tags: Array.isArray(body.tags) ? body.tags : [],
       language: body.language || "pt",
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
     };
 
-    // Add to mock database (in real app, this would be a DB insert)
-    mockTours.push(newTour);
+    // Create tour in database
+    const newTour = await tourQueries.create(tourData);
 
-    return NextResponse.json(newTour, { status: 201 });
+    return NextResponse.json(
+      {
+        success: true,
+        data: newTour,
+        message: "Tour created successfully",
+        timestamp: new Date().toISOString(),
+      },
+      { status: 201 }
+    );
   } catch (error) {
     console.error("Error creating tour:", error);
     return NextResponse.json(
-      { error: "Failed to create tour" },
+      {
+        success: false,
+        error: "Failed to create tour",
+        code: "CREATE_TOUR_ERROR",
+        timestamp: new Date().toISOString(),
+      },
       { status: 500 }
     );
   }
