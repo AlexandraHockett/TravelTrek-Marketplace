@@ -276,7 +276,9 @@
       "links": {
         "tours": "Touren",
         "destinations": "Ziele",
-        "experiences": "Erfahrungen"
+        "experiences": "Erfahrungen",
+        "bookings": "Buchungen",
+        "profile": "Profil"
       }
     },
     "host": {
@@ -293,7 +295,9 @@
         "help": "Hilfe-Center",
         "contact": "Kontakt",
         "terms": "Nutzungsbedingungen",
-        "privacy": "Datenschutz"
+        "privacy": "Datenschutz",
+        "login": "Anmelden",
+        "signup": "Registrieren"
       }
     },
     "brand": {
@@ -304,7 +308,10 @@
     "bottom": {
       "privacy": "Datenschutzrichtlinie",
       "terms": "Servicebedingungen",
-      "cookies": "Cookies"
+      "cookies": "Cookies",
+      "about": "Über uns",
+      "status": "Projektstatus",
+      "help": "Hilfe"
     }
   },
   "tours": {

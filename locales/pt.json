@@ -295,9 +295,11 @@
       "title": "Suporte",
       "links": {
         "help": "Centro de Ajuda",
-        "contact": "Contacto",
         "terms": "Termos de Utilização",
-        "privacy": "Privacidade"
+        "privacy": "Privacidade",
+        "login": "Entrar",
+        "signup": "Registar",
+        "contact": "Contacto"
       }
     },
     "brand": {
@@ -308,7 +310,10 @@
     "bottom": {
       "privacy": "Política de Privacidade",
       "terms": "Termos de Serviço",
-      "cookies": "Cookies"
+      "cookies": "Cookies",
+      "about": "Sobre",
+      "status": "Estado do Projeto",
+      "help": "Ajuda"
     }
   },
   "tours": {

@@ -1,4 +1,4 @@
-// File: app/components/Footer.tsx
+// File: components/shared/Footer.tsx
 import { getTranslations } from "@/lib/utils";
 import Link from "next/link";
 
@@ -16,16 +16,16 @@ export default async function Footer({ params }: FooterProps) {
       title: t.footer?.explore?.title || "Explore",
       links: [
         {
-          href: "/customer/tours",
+          href: `/${locale}/customer/tours`,
           label: t.footer?.explore?.links?.tours || "Tours",
         },
         {
-          href: "/customer/destinations",
-          label: t.footer?.explore?.links?.destinations || "Destinations",
+          href: `/${locale}/customer/bookings`,
+          label: t.navigation?.bookings || "Bookings",
         },
         {
-          href: "/customer/experiences",
-          label: t.footer?.explore?.links?.experiences || "Experiences",
+          href: `/${locale}/customer/profile`,
+          label: t.navigation?.profile || "Profile",
         },
       ],
     },
@@ -33,15 +33,15 @@ export default async function Footer({ params }: FooterProps) {
       title: t.footer?.host?.title || "Host",
       links: [
         {
-          href: "/host",
+          href: `/${locale}/host`,
           label: t.footer?.host?.links?.portal || "Host Portal",
         },
         {
-          href: "/host/earnings",
+          href: `/${locale}/host/earnings`,
           label: t.footer?.host?.links?.earnings || "Earnings",
         },
         {
-          href: "/host/bookings",
+          href: `/${locale}/host/bookings`,
           label: t.footer?.host?.links?.bookings || "Bookings",
         },
       ],
@@ -50,20 +50,16 @@ export default async function Footer({ params }: FooterProps) {
       title: t.footer?.support?.title || "Support",
       links: [
         {
-          href: "/help",
-          label: t.footer?.support?.links?.help || "Help Center",
+          href: `/${locale}/auth/login`,
+          label: t.navigation?.login || "Log In",
         },
         {
-          href: "/contact",
-          label: t.footer?.support?.links?.contact || "Contact",
+          href: `/${locale}/auth/signup`,
+          label: t.navigation?.signup || "Sign Up",
         },
         {
-          href: "/terms",
-          label: t.footer?.support?.links?.terms || "Terms of Use",
-        },
-        {
-          href: "/privacy",
-          label: t.footer?.support?.links?.privacy || "Privacy",
+          href: `/${locale}#contact`,
+          label: t.navigation?.contact || "Contact",
         },
       ],
     },
@@ -92,6 +88,7 @@ export default async function Footer({ params }: FooterProps) {
               <Link
                 href="#"
                 className="text-gray-400 hover:text-white transition-colors"
+                aria-label="Facebook"
               >
                 <span className="sr-only">Facebook</span>
                 <svg
@@ -105,6 +102,7 @@ export default async function Footer({ params }: FooterProps) {
               <Link
                 href="#"
                 className="text-gray-400 hover:text-white transition-colors"
+                aria-label="Instagram"
               >
                 <span className="sr-only">Instagram</span>
                 <svg
@@ -118,6 +116,7 @@ export default async function Footer({ params }: FooterProps) {
               <Link
                 href="#"
                 className="text-gray-400 hover:text-white transition-colors"
+                aria-label="Twitter"
               >
                 <span className="sr-only">Twitter</span>
                 <svg
@@ -157,22 +156,22 @@ export default async function Footer({ params }: FooterProps) {
           </p>
           <div className="flex flex-wrap justify-center sm:justify-end space-x-3 sm:space-x-6">
             <Link
-              href="/privacy"
+              href={`/${locale}#about`}
               className="text-xs sm:text-sm lg:text-base text-gray-400 hover:text-white transition-colors"
             >
-              {t.footer?.bottom?.privacy || "Privacy Policy"}
+              {t.navigation?.about || "Sobre"}
             </Link>
             <Link
-              href="/terms"
-              className="text-xs sm:text-sm lg:text-base text-gray-400 hover:text-white transition- colors"
-            >
-              {t.footer?.bottom?.terms || "Terms of Service"}
-            </Link>
-            <Link
-              href="/cookies"
+              href={`/${locale}#status`}
               className="text-xs sm:text-sm lg:text-base text-gray-400 hover:text-white transition-colors"
             >
-              {t.footer?.bottom?.cookies || "Cookies"}
+              {t.status?.title || "Estado do Projeto"}
+            </Link>
+            <Link
+              href={`/${locale}#help`}
+              className="text-xs sm:text-sm lg:text-base text-gray-400 hover:text-white transition-colors"
+            >
+              {t.navigation?.help || "Ajuda"}
             </Link>
           </div>
         </div>

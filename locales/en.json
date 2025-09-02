@@ -278,8 +278,8 @@
       "title": "Explore",
       "links": {
         "tours": "Tours",
-        "destinations": "Destinations",
-        "experiences": "Experiences"
+        "bookings": "Bookings",
+        "profile": "Profile"
       }
     },
     "host": {
@@ -296,7 +296,9 @@
         "help": "Help Center",
         "contact": "Contact",
         "terms": "Terms of Use",
-        "privacy": "Privacy"
+        "privacy": "Privacy",
+        "login": "Log In",
+        "signup": "Sign Up"
       }
     },
     "brand": {
@@ -307,7 +309,10 @@
     "bottom": {
       "privacy": "Privacy Policy",
       "terms": "Terms of Service",
-      "cookies": "Cookies"
+      "cookies": "Cookies",
+      "about": "About",
+      "status": "Project Status",
+      "help": "Help"
     }
   },
   "tours": {
