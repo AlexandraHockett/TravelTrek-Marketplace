@@ -20,7 +20,7 @@ import {
 } from "lucide-react";
 import { Booking } from "@/types";
 import { useTranslations } from "@/lib/i18n";
-import { formatCurrency, formatDate } from "@/lib/utils";
+import { formatPrice, formatDate } from "@/lib/utils"; // ✅ Fixed: Use formatPrice
 
 interface CustomerBookingsPageProps {
   params: Promise<{ locale: string }>; // ✅ Now Promise<>
@@ -66,68 +66,160 @@ export default function CustomerBookingsPage({
     }
   }, [searchParams]);
 
-  // Mock data for development
+  // ✅ FIXED: Complete mock data matching Booking interface
   const mockBookings: Booking[] = [
     {
+      // Core identifiers
       id: "bk1",
       tourId: "tour1",
+      userId: "user1",
+
+      // Tour details
       tourTitle: "Porto Walking Tour",
-      customerId: "customer1",
+      tourDescription:
+        "Discover the historic charm of Porto with local insights",
+      tourImage: "/images/tours/porto-walking.jpg",
+      location: "Porto, Portugal",
+      duration: 180, // 3 hours in minutes
+
+      // Customer information
+      customerId: "user1",
+      customerName: "Maria Silva",
+      customerEmail: "maria.silva@email.com",
+      customerPhone: "+351 912 345 678",
+
+      // Host information
       hostId: "host1",
+      hostName: "João Santos",
+      hostEmail: "joao.santos@email.com",
+      hostPhone: "+351 913 456 789",
+      hostAvatar: "/images/hosts/joao.jpg",
+      hostVerified: true,
+      hostResponseTime: "Responde em 2 horas",
+
+      // Booking details
       date: "2025-09-15",
       time: "14:00",
       participants: 2,
-      totalAmount: 75.0,
-      basePrice: 75.0,
-      serviceFees: 0.0,
-      status: "confirmed",
-      paymentStatus: "paid",
-      tourImage: "/images/tours/porto-walking.jpg",
-      location: "Porto, Portugal",
+      specialRequests: "Preferimos um ritmo mais lento",
       meetingPoint: "Praça da Liberdade",
       cancellationPolicy: "Cancelamento gratuito até 24h antes",
+
+      // Pricing
+      basePrice: 37.5, // Per person
+      serviceFees: 0.0,
+      totalAmount: 75.0, // 37.5 * 2 participants
+      totalPrice: 75.0,
+      currency: "EUR",
+
+      // Status
+      status: "confirmed",
+      paymentStatus: "paid",
+
+      // Timestamps
       createdAt: "2025-08-15T10:00:00Z",
       updatedAt: "2025-08-15T10:00:00Z",
     },
     {
+      // Core identifiers
       id: "bk2",
       tourId: "tour2",
+      userId: "user1",
+
+      // Tour details
       tourTitle: "Lisbon Food Experience",
-      customerId: "customer1",
+      tourDescription: "Authentic Portuguese flavors and hidden food spots",
+      tourImage: "/images/tours/lisbon-food.jpg",
+      location: "Lisboa, Portugal",
+      duration: 240, // 4 hours in minutes
+
+      // Customer information
+      customerId: "user1",
+      customerName: "Maria Silva",
+      customerEmail: "maria.silva@email.com",
+      customerPhone: "+351 912 345 678",
+
+      // Host information
       hostId: "host2",
+      hostName: "Ana Costa",
+      hostEmail: "ana.costa@email.com",
+      hostPhone: "+351 913 456 789",
+      hostAvatar: "/images/hosts/ana.jpg",
+      hostVerified: true,
+      hostResponseTime: "Responde em 1 hora",
+
+      // Booking details
       date: "2025-09-25",
       time: "18:30",
       participants: 4,
-      totalAmount: 200.0,
-      basePrice: 180.0,
-      serviceFees: 20.0,
-      status: "pending",
-      paymentStatus: "pending",
-      tourImage: "/images/tours/lisbon-food.jpg",
-      location: "Lisboa, Portugal",
+      specialRequests: "Uma pessoa é vegetariana",
       meetingPoint: "Rossio Square",
       cancellationPolicy: "Cancelamento gratuito até 48h antes",
+
+      // Pricing
+      basePrice: 45.0, // Per person
+      serviceFees: 20.0,
+      totalAmount: 200.0, // (45 * 4) + 20 service fees
+      totalPrice: 200.0,
+      currency: "EUR",
+
+      // Status
+      status: "pending",
+      paymentStatus: "pending",
+
+      // Timestamps
       createdAt: "2025-08-20T15:30:00Z",
       updatedAt: "2025-08-20T15:30:00Z",
     },
     {
+      // Core identifiers
       id: "bk3",
       tourId: "tour3",
+      userId: "user1",
+
+      // Tour details
       tourTitle: "Sintra Day Trip",
-      customerId: "customer1",
+      tourDescription:
+        "Magical palaces and gardens in the romantic town of Sintra",
+      tourImage: "/images/tours/sintra-trip.jpg",
+      location: "Sintra, Portugal",
+      duration: 480, // 8 hours in minutes
+
+      // Customer information
+      customerId: "user1",
+      customerName: "Maria Silva",
+      customerEmail: "maria.silva@email.com",
+      customerPhone: "+351 912 345 678",
+
+      // Host information
       hostId: "host3",
+      hostName: "Pedro Oliveira",
+      hostEmail: "pedro.oliveira@email.com",
+      hostPhone: "+351 914 567 890",
+      hostAvatar: "/images/hosts/pedro.jpg",
+      hostVerified: true,
+      hostResponseTime: "Responde em 3 horas",
+
+      // Booking details
       date: "2025-07-30",
       time: "09:00",
       participants: 3,
-      totalAmount: 150.0,
-      basePrice: 150.0,
-      serviceFees: 0.0,
-      status: "completed",
-      paymentStatus: "paid",
-      tourImage: "/images/tours/sintra-trip.jpg",
-      location: "Sintra, Portugal",
+      specialRequests: "Interessados em fotografia",
       meetingPoint: "Estação de Sintra",
       cancellationPolicy: "Cancelamento gratuito até 24h antes",
+
+      // Pricing
+      basePrice: 50.0, // Per person
+      serviceFees: 0.0,
+      totalAmount: 150.0, // 50 * 3 participants
+      totalPrice: 150.0,
+      currency: "EUR",
+
+      // Status
+      status: "completed",
+      paymentStatus: "paid",
+
+      // Timestamps
       createdAt: "2025-07-15T09:00:00Z",
       updatedAt: "2025-07-30T16:00:00Z",
     },
@@ -430,7 +522,12 @@ export default function CustomerBookingsPage({
 
                         <div className="text-right">
                           <p className="text-lg font-bold text-gray-900">
-                            {formatCurrency(booking.totalAmount, locale)}
+                            {/* ✅ FIXED: Use formatPrice */}
+                            {formatPrice(
+                              booking.totalAmount,
+                              booking.currency,
+                              locale
+                            )}
                           </p>
                           {booking.paymentStatus === "pending" && (
                             <p className="text-sm text-yellow-600 font-medium">

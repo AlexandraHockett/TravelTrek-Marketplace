@@ -5,8 +5,8 @@
     "bookings": "Bookings",
     "profile": "Profile",
     "host": "Host",
-    "login": "Log in",
-    "signup": "Sign up",
+    "login": "Log In",
+    "signup": "Sign Up",
     "exploreTours": "Explore Tours",
     "myBookings": "My Bookings",
     "hostPortal": "Host Portal",
@@ -14,7 +14,7 @@
     "earnings": "Earnings",
     "messages": "Messages",
     "settings": "Settings",
-    "logout": "Log out",
+    "logout": "Log Out",
     "help": "Help",
     "contact": "Contact",
     "about": "About",
@@ -55,9 +55,17 @@
     "paymentFailed": "Payment failed",
     "paymentSuccess": "Payment successful!",
     "processingPayment": "Processing payment...",
-    "paymentRequired": "Payment required to confirm booking"
+    "paymentRequired": "Payment required to confirm the booking"
   },
   "host": {
+    "dashboard": "Host Dashboard",
+    "welcome": "Welcome to your control panel",
+    "stats": {
+      "totalBookings": "Total Bookings",
+      "monthlyEarnings": "Monthly Earnings",
+      "averageRating": "Average Rating",
+      "activeListings": "Active Listings"
+    },
     "bookings": {
       "manageBookings": "Manage Bookings",
       "customerName": "Customer",
@@ -78,7 +86,6 @@
       "completedBookings": "Completed Bookings",
       "date": "Date"
     },
-    "dashboard": "Host Dashboard",
     "totalBookings": "Total Bookings",
     "monthlyEarnings": "Monthly Earnings",
     "avgRating": "Average Rating",
@@ -97,17 +104,24 @@
     }
   },
   "common": {
+    "location": "Location",
+    "bookNow": "Book Now",
+    "total": "Total",
+    "person": "person",
+    "persons": "people",
+    "currency": {
+      "symbol": "€",
+      "code": "EUR"
+    },
     "search": "Search",
     "export": "Export",
     "refresh": "Refresh",
     "all": "All",
     "date": "Date",
-    "person": "person",
-    "persons": "people",
     "cancel": "Cancel",
     "confirm": "Confirm",
     "processing": "Processing...",
-    "retry": "Try again",
+    "retry": "Retry",
     "sort": {
       "dateDesc": "Newest date",
       "dateAsc": "Oldest date",
@@ -116,7 +130,6 @@
       "status": "Status"
     },
     "book": "Book",
-    "bookNow": "Book Now",
     "payNow": "Pay Now",
     "viewAll": "View all",
     "reviews": "reviews",
@@ -129,7 +142,6 @@
     "loading": "Loading...",
     "error": "Error",
     "success": "Success",
-    "total": "Total",
     "back": "Back",
     "next": "Next",
     "previous": "Previous",
@@ -143,9 +155,20 @@
     "filter": "Filter",
     "time": "Time",
     "price": "Price",
-    "currency": "£",
     "yes": "Yes",
     "no": "No"
+  },
+  "customer": {
+    "dashboard": {
+      "welcome": "Welcome back!",
+      "subtitle": "Here you can manage your bookings and discover new experiences.",
+      "stats": {
+        "totalBookings": "Total Bookings",
+        "upcomingTrips": "Upcoming Trips",
+        "completedTrips": "Completed Trips",
+        "totalSpent": "Total Spent"
+      }
+    }
   },
   "hero": {
     "title": "Discover the ",
@@ -190,14 +213,14 @@
   },
   "hostCta": {
     "title": "Share Your Local Knowledge",
-    "subtitle": "Join our community of local hosts and turn your passion for your city into income. Create unique tours and share unforgettable experiences with travellers.",
+    "subtitle": "Join our community of local hosts and turn your passion for your city into income. Create unique tours and share unforgettable experiences with travelers.",
     "startTodayButton": "Start Today",
     "learnEarningsButton": "Learn About Earnings",
     "startHosting": "Start Hosting",
     "learnMore": "Learn More"
   },
   "statistics": {
-    "happyTravelers": "Happy Travellers",
+    "happyTravelers": "Happy Travelers",
     "uniqueTours": "Unique Tours",
     "citiesWorldwide": "Cities Worldwide"
   },
@@ -208,9 +231,9 @@
     "tours": "Tours",
     "bookings": "Bookings",
     "profile": "Profile",
-    "login": "Log in",
-    "signup": "Sign up",
-    "logout": "Log out",
+    "login": "Log In",
+    "signup": "Sign Up",
+    "logout": "Log Out",
     "dashboard": "Dashboard",
     "help": "Help",
     "contact": "Contact",
@@ -230,7 +253,7 @@
       "becomeHost": "Become a Host",
       "hostResources": "Host Resources",
       "responsibleHosting": "Responsible Hosting",
-      "helpCenter": "Help Centre",
+      "helpCenter": "Help Center",
       "safetyInfo": "Safety Information",
       "cancellationOptions": "Cancellation Options",
       "aboutUs": "About Us",
@@ -259,7 +282,7 @@
     "support": {
       "title": "Support",
       "links": {
-        "help": "Help Centre",
+        "help": "Help Center",
         "contact": "Contact",
         "terms": "Terms of Use",
         "privacy": "Privacy"
@@ -344,7 +367,7 @@
     },
     "hostCta": {
       "title": "Run a tourism business?",
-      "description": "Join our platform and reach thousands of travellers interested in your unique experiences.",
+      "description": "Join our platform and reach thousands of travelers interested in your unique experiences.",
       "button": "Become a Host"
     }
   },
@@ -359,10 +382,10 @@
     "unavailableDate": "Date unavailable",
     "bookNow": "Book Now",
     "checkAvailability": "Check Availability",
-    "addToWishlist": "Add to Favourites",
-    "removeFromWishlist": "Remove from Favourites",
+    "addToWishlist": "Add to Favorites",
+    "removeFromWishlist": "Remove from Favorites",
     "shareExperience": "Share Experience",
-    "whatYouWillDo": "What you'll do",
+    "whatYouWillDo": "What you will do",
     "groupSize": "Group Size",
     "languages": "Languages",
     "provided": "Provided",
@@ -449,7 +472,7 @@
     "addParticipant": "Add Participant",
     "removeParticipant": "Remove Participant",
     "specialRequests": "Special Requests (Optional)",
-    "specialRequestsPlaceholder": "Any special needs or specific requests?",
+    "specialRequestsPlaceholder": "Do you have any special needs or specific requests?",
     "allergiesPlaceholder": "Allergies, special needs, etc.",
     "proceedToPayment": "Proceed to Payment",
     "continueToPayment": "Continue to Payment",
@@ -464,7 +487,7 @@
     "bookingError": "Error processing booking. Please try again.",
     "maxPersons": "Maximum",
     "bookForMultiple": "person",
-    "noChargeYet": "You won't be charged yet. Confirm details before payment.",
+    "noChargeYet": "You won't be charged yet. Confirm the details before payment.",
     "experienceDate": "Experience Date",
     "agreeToTerms": "By continuing, you agree to our",
     "termsOfService": "Terms of Service",
@@ -509,7 +532,7 @@
     "upcomingExperiences": "Upcoming Experiences",
     "pastBookings": "Past Bookings",
     "noResultsTitle": "No bookings found",
-    "noResultsDescription": "There are no bookings with status \"{{status}}\".",
+    "noResultsDescription": "There are no bookings with the status \"{{status}}\".",
     "allBookingsButton": "View All Bookings",
     "confirmCancel": "Confirm Cancellation",
     "cancelSuccess": "Booking cancelled successfully",
@@ -532,9 +555,9 @@
     "sort": {
       "dateDesc": "Newest date",
       "dateAsc": "Oldest date",
-      "createdDesc": "Most recent booking",
       "amountDesc": "Highest amount",
       "amountAsc": "Lowest amount",
+      "createdDesc": "Most recent booking",
       "status": "Status"
     }
   },
@@ -545,7 +568,7 @@
   },
   "status": {
     "title": "Project Status",
-    "subtitle": "TravelTrek Marketplace development demo",
+    "subtitle": "TravelTrek Marketplace Development Demo",
     "categories": {
       "coreInfrastructure": "Core Infrastructure",
       "customerPortal": "Customer Portal",
@@ -553,7 +576,7 @@
       "integrations": "Integrations"
     },
     "features": {
-      "i18nSystem": "Internationalisation System",
+      "i18nSystem": "Internationalization System",
       "nextjsReact": "Next.js 15 + React 19",
       "responsiveNavigation": "Responsive Navigation",
       "typescriptIntegration": "TypeScript Integration",
@@ -573,19 +596,19 @@
     "descriptions": {
       "i18nSystemDesc": "Full support for 5 languages with smooth locale switching.",
       "nextjsReactDesc": "Built with Next.js App Router and React for a modern, scalable frontend.",
-      "responsiveNavigationDesc": "Mobile and desktop optimised navigation with Tailwind CSS v4.",
+      "responsiveNavigationDesc": "Mobile and desktop navigation optimized with Tailwind CSS v4.",
       "typescriptIntegrationDesc": "Type-safe code with TypeScript for robust development.",
-      "tourBrowsingDesc": "Browse and filter tours with real-time data from simulated Viator API.",
+      "tourBrowsingDesc": "Browse and filter tours with real-time data from the simulated Viator API.",
       "bookingSystemDesc": "Booking system in progress with state management and Stripe integration.",
-      "userDashboardDesc": "Customer dashboard to manage bookings and profile settings.",
+      "userDashboardDesc": "Customer dashboard for managing bookings and profile settings.",
       "reviewSystemDesc": "Planned system for users to leave reviews of tours and hosts.",
       "bookingManagementDesc": "Tools for hosts to manage bookings and communicate with customers.",
       "tourCreationDesc": "System in progress for hosts to create and edit tours.",
       "earningsDashboardDesc": "Dashboard for hosts to track earnings and performance metrics.",
       "messagingSystemDesc": "Planned messaging system for host-customer communication.",
       "stripeIntegrationDesc": "Stripe integration in progress for secure payment processing.",
-      "databasePostgresDesc": "Postgres database to store tours, bookings and user data.",
-      "viatorApiIntegrationDesc": "Planned integration with Viator API for tour data synchronisation.",
+      "databasePostgresDesc": "Postgres database for storing tours, bookings, and user data.",
+      "viatorApiIntegrationDesc": "Planned integration with Viator API for tour data synchronization.",
       "authenticationSystemDesc": "Planned authentication system for secure user access."
     },
     "implemented": "Implemented",
@@ -596,19 +619,19 @@
   "techStackItems": {
     "nextjs": {
       "title": "Next.js",
-      "subtitle": "Server-side rendering and App Router for optimised performance."
+      "subtitle": "Server-side rendering and App Router for optimized performance."
     },
     "tailwind": {
       "title": "Tailwind CSS",
-      "subtitle": "Utility-first CSS framework for modern responsive design."
+      "subtitle": "Utility-first CSS framework for modern, responsive design."
     },
     "typescript": {
       "title": "TypeScript",
       "subtitle": "Type-safe development for sustainable code."
     },
     "i18n": {
-      "title": "Internationalisation",
-      "subtitle": "Multi-language support to reach global audience."
+      "title": "Internationalization",
+      "subtitle": "Multi-language support to reach a global audience."
     }
   },
   "portfolioContext": "Portfolio Context",
@@ -621,6 +644,10 @@
     "professionalStructure": "Professional Structure: Type-safe code and modular design."
   },
   "pages": {
+    "bookingDetail": {
+      "title": "Booking Details",
+      "description": "View and manage your booking details"
+    },
     "customerTours": {
       "title": "Tours & Experiences - TravelTrek",
       "description": "Discover amazing tours and experiences"
@@ -628,12 +655,48 @@
     "customerDashboard": {
       "title": "Customer Dashboard - TravelTrek",
       "description": "Manage your bookings and discover experiences"
+    },
+    "notFound": {
+      "title": "Page not found",
+      "description": "The requested page was not found"
+    },
+    "customerBookings": {
+      "title": "My Bookings",
+      "description": "Manage your tour and experience bookings",
+      "subtitle": "Manage your tour and experience bookings",
+      "browseTours": "Explore Tours",
+      "noBookingsDescription": "Discover unique experiences in Portugal and make your first booking!",
+      "stats": {
+        "totalBookings": "Total Bookings",
+        "upcoming": "Upcoming",
+        "totalSpent": "Total Spent"
+      },
+      "filters": {
+        "all": "All",
+        "bookingStatusLabel": "Booking Status",
+        "sortByLabel": "Sort by"
+      },
+      "sort": {
+        "dateDesc": "Newest date",
+        "dateAsc": "Oldest date",
+        "amountDesc": "Highest amount",
+        "amountAsc": "Lowest amount",
+        "createdDesc": "Most recent booking",
+        "status": "Status"
+      }
     }
   },
   "bookingList": {
+    "location": "Location",
+    "person": "person",
+    "persons": "people",
+    "specialRequests": "Special Requests",
+    "vegetarianRequest": "Vegetarian option requested",
+    "bookingNumber": "Booking",
+    "createdAt": "Created on",
+    "completed": "Completed",
     "pending": "Pending",
     "confirmed": "Confirmed",
-    "completed": "Completed",
     "cancelled": "Cancelled",
     "pendingPayment": "Payment Pending",
     "paid": "Paid",
@@ -642,18 +705,12 @@
     "pay": "Pay",
     "cancel": "Cancel",
     "rebook": "Book Again",
-    "bookingNumber": "Booking",
     "participants": "Participants",
     "totalAmount": "Total Amount",
-    "specialRequests": "Special requests",
-    "createdAt": "Created at",
     "noBookings": "You don't have any bookings yet.",
     "bookFirstTour": "Book First Experience",
-    "vegetarianRequest": "Vegetarian options, please",
     "date": "Date",
     "next": "Next",
-    "person": "person",
-    "persons": "people",
     "pendingLabel": "Pending",
     "confirmedLabel": "Confirmed",
     "completedLabel": "Completed",
@@ -662,6 +719,10 @@
     "view": "View"
   },
   "bookingDetails": {
+    "location": "Location",
+    "serviceFees": "Service Fees",
+    "included": "Included",
+    "payNow": "Pay Now",
     "bookingDetails": "Booking Details",
     "bookingInformation": "Booking Information",
     "hostInformation": "Host Information",
@@ -671,9 +732,6 @@
     "paymentCompletedDescription": "Your booking is confirmed and paid.",
     "paymentPending": "Payment Pending",
     "paymentPendingDescription": "Complete payment to confirm your booking.",
-    "payNow": "Pay Now",
-    "serviceFees": "Service fees",
-    "included": "Included",
     "viewTourDetails": "View Tour Details",
     "viewTour": "View Tour",
     "contactHost": "Contact Host",
@@ -681,14 +739,14 @@
     "leaveReview": "Leave Review",
     "responseTime": "Response time",
     "confirmedBooking": "Booking Confirmed",
-    "meetingInstructions": "Please arrive at the location 15 minutes before the experience starts.",
+    "meetingInstructions": "Arrive at the location 15 minutes before the experience starts.",
     "cancellationPolicy": "Cancellation Policy",
     "cancellationDescription": "Free cancellation up to 24 hours before the tour starts. Late cancellations may incur fees.",
-    "cancelReasonRequired": "Please provide a reason for cancellation.",
+    "cancelReasonRequired": "Please indicate the reason for cancellation.",
     "cancelDescription": "Are you sure you want to cancel this booking? This action cannot be undone.",
     "refundInfo": "Refund",
     "willBeRefunded": "will be refunded",
-    "cancelReason": "Reason for cancellation",
+    "cancelReason": "Cancellation reason",
     "cancelReasonPlaceholder": "Please explain the reason for cancellation...",
     "confirmCancel": "Confirm Cancellation",
     "cancelSuccess": "Booking cancelled successfully",
@@ -709,10 +767,10 @@
     "supportMessage": "Our team is available 24/7 for support.",
     "contactSupport": "Contact Support",
     "tourDescription": {
-      "portoFoodWine": "Discover the authentic flavours of Porto in a unique food and wine experience with local wines.",
-      "sintraPalaces": "Visit the majestic palaces of Sintra, UNESCO World Heritage, with a specialised guide.",
+      "portoFoodWine": "Discover the authentic flavors of Porto in a unique gastronomic experience with local wines.",
+      "sintraPalaces": "Visit the majestic palaces of Sintra, a UNESCO World Heritage Site, with a specialized guide.",
       "douroCruise": "Panoramic cruise on the Douro River with stunning vineyard landscapes.",
-      "lisbonTukTuk": "Explore Lisbon in a fun way by tuk-tuk, discovering hidden corners of the city."
+      "lisbonTukTuk": "Explore Lisbon in a fun way with a tuk-tuk, discovering hidden corners of the city."
     },
     "specialRequests": {
       "vegetarian": "Vegetarian options, please",
@@ -722,7 +780,7 @@
       "portoCathedral": "Porto Cathedral - Main Entrance",
       "sintraStation": "Sintra Train Station",
       "douroPort": "Gaia Pier - River Terminal",
-      "lisbonSquare": "Commerce Square - Centre"
+      "lisbonSquare": "Commerce Square - Center"
     },
     "cancellationPolicyDetails": {
       "flexible": "Flexible - Full refund up to 24h before",
@@ -733,8 +791,8 @@
   "errors": {
     "serverError": "Server error. Please contact support.",
     "paymentFailed": "Failed to process payment.",
-    "bookingFailed": "Could not process booking.",
-    "unauthorized": "Unauthorised",
+    "bookingFailed": "Could not process the booking.",
+    "unauthorized": "Unauthorized",
     "validation": "Invalid data",
     "generic": "Error loading data",
     "network": "Internet connection error",
@@ -751,7 +809,7 @@
       "bookingNotCancellable": "Booking cannot be cancelled",
       "paymentFailed": "Payment failed",
       "serverError": "Server error",
-      "unauthorised": "Unauthorised",
+      "unauthorised": "Unauthorized",
       "validationFailed": "Validation failed"
     }
   }

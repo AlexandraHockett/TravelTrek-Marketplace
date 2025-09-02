@@ -299,7 +299,7 @@ export default function BookingDetailClient({
           </Link>
           <div>
             <h1 className="text-2xl font-bold text-gray-900">
-              {t.pages?.bookingDetail?.title || "Detalhes da Reserva"}
+              {t.pages?.customerBookings?.title || "Detalhes da Reserva"}
             </h1>
             <p className="text-gray-600">
               {t.bookingList?.bookingNumber || "Reserva"} #
@@ -383,11 +383,7 @@ export default function BookingDetailClient({
                     {booking.tourTitle}
                   </h2>
                   <p className="text-gray-600 text-sm mb-3">
-                    {booking.tourDescription
-                      ? t.bookingDetails?.tourDescription?.[
-                          booking.tourDescription
-                        ] || "Experiência única de viagem"
-                      : "Experiência única de viagem"}
+                    {booking.tourDescription || "Experiência única de viagem"}
                   </p>
                   <Link href={`/${locale}/customer/tours/${booking.tourId}`}>
                     <Button variant="outline" size="sm">
@@ -454,11 +450,7 @@ export default function BookingDetailClient({
                         {t.bookingDetails?.meetingPoint || "Ponto de Encontro"}
                       </span>
                       <span className="font-medium text-gray-900">
-                        {booking.meetingPoint
-                          ? t.bookingDetails?.meetingPointDetails?.[
-                              booking.meetingPoint
-                            ] || "A definir"
-                          : "A definir"}
+                        {booking.meetingPoint || "A definir"}
                       </span>
                     </div>
                   </div>
@@ -492,11 +484,7 @@ export default function BookingDetailClient({
                 </h3>
                 <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
                   <p className="text-blue-800">
-                    {booking.specialRequests
-                      ? t.bookingDetails?.specialRequests?.[
-                          booking.specialRequests
-                        ] || booking.specialRequests
-                      : booking.specialRequests}
+                    {booking.specialRequests || "Nenhum pedido especial"}
                   </p>
                 </div>
               </Card>

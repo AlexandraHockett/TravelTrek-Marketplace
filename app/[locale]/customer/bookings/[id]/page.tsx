@@ -7,10 +7,14 @@ import { getTranslations } from "@/lib/utils";
 import type { Booking } from "@/types";
 import BookingDetailClient from "./client";
 
-// Mock data - substituir por API real posteriormente
+// ✅ CORRIGIDO: Mock data com todas as propriedades necessárias
 const mockBookings: Booking[] = [
   {
     id: "b1",
+    userId: "c1", // ✅ ADICIONADO
+    location: "Porto, Portugal", // ✅ ADICIONADO
+    duration: 4, // ✅ ADICIONADO (horas)
+    customerPhone: "+351 912 345 000", // ✅ ADICIONADO
     tourId: "t1",
     tourTitle: "Porto Food & Wine Tour",
     tourImage: "/images/tours/porto-food.webp",
@@ -29,18 +33,24 @@ const mockBookings: Booking[] = [
     time: "14:30",
     participants: 2,
     totalAmount: 89.98,
+    totalPrice: 89.98, // ✅ ADICIONADO
+    currency: "EUR", // ✅ ADICIONADO
     basePrice: 44.99,
     serviceFees: 0.0,
     status: "confirmed" as const,
     paymentStatus: "paid" as const,
     specialRequests: "bookingDetails.specialRequests.vegetarian",
-    meetingPoint: "bookingDetails.meetingPoint.portoCathedral",
-    cancellationPolicy: "bookingDetails.cancellationPolicy.moderate",
+    meetingPoint: "bookingDetails.meetingPointDetails.portoCathedral",
+    cancellationPolicy: "bookingDetails.cancellationPolicyDetails.moderate",
     createdAt: "2025-08-20T10:00:00Z",
     updatedAt: "2025-08-20T10:00:00Z",
   },
   {
     id: "b2",
+    userId: "c1", // ✅ ADICIONADO
+    location: "Sintra, Portugal", // ✅ ADICIONADO
+    duration: 6, // ✅ ADICIONADO (horas)
+    customerPhone: "+351 912 345 000", // ✅ ADICIONADO
     tourId: "t2",
     tourTitle: "Sintra Royal Palaces",
     tourImage: "/images/tours/sintra-palace.webp",
@@ -59,17 +69,23 @@ const mockBookings: Booking[] = [
     time: "09:00",
     participants: 3,
     totalAmount: 195.0,
+    totalPrice: 195.0, // ✅ ADICIONADO
+    currency: "EUR", // ✅ ADICIONADO
     basePrice: 65.0,
     serviceFees: 0.0,
     status: "pending" as const,
     paymentStatus: "pending" as const,
-    meetingPoint: "bookingDetails.meetingPoint.sintraStation",
-    cancellationPolicy: "bookingDetails.cancellationPolicy.strict",
+    meetingPoint: "bookingDetails.meetingPointDetails.sintraStation",
+    cancellationPolicy: "bookingDetails.cancellationPolicyDetails.strict",
     createdAt: "2025-08-22T14:30:00Z",
     updatedAt: "2025-08-22T14:30:00Z",
   },
   {
     id: "b3",
+    userId: "c1", // ✅ ADICIONADO
+    location: "Douro Valley, Portugal", // ✅ ADICIONADO
+    duration: 8, // ✅ ADICIONADO (horas)
+    customerPhone: "+351 912 345 000", // ✅ ADICIONADO
     tourId: "t3",
     tourTitle: "Douro Valley River Cruise",
     tourImage: "/images/tours/douro-cruise.webp",
@@ -88,18 +104,24 @@ const mockBookings: Booking[] = [
     time: "10:00",
     participants: 2,
     totalAmount: 178.0,
+    totalPrice: 178.0, // ✅ ADICIONADO
+    currency: "EUR", // ✅ ADICIONADO
     basePrice: 89.0,
     serviceFees: 0.0,
     status: "completed" as const,
     paymentStatus: "paid" as const,
     specialRequests: "bookingDetails.specialRequests.wheelchair",
-    meetingPoint: "bookingDetails.meetingPoint.douroPort",
-    cancellationPolicy: "bookingDetails.cancellationPolicy.flexible",
+    meetingPoint: "bookingDetails.meetingPointDetails.douroPort",
+    cancellationPolicy: "bookingDetails.cancellationPolicyDetails.flexible",
     createdAt: "2025-07-25T09:15:00Z",
     updatedAt: "2025-08-11T16:00:00Z",
   },
   {
     id: "b4",
+    userId: "c1", // ✅ ADICIONADO
+    location: "Lisbon, Portugal", // ✅ ADICIONADO
+    duration: 3, // ✅ ADICIONADO (horas)
+    customerPhone: "+351 912 345 000", // ✅ ADICIONADO
     tourId: "t4",
     tourTitle: "Lisbon Tuk-Tuk City Tour",
     tourImage: "/images/tours/lisbon-tuktuk.webp",
@@ -118,12 +140,14 @@ const mockBookings: Booking[] = [
     time: "16:00",
     participants: 1,
     totalAmount: 35.0,
+    totalPrice: 35.0, // ✅ ADICIONADO
+    currency: "EUR", // ✅ ADICIONADO
     basePrice: 35.0,
     serviceFees: 0.0,
     status: "cancelled" as const,
     paymentStatus: "refunded" as const,
-    meetingPoint: "bookingDetails.meetingPoint.lisbonSquare",
-    cancellationPolicy: "bookingDetails.cancellationPolicy.moderate",
+    meetingPoint: "bookingDetails.meetingPointDetails.lisbonSquare",
+    cancellationPolicy: "bookingDetails.cancellationPolicyDetails.moderate",
     createdAt: "2025-07-20T11:45:00Z",
     updatedAt: "2025-08-04T08:00:00Z",
   },

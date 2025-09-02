@@ -62,7 +62,7 @@
     "welcome": "Bem-vindo ao seu painel de controlo",
     "stats": {
       "totalBookings": "Total de Reservas",
-      "monthlyEarnings": "Ganhos Mensais", 
+      "monthlyEarnings": "Ganhos Mensais",
       "averageRating": "Avaliação Média",
       "activeListings": "Anúncios Ativos"
     },
@@ -86,7 +86,7 @@
       "completedBookings": "Reservas Concluídas",
       "date": "Data"
     },
-   
+
     "totalBookings": "Total de Reservas",
     "monthlyEarnings": "Ganhos Mensais",
     "avgRating": "Classificação Média",
@@ -105,6 +105,7 @@
     }
   },
   "common": {
+    "location": "Localização",
     "bookNow": "Reservar Agora",
     "total": "Total",
     "person": "pessoa",
@@ -157,6 +158,18 @@
     "price": "Preço",
     "yes": "Sim",
     "no": "Não"
+  },
+  "customer": {
+    "dashboard": {
+      "welcome": "Bem-vindo de volta!",
+      "subtitle": "Aqui podes gerir as tuas reservas e descobrir novas experiências.",
+      "stats": {
+        "totalBookings": "Total de Reservas",
+        "upcomingTrips": "Próximas Viagens",
+        "completedTrips": "Viagens Concluídas",
+        "totalSpent": "Total Gasto"
+      }
+    }
   },
   "hero": {
     "title": "Descobre o ",
@@ -632,6 +645,10 @@
     "professionalStructure": "Estrutura Profissional: Código type-safe e design modular."
   },
   "pages": {
+    "bookingDetail": {
+      "title": "Detalhes da Reserva",
+      "description": "Ver e gerir detalhes da sua reserva"
+    },
     "customerTours": {
       "title": "Tours & Experiências - TravelTrek",
       "description": "Descobre tours e experiências incríveis"
@@ -639,12 +656,48 @@
     "customerDashboard": {
       "title": "Dashboard do Cliente - TravelTrek",
       "description": "Gere as tuas reservas e descobre experiências"
+    },
+    "notFound": {
+      "title": "Página não encontrada",
+      "description": "A página solicitada não foi encontrada"
+    },
+    "customerBookings": {
+      "title": "As Minhas Reservas",
+      "description": "Gere as suas reservas de tours e experiências",
+      "subtitle": "Gere as suas reservas de tours e experiências",
+      "browseTours": "Explorar Tours",
+      "noBookingsDescription": "Descobre experiências únicas em Portugal e faz a tua primeira reserva!",
+      "stats": {
+        "totalBookings": "Total de Reservas",
+        "upcoming": "Próximas",
+        "totalSpent": "Gasto Total"
+      },
+      "filters": {
+        "all": "Todas",
+        "bookingStatusLabel": "Estado da Reserva",
+        "sortByLabel": "Ordenar por"
+      },
+      "sort": {
+        "dateDesc": "Data mais recente",
+        "dateAsc": "Data mais antiga",
+        "amountDesc": "Valor mais alto",
+        "amountAsc": "Valor mais baixo",
+        "createdDesc": "Reserva mais recente",
+        "status": "Estado"
+      }
     }
   },
   "bookingList": {
-    "pending": "Pendente",
+    "location": "Localização",
+    "person": "pessoa",
+    "persons": "pessoas",
+    "specialRequests": "Pedidos Especiais",
+    "vegetarianRequest": "Opção vegetariana solicitada",
+    "bookingNumber": "Reserva",
+    "createdAt": "Criada em",
+    "completed": "Concluídas",
+    "pending": "Pendentes",
     "confirmed": "Confirmada",
-    "completed": "Concluída",
     "cancelled": "Cancelada",
     "pendingPayment": "Pagamento Pendente",
     "paid": "Pago",
@@ -653,18 +706,12 @@
     "pay": "Pagar",
     "cancel": "Cancelar",
     "rebook": "Reservar Novamente",
-    "bookingNumber": "Reserva",
     "participants": "Participantes",
     "totalAmount": "Valor Total",
-    "specialRequests": "Pedidos especiais",
-    "createdAt": "Criada em",
     "noBookings": "Ainda não tens reservas.",
     "bookFirstTour": "Reservar Primeira Experiência",
-    "vegetarianRequest": "Opções vegetarianas, por favor",
     "date": "Data",
     "next": "Próximo",
-    "person": "pessoa",
-    "persons": "pessoas",
     "pendingLabel": "Pendentes",
     "confirmedLabel": "Confirmadas",
     "completedLabel": "Concluídas",
@@ -673,6 +720,10 @@
     "view": "Ver"
   },
   "bookingDetails": {
+    "location": "Localização",
+    "serviceFees": "Taxas de Serviço",
+    "included": "Incluídas",
+    "payNow": "Pagar Agora",
     "bookingDetails": "Detalhes da Reserva",
     "bookingInformation": "Informações da Reserva",
     "hostInformation": "Informações do Anfitrião",
@@ -682,9 +733,6 @@
     "paymentCompletedDescription": "A sua reserva está confirmada e paga.",
     "paymentPending": "Pagamento Pendente",
     "paymentPendingDescription": "Complete o pagamento para confirmar a sua reserva.",
-    "payNow": "Pagar Agora",
-    "serviceFees": "Taxas de serviço",
-    "included": "Incluídas",
     "viewTourDetails": "Ver Detalhes do Tour",
     "viewTour": "Ver Tour",
     "contactHost": "Contactar Anfitrião",

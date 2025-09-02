@@ -1,5 +1,5 @@
 // File: types/index.ts
-// Location: SUBSTITUIR o ficheiro existente types/index.ts
+// Location: REPLACE existing types/index.ts
 
 export interface Tour {
   id: string;
@@ -37,39 +37,57 @@ export interface ItineraryItem {
 }
 
 export interface Booking {
-  // ✅ CORRIGIDO: Adicionada propriedade location em falta
+  // ✅ FIXED: Complete and properly ordered Booking interface
+
+  // Core booking identifiers
   id: string;
-  userId: string;
-  totalPrice: number;
-  currency: string;
-  location: string; // 🆕 ADICIONADO: location property para corrigir erros TypeScript
   tourId: string;
+  userId: string;
+
+  // Tour details
   tourTitle: string;
-  tourDescription: string;
+  tourDescription?: string;
   tourImage: string;
-  customerId: string;
+  location: string;
+  duration: number; // ✅ ADDED: Duration property that was missing
+
+  // Customer information
+  customerId?: string; // Made optional since it might be same as userId
   customerName: string;
   customerEmail: string;
+  customerPhone: string;
+
+  // Host information
   hostId: string;
-  hostName: string;
+  hostName?: string;
+  hostEmail?: string;
+  hostPhone?: string;
   hostAvatar?: string;
-  hostEmail: string;
-  hostPhone: string;
-  hostVerified: boolean;
-  hostResponseTime: string;
+  hostVerified?: boolean;
+  hostResponseTime?: string;
+
+  // Booking details
   date: string;
   time: string;
   participants: number;
+  specialRequests?: string;
+  meetingPoint?: string;
+  cancellationPolicy?: string;
+
+  // Pricing
   basePrice: number;
+  serviceFees: number;
   totalAmount: number;
+  totalPrice: number;
+  currency: string;
+
+  // Status tracking
   status: "pending" | "confirmed" | "completed" | "cancelled";
   paymentStatus: "pending" | "paid" | "refunded";
-  specialRequests?: string;
-  meetingPoint: string;
-  cancellationPolicy: string;
+
+  // Timestamps
   createdAt: string;
   updatedAt: string;
-  serviceFees: number;
 }
 
 export interface User {
@@ -141,7 +159,37 @@ export interface Translations {
     currency?: string;
     yes?: string;
     no?: string;
-    location?: string; // 🆕 ADICIONADO: translation key para location
+    location?: string;
+    bookNow?: string;
+  };
+  customer?: {
+    dashboard?: {
+      welcome?: string;
+      subtitle?: string;
+      stats?: {
+        totalBookings?: string;
+        upcomingTrips?: string;
+        completedTrips?: string;
+        totalSpent?: string;
+      };
+    };
+  };
+  host?: {
+    dashboard?: string;
+    welcome?: string;
+    stats?: {
+      totalBookings?: string;
+      monthlyEarnings?: string;
+      averageRating?: string;
+      activeListings?: string;
+    };
+    earnings?: {
+      thisMonth?: string;
+      totalEarnings?: string;
+      pendingPayouts?: string;
+      completedPayouts?: string;
+      chartTitle?: string;
+    };
   };
   bookingForm?: {
     selectDate?: string;
@@ -210,9 +258,12 @@ export interface Translations {
     person?: string;
     persons?: string;
     cancellationPolicy?: string;
-    location?: string; // 🆕 ADICIONADO: translation key para location
+    location?: string;
   };
   bookingDetails?: {
+    meetingPointDetails: string; // ✅ ADDED
+    specialRequests: string; // ✅ ADDED
+    tourDescription: string; // ✅ ADDED
     bookingDetails: string;
     bookingInformation: string;
     hostInformation: string;
@@ -259,7 +310,7 @@ export interface Translations {
     needHelp: string;
     supportMessage: string;
     contactSupport: string;
-    location: string; // 🆕 ADICIONADO: translation key para location
+    location: string;
   };
   bookingList?: {
     pending: string;
@@ -291,12 +342,33 @@ export interface Translations {
     cancelledLabel: string;
     leaveReview: string;
     bookFirstTour: string;
-    location: string; // 🆕 ADICIONADO: translation key para location
+    location: string;
   };
   pages?: {
     customerBookings?: {
       title: string;
       description: string;
+      subtitle?: string; // ✅ ADDED
+      browseTours?: string; // ✅ ADDED
+      noBookingsDescription?: string; // ✅ ADDED
+      stats?: {
+        totalBookings?: string;
+        upcoming?: string;
+        totalSpent?: string;
+      };
+      filters?: {
+        // ✅ ADDED: Complete filters section
+        all?: string;
+        bookingStatusLabel?: string;
+        sortByLabel?: string;
+      };
+      sort?: {
+        // ✅ ADDED: Complete sort section
+        dateDesc?: string;
+        dateAsc?: string;
+        amountDesc?: string;
+        amountAsc?: string;
+      };
     };
     customerTours?: {
       title: string;
