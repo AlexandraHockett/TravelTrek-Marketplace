@@ -58,6 +58,14 @@
     "paymentRequired": "Pagamento necessário para confirmar a reserva"
   },
   "host": {
+    "dashboard": "Painel do Anfitrião",
+    "welcome": "Bem-vindo ao seu painel de controlo",
+    "stats": {
+      "totalBookings": "Total de Reservas",
+      "monthlyEarnings": "Ganhos Mensais", 
+      "averageRating": "Avaliação Média",
+      "activeListings": "Anúncios Ativos"
+    },
     "bookings": {
       "manageBookings": "Gerir Reservas",
       "customerName": "Cliente",
@@ -78,7 +86,7 @@
       "completedBookings": "Reservas Concluídas",
       "date": "Data"
     },
-    "dashboard": "Dashboard do Anfitrião",
+   
     "totalBookings": "Total de Reservas",
     "monthlyEarnings": "Ganhos Mensais",
     "avgRating": "Classificação Média",
@@ -97,13 +105,19 @@
     }
   },
   "common": {
+    "bookNow": "Reservar Agora",
+    "total": "Total",
+    "person": "pessoa",
+    "persons": "pessoas",
+    "currency": {
+      "symbol": "€",
+      "code": "EUR"
+    },
     "search": "Pesquisar",
     "export": "Exportar",
     "refresh": "Actualizar",
     "all": "Todas",
     "date": "Data",
-    "person": "pessoa",
-    "persons": "pessoas",
     "cancel": "Cancelar",
     "confirm": "Confirmar",
     "processing": "A processar...",
@@ -116,7 +130,6 @@
       "status": "Estado"
     },
     "book": "Reservar",
-    "bookNow": "Reservar Agora",
     "payNow": "Pagar Agora",
     "viewAll": "Ver todas",
     "reviews": "avaliações",
@@ -129,7 +142,6 @@
     "loading": "A carregar...",
     "error": "Erro",
     "success": "Sucesso",
-    "total": "Total",
     "back": "Voltar",
     "next": "Próximo",
     "previous": "Anterior",
@@ -143,7 +155,6 @@
     "filter": "Filtrar",
     "time": "Hora",
     "price": "Preço",
-    "currency": "€",
     "yes": "Sim",
     "no": "Não"
   },

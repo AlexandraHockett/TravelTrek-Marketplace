@@ -1,5 +1,5 @@
 // File: lib/utils.ts
-// Location: UPDATE/REPLACE existing lib/utils.ts
+// Location: REPLACE existing lib/utils.ts
 
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
@@ -9,17 +9,82 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-// Currency formatting
+// Currency formatting with better validation
 export function formatCurrency(
   amount: number,
   currency: string = "EUR"
 ): string {
+  // Validate currency code and provide fallback
+  const validCurrency = validateCurrencyCode(currency);
+
   return new Intl.NumberFormat("en-GB", {
     style: "currency",
-    currency: currency,
+    currency: validCurrency,
     minimumFractionDigits: 0,
     maximumFractionDigits: 2,
   }).format(amount);
+}
+
+// Helper function to validate currency codes
+function validateCurrencyCode(currency: string): string {
+  // List of valid currency codes
+  const validCurrencies = [
+    "EUR",
+    "USD",
+    "GBP",
+    "JPY",
+    "CHF",
+    "CAD",
+    "AUD",
+    "BRL",
+  ];
+
+  // Map locale codes to currencies (fallback)
+  const localeToCurrency: Record<string, string> = {
+    pt: "EUR",
+    en: "EUR", // UK context, but EUR for Portugal-based app
+    es: "EUR",
+    fr: "EUR",
+    de: "EUR",
+  };
+
+  // Check if it's a valid currency code
+  if (validCurrencies.includes(currency.toUpperCase())) {
+    return currency.toUpperCase();
+  }
+
+  // Check if it's a locale code and map to currency
+  if (localeToCurrency[currency.toLowerCase()]) {
+    return localeToCurrency[currency.toLowerCase()];
+  }
+
+  // Default fallback
+  return "EUR";
+}
+
+// Price formatting for displays with locale and currency support
+export function formatPrice(
+  price: number,
+  currency: string = "EUR",
+  locale: string = "en-GB"
+): string {
+  const localeMap: Record<string, string> = {
+    pt: "pt-PT",
+    en: "en-GB",
+    es: "es-ES",
+    fr: "fr-FR",
+    de: "de-DE",
+  };
+
+  const intlLocale = localeMap[locale] || locale;
+  const validCurrency = validateCurrencyCode(currency);
+
+  return new Intl.NumberFormat(intlLocale, {
+    style: "currency",
+    currency: validCurrency,
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 2,
+  }).format(price);
 }
 
 // Date formatting with locale support
@@ -248,30 +313,6 @@ export function calculateServiceFees(baseAmount: number): number {
 export function calculateTotalAmount(baseAmount: number): number {
   const serviceFees = calculateServiceFees(baseAmount);
   return baseAmount + serviceFees;
-}
-
-// Price formatting for displays
-export function formatPrice(
-  price: number,
-  currency: string = "EUR",
-  locale: string = "en-GB"
-): string {
-  const localeMap: Record<string, string> = {
-    pt: "pt-PT",
-    en: "en-GB",
-    es: "es-ES",
-    fr: "fr-FR",
-    de: "de-DE",
-  };
-
-  const intlLocale = localeMap[locale] || locale;
-
-  return new Intl.NumberFormat(intlLocale, {
-    style: "currency",
-    currency: currency,
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 2,
-  }).format(price);
 }
 
 // Get relative time (e.g., "2 hours ago")
