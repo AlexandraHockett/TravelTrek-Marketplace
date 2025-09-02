@@ -5,8 +5,8 @@
     "bookings": "Bookings",
     "profile": "Profile",
     "host": "Host",
-    "login": "Log In",
-    "signup": "Sign Up",
+    "login": "Log in",
+    "signup": "Sign up",
     "exploreTours": "Explore Tours",
     "myBookings": "My Bookings",
     "hostPortal": "Host Portal",
@@ -14,12 +14,48 @@
     "earnings": "Earnings",
     "messages": "Messages",
     "settings": "Settings",
-    "logout": "Log Out",
+    "logout": "Log out",
     "help": "Help",
     "contact": "Contact",
     "about": "About",
     "terms": "Terms",
     "privacy": "Privacy"
+  },
+  "bookings": {
+    "myBookings": "My Bookings",
+    "upcomingBookings": "Upcoming Bookings",
+    "pastBookings": "Past Bookings",
+    "noBookings": "You don't have any bookings yet",
+    "bookFirstTour": "Book your first experience",
+    "status": {
+      "pending": "Pending",
+      "confirmed": "Confirmed",
+      "paid": "Paid",
+      "completed": "Completed",
+      "cancelled": "Cancelled"
+    },
+    "paymentStatus": {
+      "pending": "Payment Pending",
+      "paid": "Paid",
+      "failed": "Payment Failed",
+      "refunded": "Refunded"
+    },
+    "actions": {
+      "viewDetails": "View Details",
+      "payNow": "Pay Now",
+      "cancelBooking": "Cancel Booking",
+      "contactHost": "Contact Host",
+      "leaveReview": "Leave Review"
+    }
+  },
+  "payment": {
+    "securePayment": "Secure Payment",
+    "payWithStripe": "Pay with Stripe",
+    "redirectingToPayment": "Redirecting to payment...",
+    "paymentFailed": "Payment failed",
+    "paymentSuccess": "Payment successful!",
+    "processingPayment": "Processing payment...",
+    "paymentRequired": "Payment required to confirm booking"
   },
   "host": {
     "bookings": {
@@ -33,10 +69,31 @@
       "confirm": "Confirm",
       "complete": "Complete",
       "noBookings": "You don't have any bookings yet",
-      "noResults": "No bookings match your filters",
+      "noResults": "No bookings match the filters",
       "noBookingsDesc": "Your bookings will appear here when customers start booking your tours.",
       "updateStatus": "Update Status",
-      "updateStatusDesc": "Are you sure you want to update the status of this booking?"
+      "updateStatusDesc": "Are you sure you want to update the status of this booking?",
+      "newBookings": "New Bookings",
+      "confirmedBookings": "Confirmed Bookings",
+      "completedBookings": "Completed Bookings",
+      "date": "Date"
+    },
+    "dashboard": "Host Dashboard",
+    "totalBookings": "Total Bookings",
+    "monthlyEarnings": "Monthly Earnings",
+    "avgRating": "Average Rating",
+    "activeListings": "Active Experiences",
+    "recentBookings": "Recent Bookings",
+    "viewAllBookings": "View All Bookings",
+    "manageListings": "Manage Experiences",
+    "earnings": {
+      "title": "Earnings Report",
+      "thisMonth": "This Month",
+      "lastMonth": "Last Month",
+      "totalEarnings": "Total Earnings",
+      "pendingPayouts": "Pending Payouts",
+      "completedPayouts": "Completed Payouts",
+      "chartTitle": "Earnings Over Time"
     }
   },
   "common": {
@@ -46,26 +103,29 @@
     "all": "All",
     "date": "Date",
     "person": "person",
-    "persons": "persons",
+    "persons": "people",
     "cancel": "Cancel",
     "confirm": "Confirm",
     "processing": "Processing...",
     "retry": "Try again",
     "sort": {
-      "dateDesc": "Most recent date",
+      "dateDesc": "Newest date",
       "dateAsc": "Oldest date",
       "amountDesc": "Highest amount",
       "amountAsc": "Lowest amount",
       "status": "Status"
     },
-    "viewAll": "View All",
-    "reviews": "Reviews",
-    "review": "Review",
+    "book": "Book",
+    "bookNow": "Book Now",
+    "payNow": "Pay Now",
+    "viewAll": "View all",
+    "reviews": "reviews",
+    "review": "review",
     "welcome": "Welcome",
-    "hours": "Hours",
-    "hour": "Hour",
-    "from": "From",
-    "to": "To",
+    "hours": "hours",
+    "hour": "hour",
+    "from": "from",
+    "to": "to",
     "loading": "Loading...",
     "error": "Error",
     "success": "Success",
@@ -90,7 +150,7 @@
   "hero": {
     "title": "Discover the ",
     "highlight": "Extraordinary",
-    "subtitle": "Connect with local hosts and uncover authentic experiences.",
+    "subtitle": "Connect with local hosts and discover authentic experiences.",
     "exploreToursButton": "Explore Tours",
     "becomeHostButton": "Become a Host"
   },
@@ -110,10 +170,10 @@
   },
   "benefits": {
     "title": "Why Choose TravelTrek?",
-    "subtitle": "We make it easy to discover and book incredible travel experiences",
+    "subtitle": "We make it easy to discover and book amazing travel experiences",
     "localExperiences": {
       "title": "Local Experiences",
-      "description": "Discover the city’s secrets through the eyes of those who know it best."
+      "description": "Discover the city's secrets through the eyes of those who know it best."
     },
     "verifiedHosts": {
       "title": "Verified Hosts",
@@ -142,13 +202,15 @@
     "citiesWorldwide": "Cities Worldwide"
   },
   "navigation": {
+    "earnings": "Earnings",
+    "messages": "Messages",
     "home": "Home",
     "tours": "Tours",
     "bookings": "Bookings",
     "profile": "Profile",
-    "login": "Log In",
-    "signup": "Sign Up",
-    "logout": "Log Out",
+    "login": "Log in",
+    "signup": "Sign up",
+    "logout": "Log out",
     "dashboard": "Dashboard",
     "help": "Help",
     "contact": "Contact",
@@ -214,23 +276,21 @@
       "cookies": "Cookies"
     }
   },
-  "auth": {
-    "pleaseLogin": "Please log in to make a booking"
-  },
-  "api": {
-    "errors": {
-      "tourNotFound": "Tour not found",
-      "bookingNotFound": "Booking not found",
-      "invalidData": "Invalid data",
-      "maxParticipantsExceeded": "Maximum participants exceeded",
-      "bookingNotCancellable": "Booking cannot be cancelled",
-      "paymentFailed": "Payment failed",
-      "serverError": "Server error",
-      "unauthorised": "Unauthorised",
-      "validationFailed": "Validation failed"
-    }
-  },
   "tours": {
+    "title": "Discover Unique Experiences",
+    "subtitle": "Connect with authentic local hosts",
+    "duration": "Duration",
+    "category": "Category",
+    "rating": "Rating",
+    "showMore": "Show more",
+    "showLess": "Show less",
+    "loadMore": "Load more experiences",
+    "reviewsCount": "reviews",
+    "fromPrice": "from",
+    "freeWifi": "Free Wi-Fi",
+    "breakfast": "Breakfast",
+    "transport": "Transport",
+    "guide": "Local Guide",
     "createSuccess": "Tour created successfully",
     "searchPlaceholder": "Search tours...",
     "result": "result",
@@ -266,7 +326,7 @@
       "popular": "Most Popular",
       "priceAsc": "Price Low to High",
       "priceDesc": "Price High to Low",
-      "rating": "Top Rated",
+      "rating": "Highest Rated",
       "duration": "Duration"
     },
     "categories": {
@@ -289,19 +349,26 @@
     }
   },
   "tourDetails": {
-    "title": "Porto Walking Tour",
+    "title": "Porto Tour",
+    "whatToExpect": "What to expect",
+    "bookThisTour": "Book This Experience",
+    "selectDate": "Select Date",
+    "totalPrice": "Total Price",
+    "bookingError": "Error processing booking",
+    "bookingSuccess": "Booking created successfully!",
+    "unavailableDate": "Date unavailable",
     "bookNow": "Book Now",
     "checkAvailability": "Check Availability",
     "addToWishlist": "Add to Favourites",
     "removeFromWishlist": "Remove from Favourites",
     "shareExperience": "Share Experience",
-    "whatYouWillDo": "What You’ll Do",
+    "whatYouWillDo": "What you'll do",
     "groupSize": "Group Size",
     "languages": "Languages",
     "provided": "Provided",
     "bring": "Bring",
-    "notSuitableFor": "Not Suitable For",
-    "weatherDependent": "Weather Dependent",
+    "notSuitableFor": "Not suitable for",
+    "weatherDependent": "Weather dependent",
     "accessibilityInfo": "Accessibility Information",
     "safetyMeasures": "Safety Measures",
     "experience": "Experience",
@@ -318,27 +385,27 @@
     "included": "Included",
     "excluded": "Not Included",
     "importantInfo": "Important Information",
-    "maxParticipants": "Max. Participants",
-    "minAge": "Minimum Age",
+    "maxParticipants": "Max. participants",
+    "minAge": "Minimum age",
     "years": "years",
-    "cancellationPolicy": "Cancellation Policy",
+    "cancellationPolicy": "Cancellation policy",
     "detailedItinerary": "Detailed Itinerary",
     "customerReviews": "Customer Reviews",
-    "noReviewsYet": "No reviews for this experience yet.",
+    "noReviewsYet": "There are no reviews for this experience yet.",
     "beFirstReview": "Be the first to leave a review!",
     "needHelp": "Need Help?",
     "contactSupport": "Our team is available 24/7 for support.",
     "contactUs": "Contact Us",
     "hostInfo": "About the Host",
     "verified": "Verified",
-    "responseTime": "Response Time",
+    "responseTime": "Response time",
     "backToTours": "Back to Tours",
     "hours": "hours",
     "upTo": "up to",
     "people": "people",
     "highlights": "Highlights",
-    "whatsIncluded": "What’s Included",
-    "whatsExcluded": "What’s Not Included",
+    "whatsIncluded": "What's Included",
+    "whatsExcluded": "What's Not Included",
     "aboutHost": "About Your Host",
     "meetingInstructions": "Please arrive at the meeting point 15 minutes before the tour starts",
     "meetingPoint": "Meeting Point",
@@ -348,18 +415,31 @@
       "strict": "Strict - No refund after 7 days"
     },
     "share": "Share",
-    "securePayment": "Secure Payment",
-    "instantConfirmation": "Instant Confirmation",
-    "flexibleCancellation": "Flexible Cancellation",
-    "contactHostMessage": "Contact the host for any questions about this experience",
+    "securePayment": "Secure payment",
+    "instantConfirmation": "Instant confirmation",
+    "flexibleCancellation": "Flexible cancellation",
+    "contactHostMessage": "Contact the host with any questions about this experience",
     "contactHost": "Contact Host",
     "participant": "participant",
     "participants": "participants",
     "availableOn": "Available on"
   },
   "bookingForm": {
+    "contactInfo": "Contact Information",
+    "fullName": "Full Name",
+    "email": "Email",
+    "phone": "Phone",
+    "errors": {
+      "dateRequired": "Please select a date",
+      "participantsRequired": "Invalid number of participants",
+      "nameRequired": "Full name is required",
+      "emailRequired": "Email is required",
+      "phoneRequired": "Phone is required",
+      "networkError": "Network error. Please try again.",
+      "serverError": "Server error. Please contact support."
+    },
     "invalidParticipants": "Invalid number of participants",
-    "paymentError": "Payment processing failed",
+    "paymentError": "Failed to process payment",
     "instantConfirmation": "Instant Confirmation",
     "title": "Book Experience",
     "bookTour": "Book Tour",
@@ -369,7 +449,7 @@
     "addParticipant": "Add Participant",
     "removeParticipant": "Remove Participant",
     "specialRequests": "Special Requests (Optional)",
-    "specialRequestsPlaceholder": "Do you have any special needs or specific requests?",
+    "specialRequestsPlaceholder": "Any special needs or specific requests?",
     "allergiesPlaceholder": "Allergies, special needs, etc.",
     "proceedToPayment": "Proceed to Payment",
     "continueToPayment": "Continue to Payment",
@@ -384,12 +464,12 @@
     "bookingError": "Error processing booking. Please try again.",
     "maxPersons": "Maximum",
     "bookForMultiple": "person",
-    "noChargeYet": "You won’t be charged yet. Confirm details before payment.",
+    "noChargeYet": "You won't be charged yet. Confirm details before payment.",
     "experienceDate": "Experience Date",
     "agreeToTerms": "By continuing, you agree to our",
     "termsOfService": "Terms of Service",
     "privacyPolicy": "Privacy Policy",
-    "serviceFees": "Service Fees",
+    "serviceFees": "Service fees",
     "included": "Included",
     "requiredDate": "Please select a date",
     "minDateTomorrow": "Date must be at least tomorrow",
@@ -402,9 +482,9 @@
     "perPerson": "/person",
     "save": "Save",
     "includedTaxes": "Taxes included",
-    "freeCancellation": "Free Cancellation",
+    "freeCancellation": "Free cancellation",
     "bookExperience": "Book Experience",
-    "originalPrice": "Original Price",
+    "originalPrice": "Original price",
     "total": "Total"
   },
   "customerDashboard": {
@@ -412,7 +492,7 @@
     "subtitle": "Here you can manage your bookings and discover new experiences.",
     "recentBookings": "Recent Bookings",
     "recommendedTours": "Recommended Tours",
-    "noBookings": "You don’t have any bookings yet.",
+    "noBookings": "You don't have any bookings yet.",
     "browseExperiences": "Browse Experiences"
   },
   "customerBookings": {
@@ -429,7 +509,7 @@
     "upcomingExperiences": "Upcoming Experiences",
     "pastBookings": "Past Bookings",
     "noResultsTitle": "No bookings found",
-    "noResultsDescription": "There are no bookings with the status \"{{status}}\".",
+    "noResultsDescription": "There are no bookings with status \"{{status}}\".",
     "allBookingsButton": "View All Bookings",
     "confirmCancel": "Confirm Cancellation",
     "cancelSuccess": "Booking cancelled successfully",
@@ -438,7 +518,7 @@
     "paymentError": "Error processing payment",
     "searchPlaceholder": "Search bookings...",
     "noResults": "No results found",
-    "clearFilters": "Clear Filters",
+    "clearFilters": "Clear filters",
     "stats": {
       "totalBookings": "Total Bookings",
       "upcoming": "Upcoming",
@@ -450,11 +530,11 @@
       "sortByLabel": "Sort by"
     },
     "sort": {
-      "dateDesc": "Most Recent Date",
-      "dateAsc": "Oldest Date",
-      "createdDesc": "Most Recent Booking",
-      "amountDesc": "Highest Amount",
-      "amountAsc": "Lowest Amount",
+      "dateDesc": "Newest date",
+      "dateAsc": "Oldest date",
+      "createdDesc": "Most recent booking",
+      "amountDesc": "Highest amount",
+      "amountAsc": "Lowest amount",
       "status": "Status"
     }
   },
@@ -465,7 +545,7 @@
   },
   "status": {
     "title": "Project Status",
-    "subtitle": "TravelTrek Marketplace Development Showcase",
+    "subtitle": "TravelTrek Marketplace development demo",
     "categories": {
       "coreInfrastructure": "Core Infrastructure",
       "customerPortal": "Customer Portal",
@@ -491,28 +571,28 @@
       "authenticationSystem": "Authentication System"
     },
     "descriptions": {
-      "i18nSystemDesc": "Full support for 5 languages with seamless locale switching.",
+      "i18nSystemDesc": "Full support for 5 languages with smooth locale switching.",
       "nextjsReactDesc": "Built with Next.js App Router and React for a modern, scalable frontend.",
       "responsiveNavigationDesc": "Mobile and desktop optimised navigation with Tailwind CSS v4.",
       "typescriptIntegrationDesc": "Type-safe code with TypeScript for robust development.",
       "tourBrowsingDesc": "Browse and filter tours with real-time data from simulated Viator API.",
       "bookingSystemDesc": "Booking system in progress with state management and Stripe integration.",
       "userDashboardDesc": "Customer dashboard to manage bookings and profile settings.",
-      "reviewSystemDesc": "Planned system for users to leave reviews for tours and hosts.",
-      "bookingManagementDesc": "Tools for hosts to manage bookings and client communication.",
-      "tourCreationDesc": "In-progress system for hosts to create and edit tours.",
+      "reviewSystemDesc": "Planned system for users to leave reviews of tours and hosts.",
+      "bookingManagementDesc": "Tools for hosts to manage bookings and communicate with customers.",
+      "tourCreationDesc": "System in progress for hosts to create and edit tours.",
       "earningsDashboardDesc": "Dashboard for hosts to track earnings and performance metrics.",
-      "messagingSystemDesc": "Planned messaging system for host-client communication.",
-      "stripeIntegrationDesc": "In-progress Stripe integration for secure payment processing.",
-      "databasePostgresDesc": "Postgres database for storing tours, bookings, and user data.",
-      "viatorApiIntegrationDesc": "Planned Viator API integration for tour data synchronisation.",
+      "messagingSystemDesc": "Planned messaging system for host-customer communication.",
+      "stripeIntegrationDesc": "Stripe integration in progress for secure payment processing.",
+      "databasePostgresDesc": "Postgres database to store tours, bookings and user data.",
+      "viatorApiIntegrationDesc": "Planned integration with Viator API for tour data synchronisation.",
       "authenticationSystemDesc": "Planned authentication system for secure user access."
     },
     "implemented": "Implemented",
-    "inProgress": "In Progress",
+    "inProgress": "In Development",
     "planned": "Planned"
   },
-  "techStack": "Technology Stack",
+  "techStack": "Tech Stack",
   "techStackItems": {
     "nextjs": {
       "title": "Next.js",
@@ -520,19 +600,19 @@
     },
     "tailwind": {
       "title": "Tailwind CSS",
-      "subtitle": "Utility-first CSS framework for modern, responsive design."
+      "subtitle": "Utility-first CSS framework for modern responsive design."
     },
     "typescript": {
       "title": "TypeScript",
-      "subtitle": "Type-safe development for maintainable code."
+      "subtitle": "Type-safe development for sustainable code."
     },
     "i18n": {
       "title": "Internationalisation",
-      "subtitle": "Multi-language support to reach a global audience."
+      "subtitle": "Multi-language support to reach global audience."
     }
   },
   "portfolioContext": "Portfolio Context",
-  "portfolioDescription": "TravelTrek Marketplace showcases a modern, scalable web application built with cutting-edge technologies.",
+  "portfolioDescription": "TravelTrek Marketplace demonstrates a modern, scalable web application built with cutting-edge technologies.",
   "portfolioPoints": {
     "modernReact": "Modern React Framework: Uses Next.js with App Router for dynamic rendering.",
     "i18nExpertise": "i18n Expertise: Supports five languages with smooth locale switching.",
@@ -543,7 +623,7 @@
   "pages": {
     "customerTours": {
       "title": "Tours & Experiences - TravelTrek",
-      "description": "Discover incredible tours and experiences"
+      "description": "Discover amazing tours and experiences"
     },
     "customerDashboard": {
       "title": "Customer Dashboard - TravelTrek",
@@ -561,14 +641,14 @@
     "viewDetails": "View Details",
     "pay": "Pay",
     "cancel": "Cancel",
-    "rebook": "Rebook",
+    "rebook": "Book Again",
     "bookingNumber": "Booking",
     "participants": "Participants",
     "totalAmount": "Total Amount",
-    "specialRequests": "Special Requests",
-    "createdAt": "Created At",
-    "noBookings": "You don’t have any bookings yet.",
-    "bookFirstTour": "Book Your First Experience",
+    "specialRequests": "Special requests",
+    "createdAt": "Created at",
+    "noBookings": "You don't have any bookings yet.",
+    "bookFirstTour": "Book First Experience",
     "vegetarianRequest": "Vegetarian options, please",
     "date": "Date",
     "next": "Next",
@@ -578,7 +658,7 @@
     "confirmedLabel": "Confirmed",
     "completedLabel": "Completed",
     "cancelledLabel": "Cancelled",
-    "leaveReview": "Leave a Review",
+    "leaveReview": "Leave Review",
     "view": "View"
   },
   "bookingDetails": {
@@ -590,36 +670,36 @@
     "paymentCompleted": "Payment Completed",
     "paymentCompletedDescription": "Your booking is confirmed and paid.",
     "paymentPending": "Payment Pending",
-    "paymentPendingDescription": "Complete the payment to confirm your booking.",
+    "paymentPendingDescription": "Complete payment to confirm your booking.",
     "payNow": "Pay Now",
-    "serviceFees": "Service Fees",
+    "serviceFees": "Service fees",
     "included": "Included",
     "viewTourDetails": "View Tour Details",
     "viewTour": "View Tour",
     "contactHost": "Contact Host",
     "cancelBooking": "Cancel Booking",
-    "leaveReview": "Leave a Review",
-    "responseTime": "Response Time",
+    "leaveReview": "Leave Review",
+    "responseTime": "Response time",
     "confirmedBooking": "Booking Confirmed",
-    "meetingInstructions": "Please arrive at the meeting point 15 minutes before the experience starts.",
+    "meetingInstructions": "Please arrive at the location 15 minutes before the experience starts.",
     "cancellationPolicy": "Cancellation Policy",
     "cancellationDescription": "Free cancellation up to 24 hours before the tour starts. Late cancellations may incur fees.",
-    "cancelReasonRequired": "Please provide the reason for cancellation.",
+    "cancelReasonRequired": "Please provide a reason for cancellation.",
     "cancelDescription": "Are you sure you want to cancel this booking? This action cannot be undone.",
     "refundInfo": "Refund",
     "willBeRefunded": "will be refunded",
-    "cancelReason": "Cancellation Reason",
+    "cancelReason": "Reason for cancellation",
     "cancelReasonPlaceholder": "Please explain the reason for cancellation...",
     "confirmCancel": "Confirm Cancellation",
     "cancelSuccess": "Booking cancelled successfully",
     "cancelError": "Error cancelling booking. Please try again.",
     "redirectingPayment": "Redirecting to payment...",
     "paymentError": "Error processing payment. Please try again.",
-    "contactHostMessage": "Opening chat with the host...",
+    "contactHostMessage": "Opening chat with host...",
     "partialRefund": "Partial refund of",
     "noRefund": "No refund available",
-    "paymentInstructions": "Complete the payment to confirm your booking.",
-    "pendingMessage": "Awaiting host confirmation",
+    "paymentInstructions": "Complete payment to confirm your booking.",
+    "pendingMessage": "Waiting for host confirmation",
     "confirmedMessage": "Your booking has been confirmed!",
     "completedMessage": "Experience completed",
     "cancelledMessage": "Booking cancelled",
@@ -629,10 +709,10 @@
     "supportMessage": "Our team is available 24/7 for support.",
     "contactSupport": "Contact Support",
     "tourDescription": {
-      "portoFoodWine": "Discover the authentic flavours of Porto in a unique gastronomic experience with local wines.",
-      "sintraPalaces": "Visit the majestic palaces of Sintra, a UNESCO World Heritage site, with an expert guide.",
-      "douroCruise": "Scenic cruise along the Douro River with stunning vineyard landscapes.",
-      "lisbonTukTuk": "Explore Lisbon in a fun tuk-tuk, discovering hidden corners of the city."
+      "portoFoodWine": "Discover the authentic flavours of Porto in a unique food and wine experience with local wines.",
+      "sintraPalaces": "Visit the majestic palaces of Sintra, UNESCO World Heritage, with a specialised guide.",
+      "douroCruise": "Panoramic cruise on the Douro River with stunning vineyard landscapes.",
+      "lisbonTukTuk": "Explore Lisbon in a fun way by tuk-tuk, discovering hidden corners of the city."
     },
     "specialRequests": {
       "vegetarian": "Vegetarian options, please",
@@ -641,7 +721,7 @@
     "meetingPointDetails": {
       "portoCathedral": "Porto Cathedral - Main Entrance",
       "sintraStation": "Sintra Train Station",
-      "douroPort": "Gaia Quay - River Terminal",
+      "douroPort": "Gaia Pier - River Terminal",
       "lisbonSquare": "Commerce Square - Centre"
     },
     "cancellationPolicyDetails": {
@@ -651,12 +731,28 @@
     }
   },
   "errors": {
-    "generic": "An unexpected error occurred",
-    "network": "Internet connection error",
-    "notFound": "Resource not found",
+    "serverError": "Server error. Please contact support.",
+    "paymentFailed": "Failed to process payment.",
+    "bookingFailed": "Could not process booking.",
     "unauthorized": "Unauthorised",
     "validation": "Invalid data",
+    "generic": "Error loading data",
+    "network": "Internet connection error",
+    "notFound": "Resource not found",
     "invalidPriceFormat": "Invalid price format",
     "invalidOriginalPriceFormat": "Invalid original price format"
+  },
+  "api": {
+    "errors": {
+      "tourNotFound": "Tour not found",
+      "bookingNotFound": "Booking not found",
+      "invalidData": "Invalid data",
+      "maxParticipantsExceeded": "Maximum participants exceeded",
+      "bookingNotCancellable": "Booking cannot be cancelled",
+      "paymentFailed": "Payment failed",
+      "serverError": "Server error",
+      "unauthorised": "Unauthorised",
+      "validationFailed": "Validation failed"
+    }
   }
 }
