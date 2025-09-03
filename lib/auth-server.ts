@@ -1,16 +1,17 @@
 // ===================================================================
-// 📁 lib/auth-server.ts
-// Location: CREATE new file lib/auth-server.ts
+// 📁 lib/auth-server.ts - NEXTAUTH v4 SERVER UTILITIES
+// Location: REPLACE ENTIRE CONTENT of lib/auth-server.ts
 // ===================================================================
 
-import { auth } from "@/lib/auth";
+import { getServerSession } from "next-auth/next";
+import { authOptions } from "@/lib/auth";
 import { userQueries } from "@/lib/db/queries";
 import type { Session } from "next-auth";
 
 // Get current user session (server-side)
 export async function getCurrentUser() {
   try {
-    const session = await auth();
+    const session = await getServerSession(authOptions);
     return session?.user || null;
   } catch (error) {
     console.error("Error getting current user:", error);
@@ -21,7 +22,7 @@ export async function getCurrentUser() {
 // Get full session (server-side)
 export async function getCurrentSession(): Promise<Session | null> {
   try {
-    return await auth();
+    return await getServerSession(authOptions);
   } catch (error) {
     console.error("Error getting current session:", error);
     return null;
@@ -90,4 +91,24 @@ export async function checkResourceOwnership(resourceUserId: string) {
   }
 
   return user;
+}
+
+// Check if user is authenticated (boolean helper)
+export async function isAuthenticated(): Promise<boolean> {
+  const session = await getCurrentSession();
+  return !!session?.user;
+}
+
+// Check if user has any of the specified roles
+export async function hasAnyRole(
+  roles: ("customer" | "host" | "admin")[]
+): Promise<boolean> {
+  const user = await getCurrentUser();
+  return user ? roles.includes(user.role) : false;
+}
+
+// Get user ID (shorthand helper)
+export async function getCurrentUserId(): Promise<string | null> {
+  const user = await getCurrentUser();
+  return user?.id || null;
 }

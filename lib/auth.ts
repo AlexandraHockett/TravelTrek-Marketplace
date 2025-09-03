@@ -1,15 +1,15 @@
 // ===================================================================
-// 📁 lib/auth.ts - NEXTAUTH v4 WORKING VERSION
+// 📁 lib/auth.ts - NEXTAUTH v4 CORRECTED VERSION
 // Location: REPLACE ENTIRE CONTENT of lib/auth.ts
 // ===================================================================
 
 import NextAuth from "next-auth";
-import Google from "next-auth/providers/google";
-import Credentials from "next-auth/providers/credentials";
+import GoogleProvider from "next-auth/providers/google";
+import CredentialsProvider from "next-auth/providers/credentials";
 import { userQueries } from "@/lib/db/queries";
 import bcrypt from "bcryptjs";
 
-// Extend NextAuth types
+// Extend NextAuth types for NextAuth v4
 declare module "next-auth" {
   interface Session {
     user: {
@@ -32,18 +32,31 @@ declare module "next-auth" {
   }
 }
 
-export const { handlers, auth, signIn, signOut } = NextAuth({
-  // ⚠️ NO ADAPTER - Using JWT strategy for NextAuth v4
+declare module "next-auth/jwt" {
+  interface JWT {
+    role?: "customer" | "host" | "admin";
+    emailVerified?: boolean;
+  }
+}
 
+// Helper function to convert emailVerified from DB (Date | boolean | null) to NextAuth format (boolean | undefined)
+function normalizeEmailVerified(
+  value: Date | boolean | null | undefined
+): boolean | undefined {
+  if (value === null || value === undefined) return undefined;
+  if (typeof value === "boolean") return value;
+  if (value instanceof Date) return true; // If there's a date, email is verified
+  return undefined;
+}
+
+// Export authOptions for server-side usage (getServerSession)
+export const authOptions = {
   providers: [
-    // Google OAuth
-    Google({
+    GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID!,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
     }),
-
-    // Email/Password
-    Credentials({
+    CredentialsProvider({
       id: "credentials",
       name: "Email and Password",
       credentials: {
@@ -59,6 +72,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           const user = await userQueries.getByEmail(
             credentials.email as string
           );
+
           if (!user || !user.password) {
             return null;
           }
@@ -70,14 +84,14 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 
           if (!isValid) return null;
 
-          // Convert database types to NextAuth types
+          // Convert database types to NextAuth types with proper type handling
           return {
             id: user.id,
             name: user.name,
             email: user.email,
-            image: user.avatar || undefined, // null → undefined
+            image: user.avatar || undefined,
             role: user.role,
-            emailVerified: user.emailVerified || undefined, // null → undefined
+            emailVerified: normalizeEmailVerified(user.emailVerified),
           };
         } catch (error) {
           console.error("Auth error:", error);
@@ -86,23 +100,19 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       },
     }),
   ],
-
   pages: {
     signIn: "/auth/login",
     error: "/auth/error",
-    // ⚠️ NO signUp - NextAuth v4 doesn't support it
   },
-
   callbacks: {
-    async jwt({ token, user }) {
+    async jwt({ token, user }: { token: any; user: any }) {
       if (user) {
         token.role = user.role;
         token.emailVerified = user.emailVerified;
       }
       return token;
     },
-
-    async session({ session, token }) {
+    async session({ session, token }: { session: any; token: any }) {
       if (token && session.user) {
         session.user.id = token.sub as string;
         session.user.role = token.role as "customer" | "host" | "admin";
@@ -110,9 +120,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       }
       return session;
     },
-
-    async signIn({ user, account }) {
-      // Handle Google OAuth users
+    async signIn({ user, account }: { user: any; account: any }) {
       if (account?.provider === "google" && user.email) {
         try {
           const existingUser = await userQueries.getByEmail(user.email);
@@ -124,7 +132,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
               role: "customer",
               avatar: user.image || null,
               emailVerified: true,
-              password: null, // OAuth users don't need passwords
+              password: null,
             });
           }
         } catch (error) {
@@ -135,10 +143,11 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       return true;
     },
   },
-
   session: {
-    strategy: "jwt", // Required for NextAuth v4 without adapter
+    strategy: "jwt" as const,
   },
-
   secret: process.env.NEXTAUTH_SECRET,
-});
+};
+
+// NextAuth v4 Configuration - Use authOptions
+export default NextAuth(authOptions);
