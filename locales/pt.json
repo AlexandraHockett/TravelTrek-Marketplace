@@ -112,6 +112,8 @@
     }
   },
   "common": {
+    "email": "Email",
+    "password": "Palavra-passe",
     "location": "Localização",
     "bookNow": "Reservar Agora",
     "total": "Total",
@@ -959,7 +961,57 @@
       "paymentFailed": "Pagamento falhou",
       "serverError": "Erro do servidor",
       "unauthorised": "Não autorizado",
-      "validationFailed": "Validação falhou"
+      "userNotFound": "Utilizador não encontrado",
+      "emailAlreadyExists": "Email já existe",
+      "fetchUsersError": "Erro ao carregar utilizadores",
+      "fetchUserError": "Erro ao carregar utilizador",
+      "createUserError": "Erro ao criar utilizador",
+      "updateUserError": "Erro ao actualizar utilizador",
+      "deleteUserError": "Erro ao eliminar utilizador",
+      "fetchHostsError": "Erro ao carregar anfitriões",
+      "fetchCustomersError": "Erro ao carregar clientes"
     }
+  },
+  "users": {
+    "title": "Utilizadores",
+    "create": "Criar Utilizador",
+    "edit": "Editar Utilizador",
+    "delete": "Eliminar Utilizador",
+    "roles": {
+      "customer": "Cliente",
+      "host": "Anfitrião",
+      "admin": "Administrador"
+    },
+    "status": {
+      "verified": "Verificado",
+      "unverified": "Por verificar"
+    },
+    "stats": {
+      "totalBookings": "Total de Reservas",
+      "totalSpent": "Total Gasto",
+      "totalEarnings": "Total Ganho",
+      "totalTours": "Total de Tours",
+      "averageRating": "Classificação Média"
+    },
+    "messages": {
+      "userCreated": "Utilizador criado com sucesso",
+      "userUpdated": "Utilizador actualizado com sucesso",
+      "userDeleted": "Utilizador eliminado com sucesso",
+      "confirmDelete": "Tem a certeza que quer eliminar este utilizador?",
+      "noUsersFound": "Nenhum utilizador encontrado"
+    }
+  },
+  "auth": {
+    "login": "Iniciar Sessão",
+    "loginSubtitle": "Aceda à sua conta TravelTrek",
+    "loginButton": "Entrar",
+    "loginFailed": "Credenciais inválidas. Verifique o seu email e palavra-passe.",
+    "loginError": "Ocorreu um erro durante o login. Tente novamente.",
+    "emailPlaceholder": "Introduza o seu email",
+    "passwordPlaceholder": "Introduza a sua palavra-passe",
+    "or": "ou",
+    "googleLogin": "Continuar com Google",
+    "noAccount": "Não tem uma conta?",
+    "signup": "Registar-se"
   }
 }

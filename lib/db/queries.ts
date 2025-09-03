@@ -1,7 +1,9 @@
-// 📁 lib/db/queries.ts - CORRECTED VERSION
-// Location: Replace the existing lib/db/queries.ts
+// ===================================================================
+// 📁 lib/db/queries.ts - VERSÃO CORRIGIDA COMPLETA
+// Location: REPLACE the existing lib/db/queries.ts
+// ===================================================================
 
-import { desc, eq, and, gte, lte, sql, ilike } from "drizzle-orm";
+import { desc, eq, and, gte, lte, sql, ilike, or } from "drizzle-orm";
 import { db } from "./client";
 import { tours, bookings, users } from "./schema";
 import type {
@@ -251,7 +253,7 @@ export const bookingQueries = {
     return result || null;
   },
 
-  // Delete booking - FIXED: Use returning() instead of rowCount
+  // Delete booking
   async delete(id: string): Promise<boolean> {
     const result = await db
       .delete(bookings)
@@ -317,7 +319,7 @@ export const bookingQueries = {
 };
 
 // ===================================================================
-// USERS QUERIES
+// USERS QUERIES - VERSÃO COMPLETA CORRIGIDA
 // ===================================================================
 
 export const userQueries = {
@@ -391,6 +393,163 @@ export const userQueries = {
       .from(users)
       .where(eq(users.role, "customer"))
       .orderBy(users.name);
+  },
+
+  // ===================================================================
+  // NOVAS FUNÇÕES ADICIONADAS DENTRO DO userQueries
+  // ===================================================================
+
+  // Get all users with filters - NOVA FUNÇÃO CORRIGIDA
+  async getAll(
+    filters: {
+      role?: "customer" | "host" | "admin";
+      emailVerified?: boolean;
+      limit?: number;
+      offset?: number;
+      search?: string;
+    } = {}
+  ) {
+    const conditions = [];
+
+    // Apply filters
+    if (filters.role) {
+      conditions.push(eq(users.role, filters.role));
+    }
+
+    if (filters.emailVerified !== undefined) {
+      conditions.push(eq(users.emailVerified, filters.emailVerified));
+    }
+
+    if (filters.search) {
+      conditions.push(
+        or(
+          ilike(users.name, `%${filters.search}%`),
+          ilike(users.email, `%${filters.search}%`)
+        )
+      );
+    }
+
+    // Get users with pagination
+    const results = await db
+      .select()
+      .from(users)
+      .where(conditions.length > 0 ? and(...conditions) : undefined)
+      .orderBy(desc(users.createdAt))
+      .limit(filters.limit || 10)
+      .offset(filters.offset || 0);
+
+    // Get total count
+    const totalResult = await db
+      .select({ count: sql`count(*)` })
+      .from(users)
+      .where(conditions.length > 0 ? and(...conditions) : undefined);
+
+    return {
+      users: results,
+      total: Number(totalResult[0].count),
+    };
+  },
+
+  // Delete user (soft delete) - NOVA FUNÇÃO CORRIGIDA
+  async delete(id: string): Promise<boolean> {
+    // First get the current user to access their email
+    const currentUser = await db
+      .select({ email: users.email })
+      .from(users)
+      .where(eq(users.id, id))
+      .limit(1);
+
+    if (!currentUser[0]) {
+      return false;
+    }
+
+    // Soft delete: deactivate instead of actually deleting
+    // This preserves referential integrity with bookings/tours
+    const [result] = await db
+      .update(users)
+      .set({
+        // Mark as deleted by prefixing email
+        email: `deleted_${Date.now()}_${currentUser[0].email}`,
+        name: "Deleted User",
+        avatar: null,
+        updatedAt: new Date(),
+      })
+      .where(eq(users.id, id))
+      .returning();
+
+    return !!result;
+  },
+
+  // Get users with advanced statistics - NOVA FUNÇÃO CORRIGIDA
+  async getUsersWithStats(
+    filters: {
+      role?: "customer" | "host" | "admin";
+      limit?: number;
+      offset?: number;
+    } = {}
+  ) {
+    // Get users first using the getAll method
+    const usersResult = await this.getAll(filters);
+
+    // Add statistics for each user
+    const usersWithStats = await Promise.all(
+      usersResult.users.map(async (user) => {
+        if (user.role === "host") {
+          // Get host statistics
+          const [bookingStats, tourStats] = await Promise.all([
+            db
+              .select({
+                totalBookings: sql`count(${bookings.id})`,
+                totalEarnings: sql`sum(${bookings.totalPrice})`,
+              })
+              .from(bookings)
+              .where(eq(bookings.hostId, user.id)),
+
+            db
+              .select({
+                totalTours: sql`count(${tours.id})`,
+                averageRating: sql`avg(${tours.rating})`,
+              })
+              .from(tours)
+              .where(and(eq(tours.hostId, user.id), eq(tours.isActive, true))),
+          ]);
+
+          return {
+            ...user,
+            stats: {
+              totalBookings: Number(bookingStats[0]?.totalBookings || 0),
+              totalEarnings: Number(bookingStats[0]?.totalEarnings || 0),
+              totalTours: Number(tourStats[0]?.totalTours || 0),
+              averageRating: Number(tourStats[0]?.averageRating || 0),
+            },
+          };
+        } else if (user.role === "customer") {
+          // Get customer statistics
+          const bookingStats = await db
+            .select({
+              totalBookings: sql`count(${bookings.id})`,
+              totalSpent: sql`sum(${bookings.totalPrice})`,
+            })
+            .from(bookings)
+            .where(eq(bookings.customerId, user.id));
+
+          return {
+            ...user,
+            stats: {
+              totalBookings: Number(bookingStats[0]?.totalBookings || 0),
+              totalSpent: Number(bookingStats[0]?.totalSpent || 0),
+            },
+          };
+        }
+
+        return user;
+      })
+    );
+
+    return {
+      users: usersWithStats,
+      total: usersResult.total,
+    };
   },
 };
 

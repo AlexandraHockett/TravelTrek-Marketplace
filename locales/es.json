@@ -112,6 +112,8 @@
     }
   },
   "common": {
+    "email": "Correo electrónico",
+    "password": "Contraseña",
     "location": "Ubicación",
     "bookNow": "Reservar Ahora",
     "total": "Total",
@@ -955,7 +957,58 @@
       "paymentFailed": "Pago falló",
       "serverError": "Error del servidor",
       "unauthorised": "No autorizado",
-      "validationFailed": "Validación falló"
+      "validationFailed": "Validación falló",
+      "userNotFound": "Usuario no encontrado",
+      "emailAlreadyExists": "El email ya existe",
+      "fetchUsersError": "Error al cargar usuarios",
+      "fetchUserError": "Error al cargar usuario",
+      "createUserError": "Error al crear usuario",
+      "updateUserError": "Error al actualizar usuario",
+      "deleteUserError": "Error al eliminar usuario",
+      "fetchHostsError": "Error al cargar anfitriones",
+      "fetchCustomersError": "Error al cargar clientes"
     }
+  },
+  "users": {
+    "title": "Usuarios",
+    "create": "Crear Usuario",
+    "edit": "Editar Usuario",
+    "delete": "Eliminar Usuario",
+    "roles": {
+      "customer": "Cliente",
+      "host": "Anfitrión",
+      "admin": "Administrador"
+    },
+    "status": {
+      "verified": "Verificado",
+      "unverified": "Sin verificar"
+    },
+    "stats": {
+      "totalBookings": "Total de Reservas",
+      "totalSpent": "Total Gastado",
+      "totalEarnings": "Total Ganado",
+      "totalTours": "Total de Tours",
+      "averageRating": "Calificación Promedio"
+    },
+    "messages": {
+      "userCreated": "Usuario creado exitosamente",
+      "userUpdated": "Usuario actualizado exitosamente",
+      "userDeleted": "Usuario eliminado exitosamente",
+      "confirmDelete": "¿Está seguro que desea eliminar este usuario?",
+      "noUsersFound": "No se encontraron usuarios"
+    }
+  },
+  "auth": {
+    "login": "Iniciar Sesión",
+    "loginSubtitle": "Accede a tu cuenta de TravelTrek",
+    "loginButton": "Iniciar Sesión",
+    "loginFailed": "Credenciales inválidas. Verifica tu correo electrónico y contraseña.",
+    "loginError": "Ocurrió un error durante el inicio de sesión. Inténtalo de nuevo.",
+    "emailPlaceholder": "Introduce tu correo electrónico",
+    "passwordPlaceholder": "Introduce tu contraseña",
+    "or": "o",
+    "googleLogin": "Continuar con Google",
+    "noAccount": "¿No tienes una cuenta?",
+    "signup": "Registrarse"
   }
 }

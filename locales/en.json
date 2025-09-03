@@ -111,6 +111,8 @@
     }
   },
   "common": {
+    "email": "Email",
+    "password": "Password",
     "location": "Location",
     "bookNow": "Book Now",
     "total": "Total",
@@ -950,7 +952,6 @@
   },
   "api": {
     "errors": {
-      "tourNotFound": "Tour not found",
       "bookingNotFound": "Booking not found",
       "invalidData": "Invalid data",
       "maxParticipantsExceeded": "Maximum participants exceeded",
@@ -958,7 +959,59 @@
       "paymentFailed": "Payment failed",
       "serverError": "Server error",
       "unauthorised": "Unauthorized",
-      "validationFailed": "Validation failed"
+      "validationFailed": "Validation failed",
+      "tourNotFound": "Tour not found",
+      "userNotFound": "User not found",
+      "emailAlreadyExists": "Email already exists",
+      "fetchUsersError": "Error fetching users",
+      "fetchUserError": "Error fetching user",
+      "createUserError": "Error creating user",
+      "updateUserError": "Error updating user",
+      "deleteUserError": "Error deleting user",
+      "fetchHostsError": "Error fetching hosts",
+      "fetchCustomersError": "Error fetching customers"
     }
+  },
+  "users": {
+    "title": "Users",
+    "create": "Create User",
+    "edit": "Edit User",
+    "delete": "Delete User",
+    "roles": {
+      "customer": "Customer",
+      "host": "Host",
+      "admin": "Administrator"
+    },
+    "status": {
+      "verified": "Verified",
+      "unverified": "Unverified"
+    },
+    "stats": {
+      "totalBookings": "Total Bookings",
+      "totalSpent": "Total Spent",
+      "totalEarnings": "Total Earnings",
+      "totalTours": "Total Tours",
+      "averageRating": "Average Rating"
+    },
+    "messages": {
+      "userCreated": "User created successfully",
+      "userUpdated": "User updated successfully",
+      "userDeleted": "User deleted successfully",
+      "confirmDelete": "Are you sure you want to delete this user?",
+      "noUsersFound": "No users found"
+    }
+  },
+  "auth": {
+    "login": "Sign In",
+    "loginSubtitle": "Access your TravelTrek account",
+    "loginButton": "Sign In",
+    "loginFailed": "Invalid credentials. Please check your email and password.",
+    "loginError": "An error occurred during login. Please try again.",
+    "emailPlaceholder": "Enter your email address",
+    "passwordPlaceholder": "Enter your password",
+    "or": "or",
+    "googleLogin": "Continue with Google",
+    "noAccount": "Don't have an account?",
+    "signup": "Sign up"
   }
 }

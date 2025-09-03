@@ -112,6 +112,8 @@
     }
   },
   "common": {
+    "email": "E-Mail",
+    "password": "Passwort",
     "location": "Ort",
     "bookNow": "Jetzt buchen",
     "total": "Gesamt",
@@ -957,7 +959,59 @@
       "paymentFailed": "Zahlung fehlgeschlagen",
       "serverError": "Serverfehler",
       "unauthorised": "Nicht autorisiert",
-      "validationFailed": "Validierung fehlgeschlagen"
+      "validationFailed": "Validierung fehlgeschlagen",
+      "userNotFound": "Benutzer nicht gefunden",
+      "emailAlreadyExists": "E-Mail existiert bereits",
+      "fetchUsersError": "Fehler beim Laden der Benutzer",
+      "fetchUserError": "Fehler beim Laden des Benutzers",
+      "createUserError": "Fehler beim Erstellen des Benutzers",
+      "updateUserError": "Fehler beim Aktualisieren des Benutzers", 
+      "deleteUserError": "Fehler beim Löschen des Benutzers",
+      "fetchHostsError": "Fehler beim Laden der Gastgeber",
+      "fetchCustomersError": "Fehler beim Laden der Kunden"
     }
+  },
+  "users": {
+    "title": "Benutzer",
+    "create": "Benutzer Erstellen",
+    "edit": "Benutzer Bearbeiten",
+    "delete": "Benutzer Löschen",
+    "roles": {
+      "customer": "Kunde", 
+      "host": "Gastgeber",
+      "admin": "Administrator"
+    },
+    "status": {
+      "verified": "Verifiziert",
+      "unverified": "Nicht verifiziert"
+    },
+    "stats": {
+      "totalBookings": "Gesamte Buchungen",
+      "totalSpent": "Gesamt Ausgegeben",
+      "totalEarnings": "Gesamte Einnahmen",
+      "totalTours": "Gesamte Touren",
+      "averageRating": "Durchschnittliche Bewertung"
+    },
+    "messages": {
+      "userCreated": "Benutzer erfolgreich erstellt",
+      "userUpdated": "Benutzer erfolgreich aktualisiert",
+      "userDeleted": "Benutzer erfolgreich gelöscht",
+      "confirmDelete": "Sind Sie sicher, dass Sie diesen Benutzer löschen möchten?",
+      "noUsersFound": "Keine Benutzer gefunden"
+    }
+  },
+  "auth": {
+    "login": "Anmelden",
+    "loginSubtitle": "Zugang zu Ihrem TravelTrek-Konto",
+    "loginButton": "Anmelden",
+    "loginFailed": "Ungültige Anmeldedaten. Überprüfen Sie Ihre E-Mail und Ihr Passwort.",
+    "loginError": "Bei der Anmeldung ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut.",
+    "emailPlaceholder": "Geben Sie Ihre E-Mail-Adresse ein",
+    "passwordPlaceholder": "Geben Sie Ihr Passwort ein",
+    "or": "oder",
+    "googleLogin": "Mit Google fortfahren",
+    "noAccount": "Haben Sie noch kein Konto?",
+    "signup": "Registrieren"
   }
 }
+    

@@ -112,6 +112,8 @@
     }
   },
   "common": {
+    "email": "E-mail",
+    "password": "Mot de passe",
     "location": "Localisation",
     "bookNow": "Réserver maintenant",
     "total": "Total",
@@ -957,7 +959,58 @@
       "paymentFailed": "Le paiement a échoué",
       "serverError": "Erreur serveur",
       "unauthorised": "Non autorisé",
-      "validationFailed": "La validation a échoué"
+      "validationFailed": "La validation a échoué",
+      "userNotFound": "Utilisateur non trouvé",
+      "emailAlreadyExists": "L'email existe déjà",
+      "fetchUsersError": "Erreur lors du chargement des utilisateurs",
+      "fetchUserError": "Erreur lors du chargement de l'utilisateur",
+      "createUserError": "Erreur lors de la création de l'utilisateur",
+      "updateUserError": "Erreur lors de la mise à jour de l'utilisateur",
+      "deleteUserError": "Erreur lors de la suppression de l'utilisateur",
+      "fetchHostsError": "Erreur lors du chargement des hôtes",
+      "fetchCustomersError": "Erreur lors du chargement des clients"
     }
+  },
+  "users": {
+    "title": "Utilisateurs",
+    "create": "Créer un Utilisateur",
+    "edit": "Modifier l'Utilisateur",
+    "delete": "Supprimer l'Utilisateur",
+    "roles": {
+      "customer": "Client",
+      "host": "Hôte",
+      "admin": "Administrateur"
+    },
+    "status": {
+      "verified": "Vérifié",
+      "unverified": "Non vérifié"
+    },
+    "stats": {
+      "totalBookings": "Total des Réservations",
+      "totalSpent": "Total Dépensé",
+      "totalEarnings": "Total Gagné",
+      "totalTours": "Total des Tours",
+      "averageRating": "Note Moyenne"
+    },
+    "messages": {
+      "userCreated": "Utilisateur créé avec succès",
+      "userUpdated": "Utilisateur mis à jour avec succès",
+      "userDeleted": "Utilisateur supprimé avec succès",
+      "confirmDelete": "Êtes-vous sûr de vouloir supprimer cet utilisateur ?",
+      "noUsersFound": "Aucun utilisateur trouvé"
+    }
+  },
+  "auth": {
+    "login": "Se Connecter",
+    "loginSubtitle": "Accédez à votre compte TravelTrek",
+    "loginButton": "Se Connecter",
+    "loginFailed": "Identifiants invalides. Vérifiez votre e-mail et mot de passe.",
+    "loginError": "Une erreur s'est produite lors de la connexion. Veuillez réessayer.",
+    "emailPlaceholder": "Saisissez votre adresse e-mail",
+    "passwordPlaceholder": "Saisissez votre mot de passe",
+    "or": "ou",
+    "googleLogin": "Continuer avec Google",
+    "noAccount": "Vous n'avez pas de compte ?",
+    "signup": "S'inscrire"
   }
 }
