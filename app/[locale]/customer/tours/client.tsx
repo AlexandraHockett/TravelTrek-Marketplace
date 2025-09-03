@@ -1,6 +1,3 @@
-// File: app/[locale]/customer/tours/client.tsx
-// Location: CREATE in app/[locale]/customer/tours/client.tsx
-
 "use client";
 
 import { useState, useEffect, useMemo } from "react";
@@ -48,7 +45,7 @@ export default function ToursClient({
   const [minRating, setMinRating] = useState<number>(0);
   const [selectedLocation, setSelectedLocation] = useState<string>("");
 
-  // Available filter options (would come from API in real app)
+  // Available filter options
   const categories = [
     "Cultural",
     "Adventure",
@@ -58,7 +55,7 @@ export default function ToursClient({
   ];
   const locations = ["Lisbon", "Porto", "Sintra", "Óbidos", "Coimbra"];
 
-  // Fetch tours from API
+  // Fetch tours from API with proper error handling
   const fetchTours = async () => {
     try {
       setLoading(true);
@@ -76,17 +73,33 @@ export default function ToursClient({
       params.append("maxPrice", priceRange[1].toString());
       params.append("sortBy", sortBy);
 
-      const response = await fetch(`/api/tours?${params.toString()}`);
+      const response = await fetch(`/api/tours?${params.toString()}`, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
 
       if (!response.ok) {
         throw new Error(`HTTP ${response.status}: ${response.statusText}`);
       }
 
       const data = await response.json();
-      setTours(Array.isArray(data) ? data : []);
+
+      // ✅ FIXED: Handle API response format properly
+      // API returns { success: true, data: tours[], pagination: {...} }
+      if (data.success && Array.isArray(data.data)) {
+        setTours(data.data);
+      } else {
+        // Fallback for different response formats
+        setTours(Array.isArray(data) ? data : []);
+      }
     } catch (error) {
       console.error("Error fetching tours:", error);
-      setError(error instanceof Error ? error.message : t("errors.generic"));
+      setError(
+        error instanceof Error
+          ? error.message
+          : t("common.error", "Something went wrong")
+      );
       setTours([]);
     } finally {
       setLoading(false);
@@ -136,21 +149,33 @@ export default function ToursClient({
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
+      <div className="bg-gradient-to-r from-blue-600 to-purple-700 text-white">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-16">
+          <div className="text-center max-w-3xl mx-auto">
+            <h1 className="text-4xl md:text-5xl font-bold mb-4">
+              {t("customerTours.title", "Discover Amazing Tours")}
+            </h1>
+            <p className="text-xl md:text-2xl mb-8 opacity-90">
+              {t("customerTours.subtitle", "Explore unique experiences")}
+            </p>
+            <p className="text-lg opacity-80">
+              {t("customerTours.description", "Find your perfect adventure")}
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* Filters and Search */}
       <div className="bg-white border-b border-gray-200">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">
-            {t("tours.title")}
-          </h1>
-          <p className="text-lg text-gray-600 mb-6">{t("tours.subtitle")}</p>
-
           {/* Search and Filters Bar */}
-          <div className="flex flex-col sm:flex-row gap-4">
+          <div className="flex flex-col sm:flex-row gap-4 mb-6">
             {/* Search Input */}
             <div className="flex-1 relative">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
               <input
                 type="text"
-                placeholder={t("tours.searchPlaceholder")}
+                placeholder={t("tours.searchPlaceholder", "Search tours...")}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
@@ -163,7 +188,7 @@ export default function ToursClient({
               className="flex items-center px-6 py-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
             >
               <Filter className="w-5 h-5 mr-2" />
-              {t("tours.filters")}
+              {t("common.filter", "Filters")}
             </button>
 
             {/* View Mode Toggle */}
@@ -193,20 +218,22 @@ export default function ToursClient({
 
           {/* Filters Panel */}
           {showFilters && (
-            <div className="mt-6 p-6 bg-gray-50 rounded-lg border border-gray-200">
+            <div className="p-6 bg-gray-50 rounded-lg border border-gray-200">
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 {/* Location Filter */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
                     <MapPin className="w-4 h-4 inline mr-1" />
-                    Location
+                    {t("common.location", "Location")}
                   </label>
                   <select
                     value={selectedLocation}
                     onChange={(e) => setSelectedLocation(e.target.value)}
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   >
-                    <option value="">All Locations</option>
+                    <option value="">
+                      {t("tours.allLocations", "All Locations")}
+                    </option>
                     {locations.map((location) => (
                       <option key={location} value={location}>
                         {location}
@@ -218,7 +245,7 @@ export default function ToursClient({
                 {/* Category Filter */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    {t("tours.category")}
+                    {t("tours.category", "Category")}
                   </label>
                   <div className="space-y-2 max-h-32 overflow-y-auto">
                     {categories.map((category) => (
@@ -230,7 +257,10 @@ export default function ToursClient({
                           className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
                         />
                         <span className="ml-2 text-sm text-gray-700">
-                          {category}
+                          {t(
+                            `tours.${category.toLowerCase().replace(/\s+/g, "")}`,
+                            category
+                          )}
                         </span>
                       </label>
                     ))}
@@ -241,24 +271,28 @@ export default function ToursClient({
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
                     <Star className="w-4 h-4 inline mr-1" />
-                    {t("tours.rating")}
+                    {t("tours.rating", "Rating")}
                   </label>
                   <select
                     value={minRating}
                     onChange={(e) => setMinRating(Number(e.target.value))}
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   >
-                    <option value={0}>Any Rating</option>
-                    <option value={3}>3+ Stars</option>
-                    <option value={4}>4+ Stars</option>
-                    <option value={4.5}>4.5+ Stars</option>
+                    <option value={0}>
+                      {t("tours.anyRating", "Any Rating")}
+                    </option>
+                    <option value={3}>3+ {t("tours.stars", "Stars")}</option>
+                    <option value={4}>4+ {t("tours.stars", "Stars")}</option>
+                    <option value={4.5}>
+                      4.5+ {t("tours.stars", "Stars")}
+                    </option>
                   </select>
                 </div>
 
                 {/* Price Range */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    {t("tours.priceRange")}
+                    {t("tours.priceRange", "Price Range")}
                   </label>
                   <div className="space-y-2">
                     <input
@@ -292,7 +326,7 @@ export default function ToursClient({
                   }}
                   className="px-4 py-2 text-sm text-gray-600 hover:text-gray-900 transition-colors"
                 >
-                  Clear All Filters
+                  {t("tours.clearFilters", "Clear All Filters")}
                 </button>
               </div>
             </div>
@@ -306,27 +340,36 @@ export default function ToursClient({
         <div className="flex justify-between items-center mb-6">
           <div className="text-sm text-gray-600">
             {loading ? (
-              <span>Loading tours...</span>
+              <span>{t("common.loading", "Loading tours...")}</span>
             ) : (
               <span>
-                Showing {filteredTours.length} of {tours.length} tours
+                {t(
+                  "tours.showingResults",
+                  `Showing ${filteredTours.length} of ${tours.length} tours`
+                )}
               </span>
             )}
           </div>
 
           <div className="flex items-center space-x-4">
             <label className="text-sm text-gray-600">
-              {t("tours.sortBy")}:
+              {t("tours.sortBy", "Sort by")}:
             </label>
             <select
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value as SortOption)}
               className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             >
-              <option value="newest">Newest</option>
-              <option value="price-asc">Price: Low to High</option>
-              <option value="price-desc">Price: High to Low</option>
-              <option value="rating">Highest Rated</option>
+              <option value="newest">{t("tours.newest", "Newest")}</option>
+              <option value="price-asc">
+                {t("tours.priceLowHigh", "Price: Low to High")}
+              </option>
+              <option value="price-desc">
+                {t("tours.priceHighLow", "Price: High to Low")}
+              </option>
+              <option value="rating">
+                {t("tours.bestRated", "Highest Rated")}
+              </option>
             </select>
           </div>
         </div>
@@ -335,7 +378,9 @@ export default function ToursClient({
         {loading && (
           <div className="flex justify-center items-center py-12">
             <Loader2 className="w-8 h-8 animate-spin text-blue-600" />
-            <span className="ml-2 text-gray-600">Loading tours...</span>
+            <span className="ml-2 text-gray-600">
+              {t("common.loading", "Loading tours...")}
+            </span>
           </div>
         )}
 
@@ -347,7 +392,7 @@ export default function ToursClient({
               onClick={fetchTours}
               className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
             >
-              Try Again
+              {t("common.tryAgain", "Try Again")}
             </button>
           </div>
         )}
@@ -357,10 +402,13 @@ export default function ToursClient({
           <div className="text-center py-12">
             <MapPin className="w-12 h-12 text-gray-400 mx-auto mb-4" />
             <h3 className="text-lg font-medium text-gray-900 mb-2">
-              {t("tours.noResults")}
+              {t("tours.noResults", "No tours found")}
             </h3>
             <p className="text-gray-600 mb-4">
-              Try adjusting your search criteria or browse all available tours.
+              {t(
+                "tours.noResultsDesc",
+                "Try adjusting your search criteria or browse all available tours."
+              )}
             </p>
             <button
               onClick={() => {
@@ -372,7 +420,7 @@ export default function ToursClient({
               }}
               className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
             >
-              Clear Filters
+              {t("tours.clearFilters", "Clear Filters")}
             </button>
           </div>
         )}
@@ -391,6 +439,7 @@ export default function ToursClient({
                 key={tour.id}
                 tour={tour}
                 locale={locale}
+                translations={t}
                 compact={viewMode === "list"}
                 showQuickBook={true}
                 onQuickBook={handleQuickBook}
@@ -403,7 +452,7 @@ export default function ToursClient({
         {!loading && filteredTours.length > 0 && (
           <div className="text-center mt-8">
             <button className="px-6 py-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
-              {t("tours.loadMore")}
+              {t("tours.loadMore", "Load More")}
             </button>
           </div>
         )}

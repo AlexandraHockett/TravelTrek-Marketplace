@@ -1,6 +1,3 @@
-// File: app/[locale]/customer/tours/page.tsx
-// Location: CREATE/REPLACE in app/[locale]/customer/tours/page.tsx
-
 import { Metadata } from "next";
 import { Suspense } from "react";
 import { getTranslations } from "@/lib/utils";
@@ -19,8 +16,8 @@ export async function generateMetadata({
   const t = await getTranslations(locale);
 
   return {
-    title: `${t.tours.title} | TravelTrek`,
-    description: t.tours.subtitle,
+    title: `${t.customerTours.title} | TravelTrek`,
+    description: t.customerTours.description,
   };
 }
 

@@ -1,80 +1,145 @@
-// File: components/customer/BookingForm.tsx
-// Location: REPLACE the existing components/customer/BookingForm.tsx
-
 "use client";
 
 import { useState } from "react";
-import { Calendar, Users, Clock, AlertCircle } from "lucide-react";
-import { Tour, Booking } from "@/types";
+import { Tour, BookingFormProps } from "@/types";
+import {
+  Calendar,
+  Users,
+  AlertCircle,
+  CreditCard,
+  Shield,
+  Phone,
+  Mail,
+  User,
+} from "lucide-react";
 import { useTranslations } from "@/lib/i18n";
-import { formatCurrency } from "@/lib/utils";
 
-interface BookingFormProps {
-  tour: Tour;
-  locale: string;
-  onSuccess?: (booking: Booking) => void;
-  onError?: (error: string) => void;
-  className?: string;
+interface ContactInfo {
+  fullName: string;
+  email: string;
+  phone: string;
+}
+
+interface FormErrors {
+  general?: string;
+  date?: string;
+  participants?: string;
+  fullName?: string;
+  email?: string;
+  phone?: string;
 }
 
 export default function BookingForm({
   tour,
-  locale,
   onSuccess,
   onError,
+  onBookingComplete,
   className = "",
+  variant = "default",
 }: BookingFormProps) {
-  const t = useTranslations(locale);
-
-  // Form state
   const [selectedDate, setSelectedDate] = useState<string>("");
   const [participants, setParticipants] = useState<number>(1);
   const [specialRequests, setSpecialRequests] = useState<string>("");
-  const [contactInfo, setContactInfo] = useState({
+  const [contactInfo, setContactInfo] = useState<ContactInfo>({
     fullName: "",
     email: "",
     phone: "",
   });
+  const [loading, setLoading] = useState<boolean>(false);
+  const [errors, setErrors] = useState<FormErrors>({});
+  const [showForm, setShowForm] = useState<boolean>(false);
 
-  // UI state
-  const [loading, setLoading] = useState(false);
-  const [errors, setErrors] = useState<Record<string, string>>({});
-  const [showForm, setShowForm] = useState(false);
+  // Get current locale from URL or default
+  const locale =
+    typeof window !== "undefined"
+      ? window.location.pathname.split("/")[1] || "en"
+      : "en";
+  const t = useTranslations(locale);
 
-  // Price calculations
+  // Calculate pricing
   const basePrice = tour.price * participants;
-  const serviceFees = Math.round(basePrice * 0.15); // 15% service fees
+  const serviceFees = Math.round(basePrice * 0.12); // 12% service fee
   const totalAmount = basePrice + serviceFees;
 
-  // Validation
-  const validateForm = () => {
-    const newErrors: Record<string, string> = {};
+  // Format currency
+  const formatCurrency = (amount: number, currency: string = "EUR") => {
+    return new Intl.NumberFormat(locale, {
+      style: "currency",
+      currency: currency,
+    }).format(amount);
+  };
+
+  // Get minimum date (tomorrow)
+  const getMinDate = () => {
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    return tomorrow.toISOString().split("T")[0];
+  };
+
+  // Get maximum date (3 months from now)
+  const getMaxDate = () => {
+    const maxDate = new Date();
+    maxDate.setMonth(maxDate.getMonth() + 3);
+    return maxDate.toISOString().split("T")[0];
+  };
+
+  // Validate form
+  const validateForm = (): boolean => {
+    const newErrors: FormErrors = {};
 
     if (!selectedDate) {
-      newErrors.date = t("bookingForm.errors.dateRequired");
+      newErrors.date = t("bookingForm.requiredDate", "Date is required");
+    } else {
+      const selectedDateObj = new Date(selectedDate);
+      const tomorrow = new Date();
+      tomorrow.setDate(tomorrow.getDate() + 1);
+
+      if (selectedDateObj < tomorrow) {
+        newErrors.date = t(
+          "bookingForm.minDateTomorrow",
+          "Date must be at least tomorrow"
+        );
+      }
     }
 
-    if (participants < 1 || participants > tour.maxParticipants) {
-      newErrors.participants = t("bookingForm.errors.participantsRequired");
+    if (participants < 1) {
+      newErrors.participants = t(
+        "bookingForm.minParticipants",
+        "At least 1 participant required"
+      );
+    } else if (participants > tour.maxParticipants) {
+      newErrors.participants = t(
+        "bookingForm.maxParticipants",
+        `Maximum ${tour.maxParticipants} participants`
+      );
     }
 
     if (!contactInfo.fullName.trim()) {
-      newErrors.fullName = t("bookingForm.errors.nameRequired");
+      newErrors.fullName = t("common.required", "Full name is required");
     }
 
     if (!contactInfo.email.trim()) {
-      newErrors.email = t("bookingForm.errors.emailRequired");
+      newErrors.email = t("common.required", "Email is required");
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(contactInfo.email)) {
+      newErrors.email = t("common.invalidEmail", "Invalid email format");
     }
 
     if (!contactInfo.phone.trim()) {
-      newErrors.phone = t("bookingForm.errors.phoneRequired");
+      newErrors.phone = t("common.required", "Phone number is required");
+    }
+
+    if (specialRequests.length > 500) {
+      newErrors.general = t(
+        "bookingForm.maxSpecialRequestsLength",
+        "Special requests must be under 500 characters"
+      );
     }
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
-  // Submit booking to API
+  // Handle booking submission
   const handleBooking = async () => {
     if (!validateForm()) return;
 
@@ -82,160 +147,135 @@ export default function BookingForm({
     setErrors({});
 
     try {
-      const bookingData = {
-        tourId: tour.id,
-        date: selectedDate,
-        participants,
-        specialRequests: specialRequests.trim(),
-        customerName: contactInfo.fullName.trim(),
-        customerEmail: contactInfo.email.trim(),
-        customerPhone: contactInfo.phone.trim(),
-        totalAmount,
-        currency: tour.currency || "EUR",
-      };
-
-      // Call the bookings API
+      // ✅ FIXED: Updated API call to match backend format
       const response = await fetch("/api/bookings", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(bookingData),
+        body: JSON.stringify({
+          tourId: tour.id,
+          date: selectedDate,
+          participants,
+          specialRequests: specialRequests.trim() || undefined,
+          customerName: contactInfo.fullName.trim(),
+          customerEmail: contactInfo.email.trim(),
+          customerPhone: contactInfo.phone.trim(),
+          totalAmount, // Include total amount
+        }),
       });
 
       if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        throw new Error(errorData.error || t("bookingForm.errors.serverError"));
+        const errorData = await response.json();
+        throw new Error(errorData.error || `HTTP ${response.status}`);
       }
 
-      const booking = await response.json();
+      const result = await response.json();
 
-      // Success callback
-      if (onSuccess) {
-        onSuccess(booking);
+      // ✅ FIXED: Handle API response format
+      if (result.success && result.data) {
+        onSuccess?.(result.data);
+        onBookingComplete?.(result.data);
+
+        // Show success message
+        alert(t("bookingForm.bookingSuccess", "Booking created successfully!"));
+
+        // Reset form
+        setSelectedDate("");
+        setParticipants(1);
+        setSpecialRequests("");
+        setContactInfo({ fullName: "", email: "", phone: "" });
+        setShowForm(false);
+      } else {
+        throw new Error(result.error || "Booking creation failed");
       }
-
-      // Reset form
-      setSelectedDate("");
-      setParticipants(1);
-      setSpecialRequests("");
-      setContactInfo({ fullName: "", email: "", phone: "" });
-      setShowForm(false);
-
-      // Show success message or redirect
-      alert(t("tourDetails.bookingSuccess"));
     } catch (error) {
       console.error("Booking error:", error);
       const errorMessage =
-        error instanceof Error
-          ? error.message
-          : t("bookingForm.errors.networkError");
-
+        error instanceof Error ? error.message : "Something went wrong";
       setErrors({ general: errorMessage });
-
-      if (onError) {
-        onError(errorMessage);
-      }
+      onError?.(errorMessage);
     } finally {
       setLoading(false);
     }
   };
 
-  // Get minimum date (today)
-  const getMinDate = () => {
-    return new Date().toISOString().split("T")[0];
-  };
-
   if (!showForm) {
     return (
-      <div className={`bg-white rounded-lg shadow-lg p-6 ${className}`}>
-        <div className="flex justify-between items-center mb-4">
-          <div>
-            <div className="text-2xl font-bold text-gray-900">
-              {formatCurrency(tour.price, tour.currency)}
-              <span className="text-base font-normal text-gray-600 ml-1">
-                / {t("common.person")}
-              </span>
-            </div>
-            <div className="text-sm text-gray-500">
-              {tour.reviewsCount > 0 && (
-                <>
-                  ★ {tour.rating} ({tour.reviewsCount} {t("tours.reviewsCount")}
-                  )
-                </>
-              )}
-            </div>
-          </div>
-        </div>
-
-        <button
-          onClick={() => setShowForm(true)}
-          className="w-full bg-blue-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-blue-700 transition-colors"
-        >
-          {t("tourDetails.bookThisTour")}
-        </button>
-      </div>
+      <button
+        onClick={() => setShowForm(true)}
+        className="w-full bg-blue-600 text-white py-4 px-6 rounded-lg hover:bg-blue-700 transition-colors font-semibold text-lg"
+      >
+        {t("bookingForm.bookButton", "Book Experience")}
+      </button>
     );
   }
 
   return (
-    <div className={`bg-white rounded-lg shadow-lg p-6 ${className}`}>
-      <div className="space-y-6">
-        {/* Date Selection */}
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            <Calendar className="w-4 h-4 inline mr-1" />
-            {t("bookingForm.selectDate")}
-          </label>
-          <input
-            type="date"
-            value={selectedDate}
-            onChange={(e) => setSelectedDate(e.target.value)}
-            min={getMinDate()}
-            className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
-              errors.date ? "border-red-500" : "border-gray-300"
-            }`}
-          />
-          {errors.date && (
-            <p className="mt-1 text-sm text-red-600">{errors.date}</p>
-          )}
-        </div>
+    <div className={`space-y-6 ${className}`}>
+      {/* Date Selection */}
+      <div>
+        <label className="block text-sm font-medium text-gray-700 mb-2">
+          <Calendar className="w-4 h-4 inline mr-1" />
+          {t("bookingForm.experienceDate", "Experience Date")}
+        </label>
+        <input
+          type="date"
+          value={selectedDate}
+          onChange={(e) => setSelectedDate(e.target.value)}
+          min={getMinDate()}
+          max={getMaxDate()}
+          className={`w-full px-3 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
+            errors.date ? "border-red-500" : "border-gray-300"
+          }`}
+        />
+        {errors.date && (
+          <p className="mt-1 text-sm text-red-600">{errors.date}</p>
+        )}
+      </div>
 
-        {/* Participants */}
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            <Users className="w-4 h-4 inline mr-1" />
-            {t("bookingForm.participants")}
-          </label>
-          <select
-            value={participants}
-            onChange={(e) => setParticipants(Number(e.target.value))}
-            className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
-              errors.participants ? "border-red-500" : "border-gray-300"
-            }`}
-          >
-            {Array.from({ length: tour.maxParticipants }, (_, i) => i + 1).map(
-              (num) => (
-                <option key={num} value={num}>
-                  {num} {num === 1 ? t("common.person") : t("common.persons")}
-                </option>
-              )
-            )}
-          </select>
-          {errors.participants && (
-            <p className="mt-1 text-sm text-red-600">{errors.participants}</p>
-          )}
-        </div>
+      {/* Participants */}
+      <div>
+        <label className="block text-sm font-medium text-gray-700 mb-2">
+          <Users className="w-4 h-4 inline mr-1" />
+          {t("bookingForm.participants", "Participants")}
+        </label>
+        <select
+          value={participants}
+          onChange={(e) => setParticipants(Number(e.target.value))}
+          className={`w-full px-3 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
+            errors.participants ? "border-red-500" : "border-gray-300"
+          }`}
+        >
+          {Array.from(
+            { length: Math.min(tour.maxParticipants, 10) },
+            (_, i) => i + 1
+          ).map((num) => (
+            <option key={num} value={num}>
+              {num}{" "}
+              {num === 1
+                ? t("common.person", "person")
+                : t("common.persons", "people")}
+            </option>
+          ))}
+        </select>
+        {errors.participants && (
+          <p className="mt-1 text-sm text-red-600">{errors.participants}</p>
+        )}
+      </div>
 
-        {/* Contact Information */}
+      {/* Contact Information */}
+      <div className="border-t pt-6">
+        <h3 className="text-lg font-medium text-gray-900 mb-4">
+          {t("common.contactInfo", "Contact Information")}
+        </h3>
+
         <div className="space-y-4">
-          <h3 className="text-lg font-medium text-gray-900">
-            {t("bookingForm.contactInfo")}
-          </h3>
-
+          {/* Full Name */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              {t("bookingForm.fullName")}
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              <User className="w-4 h-4 inline mr-1" />
+              {t("common.fullName", "Full Name")}
             </label>
             <input
               type="text"
@@ -246,7 +286,11 @@ export default function BookingForm({
                   fullName: e.target.value,
                 }))
               }
-              className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
+              placeholder={t(
+                "common.fullNamePlaceholder",
+                "Enter your full name"
+              )}
+              className={`w-full px-3 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
                 errors.fullName ? "border-red-500" : "border-gray-300"
               }`}
             />
@@ -255,9 +299,11 @@ export default function BookingForm({
             )}
           </div>
 
+          {/* Email */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              {t("bookingForm.email")}
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              <Mail className="w-4 h-4 inline mr-1" />
+              {t("common.email", "Email")}
             </label>
             <input
               type="email"
@@ -265,7 +311,8 @@ export default function BookingForm({
               onChange={(e) =>
                 setContactInfo((prev) => ({ ...prev, email: e.target.value }))
               }
-              className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
+              placeholder={t("common.emailPlaceholder", "Enter your email")}
+              className={`w-full px-3 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
                 errors.email ? "border-red-500" : "border-gray-300"
               }`}
             />
@@ -274,9 +321,11 @@ export default function BookingForm({
             )}
           </div>
 
+          {/* Phone */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              {t("bookingForm.phone")}
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              <Phone className="w-4 h-4 inline mr-1" />
+              {t("common.phone", "Phone")}
             </label>
             <input
               type="tel"
@@ -284,7 +333,11 @@ export default function BookingForm({
               onChange={(e) =>
                 setContactInfo((prev) => ({ ...prev, phone: e.target.value }))
               }
-              className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
+              placeholder={t(
+                "common.phonePlaceholder",
+                "Enter your phone number"
+              )}
+              className={`w-full px-3 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
                 errors.phone ? "border-red-500" : "border-gray-300"
               }`}
             />
@@ -293,76 +346,98 @@ export default function BookingForm({
             )}
           </div>
         </div>
+      </div>
 
-        {/* Special Requests */}
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            {t("bookingForm.specialRequests")}
-          </label>
-          <textarea
-            value={specialRequests}
-            onChange={(e) => setSpecialRequests(e.target.value)}
-            placeholder={t("bookingForm.specialRequestsPlaceholder")}
-            rows={3}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-          />
-        </div>
+      {/* Special Requests */}
+      <div>
+        <label className="block text-sm font-medium text-gray-700 mb-2">
+          {t("bookingForm.specialRequests", "Special Requests")} (
+          {t("common.optional", "optional")})
+        </label>
+        <textarea
+          value={specialRequests}
+          onChange={(e) => setSpecialRequests(e.target.value)}
+          placeholder={t(
+            "bookingForm.specialRequestsPlaceholder",
+            "Any dietary requirements, accessibility needs, or other requests..."
+          )}
+          rows={3}
+          maxLength={500}
+          className="w-full px-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+        />
+        <p className="mt-1 text-xs text-gray-500">
+          {specialRequests.length}/500 {t("common.characters", "characters")}
+        </p>
+      </div>
 
-        {/* Price Breakdown */}
-        <div className="border-t pt-4">
-          <h3 className="text-lg font-medium text-gray-900 mb-3">
-            {t("bookingForm.priceBreakdown")}
-          </h3>
-          <div className="space-y-2">
-            <div className="flex justify-between text-sm">
-              <span>
-                {formatCurrency(tour.price, tour.currency)} × {participants}{" "}
-                {participants === 1 ? t("common.person") : t("common.persons")}
-              </span>
-              <span>{formatCurrency(basePrice, tour.currency)}</span>
-            </div>
-            <div className="flex justify-between text-sm">
-              <span>{t("bookingForm.serviceFees")}</span>
-              <span>{formatCurrency(serviceFees, tour.currency)}</span>
-            </div>
-            <div className="flex justify-between font-bold text-lg border-t pt-2">
-              <span>{t("bookingForm.total")}</span>
-              <span>{formatCurrency(totalAmount, tour.currency)}</span>
-            </div>
+      {/* Price Breakdown */}
+      <div className="border-t pt-6">
+        <h3 className="text-lg font-medium text-gray-900 mb-4">
+          {t("bookingForm.priceBreakdown", "Price Breakdown")}
+        </h3>
+        <div className="space-y-3">
+          <div className="flex justify-between text-sm">
+            <span>
+              {formatCurrency(tour.price, tour.currency)} × {participants}{" "}
+              {participants === 1
+                ? t("common.person", "person")
+                : t("common.persons", "people")}
+            </span>
+            <span>{formatCurrency(basePrice, tour.currency)}</span>
+          </div>
+          <div className="flex justify-between text-sm">
+            <span>{t("bookingForm.serviceFees", "Service fees")}</span>
+            <span>{formatCurrency(serviceFees, tour.currency)}</span>
+          </div>
+          <div className="flex justify-between font-bold text-lg border-t pt-3">
+            <span>{t("bookingForm.total", "Total")}</span>
+            <span>{formatCurrency(totalAmount, tour.currency)}</span>
           </div>
         </div>
+      </div>
 
-        {/* Error Message */}
-        {errors.general && (
-          <div className="bg-red-50 border border-red-200 rounded-lg p-3 flex items-center">
-            <AlertCircle className="w-5 h-5 text-red-500 mr-2 flex-shrink-0" />
-            <span className="text-sm text-red-800">{errors.general}</span>
-          </div>
-        )}
+      {/* Error Message */}
+      {errors.general && (
+        <div className="bg-red-50 border border-red-200 rounded-lg p-4 flex items-center">
+          <AlertCircle className="w-5 h-5 text-red-500 mr-2 flex-shrink-0" />
+          <span className="text-sm text-red-800">{errors.general}</span>
+        </div>
+      )}
 
-        {/* Action Buttons */}
-        <div className="flex gap-3 pt-4">
-          <button
-            onClick={() => setShowForm(false)}
-            className="flex-1 px-6 py-3 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors"
-            disabled={loading}
-          >
-            {t("common.cancel")}
-          </button>
-          <button
-            onClick={handleBooking}
-            disabled={loading || !selectedDate || participants < 1}
-            className="flex-2 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            {loading ? (
-              <>
-                <Clock className="w-4 h-4 animate-spin inline mr-2" />
-                {t("bookingForm.processing")}
-              </>
-            ) : (
-              t("bookingForm.bookButton")
-            )}
-          </button>
+      {/* Action Buttons */}
+      <div className="flex gap-3 pt-4">
+        <button
+          onClick={() => setShowForm(false)}
+          className="flex-1 px-6 py-3 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors"
+          disabled={loading}
+        >
+          {t("common.cancel", "Cancel")}
+        </button>
+        <button
+          onClick={handleBooking}
+          disabled={loading || !selectedDate || participants < 1}
+          className="flex-2 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          {loading ? (
+            <span className="flex items-center">
+              <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+              {t("bookingForm.processing", "Processing...")}
+            </span>
+          ) : (
+            t("bookingForm.continueToPayment", "Continue to Payment")
+          )}
+        </button>
+      </div>
+
+      {/* Trust Indicators */}
+      <div className="flex items-center justify-center space-x-6 pt-4 text-xs text-gray-500">
+        <div className="flex items-center">
+          <Shield className="w-4 h-4 mr-1" />
+          {t("bookingForm.instantConfirmation", "Instant confirmation")}
+        </div>
+        <div className="flex items-center">
+          <CreditCard className="w-4 h-4 mr-1" />
+          {t("bookingForm.freeCancellation", "Free cancellation")}
         </div>
       </div>
     </div>

@@ -512,23 +512,6 @@ export interface PaymentData {
   cancelUrl?: string;
 }
 
-export type TourCardProps = {
-  tour: Tour;
-  locale: string;
-  translations: Translations;
-  compact?: boolean;
-  className?: string;
-};
-
-export type BookingFormProps = {
-  tour: Tour;
-  onSuccess?: (booking: Booking) => void;
-  onError?: (error: string) => void;
-  onBookingComplete?: (bookingData: any) => void;
-  className?: string;
-  variant?: "default" | "compact" | "minimal" | "sidebar";
-};
-
 export type BookingListProps = {
   bookings: Booking[];
   locale: string;
@@ -556,4 +539,23 @@ export interface BasePageProps {
 
 export interface DetailPageProps {
   params: Promise<{ locale: string; id: string }>;
+}
+
+export interface TourCardProps {
+  tour: Tour;
+  locale: string;
+  translations: Translations;
+  compact?: boolean;
+  className?: string;
+  showQuickBook?: boolean;
+  onQuickBook?: (tour: Tour) => void;
+}
+
+export interface BookingFormProps {
+  tour: Tour;
+  onSuccess?: (booking: Booking) => void;
+  onError?: (error: string) => void;
+  onBookingComplete?: (bookingData: any) => void;
+  className?: string;
+  variant?: "default" | "compact" | "minimal" | "sidebar";
 }
