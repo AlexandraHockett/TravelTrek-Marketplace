@@ -1,5 +1,7 @@
-// File: middleware.ts
-// Location: SUBSTITUIR o arquivo existente middleware.ts na raiz do projeto
+// ===================================================================
+// 📁 middleware.ts
+// Location: REPLACE existing middleware.ts at project root
+// ===================================================================
 
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
@@ -28,7 +30,6 @@ function getLocaleFromHeader(request: NextRequest): Locale {
 
   if (!acceptLanguage) return defaultLocale;
 
-  // Parse do cabeçalho Accept-Language
   const languages = acceptLanguage
     .split(",")
     .map((lang) => {
@@ -40,12 +41,10 @@ function getLocaleFromHeader(request: NextRequest): Locale {
     })
     .sort((a, b) => b.quality - a.quality);
 
-  // Procura pelo primeiro idioma suportado
   for (const { language } of languages) {
     if (locales.includes(language as Locale)) {
       return language as Locale;
     }
-    // Verifica código de idioma sem região (ex: 'en' de 'en-US')
     const langCode = language.split("-")[0];
     if (locales.includes(langCode as Locale)) {
       return langCode as Locale;
@@ -53,15 +52,6 @@ function getLocaleFromHeader(request: NextRequest): Locale {
   }
 
   return defaultLocale;
-}
-
-// Remove locale do pathname
-function removeLocaleFromPathname(pathname: string): string {
-  const segments = pathname.split("/");
-  if (locales.includes(segments[1] as Locale)) {
-    return "/" + segments.slice(2).join("/") || "/";
-  }
-  return pathname;
 }
 
 export function middleware(request: NextRequest) {
@@ -84,7 +74,6 @@ export function middleware(request: NextRequest) {
 
   // Se já tem um locale válido no URL, continuar
   if (currentLocale) {
-    // Armazena locale no cookie
     const response = NextResponse.next();
     response.cookies.set("NEXT_LOCALE", currentLocale, {
       maxAge: 60 * 60 * 24 * 30, // 30 dias
@@ -110,10 +99,8 @@ export function middleware(request: NextRequest) {
   const redirectUrl = new URL(redirectPathname + search, request.url);
 
   const response = NextResponse.redirect(redirectUrl);
-
-  // Armazena locale no cookie
   response.cookies.set("NEXT_LOCALE", preferredLocale, {
-    maxAge: 60 * 60 * 24 * 30, // 30 dias
+    maxAge: 60 * 60 * 24 * 30,
     httpOnly: false,
     secure: process.env.NODE_ENV === "production",
     sameSite: "lax",
@@ -124,14 +111,6 @@ export function middleware(request: NextRequest) {
 
 export const config = {
   matcher: [
-    /*
-     * Match all request paths except:
-     * - _next/static (static files)
-     * - _next/image (image optimization files)
-     * - _vercel (Vercel files)
-     * - favicon.ico, favicon.svg (favicon files)
-     * - Any files with extensions (images, fonts, etc.)
-     */
     "/((?!_next/static|_next/image|_vercel|favicon.ico|favicon.svg|.*\\..*).*)",
   ],
 };

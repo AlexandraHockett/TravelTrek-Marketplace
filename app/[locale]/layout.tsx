@@ -1,11 +1,13 @@
-// File: app/[locale]/layout.tsx
-// Location: REPLACE your existing app/[locale]/layout.tsx with this updated version
+// ===================================================================
+// 📁 app/[locale]/layout.tsx
+// Location: REPLACE existing app/[locale]/layout.tsx
+// ===================================================================
 
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import Navbar from "@/components/shared/Navbar";
 import Footer from "@/components/shared/Footer";
-import DevelopmentBanner from "@/components/shared/DevelopmentBanner"; // 🆕 NEW IMPORT
+import SessionProvider from "@/components/auth/SessionProvider";
 import "../globals.css";
 
 const inter = Inter({
@@ -16,18 +18,40 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title: {
-    default: "TravelTrek - Discover Unique Experiences | Development Showcase", // Updated title
+    default: "TravelTrek - Discover Unique Experiences | Marketplace Showcase",
     template: "%s | TravelTrek",
   },
   description:
-    "Connect with local hosts and discover authentic travel experiences. Technical demonstration of Next.js 15 + React 19 with full internationalization.",
+    "Connect with local hosts and discover authentic travel experiences. Built with Next.js 15 + React 19 with full authentication and internationalization.",
+  keywords: ["travel", "tours", "experiences", "local hosts", "marketplace"],
+  authors: [{ name: "TravelTrek Team" }],
+  openGraph: {
+    type: "website",
+    siteName: "TravelTrek",
+    title: "TravelTrek - Discover Unique Experiences",
+    description:
+      "Connect with local hosts and discover authentic travel experiences.",
+    images: [
+      {
+        url: "/images/og-image.jpg",
+        width: 1200,
+        height: 630,
+        alt: "TravelTrek - Discover Unique Experiences",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "TravelTrek - Discover Unique Experiences",
+    description:
+      "Connect with local hosts and discover authentic travel experiences.",
+  },
 };
 
 interface LayoutParams {
   locale: string;
 }
 
-// Make the layout async
 export default async function RootLayout({
   children,
   params,
@@ -35,7 +59,6 @@ export default async function RootLayout({
   children: React.ReactNode;
   params: Promise<LayoutParams>;
 }) {
-  // Await the params promise
   const { locale } = await params;
 
   return (
@@ -46,15 +69,17 @@ export default async function RootLayout({
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
         <link rel="manifest" href="/manifest.json" />
         <meta name="theme-color" content="#1e40af" />
+        <meta
+          name="viewport"
+          content="width=device-width, initial-scale=1, maximum-scale=5"
+        />
       </head>
       <body className="min-h-screen flex flex-col bg-gray-50 antialiased font-sans">
-        {/* 🆕 ADD DEVELOPMENT BANNER HERE */}
-        <DevelopmentBanner locale={locale} />
-
-        <Navbar />
-        <main className="flex-1 relative">{children}</main>
-        {/* Pass resolved locale to Footer */}
-        <Footer params={{ locale }} />
+        <SessionProvider>
+          <Navbar />
+          <main className="flex-1 relative">{children}</main>
+          <Footer params={{ locale }} />
+        </SessionProvider>
       </body>
     </html>
   );
