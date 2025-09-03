@@ -1,16 +1,15 @@
 // ===================================================================
-// 📁 lib/auth.ts
-// Location: CREATE file lib/auth.ts
+// 📁 lib/auth.ts - NEXTAUTH v4 WORKING VERSION
+// Location: REPLACE ENTIRE CONTENT of lib/auth.ts
 // ===================================================================
 
 import NextAuth from "next-auth";
 import Google from "next-auth/providers/google";
 import Credentials from "next-auth/providers/credentials";
-import { DrizzleAdapter } from "@auth/drizzle-adapter";
-import { db } from "@/lib/db/client";
 import { userQueries } from "@/lib/db/queries";
 import bcrypt from "bcryptjs";
 
+// Extend NextAuth types
 declare module "next-auth" {
   interface Session {
     user: {
@@ -34,7 +33,7 @@ declare module "next-auth" {
 }
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
-  adapter: DrizzleAdapter(db),
+  // ⚠️ NO ADAPTER - Using JWT strategy for NextAuth v4
 
   providers: [
     // Google OAuth
@@ -43,7 +42,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
     }),
 
-    // Email/Password login
+    // Email/Password
     Credentials({
       id: "credentials",
       name: "Email and Password",
@@ -56,39 +55,42 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           return null;
         }
 
-        // Find user in database
-        const user = await userQueries.getByEmail(credentials.email as string);
-        if (!user) {
+        try {
+          const user = await userQueries.getByEmail(
+            credentials.email as string
+          );
+          if (!user || !user.password) {
+            return null;
+          }
+
+          const isValid = await bcrypt.compare(
+            credentials.password as string,
+            user.password
+          );
+
+          if (!isValid) return null;
+
+          // Convert database types to NextAuth types
+          return {
+            id: user.id,
+            name: user.name,
+            email: user.email,
+            image: user.avatar || undefined, // null → undefined
+            role: user.role,
+            emailVerified: user.emailVerified || undefined, // null → undefined
+          };
+        } catch (error) {
+          console.error("Auth error:", error);
           return null;
         }
-
-        // Note: You'll need to add password field to user schema and hash passwords
-        // This is a simplified version - implement proper password hashing
-        const isValidPassword = await bcrypt.compare(
-          credentials.password as string,
-          user.password || "" // Add password field to user schema
-        );
-
-        if (!isValidPassword) {
-          return null;
-        }
-
-        return {
-          id: user.id,
-          name: user.name,
-          email: user.email,
-          image: user.avatar,
-          role: user.role,
-          emailVerified: user.emailVerified,
-        };
       },
     }),
   ],
 
   pages: {
     signIn: "/auth/login",
-    signUp: "/auth/signup",
     error: "/auth/error",
+    // ⚠️ NO signUp - NextAuth v4 doesn't support it
   },
 
   callbacks: {
@@ -110,18 +112,24 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     },
 
     async signIn({ user, account }) {
-      // Auto-assign role for new Google users
+      // Handle Google OAuth users
       if (account?.provider === "google" && user.email) {
-        const existingUser = await userQueries.getByEmail(user.email);
-        if (!existingUser) {
-          // Create new user with default customer role
-          await userQueries.create({
-            name: user.name || "",
-            email: user.email,
-            role: "customer",
-            avatar: user.image || null,
-            emailVerified: true, // Google emails are pre-verified
-          });
+        try {
+          const existingUser = await userQueries.getByEmail(user.email);
+
+          if (!existingUser) {
+            await userQueries.create({
+              name: user.name || "",
+              email: user.email,
+              role: "customer",
+              avatar: user.image || null,
+              emailVerified: true,
+              password: null, // OAuth users don't need passwords
+            });
+          }
+        } catch (error) {
+          console.error("Error creating user:", error);
+          return false;
         }
       }
       return true;
@@ -129,7 +137,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   },
 
   session: {
-    strategy: "jwt",
+    strategy: "jwt", // Required for NextAuth v4 without adapter
   },
 
   secret: process.env.NEXTAUTH_SECRET,
