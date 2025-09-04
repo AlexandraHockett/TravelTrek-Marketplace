@@ -1,5 +1,5 @@
 // ===================================================================
-// 📁 middleware.ts - ROLE-BASED ROUTE PROTECTION
+// 📁 middleware.ts - CORRECTED VERSION
 // Location: REPLACE ENTIRE CONTENT of middleware.ts (root)
 // ===================================================================
 
@@ -25,7 +25,21 @@ export default withAuth(
     const { pathname } = req.nextUrl;
     const token = req.nextauth?.token;
 
-    // ✅ Aplicar i18n middleware primeiro
+    // ✅ CRITICAL: API routes should NEVER be redirected by i18n
+    if (pathname.startsWith("/api/")) {
+      return NextResponse.next();
+    }
+
+    // ✅ CRITICAL: Static assets should pass through
+    if (
+      pathname.startsWith("/_next/") ||
+      pathname.startsWith("/images/") ||
+      pathname.includes(".")
+    ) {
+      return NextResponse.next();
+    }
+
+    // ✅ Aplicar i18n middleware para rotas de páginas
     const intlResponse = intlMiddleware(req);
     if (intlResponse) return intlResponse;
 
@@ -92,6 +106,12 @@ export default withAuth(
       // ✅ QUANDO EXECUTAR O MIDDLEWARE AUTH
       authorized: ({ token, req }) => {
         const { pathname } = req.nextUrl;
+
+        // ✅ CRITICAL: API routes are always authorized (handle auth inside API)
+        if (pathname.startsWith("/api/")) {
+          return true;
+        }
+
         const locale = pathname.split("/")[1];
         const pathWithoutLocale = pathname.replace(`/${locale}`, "");
 
@@ -116,14 +136,13 @@ export default withAuth(
   }
 );
 
-// ✅ CONFIGURAÇÃO DE MATCHER - Quais rotas aplicar o middleware
+// ✅ CRITICAL FIX: MATCHER configuration - EXCLUDE ALL /api/* routes
 export const config = {
   matcher: [
-    // Aplicar a todas as rotas exceto:
+    // Apply to all routes EXCEPT API routes, static files, and Next.js internals
     "/((?!api|_next/static|_next/image|favicon.ico|public).*)",
-    // Incluir APIs protegidas
-    "/api/bookings/:path*",
-    "/api/tours/:path*",
-    "/api/users/:path*",
+    // ❌ REMOVED: "/api/bookings/:path*" - API routes should NOT be in matcher!
+    // ❌ REMOVED: "/api/tours/:path*" - API routes should NOT be in matcher!
+    // ❌ REMOVED: "/api/users/:path*" - API routes should NOT be in matcher!
   ],
 };

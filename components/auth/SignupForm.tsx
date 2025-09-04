@@ -46,13 +46,11 @@ const getTranslation = (key: string, locale: string): string => {
       "auth.loginLink": "Iniciar sessão",
       "auth.error.required": "Este campo é obrigatório.",
       "auth.error.invalidEmail": "Email inválido.",
-      "auth.error.weakPassword":
-        "A palavra-passe deve ter pelo menos 8 caracteres.",
+      "auth.error.weakPassword": "A palavra-passe deve ter pelo menos 8 caracteres.",
       "auth.error.passwordMismatch": "As palavras-passe não coincidem.",
       "auth.error.emailExists": "Este email já está registado.",
       "auth.error.serverError": "Erro do servidor. Tenta novamente mais tarde.",
-      "auth.error.oauthError":
-        "Erro ao iniciar sessão com Google. Tenta novamente.",
+      "auth.error.oauthError": "Erro ao iniciar sessão com Google. Tenta novamente."
     },
     en: {
       "auth.signupTitle": "Create Account",
@@ -73,8 +71,7 @@ const getTranslation = (key: string, locale: string): string => {
       "auth.error.passwordMismatch": "Passwords do not match.",
       "auth.error.emailExists": "This email is already registered.",
       "auth.error.serverError": "Server error. Please try again later.",
-      "auth.error.oauthError":
-        "Error logging in with Google. Please try again.",
+      "auth.error.oauthError": "Error logging in with Google. Please try again."
     },
     es: {
       "auth.signupTitle": "Crear Cuenta",
@@ -91,14 +88,11 @@ const getTranslation = (key: string, locale: string): string => {
       "auth.loginLink": "Iniciar sesión",
       "auth.error.required": "Este campo es obligatorio.",
       "auth.error.invalidEmail": "Email inválido.",
-      "auth.error.weakPassword":
-        "La contraseña debe tener al menos 8 caracteres.",
+      "auth.error.weakPassword": "La contraseña debe tener al menos 8 caracteres.",
       "auth.error.passwordMismatch": "Las contraseñas no coinciden.",
       "auth.error.emailExists": "Este email ya está registrado.",
-      "auth.error.serverError":
-        "Error del servidor. Intenta nuevamente más tarde.",
-      "auth.error.oauthError":
-        "Error al iniciar sesión con Google. Intenta nuevamente.",
+      "auth.error.serverError": "Error del servidor. Intenta nuevamente más tarde.",
+      "auth.error.oauthError": "Error al iniciar sesión con Google. Intenta nuevamente."
     },
     fr: {
       "auth.signupTitle": "Créer un Compte",
@@ -115,13 +109,11 @@ const getTranslation = (key: string, locale: string): string => {
       "auth.loginLink": "Se connecter",
       "auth.error.required": "Ce champ est obligatoire.",
       "auth.error.invalidEmail": "Email invalide.",
-      "auth.error.weakPassword":
-        "Le mot de passe doit comporter au moins 8 caractères.",
+      "auth.error.weakPassword": "Le mot de passe doit comporter au moins 8 caractères.",
       "auth.error.passwordMismatch": "Les mots de passe ne correspondent pas.",
       "auth.error.emailExists": "Cet email est déjà enregistré.",
       "auth.error.serverError": "Erreur serveur. Veuillez réessayer plus tard.",
-      "auth.error.oauthError":
-        "Erreur lors de la connexion avec Google. Veuillez réessayer.",
+      "auth.error.oauthError": "Erreur lors de la connexion avec Google. Veuillez réessayer."
     },
     de: {
       "auth.signupTitle": "Konto Erstellen",
@@ -138,15 +130,12 @@ const getTranslation = (key: string, locale: string): string => {
       "auth.loginLink": "Anmelden",
       "auth.error.required": "Dieses Feld ist erforderlich.",
       "auth.error.invalidEmail": "Ungültige E-Mail.",
-      "auth.error.weakPassword":
-        "Das Passwort muss mindestens 8 Zeichen lang sein.",
+      "auth.error.weakPassword": "Das Passwort muss mindestens 8 Zeichen lang sein.",
       "auth.error.passwordMismatch": "Die Passwörter stimmen nicht überein.",
       "auth.error.emailExists": "Diese E-Mail ist bereits registriert.",
-      "auth.error.serverError":
-        "Serverfehler. Bitte versuchen Sie es später erneut.",
-      "auth.error.oauthError":
-        "Fehler beim Anmelden mit Google. Bitte versuchen Sie es erneut.",
-    },
+      "auth.error.serverError": "Serverfehler. Bitte versuchen Sie es später erneut.",
+      "auth.error.oauthError": "Fehler beim Anmelden mit Google. Bitte versuchen Sie es erneut."
+    }
   };
 
   return translations[locale]?.[key] || translations.en[key] || key;
@@ -160,21 +149,11 @@ const SimpleButton: React.FC<{
   disabled?: boolean;
   children: React.ReactNode;
   onClick?: () => void;
-}> = ({
-  type = "button",
-  variant = "primary",
-  className = "",
-  disabled = false,
-  children,
-  onClick,
-}) => {
-  const baseClasses =
-    "w-full px-4 py-2 rounded-md font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2";
+}> = ({ type = "button", variant = "primary", className = "", disabled = false, children, onClick }) => {
+  const baseClasses = "w-full px-4 py-2 rounded-md font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2";
   const variantClasses = {
-    primary:
-      "bg-blue-600 text-white hover:bg-blue-700 focus:ring-blue-500 disabled:bg-blue-300",
-    outline:
-      "border border-gray-300 text-gray-700 hover:bg-gray-50 focus:ring-blue-500 disabled:bg-gray-100",
+    primary: "bg-blue-600 text-white hover:bg-blue-700 focus:ring-blue-500 disabled:bg-blue-300",
+    outline: "border border-gray-300 text-gray-700 hover:bg-gray-50 focus:ring-blue-500 disabled:bg-gray-100"
   };
 
   return (
@@ -209,14 +188,14 @@ const SimpleSpinner = () => (
 export default function SignupForm({ locale }: SignupFormProps) {
   const t = (key: string) => getTranslation(key, locale);
   const router = useRouter();
-
+  
   const [formData, setFormData] = useState<FormData>({
     name: "",
     email: "",
     password: "",
     confirmPassword: "",
   });
-
+  
   const [errors, setErrors] = useState<FormErrors>({});
   const [loading, setLoading] = useState(false);
 
@@ -257,7 +236,7 @@ export default function SignupForm({ locale }: SignupFormProps) {
   // Handle form submission
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
+    
     if (!validateForm()) return;
 
     setLoading(true);
@@ -305,6 +284,7 @@ export default function SignupForm({ locale }: SignupFormProps) {
         router.push(`/${locale}/customer`);
         router.refresh();
       }
+
     } catch (error) {
       console.error("Signup error:", error);
       setErrors({ general: t("auth.error.serverError") });
@@ -331,11 +311,11 @@ export default function SignupForm({ locale }: SignupFormProps) {
   // Handle input changes
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-
+    setFormData(prev => ({ ...prev, [name]: value }));
+    
     // Clear error when user starts typing
     if (errors[name as keyof FormErrors]) {
-      setErrors((prev) => ({ ...prev, [name]: undefined }));
+      setErrors(prev => ({ ...prev, [name]: undefined }));
     }
   };
 
@@ -451,14 +431,16 @@ export default function SignupForm({ locale }: SignupFormProps) {
               disabled={loading}
             />
             {errors.confirmPassword && (
-              <p className="mt-1 text-sm text-red-600">
-                {errors.confirmPassword}
-              </p>
+              <p className="mt-1 text-sm text-red-600">{errors.confirmPassword}</p>
             )}
           </div>
 
           {/* Submit Button */}
-          <SimpleButton type="submit" variant="primary" disabled={loading}>
+          <SimpleButton
+            type="submit"
+            variant="primary"
+            disabled={loading}
+          >
             {loading ? (
               <div className="flex items-center justify-center">
                 <SimpleSpinner />
