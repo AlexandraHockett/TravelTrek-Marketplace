@@ -1,50 +1,39 @@
 // ===================================================================
 // 📁 app/[locale]/auth/signup/page.tsx
-// Location: CREATE this new file
+// Location: SUBSTITUIR ficheiro existente
 // ===================================================================
 
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { redirect } from "next/navigation";
+import { getServerTranslations } from "@/lib/utils";
 import SignupForm from "@/components/auth/SignupForm";
 
-type Props = {
-  params: { locale: string };
-};
+interface Props {
+  params: Promise<{ locale: string }>; // ✅ FIXED: Now Promise<>
+}
 
-// Generate metadata for SEO
-export async function generateMetadata({ params: { locale } }: Props) {
-  const titles = {
-    pt: "Criar Conta - TravelTrek",
-    en: "Create Account - TravelTrek",
-    es: "Crear Cuenta - TravelTrek",
-    fr: "Créer un Compte - TravelTrek",
-    de: "Konto Erstellen - TravelTrek",
-  };
-
-  const descriptions = {
-    pt: "Junta-te à nossa comunidade de viajantes. Cria a tua conta no TravelTrek e descobre experiências incríveis.",
-    en: "Join our community of travelers. Create your TravelTrek account and discover amazing experiences.",
-    es: "Únete a nuestra comunidad de viajeros. Crea tu cuenta de TravelTrek y descubre experiencias increíbles.",
-    fr: "Rejoignez notre communauté de voyageurs. Créez votre compte TravelTrek et découvrez des expériences incroyables.",
-    de: "Treten Sie unserer Reisegemeinschaft bei. Erstellen Sie Ihr TravelTrek-Konto und entdecken Sie unglaubliche Erfahrungen.",
-  };
+// ✅ FIXED: Await params in generateMetadata
+export async function generateMetadata({ params }: Props) {
+  const { locale } = await params; // ✅ Await the Promise
+  const t = await getServerTranslations(locale);
 
   return {
-    title: titles[locale as keyof typeof titles] || titles.en,
-    description:
-      descriptions[locale as keyof typeof descriptions] || descriptions.en,
+    title: `${t("auth.signupTitle")} | TravelTrek`,
+    description: t("auth.signupSubtitle"),
     robots: "index, follow",
     openGraph: {
-      title: titles[locale as keyof typeof titles] || titles.en,
-      description:
-        descriptions[locale as keyof typeof descriptions] || descriptions.en,
+      title: `${t("auth.signupTitle")} | TravelTrek`,
+      description: t("auth.signupSubtitle"),
       type: "website",
     },
   };
 }
 
-export default async function SignupPage({ params: { locale } }: Props) {
+// ✅ FIXED: Await params in component
+export default async function SignupPage({ params }: Props) {
+  const { locale } = await params; // ✅ Await the Promise
+
   // Redirect if already logged in
   const session = await getServerSession(authOptions);
   if (session?.user) {
@@ -52,10 +41,8 @@ export default async function SignupPage({ params: { locale } }: Props) {
   }
 
   return (
-    <>
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-        <SignupForm locale={locale} />
-      </div>
-    </>
+    <div className="min-h-screen bg-gray-50 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+      <SignupForm locale={locale} />
+    </div>
   );
 }

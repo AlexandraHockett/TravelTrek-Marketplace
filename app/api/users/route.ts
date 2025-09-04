@@ -1,13 +1,14 @@
 // ===================================================================
 // 📁 app/api/users/route.ts
-// Location: UPDATE existing app/api/users/route.ts - ADD password hashing
+// Location: ⚠️ CRÍTICO - CRIAR EXACTAMENTE EM: app/api/users/route.ts
+// NÃO em app/[locale]/api/users/ - deve ser FORA da pasta [locale]!
 // ===================================================================
 
 import { NextRequest, NextResponse } from "next/server";
 import { userQueries } from "@/lib/db/queries";
 import bcrypt from "bcryptjs";
 
-// GET - Fetch users with filters (existing functionality)
+// GET - Fetch users with filters (opcional)
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
@@ -18,17 +19,8 @@ export async function GET(request: NextRequest) {
         ? (roleParam as "customer" | "host" | "admin")
         : undefined;
 
-    const emailVerifiedParam = searchParams.get("emailVerified");
-    const emailVerified =
-      emailVerifiedParam === "true"
-        ? true
-        : emailVerifiedParam === "false"
-          ? false
-          : undefined;
-
     const filters = {
       role,
-      emailVerified,
       limit: searchParams.get("limit") ? Number(searchParams.get("limit")) : 10,
       offset: searchParams.get("offset")
         ? Number(searchParams.get("offset"))
@@ -53,9 +45,6 @@ export async function GET(request: NextRequest) {
         limit: filters.limit || 10,
         offset: filters.offset || 0,
         hasMore: (filters.offset || 0) + (filters.limit || 10) < result.total,
-        currentPage:
-          Math.floor((filters.offset || 0) / (filters.limit || 10)) + 1,
-        totalPages: Math.ceil(result.total / (filters.limit || 10)),
       },
       timestamp: new Date().toISOString(),
     });
@@ -73,17 +62,17 @@ export async function GET(request: NextRequest) {
   }
 }
 
-// POST - Create a new user with password hashing support
+// ✅ POST - Create a new user (SIGNUP)
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
 
-    // Basic validation
-    if (!body.name || !body.email || !body.role) {
+    // ✅ Validação básica
+    if (!body.name || !body.email || !body.password) {
       return NextResponse.json(
         {
           success: false,
-          error: "Name, email, and role are required",
+          error: "Name, email, and password are required",
           code: "VALIDATION_ERROR",
           timestamp: new Date().toISOString(),
         },
@@ -91,7 +80,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Email format validation
+    // ✅ Validação email
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(body.email)) {
       return NextResponse.json(
@@ -105,8 +94,8 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Password validation (if provided)
-    if (body.password && body.password.length < 8) {
+    // ✅ Validação password
+    if (body.password.length < 8) {
       return NextResponse.json(
         {
           success: false,
@@ -118,7 +107,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Check if email already exists
+    // ✅ Verificar se email já existe
     const existingUser = await userQueries.getByEmail(body.email);
     if (existingUser) {
       return NextResponse.json(
@@ -132,24 +121,21 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Hash password if provided
-    let hashedPassword = null;
-    if (body.password) {
-      const saltRounds = 12;
-      hashedPassword = await bcrypt.hash(body.password, saltRounds);
-    }
+    // ✅ Hash da password
+    const saltRounds = 12;
+    const hashedPassword = await bcrypt.hash(body.password, saltRounds);
 
-    // Create user
+    // ✅ Criar utilizador
     const newUser = await userQueries.create({
       name: body.name.trim(),
       email: body.email.toLowerCase().trim(),
-      role: body.role,
+      role: body.role || "customer", // Default para customer
       avatar: body.avatar || null,
-      emailVerified: body.emailVerified || false,
+      emailVerified: false, // Por defeito não verificado
       password: hashedPassword,
     });
 
-    // Remove password from response
+    // ✅ Remove password da resposta (segurança)
     const userResponse = {
       ...newUser,
       password: undefined,
@@ -166,6 +152,20 @@ export async function POST(request: NextRequest) {
     );
   } catch (error) {
     console.error("Error creating user:", error);
+
+    // ✅ Handle database specific errors
+    if (error instanceof Error && error.message.includes("duplicate key")) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: "User with this email already exists",
+          code: "EMAIL_ALREADY_EXISTS",
+          timestamp: new Date().toISOString(),
+        },
+        { status: 409 }
+      );
+    }
+
     return NextResponse.json(
       {
         success: false,

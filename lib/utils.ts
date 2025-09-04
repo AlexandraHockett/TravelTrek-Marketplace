@@ -1,17 +1,108 @@
-// ===================================================================
-// 📁 lib/utils.ts
-// Location: SUBSTITUIR APENAS AS LINHAS DAS EXPORTAÇÕES (linhas 8-16)
-// ===================================================================
-
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 
-// Re-export server translation functions - APENAS O QUE EXISTE
-export {
-  getServerTranslations,
-  getTranslations,
-  type TranslationFunction,
-} from "./server-translations";
+// Type for translation function
+export type TranslationFunction = (key: string, fallback?: string) => string;
+
+// Helper function to safely access nested object properties
+function getNestedValue(obj: Record<string, any>, path: string): any {
+  const keys = path.split(".");
+  let current = obj;
+
+  for (const key of keys) {
+    if (
+      current &&
+      typeof current === "object" &&
+      Object.prototype.hasOwnProperty.call(current, key)
+    ) {
+      current = current[key];
+    } else {
+      return undefined;
+    }
+  }
+
+  return current;
+}
+
+// ✅ Server-side translations that return a FUNCTION
+export async function getServerTranslations(
+  locale: string
+): Promise<TranslationFunction> {
+  try {
+    // Dynamic import for server-side usage
+    const translationsModule = await import(`../locales/${locale}.json`);
+    const translationData: Record<string, any> =
+      translationsModule.default || translationsModule;
+
+    // Return a function that can be called like t("key")
+    return function t(key: string, fallback?: string): string {
+      const result = getNestedValue(translationData, key);
+
+      if (typeof result === "string") {
+        return result;
+      }
+
+      if (fallback) {
+        return fallback;
+      }
+
+      console.warn(`Translation key "${key}" not found for locale "${locale}"`);
+      return key;
+    };
+  } catch (error) {
+    console.warn(
+      `Translation file for locale "${locale}" not found, falling back to Portuguese`
+    );
+
+    try {
+      const fallbackModule = await import(`../locales/pt.json`);
+      const translationData: Record<string, any> =
+        fallbackModule.default || fallbackModule;
+
+      return function t(key: string, fallback?: string): string {
+        const result = getNestedValue(translationData, key);
+
+        if (typeof result === "string") {
+          return result;
+        }
+
+        if (fallback) {
+          return fallback;
+        }
+
+        console.warn(`Translation key "${key}" not found in fallback locale`);
+        return key;
+      };
+    } catch (fallbackError) {
+      console.error("Portuguese translation file not found");
+      return function t(key: string, fallback?: string): string {
+        return fallback || key;
+      };
+    }
+  }
+}
+
+// ✅ Alternative: Get raw translations object (returns object directly)
+export async function getTranslations(
+  locale: string
+): Promise<Record<string, any>> {
+  try {
+    const translationsModule = await import(`../locales/${locale}.json`);
+    return translationsModule.default || translationsModule;
+  } catch (error) {
+    console.warn(
+      `Translation file for locale "${locale}" not found, falling back to Portuguese`
+    );
+
+    try {
+      const fallbackModule = await import(`../locales/pt.json`);
+      return fallbackModule.default || fallbackModule;
+    } catch (fallbackError) {
+      console.error("Portuguese translation file not found");
+      return {};
+    }
+  }
+}
 
 // Tailwind CSS class merger utility
 export function cn(...inputs: ClassValue[]) {

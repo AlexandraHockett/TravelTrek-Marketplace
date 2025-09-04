@@ -1,8 +1,3 @@
-// ===================================================================
-// 📁 lib/types/translations.ts
-// Location: CRIAR novo arquivo lib/types/translations.ts
-// ===================================================================
-
 // Translation structure types for better TypeScript support
 
 export interface NavigationTranslations {

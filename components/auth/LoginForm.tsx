@@ -117,7 +117,7 @@ export default function LoginForm({ locale }: LoginFormProps) {
 
           <Button
             type="submit"
-            className="w-full"
+            className="w-full text-blue-600"
             disabled={loading}
             variant="primary"
           >

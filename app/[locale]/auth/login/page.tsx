@@ -1,22 +1,20 @@
 // ===================================================================
 // 📁 app/[locale]/auth/login/page.tsx
-// Location: SUBSTITUIR file app/[locale]/auth/login/page.tsx
+// Location: SUBSTITUIR ficheiro existente
 // ===================================================================
 
 import { Suspense } from "react";
-import {  getServerTranslations, getTranslations } from "@/lib/utils";
+import { getServerTranslations } from "@/lib/utils";
 import LoginForm from "@/components/auth/LoginForm";
-import LoadingSpinner from "@/components/ui/LoadingSpinner"; // ✅ CORRIGIDO: export default
+import LoadingSpinner from "@/components/ui/LoadingSpinner";
 
 interface LoginPageProps {
-  params: Promise<{
-    locale: string;
-  }>;
+  params: Promise<{ locale: string }>; // ✅ FIXED: Now Promise<>
 }
 
+// ✅ FIXED: Await params in component
 export default async function LoginPage({ params }: LoginPageProps) {
-  const { locale } = await params;
-  const t = await getTranslations(locale);
+  const { locale } = await params; // ✅ Await the Promise
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -27,12 +25,13 @@ export default async function LoginPage({ params }: LoginPageProps) {
   );
 }
 
+// ✅ FIXED: Await params in generateMetadata
 export async function generateMetadata({ params }: LoginPageProps) {
-  const { locale } = await params;
-  const t = await getServerTranslations(locale); // ✅ Retorna função
+  const { locale } = await params; // ✅ Await the Promise
+  const t = await getServerTranslations(locale);
 
   return {
-    title: `${t("auth.login")} | TravelTrek`, // ✅ Agora funciona
+    title: `${t("auth.login")} | TravelTrek`,
     description: t("auth.loginSubtitle"),
   };
 }
