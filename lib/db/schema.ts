@@ -1,6 +1,6 @@
 // ===================================================================
-// 📁 lib/db/schema.ts
-// Location: UPDATE existing lib/db/schema.ts
+// 📁 lib/db/schema.ts - FIXED VERSION
+// Location: REPLACE lib/db/schema.ts completely
 // ===================================================================
 
 import {
@@ -14,12 +14,12 @@ import {
   uuid,
 } from "drizzle-orm/pg-core";
 
-// Users table - UPDATED with password field
+// Users table - Add password field (this is the only change we need)
 export const users = pgTable("users", {
   id: uuid("id").primaryKey().defaultRandom(),
   name: text("name").notNull(),
   email: text("email").unique().notNull(),
-  password: text("password"), // ✅ NOVO CAMPO ADICIONADO (nullable para OAuth users)
+  password: text("password"), // ✅ NOVO CAMPO - nullable para OAuth users
   avatar: text("avatar"),
   role: text("role", { enum: ["customer", "host", "admin"] }).notNull(),
   emailVerified: boolean("email_verified").default(false),
@@ -27,7 +27,7 @@ export const users = pgTable("users", {
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });
 
-// Tours table (unchanged)
+// Tours table (keep exactly as is in database)
 export const tours = pgTable("tours", {
   id: uuid("id").primaryKey().defaultRandom(),
   title: text("title").notNull(),
@@ -63,19 +63,22 @@ export const tours = pgTable("tours", {
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });
 
-// Bookings table (unchanged)
+// Bookings table - Keep EXACTLY as exists in database (old structure)
 export const bookings = pgTable("bookings", {
   id: uuid("id").primaryKey().defaultRandom(),
+  tourId: uuid("tour_id")
+    .references(() => tours.id)
+    .notNull(),
   customerId: uuid("customer_id")
     .references(() => users.id)
     .notNull(),
   hostId: uuid("host_id")
     .references(() => users.id)
     .notNull(),
-  tourId: uuid("tour_id")
-    .references(() => tours.id)
-    .notNull(),
-  tourDate: timestamp("tour_date").notNull(),
+  customerName: text("customer_name").notNull(), // ✅ Keep as in DB
+  customerEmail: text("customer_email").notNull(), // ✅ Keep as in DB
+  date: text("date").notNull(), // ✅ Keep as text, not timestamp
+  time: text("time").notNull(), // ✅ Keep separate time field
   participants: integer("participants").notNull(),
   totalPrice: decimal("total_price", { precision: 10, scale: 2 }).notNull(),
   currency: text("currency").notNull().default("EUR"),
@@ -84,14 +87,18 @@ export const bookings = pgTable("bookings", {
   })
     .notNull()
     .default("pending"),
-  stripePaymentIntentId: text("stripe_payment_intent_id"),
-  customerNotes: text("customer_notes"),
-  hostNotes: text("host_notes"),
+  paymentStatus: text("payment_status", {
+    enum: ["pending", "paid", "failed", "refunded"],
+  })
+    .notNull()
+    .default("pending"),
+  paymentId: text("payment_id"), // ✅ Keep as paymentId not stripePaymentIntentId
+  specialRequests: text("special_requests"),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });
 
-// Reviews table (unchanged if exists)
+// Reviews table (keep as is - this was working)
 export const reviews = pgTable("reviews", {
   id: uuid("id").primaryKey().defaultRandom(),
   bookingId: uuid("booking_id")

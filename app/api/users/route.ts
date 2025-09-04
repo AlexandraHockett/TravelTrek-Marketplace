@@ -1,21 +1,20 @@
 // ===================================================================
 // 📁 app/api/users/route.ts
-// Location: CREATE file app/api/users/route.ts
+// Location: UPDATE existing app/api/users/route.ts - ADD password hashing
 // ===================================================================
 
 import { NextRequest, NextResponse } from "next/server";
 import { userQueries } from "@/lib/db/queries";
+import bcrypt from "bcryptjs";
 
-// GET - Fetch all users with optional filters
+// GET - Fetch users with filters (existing functionality)
 export async function GET(request: NextRequest) {
   try {
-    const searchParams = request.nextUrl.searchParams;
+    const { searchParams } = new URL(request.url);
 
-    // Extract and validate query parameters
     const roleParam = searchParams.get("role");
-    const validRoles = ["customer", "host", "admin"];
     const role =
-      roleParam && validRoles.includes(roleParam)
+      roleParam && ["customer", "host", "admin"].includes(roleParam)
         ? (roleParam as "customer" | "host" | "admin")
         : undefined;
 
@@ -44,7 +43,6 @@ export async function GET(request: NextRequest) {
       }
     });
 
-    // Usar getAll expandida
     const result = await userQueries.getAll(filters);
 
     return NextResponse.json({
@@ -75,12 +73,12 @@ export async function GET(request: NextRequest) {
   }
 }
 
-// POST - Create a new user (complementa o create existente)
+// POST - Create a new user with password hashing support
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
 
-    // Validação básica
+    // Basic validation
     if (!body.name || !body.email || !body.role) {
       return NextResponse.json(
         {
@@ -93,7 +91,34 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Check if email already exists usando função existente
+    // Email format validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(body.email)) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: "Invalid email format",
+          code: "INVALID_EMAIL",
+          timestamp: new Date().toISOString(),
+        },
+        { status: 400 }
+      );
+    }
+
+    // Password validation (if provided)
+    if (body.password && body.password.length < 8) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: "Password must be at least 8 characters long",
+          code: "WEAK_PASSWORD",
+          timestamp: new Date().toISOString(),
+        },
+        { status: 400 }
+      );
+    }
+
+    // Check if email already exists
     const existingUser = await userQueries.getByEmail(body.email);
     if (existingUser) {
       return NextResponse.json(
@@ -107,19 +132,33 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Create user usando função existente
+    // Hash password if provided
+    let hashedPassword = null;
+    if (body.password) {
+      const saltRounds = 12;
+      hashedPassword = await bcrypt.hash(body.password, saltRounds);
+    }
+
+    // Create user
     const newUser = await userQueries.create({
-      name: body.name,
-      email: body.email,
+      name: body.name.trim(),
+      email: body.email.toLowerCase().trim(),
       role: body.role,
       avatar: body.avatar || null,
       emailVerified: body.emailVerified || false,
+      password: hashedPassword,
     });
+
+    // Remove password from response
+    const userResponse = {
+      ...newUser,
+      password: undefined,
+    };
 
     return NextResponse.json(
       {
         success: true,
-        data: newUser,
+        data: userResponse,
         message: "User created successfully",
         timestamp: new Date().toISOString(),
       },
