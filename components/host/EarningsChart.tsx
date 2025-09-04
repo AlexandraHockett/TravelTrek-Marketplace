@@ -6,13 +6,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import {
-  Calendar,
-  Euro,
-  TrendingUp,
-  TrendingDown,
-  BarChart3,
-} from "lucide-react";
+import { Calendar, Euro, TrendingUp, TrendingDown } from "lucide-react";
 
 interface EarningsData {
   month: string;
@@ -39,7 +33,35 @@ export default function EarningsChart({
       try {
         setLoading(true);
 
-        // Fetch bookings and calculate earnings by month
+        // ✅ DEVELOPMENT MODE - Use mock data
+        if (process.env.NODE_ENV === "development") {
+          console.log("🔧 DEV MODE: Using mock earnings data");
+
+          // Simulate API delay
+          await new Promise((resolve) => setTimeout(resolve, 600));
+
+          const mockEarningsData: EarningsData[] = [
+            { month: "Mar 2025", earnings: 1250.5, bookings: 12 },
+            { month: "Apr 2025", earnings: 1680.75, bookings: 16 },
+            { month: "May 2025", earnings: 2120.25, bookings: 19 },
+            { month: "Jun 2025", earnings: 1890.0, bookings: 15 },
+            { month: "Jul 2025", earnings: 2450.8, bookings: 22 },
+            { month: "Aug 2025", earnings: 2850.5, bookings: 25 },
+          ];
+
+          // Filter by period
+          let filteredData = mockEarningsData;
+          if (period === "6months") {
+            filteredData = mockEarningsData.slice(-6);
+          } else if (period === "1year") {
+            filteredData = mockEarningsData.slice(-12);
+          }
+
+          setEarningsData(filteredData);
+          return;
+        }
+
+        // ✅ PRODUCTION MODE - Try real API
         const response = await fetch(`/api/bookings?hostId=${hostId}`);
         if (!response.ok) {
           throw new Error("Failed to fetch earnings data");
@@ -98,6 +120,7 @@ export default function EarningsChart({
         setEarningsData(filteredData);
       } catch (error) {
         console.error("Error fetching earnings data:", error);
+        setEarningsData([]);
       } finally {
         setLoading(false);
       }
@@ -125,14 +148,20 @@ export default function EarningsChart({
         100
       : 0;
 
-  // Find max value for scaling
-  const maxEarnings = Math.max(...earningsData.map((item) => item.earnings));
+  // Find max value for scaling - FIX: Add fallback for empty arrays
+  const maxEarnings =
+    earningsData.length > 0
+      ? Math.max(...earningsData.map((item) => item.earnings))
+      : 0;
 
   if (loading) {
     return (
       <div className="text-center py-8">
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-4"></div>
         <p className="text-gray-600">Loading earnings data...</p>
+        {process.env.NODE_ENV === "development" && (
+          <p className="text-xs text-gray-400 mt-2">🔧 Loading mock data</p>
+        )}
       </div>
     );
   }
@@ -177,6 +206,16 @@ export default function EarningsChart({
           </div>
         </div>
       </div>
+
+      {/* Development Mode Indicator */}
+      {process.env.NODE_ENV === "development" && earningsData.length > 0 && (
+        <div className="mb-4 bg-green-50 border border-green-200 rounded-lg p-3">
+          <p className="text-sm text-green-700">
+            🔧 Development Mode: Using mock earnings data ({earningsData.length}{" "}
+            months)
+          </p>
+        </div>
+      )}
 
       {/* Summary Stats */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
@@ -237,19 +276,19 @@ export default function EarningsChart({
             {/* Chart Container */}
             <div className="relative" style={{ height: "350px" }}>
               {chartType === "bar" ? (
-                // Bar Chart
-                <div className="flex items-end justify-center h-full gap-2 px-4">
+                // Bar Chart - WORKING VERSION
+                <div className="flex items-end justify-between h-full gap-2 px-4">
                   {earningsData.map((item, index) => {
                     const height =
                       maxEarnings > 0 ? (item.earnings / maxEarnings) * 280 : 0;
                     return (
                       <div
                         key={index}
-                        className="flex flex-col items-center flex-1 max-w-16"
+                        className="flex flex-col items-center flex-1"
                       >
-                        <div className="relative group">
+                        <div className="relative group h-full flex flex-col justify-end">
                           <div
-                            className="bg-blue-500 hover:bg-blue-600 rounded-t-sm transition-all duration-300 cursor-pointer w-full min-h-1"
+                            className="bg-blue-500 hover:bg-blue-600 rounded-t-sm transition-all duration-300 cursor-pointer w-full min-w-[30px]"
                             style={{ height: `${Math.max(height, 4)}px` }}
                           ></div>
                           {/* Tooltip */}
@@ -263,7 +302,7 @@ export default function EarningsChart({
                             <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-gray-800"></div>
                           </div>
                         </div>
-                        <div className="mt-2 text-xs text-gray-600 text-center transform -rotate-45 origin-center">
+                        <div className="mt-2 text-xs text-gray-600 text-center w-full overflow-hidden text-ellipsis">
                           {item.month.split(" ")[0]}
                         </div>
                       </div>
@@ -271,79 +310,108 @@ export default function EarningsChart({
                   })}
                 </div>
               ) : (
-                // Line Chart
-                <div className="relative h-full">
-                  <svg width="100%" height="100%" className="overflow-visible">
-                    {/* Grid lines */}
-                    <defs>
-                      <pattern
-                        id="grid"
-                        width="40"
-                        height="40"
-                        patternUnits="userSpaceOnUse"
-                      >
-                        <path
-                          d="M 40 0 L 0 0 0 40"
-                          fill="none"
-                          stroke="#f0f0f0"
-                          strokeWidth="1"
-                        />
-                      </pattern>
-                    </defs>
-                    <rect width="100%" height="100%" fill="url(#grid)" />
+                // Line Chart - CSS/DIV VERSION (WORKING)
+                <div className="h-full w-full p-4">
+                  <div className="text-sm text-gray-500 mb-4">
+                    Monthly Earnings Trend
+                  </div>
 
-                    {/* Line path */}
-                    {earningsData.length > 1 && (
-                      <path
-                        d={earningsData
-                          .map((item, index) => {
-                            const x = (index / (earningsData.length - 1)) * 100;
-                            const y =
-                              maxEarnings > 0
-                                ? 100 - (item.earnings / maxEarnings) * 90
-                                : 50;
-                            return `${index === 0 ? "M" : "L"} ${x}% ${y}%`;
-                          })
-                          .join(" ")}
-                        fill="none"
-                        stroke="#3b82f6"
-                        strokeWidth="3"
-                        className="drop-shadow-sm"
-                      />
-                    )}
+                  <div className="relative h-64">
+                    {/* Y-axis labels */}
+                    <div className="absolute left-0 top-0 h-full flex flex-col justify-between py-2 pr-2">
+                      {[100, 75, 50, 25, 0].map((percent) => (
+                        <div key={percent} className="text-xs text-gray-500">
+                          €{((percent / 100) * maxEarnings).toFixed(0)}
+                        </div>
+                      ))}
+                    </div>
 
-                    {/* Data points */}
-                    {earningsData.map((item, index) => {
-                      const x =
-                        (index / Math.max(earningsData.length - 1, 1)) * 100;
-                      const y =
-                        maxEarnings > 0
-                          ? 100 - (item.earnings / maxEarnings) * 90
-                          : 50;
-                      return (
-                        <g key={index}>
-                          <circle
-                            cx={`${x}%`}
-                            cy={`${y}%`}
-                            r="6"
-                            fill="#3b82f6"
-                            stroke="white"
-                            strokeWidth="2"
-                            className="cursor-pointer hover:r-8 transition-all duration-200"
-                          />
-                          {/* Month labels */}
-                          <text
-                            x={`${x}%`}
-                            y="95%"
-                            textAnchor="middle"
-                            className="text-xs fill-gray-600"
-                          >
-                            {item.month.split(" ")[0]}
-                          </text>
-                        </g>
-                      );
-                    })}
-                  </svg>
+                    {/* Chart area */}
+                    <div className="ml-8 h-full">
+                      {/* Grid lines */}
+                      <div className="h-full flex flex-col justify-between">
+                        {[0, 1, 2, 3, 4].map((i) => (
+                          <div
+                            key={i}
+                            className="border-t border-gray-100"
+                          ></div>
+                        ))}
+                      </div>
+
+                      {/* Line and points */}
+                      <div className="absolute top-0 left-8 right-0 bottom-0">
+                        {earningsData.length > 1 && (
+                          <svg className="w-full h-full">
+                            <path
+                              d={earningsData
+                                .map((item, i) => {
+                                  const x =
+                                    (i / (earningsData.length - 1)) * 100;
+                                  const y =
+                                    100 - (item.earnings / maxEarnings) * 100;
+                                  return `${i === 0 ? "M" : "L"} ${x}% ${y}%`;
+                                })
+                                .join(" ")}
+                              fill="none"
+                              stroke="#3b82f6"
+                              strokeWidth="2"
+                            />
+
+                            {earningsData.map((item, i) => {
+                              const x = (i / (earningsData.length - 1)) * 100;
+                              const y =
+                                100 - (item.earnings / maxEarnings) * 100;
+                              return (
+                                <circle
+                                  key={i}
+                                  cx={`${x}%`}
+                                  cy={`${y}%`}
+                                  r="4"
+                                  fill="#3b82f6"
+                                  stroke="white"
+                                  strokeWidth="2"
+                                  className="cursor-pointer"
+                                />
+                              );
+                            })}
+                          </svg>
+                        )}
+
+                        {/* Hover tooltips */}
+                        {earningsData.map((item, i) => {
+                          const x = (i / (earningsData.length - 1)) * 100;
+                          const y = 100 - (item.earnings / maxEarnings) * 100;
+
+                          return (
+                            <div
+                              key={i}
+                              className="absolute w-4 h-4 -translate-x-1/2 -translate-y-1/2 cursor-pointer group"
+                              style={{
+                                left: `${x}%`,
+                                top: `${y}%`,
+                              }}
+                            >
+                              <div className="absolute -top-8 left-1/2 transform -translate-x-1/2 px-2 py-1 bg-gray-800 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-10">
+                                €{item.earnings.toFixed(2)}
+                              </div>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+
+                    {/* X-axis labels */}
+                    <div className="ml-8 mt-2 flex justify-between">
+                      {earningsData.map((item, i) => (
+                        <div
+                          key={i}
+                          className="text-xs text-gray-500 -rotate-45 origin-left"
+                        >
+                          {item.month.split(" ")[0]}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
                 </div>
               )}
             </div>

@@ -48,6 +48,103 @@ export default function BookingList({ hostId }: BookingListProps) {
     const fetchBookings = async () => {
       try {
         setLoading(true);
+
+        // ✅ DEVELOPMENT MODE - Use mock data
+        if (process.env.NODE_ENV === "development") {
+          console.log("🔧 DEV MODE: Using mock booking data");
+
+          // Simulate API delay
+          await new Promise((resolve) => setTimeout(resolve, 800));
+
+          const mockBookings: Booking[] = [
+            {
+              id: "bk-001",
+              tourId: "tour-001",
+              tourTitle: "Porto Walking Tour",
+              customerName: "Ana Costa",
+              customerEmail: "ana.costa@email.com",
+              startDate: "2025-09-06",
+              startTime: "14:00",
+              participants: 2,
+              totalPrice: 50,
+              status: "confirmed",
+              createdAt: "2025-09-01T10:00:00Z",
+              specialRequests: "Vegetarian lunch options please",
+            },
+            {
+              id: "bk-002",
+              tourId: "tour-002",
+              tourTitle: "Lisbon Food Experience",
+              customerName: "Carlos Ferreira",
+              customerEmail: "carlos.ferreira@email.com",
+              startDate: "2025-09-08",
+              startTime: "10:30",
+              participants: 4,
+              totalPrice: 140,
+              status: "confirmed",
+              createdAt: "2025-09-02T14:00:00Z",
+            },
+            {
+              id: "bk-003",
+              tourId: "tour-003",
+              tourTitle: "Sintra Day Trip",
+              customerName: "Isabel Rodrigues",
+              customerEmail: "isabel.rodrigues@email.com",
+              startDate: "2025-09-10",
+              startTime: "09:00",
+              participants: 6,
+              totalPrice: 210,
+              status: "pending",
+              createdAt: "2025-09-03T16:00:00Z",
+              specialRequests: "Need wheelchair accessibility",
+            },
+            {
+              id: "bk-004",
+              tourId: "tour-001",
+              tourTitle: "Porto Walking Tour",
+              customerName: "Miguel Santos",
+              customerEmail: "miguel.santos@email.com",
+              startDate: "2025-08-20",
+              startTime: "15:00",
+              participants: 3,
+              totalPrice: 75,
+              status: "completed",
+              createdAt: "2025-08-15T09:00:00Z",
+            },
+            {
+              id: "bk-005",
+              tourId: "tour-004",
+              tourTitle: "Aveiro Boat Tour",
+              customerName: "Sofia Lima",
+              customerEmail: "sofia.lima@email.com",
+              startDate: "2025-07-15",
+              startTime: "11:00",
+              participants: 2,
+              totalPrice: 80,
+              status: "completed",
+              createdAt: "2025-07-10T11:00:00Z",
+            },
+            {
+              id: "bk-006",
+              tourId: "tour-002",
+              tourTitle: "Lisbon Food Experience",
+              customerName: "João Silva",
+              customerEmail: "joao.silva@email.com",
+              startDate: "2025-06-20",
+              startTime: "12:00",
+              participants: 1,
+              totalPrice: 35,
+              status: "cancelled",
+              createdAt: "2025-06-15T10:00:00Z",
+            },
+          ];
+
+          setBookings(mockBookings);
+          setError(null);
+          return;
+        }
+
+        // ✅ PRODUCTION MODE - Try real API
         const response = await fetch(`/api/bookings?hostId=${hostId}`);
 
         if (!response.ok) {
@@ -71,6 +168,23 @@ export default function BookingList({ hostId }: BookingListProps) {
 
   const updateBookingStatus = async (bookingId: string, newStatus: string) => {
     try {
+      // ✅ DEVELOPMENT MODE - Update local state only
+      if (process.env.NODE_ENV === "development") {
+        console.log(
+          `🔧 DEV MODE: Updating booking ${bookingId} to ${newStatus}`
+        );
+
+        setBookings((prev) =>
+          prev.map((booking) =>
+            booking.id === bookingId
+              ? { ...booking, status: newStatus as Booking["status"] }
+              : booking
+          )
+        );
+        return;
+      }
+
+      // ✅ PRODUCTION MODE - Update via API
       const response = await fetch(`/api/bookings/${bookingId}`, {
         method: "PUT",
         headers: {
@@ -136,11 +250,14 @@ export default function BookingList({ hostId }: BookingListProps) {
       <div className="text-center py-8">
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-4"></div>
         <p className="text-gray-600">Loading bookings...</p>
+        {process.env.NODE_ENV === "development" && (
+          <p className="text-xs text-gray-400 mt-2">🔧 Loading mock data</p>
+        )}
       </div>
     );
   }
 
-  if (error) {
+  if (error && process.env.NODE_ENV !== "development") {
     return (
       <div className="text-center py-8">
         <AlertTriangle className="h-8 w-8 text-red-500 mx-auto mb-4" />
@@ -155,6 +272,16 @@ export default function BookingList({ hostId }: BookingListProps) {
         <h2 className="text-2xl font-bold text-gray-900 mb-4">
           Bookings Management
         </h2>
+
+        {/* Development Mode Indicator */}
+        {process.env.NODE_ENV === "development" && (
+          <div className="mb-4 bg-blue-50 border border-blue-200 rounded-lg p-3">
+            <p className="text-sm text-blue-700">
+              🔧 Development Mode: Using mock booking data ({bookings.length}{" "}
+              bookings)
+            </p>
+          </div>
+        )}
 
         {/* Filter Tabs */}
         <div className="border-b border-gray-200">

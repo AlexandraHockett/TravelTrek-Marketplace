@@ -1,6 +1,6 @@
 // ===================================================================
 // 📁 app/[locale]/host/page.tsx
-// Location: SUBSTITUIR COMPLETAMENTE o ficheiro app/[locale]/host/page.tsx
+// Location: SUBSTITUIR com traduções implementadas
 // ===================================================================
 
 "use client";
@@ -19,6 +19,7 @@ import {
   CheckCircle,
   AlertTriangle,
 } from "lucide-react";
+import { useTranslations } from "@/lib/i18n";
 import BookingList from "@/components/host/BookingList";
 import EarningsChart from "@/components/host/EarningsChart";
 
@@ -58,6 +59,7 @@ interface DashboardStats {
 
 export default function HostDashboard({ params }: HostDashboardProps) {
   const { locale } = use(params);
+  const t = useTranslations(locale);
 
   // State management
   const [stats, setStats] = useState<DashboardStats | null>(null);
@@ -94,7 +96,9 @@ export default function HostDashboard({ params }: HostDashboardProps) {
     } catch (error) {
       console.error("💥 Error fetching dashboard stats:", error);
       setError(
-        error instanceof Error ? error.message : "Failed to load dashboard data"
+        error instanceof Error
+          ? error.message
+          : t("common.errors.loadFailed") || "Failed to load dashboard data"
       );
     } finally {
       setLoading(false);
@@ -114,9 +118,13 @@ export default function HostDashboard({ params }: HostDashboardProps) {
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">Loading Host Dashboard...</p>
+          <p className="text-gray-600">
+            {t("common.loading") || "Loading Host Dashboard..."}
+          </p>
           {isDevelopment && (
-            <p className="text-xs text-gray-400 mt-2">🔧 Development Mode</p>
+            <p className="text-xs text-gray-400 mt-2">
+              🔧 {t("common.devMode") || "Development Mode"}
+            </p>
           )}
         </div>
       </div>
@@ -130,14 +138,14 @@ export default function HostDashboard({ params }: HostDashboardProps) {
         <div className="text-center max-w-md">
           <AlertTriangle className="h-12 w-12 text-red-500 mx-auto mb-4" />
           <h2 className="text-xl font-semibold text-gray-900 mb-2">
-            Error Loading Dashboard
+            {t("host.dashboard.error.title") || "Error Loading Dashboard"}
           </h2>
           <p className="text-red-600 mb-4">{error}</p>
           <button
             onClick={fetchDashboardStats}
             className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
           >
-            Try Again
+            {t("common.retry") || "Try Again"}
           </button>
           {isDevelopment && (
             <div className="mt-4 p-3 bg-gray-100 rounded text-xs text-left">
@@ -161,7 +169,9 @@ export default function HostDashboard({ params }: HostDashboardProps) {
             <div className="flex items-center gap-2">
               <div className="w-2 h-2 bg-yellow-500 rounded-full animate-pulse"></div>
               <span className="text-sm font-medium text-yellow-800">
-                🔧 Development Mode: Authentication bypassed for testing
+                🔧{" "}
+                {t("common.devModeMessage") ||
+                  "Development Mode: Authentication bypassed for testing"}
               </span>
             </div>
           </div>
@@ -172,13 +182,15 @@ export default function HostDashboard({ params }: HostDashboardProps) {
           <div className="flex justify-between items-center">
             <div>
               <h1 className="text-3xl font-bold text-gray-900">
-                Host Dashboard
+                {t("host.dashboard.title") || "Host Dashboard"}
               </h1>
-              <p className="text-gray-600 mt-1">Manage tours and bookings</p>
+              <p className="text-gray-600 mt-1">
+                {t("host.dashboard.subtitle") || "Manage tours and bookings"}
+              </p>
             </div>
             <button className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 flex items-center gap-2 transition-colors">
               <Plus className="w-4 h-4" />
-              Create Tour
+              {t("host.dashboard.createTour") || "Create Tour"}
             </button>
           </div>
         </div>
@@ -189,7 +201,7 @@ export default function HostDashboard({ params }: HostDashboardProps) {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-gray-600">
-                  Total Bookings
+                  {t("host.dashboard.stats.totalBookings") || "Total Bookings"}
                 </p>
                 <p className="text-2xl font-bold text-gray-900">
                   {stats?.totalBookings || 0}
@@ -203,7 +215,8 @@ export default function HostDashboard({ params }: HostDashboardProps) {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-gray-600">
-                  Monthly Earnings
+                  {t("host.dashboard.stats.monthlyEarnings") ||
+                    "Monthly Earnings"}
                 </p>
                 <p className="text-2xl font-bold text-gray-900">
                   €{(stats?.monthlyEarnings || 0).toFixed(2)}
@@ -230,7 +243,7 @@ export default function HostDashboard({ params }: HostDashboardProps) {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-gray-600">
-                  Average Rating
+                  {t("host.dashboard.stats.averageRating") || "Average Rating"}
                 </p>
                 <p className="text-2xl font-bold text-gray-900">
                   {stats?.averageRating || 0}
@@ -244,7 +257,8 @@ export default function HostDashboard({ params }: HostDashboardProps) {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-gray-600">
-                  Active Listings
+                  {t("host.dashboard.stats.activeListings") ||
+                    "Active Listings"}
                 </p>
                 <p className="text-2xl font-bold text-gray-900">
                   {stats?.activeListings || 0}
@@ -268,7 +282,8 @@ export default function HostDashboard({ params }: HostDashboardProps) {
                     : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
                 }`}
               >
-                {tab.charAt(0).toUpperCase() + tab.slice(1)}
+                {t(`host.dashboard.tabs.${tab}`) ||
+                  tab.charAt(0).toUpperCase() + tab.slice(1)}
               </button>
             ))}
           </nav>
@@ -281,7 +296,8 @@ export default function HostDashboard({ params }: HostDashboardProps) {
             <div className="lg:col-span-2">
               <div className="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
                 <h3 className="text-lg font-semibold text-gray-900 mb-4">
-                  Recent Activity
+                  {t("host.dashboard.recentActivity.title") ||
+                    "Recent Activity"}
                 </h3>
                 <div className="space-y-4">
                   {stats?.recentActivity?.map((activity) => (
@@ -300,7 +316,8 @@ export default function HostDashboard({ params }: HostDashboardProps) {
                   {(!stats?.recentActivity ||
                     stats.recentActivity.length === 0) && (
                     <p className="text-gray-500 text-sm text-center py-4">
-                      No recent activity
+                      {t("host.dashboard.recentActivity.empty") ||
+                        "No recent activity"}
                     </p>
                   )}
                 </div>
@@ -312,7 +329,8 @@ export default function HostDashboard({ params }: HostDashboardProps) {
               {/* Upcoming Bookings */}
               <div className="bg-white rounded-lg shadow-sm p-6 border border-gray-200 mb-6">
                 <h3 className="text-lg font-semibold text-gray-900 mb-4">
-                  Upcoming Bookings
+                  {t("host.dashboard.upcomingBookings.title") ||
+                    "Upcoming Bookings"}
                 </h3>
                 <div className="space-y-3">
                   {stats?.upcomingBookings?.map((booking) => (
@@ -329,7 +347,8 @@ export default function HostDashboard({ params }: HostDashboardProps) {
                       <div className="flex items-center gap-2 mt-1">
                         <Users className="w-3 h-3 text-gray-400" />
                         <span className="text-xs text-gray-500">
-                          {booking.participants} participants
+                          {booking.participants}{" "}
+                          {t("common.participants") || "participants"}
                         </span>
                       </div>
                     </div>
@@ -337,7 +356,8 @@ export default function HostDashboard({ params }: HostDashboardProps) {
                   {(!stats?.upcomingBookings ||
                     stats.upcomingBookings.length === 0) && (
                     <p className="text-gray-500 text-sm text-center py-4">
-                      No upcoming bookings
+                      {t("host.dashboard.upcomingBookings.empty") ||
+                        "No upcoming bookings"}
                     </p>
                   )}
                 </div>
@@ -346,13 +366,15 @@ export default function HostDashboard({ params }: HostDashboardProps) {
               {/* Quick Stats */}
               <div className="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
                 <h3 className="text-lg font-semibold text-gray-900 mb-4">
-                  Quick Stats
+                  {t("host.dashboard.quickStats.title") || "Quick Stats"}
                 </h3>
                 <div className="space-y-3">
                   <div className="flex justify-between items-center">
                     <div className="flex items-center gap-2">
                       <CheckCircle className="w-4 h-4 text-green-500" />
-                      <span className="text-sm text-gray-600">Confirmed</span>
+                      <span className="text-sm text-gray-600">
+                        {t("host.dashboard.stats.confirmed") || "Confirmed"}
+                      </span>
                     </div>
                     <span className="font-medium">
                       {stats?.confirmedBookings || 0}
@@ -361,7 +383,9 @@ export default function HostDashboard({ params }: HostDashboardProps) {
                   <div className="flex justify-between items-center">
                     <div className="flex items-center gap-2">
                       <Clock className="w-4 h-4 text-yellow-500" />
-                      <span className="text-sm text-gray-600">Pending</span>
+                      <span className="text-sm text-gray-600">
+                        {t("host.dashboard.stats.pending") || "Pending"}
+                      </span>
                     </div>
                     <span className="font-medium">
                       {stats?.pendingBookings || 0}
@@ -370,7 +394,9 @@ export default function HostDashboard({ params }: HostDashboardProps) {
                   <div className="flex justify-between items-center">
                     <div className="flex items-center gap-2">
                       <CheckCircle className="w-4 h-4 text-blue-500" />
-                      <span className="text-sm text-gray-600">Completed</span>
+                      <span className="text-sm text-gray-600">
+                        {t("host.dashboard.stats.completed") || "Completed"}
+                      </span>
                     </div>
                     <span className="font-medium">
                       {stats?.completedBookings || 0}
@@ -397,23 +423,29 @@ export default function HostDashboard({ params }: HostDashboardProps) {
             </div>
             <div className="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
               <h3 className="text-lg font-semibold text-gray-900 mb-4">
-                Earnings Summary
+                {t("host.dashboard.earnings.summary") || "Earnings Summary"}
               </h3>
               <div className="space-y-4">
                 <div>
-                  <p className="text-sm text-gray-600">This Month</p>
+                  <p className="text-sm text-gray-600">
+                    {t("host.dashboard.earnings.thisMonth") || "This Month"}
+                  </p>
                   <p className="text-2xl font-bold text-gray-900">
                     €{(stats?.thisMonthEarnings || 0).toFixed(2)}
                   </p>
                 </div>
                 <div>
-                  <p className="text-sm text-gray-600">Last Month</p>
+                  <p className="text-sm text-gray-600">
+                    {t("host.dashboard.earnings.lastMonth") || "Last Month"}
+                  </p>
                   <p className="text-xl font-semibold text-gray-700">
                     €{(stats?.lastMonthEarnings || 0).toFixed(2)}
                   </p>
                 </div>
                 <div className="pt-4 border-t">
-                  <p className="text-sm text-gray-600">Growth</p>
+                  <p className="text-sm text-gray-600">
+                    {t("host.dashboard.earnings.growth") || "Growth"}
+                  </p>
                   <p
                     className={`text-lg font-semibold ${
                       (stats?.earningsGrowth || 0) >= 0
