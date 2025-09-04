@@ -1,5 +1,5 @@
 // File: types/index.ts
-// Location: REPLACE existing types/index.ts
+// Location: SUBSTITUIR o ficheiro existente types/index.ts
 
 export interface Tour {
   id: string;
@@ -37,8 +37,6 @@ export interface ItineraryItem {
 }
 
 export interface Booking {
-  // ✅ FIXED: Complete and properly ordered Booking interface
-
   // Core booking identifiers
   id: string;
   tourId: string;
@@ -49,10 +47,10 @@ export interface Booking {
   tourDescription?: string;
   tourImage: string;
   location: string;
-  duration: number; // ✅ ADDED: Duration property that was missing
+  duration: number;
 
   // Customer information
-  customerId?: string; // Made optional since it might be same as userId
+  customerId?: string;
   customerName: string;
   customerEmail: string;
   customerPhone: string;
@@ -161,6 +159,63 @@ export interface Translations {
     no?: string;
     location?: string;
     bookNow?: string;
+    all?: string;
+  };
+  // ✅ FIXED: Added tours property that was missing
+  tours?: {
+    title?: string;
+    subtitle?: string;
+    searchPlaceholder?: string;
+    filters?: string;
+    clearFilters?: string;
+    showingResults?: string;
+    noToursFound?: string;
+    noToursFoundDesc?: string;
+    noReviews?: string;
+    anyRating?: string;
+    stars?: string;
+    maxParticipants?: string;
+    more?: string;
+    addToWishlist?: string;
+    removeFromWishlist?: string;
+    allLocations?: string;
+    allDifficulties?: string;
+    priceRange?: string;
+    rating?: string;
+    category?: string;
+    location?: string;
+    duration?: string;
+    difficulty?: {
+      label?: string;
+      easy?: string;
+      moderate?: string;
+      challenging?: string;
+    };
+    sort?: {
+      newest?: string;
+      popular?: string;
+      priceAsc?: string;
+      priceDesc?: string;
+      rating?: string;
+      duration?: string;
+    };
+    categories?: {
+      food?: string;
+      culture?: string;
+      nature?: string;
+      adventure?: string;
+      history?: string;
+      beaches?: string;
+      wine?: string;
+      walking?: string;
+      family?: string;
+      art?: string;
+      nightlife?: string;
+      cultural?: string;
+      fooddrink?: string;
+      historical?: string;
+      [key: string]: string | undefined;
+    };
   };
   customer?: {
     dashboard?: {
@@ -195,36 +250,36 @@ export interface Translations {
     selectDate?: string;
     invalidParticipants?: string;
     paymentError?: string;
-    requiredDate: string;
-    minDateTomorrow: string;
-    maxDateThreeMonths: string;
-    minParticipants: string;
-    maxParticipants: string;
-    maxSpecialRequestsLength: string;
-    bookButton: string;
-    processing: string;
-    perPerson: string;
-    save: string;
-    includedTaxes: string;
-    freeCancellation: string;
-    bookingError: string;
-    allergiesPlaceholder: string;
-    maxPersons: string;
-    bookForMultiple: string;
-    noChargeYet: string;
-    experienceDate: string;
-    participants: string;
-    specialRequests: string;
-    bookExperience: string;
-    originalPrice: string;
-    continueToPayment: string;
-    agreeToTerms: string;
-    termsOfService: string;
-    privacyPolicy: string;
-    total: string;
-    serviceFees: string;
-    included: string;
-    instantConfirmation: string;
+    requiredDate?: string;
+    minDateTomorrow?: string;
+    maxDateThreeMonths?: string;
+    minParticipants?: string;
+    maxParticipants?: string;
+    maxSpecialRequestsLength?: string;
+    bookButton?: string;
+    processing?: string;
+    perPerson?: string;
+    save?: string;
+    includedTaxes?: string;
+    freeCancellation?: string;
+    bookingError?: string;
+    allergiesPlaceholder?: string;
+    maxPersons?: string;
+    bookForMultiple?: string;
+    noChargeYet?: string;
+    experienceDate?: string;
+    participants?: string;
+    specialRequests?: string;
+    bookExperience?: string;
+    originalPrice?: string;
+    continueToPayment?: string;
+    agreeToTerms?: string;
+    termsOfService?: string;
+    privacyPolicy?: string;
+    total?: string;
+    serviceFees?: string;
+    included?: string;
+    instantConfirmation?: string;
   };
   auth?: {
     pleaseLogin?: string;
@@ -241,6 +296,71 @@ export interface Translations {
       unauthorised?: string;
       validationFailed?: string;
     };
+  };
+  pages?: {
+    customerBookings?: {
+      title?: string;
+      description?: string;
+      subtitle?: string;
+      browseTours?: string;
+      noBookingsDescription?: string;
+      stats?: {
+        totalBookings?: string;
+        upcoming?: string;
+        totalSpent?: string;
+      };
+      filters?: {
+        all?: string;
+        bookingStatusLabel?: string;
+        sortByLabel?: string;
+      };
+      sort?: {
+        dateDesc?: string;
+        dateAsc?: string;
+        amountDesc?: string;
+        amountAsc?: string;
+      };
+    };
+    customerTours?: {
+      title?: string;
+      description?: string;
+    };
+    customerDashboard?: {
+      title?: string;
+      description?: string;
+    };
+  };
+  bookingList?: {
+    pending?: string;
+    confirmed?: string;
+    completed?: string;
+    cancelled?: string;
+    pendingPayment?: string;
+    paid?: string;
+    refunded?: string;
+    viewDetails?: string;
+    pay?: string;
+    cancel?: string;
+    rebook?: string;
+    bookingNumber?: string;
+    date?: string;
+    participants?: string;
+    totalAmount?: string;
+    specialRequests?: string;
+    createdAt?: string;
+    next?: string;
+    person?: string;
+    persons?: string;
+    noBookings?: string;
+    view?: string;
+    vegetarianRequest?: string;
+    pendingLabel?: string;
+    confirmedLabel?: string;
+    completedLabel?: string;
+    cancelledLabel?: string;
+    leaveReview?: string;
+    bookFirstTour?: string;
+    location?: string;
   };
   tourDetails?: {
     bookingSuccess?: string;
@@ -261,166 +381,56 @@ export interface Translations {
     location?: string;
   };
   bookingDetails?: {
-    meetingPointDetails: string; // ✅ ADDED
-    specialRequests: string; // ✅ ADDED
-    tourDescription: string; // ✅ ADDED
-    bookingDetails: string;
-    bookingInformation: string;
-    hostInformation: string;
-    importantInformation: string;
-    actions: string;
-    paymentCompleted: string;
-    paymentCompletedDescription: string;
-    paymentPending: string;
-    paymentPendingDescription: string;
-    payNow: string;
-    serviceFees: string;
-    included: string;
-    viewTourDetails: string;
-    viewTour: string;
-    contactHost: string;
-    cancelBooking: string;
-    leaveReview: string;
-    responseTime: string;
-    confirmedBooking: string;
-    meetingInstructions: string;
-    cancellationPolicy: string;
-    cancellationDescription: string;
-    cancelReasonRequired: string;
-    cancelDescription: string;
-    refundInfo: string;
-    willBeRefunded: string;
-    cancelReason: string;
-    cancelReasonPlaceholder: string;
-    confirmCancel: string;
-    cancelSuccess: string;
-    cancelError: string;
-    redirectingPayment: string;
-    paymentError: string;
-    contactHostMessage: string;
-    partialRefund: string;
-    noRefund: string;
-    paymentInstructions: string;
-    pendingMessage: string;
-    confirmedMessage: string;
-    completedMessage: string;
-    cancelledMessage: string;
-    time: string;
-    meetingPoint: string;
-    needHelp: string;
-    supportMessage: string;
-    contactSupport: string;
-    location: string;
-  };
-  bookingList?: {
-    pending: string;
-    confirmed: string;
-    completed: string;
-    cancelled: string;
-    pendingPayment: string;
-    paid: string;
-    refunded: string;
-    viewDetails: string;
-    pay: string;
-    cancel: string;
-    rebook: string;
-    bookingNumber: string;
-    date: string;
-    participants: string;
-    totalAmount: string;
-    specialRequests: string;
-    createdAt: string;
-    next: string;
-    person: string;
-    persons: string;
-    noBookings: string;
-    view: string;
-    vegetarianRequest: string;
-    pendingLabel: string;
-    confirmedLabel: string;
-    completedLabel: string;
-    cancelledLabel: string;
-    leaveReview: string;
-    bookFirstTour: string;
-    location: string;
-  };
-  pages?: {
-    customerBookings?: {
-      title: string;
-      description: string;
-      subtitle?: string; // ✅ ADDED
-      browseTours?: string; // ✅ ADDED
-      noBookingsDescription?: string; // ✅ ADDED
-      stats?: {
-        totalBookings?: string;
-        upcoming?: string;
-        totalSpent?: string;
-      };
-      filters?: {
-        // ✅ ADDED: Complete filters section
-        all?: string;
-        bookingStatusLabel?: string;
-        sortByLabel?: string;
-      };
-      sort?: {
-        // ✅ ADDED: Complete sort section
-        dateDesc?: string;
-        dateAsc?: string;
-        amountDesc?: string;
-        amountAsc?: string;
-      };
-    };
-    customerTours?: {
-      title: string;
-      description: string;
-    };
-    customerDashboard?: {
-      title: string;
-      description: string;
-    };
-  };
-  footer?: {
-    company?: {
-      title: string;
-      links?: {
-        about: string;
-        careers: string;
-        press: string;
-        blog: string;
-      };
-    };
-    support?: {
-      title: string;
-      links?: {
-        help: string;
-        contact: string;
-        trust: string;
-        safety: string;
-      };
-    };
-    explore?: {
-      title: string;
-      links?: {
-        tours: string;
-        destinations: string;
-        experiences: string;
-      };
-    };
-    host?: {
-      title: string;
-      links?: {
-        portal: string;
-        earnings: string;
-        bookings: string;
-      };
-    };
-  };
-  errors?: {
-    generic: string;
-    network: string;
-    notFound: string;
-    unauthorized: string;
-    validation: string;
+    meetingPointDetails?: string;
+    specialRequests?: string;
+    tourDescription?: string;
+    bookingDetails?: string;
+    bookingInformation?: string;
+    hostInformation?: string;
+    importantInformation?: string;
+    actions?: string;
+    paymentCompleted?: string;
+    paymentCompletedDescription?: string;
+    paymentPending?: string;
+    paymentPendingDescription?: string;
+    payNow?: string;
+    serviceFees?: string;
+    included?: string;
+    viewTourDetails?: string;
+    viewTour?: string;
+    contactHost?: string;
+    cancelBooking?: string;
+    leaveReview?: string;
+    responseTime?: string;
+    confirmedBooking?: string;
+    meetingInstructions?: string;
+    cancellationPolicy?: string;
+    cancellationDescription?: string;
+    cancelReasonRequired?: string;
+    cancelDescription?: string;
+    refundInfo?: string;
+    willBeRefunded?: string;
+    cancelReason?: string;
+    cancelReasonPlaceholder?: string;
+    confirmCancel?: string;
+    cancelSuccess?: string;
+    cancelError?: string;
+    redirectingPayment?: string;
+    paymentError?: string;
+    contactHostMessage?: string;
+    partialRefund?: string;
+    noRefund?: string;
+    paymentInstructions?: string;
+    pendingMessage?: string;
+    confirmedMessage?: string;
+    completedMessage?: string;
+    cancelledMessage?: string;
+    time?: string;
+    meetingPoint?: string;
+    needHelp?: string;
+    supportMessage?: string;
+    contactSupport?: string;
+    location?: string;
   };
   hero?: {
     title?: string;
@@ -479,6 +489,82 @@ export interface Translations {
     terms?: string;
     privacy?: string;
   };
+  footer?: {
+    company?: {
+      title?: string;
+      links?: {
+        about?: string;
+        careers?: string;
+        press?: string;
+        blog?: string;
+      };
+    };
+    support?: {
+      title?: string;
+      links?: {
+        help?: string;
+        contact?: string;
+        trust?: string;
+        safety?: string;
+      };
+    };
+    explore?: {
+      title?: string;
+      links?: {
+        tours?: string;
+        destinations?: string;
+        experiences?: string;
+      };
+    };
+    host?: {
+      title?: string;
+      links?: {
+        portal?: string;
+        earnings?: string;
+        bookings?: string;
+      };
+    };
+  };
+  errors?: {
+    generic?: string;
+    network?: string;
+    notFound?: string;
+    unauthorized?: string;
+    validation?: string;
+    paymentFailed?: string;
+    bookingFailed?: string;
+    invalidPriceFormat?: string;
+    invalidOriginalPriceFormat?: string;
+  };
+  users?: {
+    title?: string;
+    create?: string;
+    edit?: string;
+    delete?: string;
+    roles?: {
+      customer?: string;
+      host?: string;
+      admin?: string;
+    };
+    status?: {
+      verified?: string;
+      unverified?: string;
+    };
+    stats?: {
+      totalBookings?: string;
+      totalSpent?: string;
+      totalEarnings?: string;
+      totalTours?: string;
+      averageRating?: string;
+    };
+    messages?: {
+      userCreated?: string;
+      userUpdated?: string;
+      userDeleted?: string;
+      confirmDelete?: string;
+      noUsersFound?: string;
+    };
+  };
 }
 
 // Component Props Types
@@ -515,7 +601,7 @@ export interface PaymentData {
 export type BookingListProps = {
   bookings: Booking[];
   locale: string;
-  translations: Translations;
+  translations: Translations; // ✅ FIXED: Now expects Translations object
   onCancelBooking?: (bookingId: string) => void;
   onPayBooking?: (bookingId: string) => void;
   className?: string;
@@ -544,7 +630,7 @@ export interface DetailPageProps {
 export interface TourCardProps {
   tour: Tour;
   locale: string;
-  translations: Translations;
+  translations: Translations; // ✅ FIXED: Now expects Translations object
   compact?: boolean;
   className?: string;
   showQuickBook?: boolean;

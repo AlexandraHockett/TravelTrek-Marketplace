@@ -789,6 +789,8 @@
     "settings": "Definições"
   },
   "tours": {
+    "maxParticipants": "Máx",
+    "more": "mais",
     "anyRating": "Qualquer Classificação",
     "stars": "Estrelas",
     "newest": "Mais Recente",
@@ -865,6 +867,9 @@
       "duration": "Duração"
     },
     "categories": {
+      "cultural": "Cultural",
+      "fooddrink": "Comida e Bebida",
+      "historical": "Histórico",
       "food": "Comida",
       "culture": "Cultura",
       "nature": "Natureza",

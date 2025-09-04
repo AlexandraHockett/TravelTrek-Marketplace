@@ -1,187 +1,280 @@
+// File: components/customer/TourCard.tsx
+// Location: SUBSTITUIR o ficheiro existente
+
 "use client";
 
+import React from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { Tour, TourCardProps } from "@/types";
-import { MapPin, Clock, Users, Star, Heart } from "lucide-react";
-import { useState } from "react";
+import { Tour, Translations } from "@/types";
+import { formatCurrency } from "@/lib/utils";
+import { Star, MapPin, Clock, Users, Heart } from "lucide-react";
+import Card from "@/components/ui/Card";
+import Badge from "@/components/ui/Badge";
+import Button from "@/components/ui/Button";
+import { cn } from "@/lib/utils";
 
-export default function TourCard({
+interface TourCardProps {
+  tour: Tour;
+  locale: string;
+  translations: Translations; // ✅ FIXED: Now expects translations object, not function
+  compact?: boolean;
+  className?: string;
+  showQuickBook?: boolean;
+  onQuickBook?: (tour: Tour) => void;
+  showWishlist?: boolean;
+  isWishlisted?: boolean;
+  onWishlistToggle?: (tourId: string) => void;
+}
+
+const TourCard: React.FC<TourCardProps> = ({
   tour,
-  locale = "en",
-  translations: t,
+  locale,
+  translations: t, // ✅ FIXED: Now receives translations object
   compact = false,
-  className = "",
+  className,
   showQuickBook = false,
   onQuickBook,
-}: TourCardProps) {
-  const [isWishlisted, setIsWishlisted] = useState(false);
-
-  const formatCurrency = (amount: number, currency: string = "EUR") => {
-    return new Intl.NumberFormat(locale, {
-      style: "currency",
-      currency: currency,
-    }).format(amount);
+  showWishlist = false,
+  isWishlisted = false,
+  onWishlistToggle,
+}) => {
+  // ✅ FIXED: Access translations properly with fallbacks
+  const getDifficultyLabel = (difficulty: string) => {
+    switch (difficulty.toLowerCase()) {
+      case "easy":
+        return t.tours?.difficulty?.easy || "Fácil";
+      case "moderate":
+        return t.tours?.difficulty?.moderate || "Moderado";
+      case "challenging":
+        return t.tours?.difficulty?.challenging || "Desafiante";
+      default:
+        return difficulty;
+    }
   };
 
-  const handleWishlist = (e: React.MouseEvent) => {
+  const getCategoryLabel = (category: string) => {
+    const categoryKey = category.toLowerCase().replace(/\s+/g, "");
+    return (
+      t.tours?.categories?.[categoryKey as keyof typeof t.tours.categories] ||
+      category
+    );
+  };
+
+  const formatRating = (rating: number) => {
+    return rating.toFixed(1);
+  };
+
+  const formatReviewCount = (count: number) => {
+    if (count === 0) return t.tours?.noReviews || "Sem avaliações";
+    if (count === 1) return `1 ${t.tours?.review || "avaliação"}`;
+    return `${count} ${t.tours?.reviews || "avaliações"}`;
+  };
+
+  const handleWishlistClick = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    setIsWishlisted(!isWishlisted);
-    // Add wishlist logic here
+    onWishlistToggle?.(tour.id);
   };
 
   const handleQuickBook = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    if (onQuickBook) {
-      onQuickBook(tour);
-    }
-  };
-
-  const renderStars = (rating: number) => {
-    return Array.from({ length: 5 }, (_, i) => (
-      <Star
-        key={i}
-        className={`w-4 h-4 ${
-          i < Math.floor(rating)
-            ? "text-yellow-400 fill-current"
-            : "text-gray-300"
-        }`}
-      />
-    ));
+    onQuickBook?.(tour);
   };
 
   return (
-    <Link href={`/${locale}/customer/tours/${tour.id}`}>
-      <article
-        className={`group bg-white rounded-xl shadow-sm border hover:shadow-lg transition-all duration-300 overflow-hidden ${className}`}
-      >
-        {/* Image Container */}
-        <div className="relative aspect-[4/3] overflow-hidden">
-          <Image
-            src={tour.image || "/images/placeholder-tour.jpg"}
-            alt={tour.title}
-            fill
-            className="object-cover group-hover:scale-105 transition-transform duration-300"
-            sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
-          />
-
-          {/* Price Badge */}
-          <div className="absolute top-3 left-3">
-            <div className="bg-white/90 backdrop-blur-sm rounded-lg px-3 py-1.5">
-              <span className="font-bold text-gray-900">
-                {formatCurrency(tour.price, tour.currency)}
-              </span>
-              {tour.originalPrice && tour.originalPrice > tour.price && (
-                <span className="text-xs text-gray-500 line-through ml-1">
-                  {formatCurrency(tour.originalPrice, tour.currency)}
-                </span>
-              )}
-            </div>
-          </div>
-
-          {/* Wishlist Button */}
-          <button
-            onClick={handleWishlist}
-            className="absolute top-3 right-3 p-2 bg-white/80 backdrop-blur-sm rounded-full hover:bg-white transition-colors"
+    <Card
+      className={cn(
+        "group hover:shadow-lg transition-all duration-300 overflow-hidden border-0 bg-white",
+        compact ? "max-w-sm" : "h-full",
+        className
+      )}
+    >
+      <Link href={`/${locale}/customer/tours/${tour.id}`}>
+        <div className="relative">
+          {/* Image Container */}
+          <div
+            className={cn(
+              "relative overflow-hidden bg-gray-200",
+              compact ? "h-48" : "h-56"
+            )}
           >
-            <Heart
-              className={`w-5 h-5 transition-colors ${
-                isWishlisted ? "text-red-500 fill-current" : "text-gray-600"
-              }`}
+            <Image
+              src={tour.image || "/images/tours/placeholder.jpg"}
+              alt={tour.title}
+              fill
+              className="object-cover group-hover:scale-105 transition-transform duration-300"
+              sizes={
+                compact
+                  ? "(max-width: 768px) 100vw, 300px"
+                  : "(max-width: 768px) 100vw, 400px"
+              }
             />
-          </button>
 
-          {/* Difficulty Badge */}
-          <div className="absolute bottom-3 left-3">
-            <div className="bg-black/70 backdrop-blur-sm text-white px-2 py-1 rounded-md text-xs font-medium">
-              {t.tours?.[tour.difficulty.toLowerCase()] || tour.difficulty}
-            </div>
-          </div>
-        </div>
+            {/* Wishlist Button */}
+            {showWishlist && (
+              <button
+                onClick={handleWishlistClick}
+                className="absolute top-3 right-3 p-2 rounded-full bg-white/90 hover:bg-white shadow-sm transition-colors z-10"
+                aria-label={
+                  isWishlisted
+                    ? t.tours?.removeFromWishlist || "Remover dos favoritos"
+                    : t.tours?.addToWishlist || "Adicionar aos favoritos"
+                }
+              >
+                <Heart
+                  className={cn(
+                    "w-4 h-4 transition-colors",
+                    isWishlisted ? "fill-red-500 text-red-500" : "text-gray-600"
+                  )}
+                />
+              </button>
+            )}
 
-        {/* Content */}
-        <div className="p-4">
-          {/* Location */}
-          <div className="flex items-center text-gray-600 text-sm mb-2">
-            <MapPin className="w-4 h-4 mr-1 flex-shrink-0" />
-            <span className="truncate">{tour.location}</span>
-          </div>
-
-          {/* Title */}
-          <h3 className="font-semibold text-lg text-gray-900 mb-2 line-clamp-2 group-hover:text-blue-600 transition-colors">
-            {tour.title}
-          </h3>
-
-          {/* Rating */}
-          {tour.rating && (
-            <div className="flex items-center mb-3">
-              <div className="flex">{renderStars(tour.rating)}</div>
-              <span className="ml-2 font-medium text-sm">{tour.rating}</span>
-              <span className="text-gray-500 text-sm ml-1">
-                ({tour.reviewCount || 0})
-              </span>
-            </div>
-          )}
-
-          {/* Description */}
-          {tour.shortDescription && (
-            <p className="text-gray-600 text-sm mb-3 line-clamp-2">
-              {tour.shortDescription}
-            </p>
-          )}
-
-          {/* Tour Details */}
-          <div className="flex items-center space-x-4 text-sm text-gray-600 mb-4">
-            <div className="flex items-center">
-              <Clock className="w-4 h-4 mr-1" />
-              <span>{tour.duration}h</span>
-            </div>
-            <div className="flex items-center">
-              <Users className="w-4 h-4 mr-1" />
-              <span>{tour.maxParticipants}</span>
-            </div>
-          </div>
-
-          {/* Tags/Amenities */}
-          {tour.amenities && tour.amenities.length > 0 && (
-            <div className="flex flex-wrap gap-1 mb-4">
-              {tour.amenities.slice(0, 2).map((amenity, index) => (
-                <span
-                  key={index}
-                  className="bg-blue-50 text-blue-700 text-xs px-2 py-1 rounded-full"
+            {/* Discount Badge */}
+            {tour.originalPrice && tour.originalPrice > tour.price && (
+              <div className="absolute top-3 left-3">
+                <Badge
+                  variant="secondary"
+                  className="bg-red-500 text-white font-medium"
                 >
-                  {t.tours?.[amenity.toLowerCase().replace(/\s+/g, "")] ||
-                    amenity}
-                </span>
-              ))}
-              {tour.amenities.length > 2 && (
-                <span className="bg-gray-100 text-gray-600 text-xs px-2 py-1 rounded-full">
-                  +{tour.amenities.length - 2}
-                </span>
-              )}
-            </div>
-          )}
+                  -
+                  {Math.round(
+                    ((tour.originalPrice - tour.price) / tour.originalPrice) *
+                      100
+                  )}
+                  %
+                </Badge>
+              </div>
+            )}
 
-          {/* Action Buttons */}
-          <div className="flex gap-3">
-            <div className="flex-1">
-              <div className="w-full bg-blue-600 text-white py-2.5 px-4 rounded-lg group-hover:bg-blue-700 transition-colors font-medium text-center text-sm">
-                {t.tours?.viewDetails || "View Details"}
+            {/* Difficulty Badge */}
+            <div className="absolute bottom-3 left-3">
+              <Badge
+                variant="default"
+                className="bg-white/90 text-gray-800 font-medium"
+              >
+                {getDifficultyLabel(tour.difficulty)}
+              </Badge>
+            </div>
+          </div>
+
+          {/* Content */}
+          <div className={cn("p-4", compact ? "p-3" : "p-5")}>
+            {/* Location */}
+            <div className="flex items-center text-gray-600 text-sm mb-2">
+              <MapPin className="w-4 h-4 mr-1 flex-shrink-0" />
+              <span className="truncate">{tour.location}</span>
+            </div>
+
+            {/* Title */}
+            <h3
+              className={cn(
+                "font-semibold text-gray-900 mb-2 line-clamp-2 group-hover:text-blue-600 transition-colors",
+                compact ? "text-base" : "text-lg"
+              )}
+            >
+              {tour.title}
+            </h3>
+
+            {/* Description */}
+            {!compact && (
+              <p className="text-gray-600 text-sm mb-3 line-clamp-2">
+                {tour.shortDescription || tour.description}
+              </p>
+            )}
+
+            {/* Tour Details */}
+            <div className="flex items-center gap-4 text-sm text-gray-600 mb-3">
+              <div className="flex items-center">
+                <Clock className="w-4 h-4 mr-1" />
+                <span>
+                  {tour.duration}{" "}
+                  {tour.duration === 1
+                    ? t.common?.hour || "hora"
+                    : t.common?.hours || "horas"}
+                </span>
+              </div>
+              <div className="flex items-center">
+                <Users className="w-4 h-4 mr-1" />
+                <span>
+                  {t.tours?.maxParticipants || "Máx"} {tour.maxParticipants}
+                </span>
               </div>
             </div>
-            {showQuickBook && (
-              <button
-                onClick={handleQuickBook}
-                className="px-4 py-2.5 border border-blue-600 text-blue-600 rounded-lg hover:bg-blue-50 transition-colors font-medium text-sm"
-              >
-                {t.common?.bookNow || "Book Now"}
-              </button>
+
+            {/* Rating */}
+            <div className="flex items-center gap-2 mb-3">
+              <div className="flex items-center">
+                <Star className="w-4 h-4 text-yellow-400 fill-current" />
+                <span className="text-sm font-medium text-gray-900 ml-1">
+                  {formatRating(tour.rating)}
+                </span>
+              </div>
+              <span className="text-sm text-gray-600">
+                ({formatReviewCount(tour.reviewCount)})
+              </span>
+            </div>
+
+            {/* Price and Book Button */}
+            <div className="flex items-center justify-between">
+              <div className="flex flex-col">
+                {tour.originalPrice && tour.originalPrice > tour.price && (
+                  <span className="text-sm text-gray-500 line-through">
+                    {formatCurrency(tour.originalPrice, tour.currency)}
+                  </span>
+                )}
+                <div className="flex items-baseline">
+                  <span className="text-xl font-bold text-gray-900">
+                    {formatCurrency(tour.price, tour.currency)}
+                  </span>
+                  <span className="text-sm text-gray-600 ml-1">
+                    / {t.common?.person || "pessoa"}
+                  </span>
+                </div>
+              </div>
+
+              {/* Quick Book Button */}
+              {showQuickBook && (
+                <Button
+                  onClick={handleQuickBook}
+                  variant="primary"
+                  size="sm"
+                  className="px-4"
+                >
+                  {t.common?.bookNow || "Reservar"}
+                </Button>
+              )}
+            </div>
+
+            {/* Amenities/Tags (if space allows) */}
+            {!compact && tour.tags && tour.tags.length > 0 && (
+              <div className="flex flex-wrap gap-1 mt-3">
+                {tour.tags.slice(0, 3).map((tag) => (
+                  <Badge
+                    key={tag}
+                    variant="outline"
+                    className="text-xs px-2 py-1"
+                  >
+                    {getCategoryLabel(tag)}
+                  </Badge>
+                ))}
+                {tour.tags.length > 3 && (
+                  <Badge
+                    variant="outline"
+                    className="text-xs px-2 py-1 text-gray-500"
+                  >
+                    +{tour.tags.length - 3} {t.tours?.more || "mais"}
+                  </Badge>
+                )}
+              </div>
             )}
           </div>
         </div>
-      </article>
-    </Link>
+      </Link>
+    </Card>
   );
-}
+};
+
+export default TourCard;
