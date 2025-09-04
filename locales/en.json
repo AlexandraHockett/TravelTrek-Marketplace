@@ -973,6 +973,46 @@
     "downloadReceipt": "Download Receipt"
   },
   "host": {
+    "dashboard": {
+      "title": "Host Dashboard",
+      "subtitle": "Manage tours and bookings",
+      "createTour": "Create Tour",
+      "error": {
+        "loadFailed": "Error loading dashboard data"
+      },
+      "stats": {
+        "totalBookings": "Total Bookings",
+        "monthlyEarnings": "Monthly Earnings",
+        "averageRating": "Average Rating",
+        "activeListings": "Active Listings",
+        "confirmed": "Confirmed",
+        "pending": "Pending",
+        "completed": "Completed"
+      },
+      "tabs": {
+        "overview": "Overview",
+        "bookings": "Bookings",
+        "earnings": "Earnings"
+      },
+      "recentActivity": {
+        "title": "Recent Activity",
+        "empty": "No recent activity",
+        "newBooking": "New booking for {tour} by {customer}"
+      },
+      "upcomingBookings": {
+        "title": "Upcoming Bookings",
+        "empty": "No upcoming bookings"
+      },
+      "quickStats": {
+        "title": "Quick Stats"
+      },
+      "earnings": {
+        "summary": "Earnings Summary",
+        "thisMonth": "This Month",
+        "lastMonth": "Last Month",
+        "growth": "Growth"
+      }
+    },
     "welcome": "Welcome to your host dashboard",
     "tabs": {
       "overview": "Overview",
@@ -981,7 +1021,6 @@
       "tours": "Tours",
       "messages": "Messages"
     },
-    "dashboard": "Host Dashboard",
     "stats": {
       "totalBookings": "Total Bookings",
       "monthlyEarnings": "Monthly Earnings",
@@ -1038,6 +1077,7 @@
     }
   },
   "common": {
+    "participants": "participants",
     "language": "Language",
     "goToDashboard": "Go to Dashboard",
     "clear": "Clear",

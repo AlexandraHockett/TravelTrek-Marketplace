@@ -972,71 +972,6 @@
     "leaveReview": "Dejar Reseña",
     "downloadReceipt": "Descargar Recibo"
   },
-  "host": {
-    "welcome": "Bienvenido a su dashboard de anfitrión",
-    "tabs": {
-      "overview": "Visión General",
-      "bookings": "Reservas",
-      "earnings": "Ganancias",
-      "tours": "Tours",
-      "messages": "Mensajes"
-    },
-    "dashboard": "Panel del Anfitrión",
-    "stats": {
-      "totalBookings": "Total de Reservas",
-      "monthlyEarnings": "Ganancias Mensuales",
-      "averageRating": "Valoración Media",
-      "activeListings": "Listados Activos"
-    },
-    "bookings": {
-      "title": "Reservas",
-      "newBooking": "Nueva Reserva",
-      "viewDetails": "Ver Detalles",
-      "accept": "Aceptar",
-      "decline": "Rechazar",
-      "markComplete": "Marcar como Completada",
-      "contactCustomer": "Contactar Cliente",
-      "customerDetails": "Detalles del Cliente",
-      "tourDetails": "Detalles de la Experiencia",
-      "bookingNotes": "Notas de la Reserva",
-      "manageBookings": "Gestionar Reservas",
-      "customerName": "Cliente",
-      "tourName": "Tour",
-      "participants": "Participantes",
-      "amount": "Valor",
-      "status": "Estado",
-      "actions": "Acciones",
-      "confirm": "Confirmar",
-      "complete": "Completar",
-      "noBookings": "Aún no tiene reservas",
-      "noResults": "Ninguna reserva coincide con los filtros",
-      "noBookingsDesc": "Sus reservas aparecerán aquí cuando los clientes empiecen a reservar sus tours.",
-      "updateStatus": "Actualizar Estado",
-      "updateStatusDesc": "¿Está seguro de que quiere actualizar el estado de esta reserva?",
-      "newBookings": "Nuevas Reservas",
-      "confirmedBookings": "Reservas Confirmadas",
-      "completedBookings": "Reservas Completadas",
-      "date": "Fecha"
-    },
-    "welcomeBack": "¡Bienvenido de vuelta!",
-    "manageBookings": "Gestionar Reservas",
-    "totalBookings": "Total de Reservas",
-    "monthlyEarnings": "Ganancias Mensuales",
-    "avgRating": "Valoración Media",
-    "activeListings": "Experiencias Activas",
-    "recentBookings": "Reservas Recientes",
-    "viewAllBookings": "Ver Todas las Reservas",
-    "manageListings": "Gestionar Experiencias",
-    "earnings": {
-      "title": "Reporte de Ganancias",
-      "thisMonth": "Este Mes",
-      "lastMonth": "Mes Anterior",
-      "totalEarnings": "Total de Ganancias",
-      "pendingPayouts": "Pagos Pendientes",
-      "completedPayouts": "Pagos Completados",
-      "chartTitle": "Ganancias a lo Largo del Tiempo"
-    }
-  },
   "common": {
     "language": "Idioma",
     "goToDashboard": "Ir al Panel",
@@ -1134,6 +1069,110 @@
     "subtitle": "Conéctate con anfitriones locales y descubre experiencias auténticas.",
     "exploreToursButton": "Explorar Tours",
     "becomeHostButton": "Conviértete en Anfitrión"
+  },
+  "host": {
+    "welcome": "Bienvenido a su dashboard de anfitrión",
+    "tabs": {
+      "overview": "Visión General",
+      "bookings": "Reservas",
+      "earnings": "Ganancias",
+      "tours": "Tours",
+      "messages": "Mensajes"
+    },
+    "stats": {
+      "totalBookings": "Total de Reservas",
+      "monthlyEarnings": "Ganancias Mensuales",
+      "averageRating": "Valoración Media",
+      "activeListings": "Listados Activos"
+    },
+    "bookings": {
+      "title": "Reservas",
+      "newBooking": "Nueva Reserva",
+      "viewDetails": "Ver Detalles",
+      "accept": "Aceptar",
+      "decline": "Rechazar",
+      "markComplete": "Marcar como Completada",
+      "contactCustomer": "Contactar Cliente",
+      "customerDetails": "Detalles del Cliente",
+      "tourDetails": "Detalles de la Experiencia",
+      "bookingNotes": "Notas de la Reserva",
+      "manageBookings": "Gestionar Reservas",
+      "customerName": "Cliente",
+      "tourName": "Tour",
+      "participants": "Participantes",
+      "amount": "Valor",
+      "status": "Estado",
+      "actions": "Acciones",
+      "confirm": "Confirmar",
+      "complete": "Completar",
+      "noBookings": "Aún no tiene reservas",
+      "noResults": "Ninguna reserva coincide con los filtros",
+      "noBookingsDesc": "Sus reservas aparecerán aquí cuando los clientes empiecen a reservar sus tours.",
+      "updateStatus": "Actualizar Estado",
+      "updateStatusDesc": "¿Está seguro de que quiere actualizar el estado de esta reserva?",
+      "newBookings": "Nuevas Reservas",
+      "confirmedBookings": "Reservas Confirmadas",
+      "completedBookings": "Reservas Completadas",
+      "date": "Fecha"
+    },
+    "welcomeBack": "¡Bienvenido de vuelta!",
+    "manageBookings": "Gestionar Reservas",
+    "totalBookings": "Total de Reservas",
+    "monthlyEarnings": "Ganancias Mensuales",
+    "avgRating": "Valoración Media",
+    "activeListings": "Experiencias Activas",
+    "recentBookings": "Reservas Recientes",
+    "viewAllBookings": "Ver Todas las Reservas",
+    "manageListings": "Gestionar Experiencias",
+    "earnings": {
+      "title": "Reporte de Ganancias",
+      "thisMonth": "Este Mes",
+      "lastMonth": "Mes Anterior",
+      "totalEarnings": "Total de Ganancias",
+      "pendingPayouts": "Pagos Pendientes",
+      "completedPayouts": "Pagos Completados",
+      "chartTitle": "Ganancias a lo Largo del Tiempo"
+    },
+    "dashboard": {
+      "title": "Panel del Anfitrión",
+      "subtitle": "Gestionar tours y reservas",
+      "createTour": "Crear Tour",
+      "error": {
+        "loadFailed": "Error al cargar los datos del panel"
+      },
+      "stats": {
+        "totalBookings": "Total de Reservas",
+        "monthlyEarnings": "Ganancias Mensuales",
+        "averageRating": "Calificación Promedio",
+        "activeListings": "Tours Activos",
+        "confirmed": "Confirmadas",
+        "pending": "Pendientes",
+        "completed": "Completadas"
+      },
+      "tabs": {
+        "overview": "Resumen",
+        "bookings": "Reservas",
+        "earnings": "Ganancias"
+      },
+      "recentActivity": {
+        "title": "Actividad Reciente",
+        "empty": "Sin actividad reciente",
+        "newBooking": "Nueva reserva para {tour} por {customer}"
+      },
+      "upcomingBookings": {
+        "title": "Próximas Reservas",
+        "empty": "Sin próximas reservas"
+      },
+      "quickStats": {
+        "title": "Estadísticas Rápidas"
+      },
+      "earnings": {
+        "summary": "Resumen de Ganancias",
+        "thisMonth": "Este Mes",
+        "lastMonth": "Mes Pasado",
+        "growth": "Crecimiento"
+      }
+    }
   },
   "footer": {
     "description": "Descubre experiencias únicas con anfitriones locales en todo el mundo.",

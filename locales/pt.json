@@ -973,6 +973,46 @@
     "downloadReceipt": "Descarregar Recibo"
   },
   "host": {
+    "dashboard": {
+      "title": "Dashboard do Anfitrião",
+      "subtitle": "Gerir tours e reservas",
+      "createTour": "Criar Tour",
+      "error": {
+        "loadFailed": "Erro ao carregar dados do dashboard"
+      },
+      "stats": {
+        "totalBookings": "Total de Reservas",
+        "monthlyEarnings": "Ganhos Mensais",
+        "averageRating": "Avaliação Média",
+        "activeListings": "Tours Ativos",
+        "confirmed": "Confirmadas",
+        "pending": "Pendentes",
+        "completed": "Completas"
+      },
+      "tabs": {
+        "overview": "Visão Geral",
+        "bookings": "Reservas",
+        "earnings": "Ganhos"
+      },
+      "recentActivity": {
+        "title": "Atividade Recente",
+        "empty": "Sem atividade recente",
+        "newBooking": "Nova reserva para {tour} por {customer}"
+      },
+      "upcomingBookings": {
+        "title": "Próximas Reservas",
+        "empty": "Sem reservas próximas"
+      },
+      "quickStats": {
+        "title": "Estatísticas Rápidas"
+      },
+      "earnings": {
+        "summary": "Resumo de Ganhos",
+        "thisMonth": "Este Mês",
+        "lastMonth": "Mês Passado",
+        "growth": "Crescimento"
+      }
+    },
     "welcome": "Bem-vindo ao seu dashboard de anfitrião",
     "tabs": {
       "overview": "Visão Geral",
@@ -981,7 +1021,6 @@
       "tours": "Tours",
       "messages": "Mensagens"
     },
-    "dashboard": "Painel do Anfitrião",
     "stats": {
       "totalBookings": "Total de Reservas",
       "monthlyEarnings": "Ganhos Mensais",
@@ -1038,6 +1077,7 @@
     }
   },
   "common": {
+    "participants": "participantes",
     "language": "Idioma",
     "goToDashboard": "Ir para o Painel",
     "clear": "Limpar",

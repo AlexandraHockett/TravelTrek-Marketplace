@@ -973,6 +973,46 @@
     "downloadReceipt": "Télécharger le Reçu"
   },
   "host": {
+    "dashboard": {
+      "title": "Tableau de Bord Hôte",
+      "subtitle": "Gérer les tours et réservations",
+      "createTour": "Créer un Tour",
+      "error": {
+        "loadFailed": "Erreur lors du chargement des données du tableau de bord"
+      },
+      "stats": {
+        "totalBookings": "Total des Réservations",
+        "monthlyEarnings": "Gains Mensuels",
+        "averageRating": "Note Moyenne",
+        "activeListings": "Tours Actifs",
+        "confirmed": "Confirmées",
+        "pending": "En Attente",
+        "completed": "Terminées"
+      },
+      "tabs": {
+        "overview": "Vue d'Ensemble",
+        "bookings": "Réservations",
+        "earnings": "Gains"
+      },
+      "recentActivity": {
+        "title": "Activité Récente",
+        "empty": "Aucune activité récente",
+        "newBooking": "Nouvelle réservation pour {tour} par {customer}"
+      },
+      "upcomingBookings": {
+        "title": "Réservations à Venir",
+        "empty": "Aucune réservation à venir"
+      },
+      "quickStats": {
+        "title": "Statistiques Rapides"
+      },
+      "earnings": {
+        "summary": "Résumé des Gains",
+        "thisMonth": "Ce Mois",
+        "lastMonth": "Mois Dernier",
+        "growth": "Croissance"
+      }
+    },
     "welcome": "Bienvenue sur votre tableau de bord hôte",
     "tabs": {
       "overview": "Aperçu",
@@ -981,7 +1021,6 @@
       "tours": "Tours",
       "messages": "Messages"
     },
-    "dashboard": "Tableau de bord Hôte",
     "stats": {
       "totalBookings": "Total des Réservations",
       "monthlyEarnings": "Gains Mensuels",
@@ -1038,6 +1077,7 @@
     }
   },
   "common": {
+    "participants": "participants",
     "language": "Langue",
     "goToDashboard": "Aller au Tableau de bord",
     "clear": "Effacer",

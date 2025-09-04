@@ -973,6 +973,46 @@
     "downloadReceipt": "Quittung herunterladen"
   },
   "host": {
+    "dashboard": {
+      "title": "Gastgeber-Dashboard",
+      "subtitle": "Touren und Buchungen verwalten",
+      "createTour": "Tour Erstellen",
+      "error": {
+        "loadFailed": "Fehler beim Laden der Dashboard-Daten"
+      },
+      "stats": {
+        "totalBookings": "Gesamte Buchungen",
+        "monthlyEarnings": "Monatliche Einnahmen",
+        "averageRating": "Durchschnittsbewertung",
+        "activeListings": "Aktive Angebote",
+        "confirmed": "Bestätigt",
+        "pending": "Ausstehend",
+        "completed": "Abgeschlossen"
+      },
+      "tabs": {
+        "overview": "Übersicht",
+        "bookings": "Buchungen",
+        "earnings": "Einnahmen"
+      },
+      "recentActivity": {
+        "title": "Kürzliche Aktivität",
+        "empty": "Keine kürzliche Aktivität",
+        "newBooking": "Neue Buchung für {tour} von {customer}"
+      },
+      "upcomingBookings": {
+        "title": "Bevorstehende Buchungen",
+        "empty": "Keine bevorstehenden Buchungen"
+      },
+      "quickStats": {
+        "title": "Schnelle Statistiken"
+      },
+      "earnings": {
+        "summary": "Einnahmen-Zusammenfassung",
+        "thisMonth": "Dieser Monat",
+        "lastMonth": "Letzter Monat",
+        "growth": "Wachstum"
+      }
+    },
     "welcome": "Willkommen in deinem Gastgeber-Dashboard",
     "tabs": {
       "overview": "Übersicht",
@@ -981,7 +1021,6 @@
       "tours": "Touren",
       "messages": "Nachrichten"
     },
-    "dashboard": "Gastgeber-Dashboard",
     "stats": {
       "totalBookings": "Buchungen insgesamt",
       "monthlyEarnings": "Monatliche Einnahmen",
@@ -1038,6 +1077,7 @@
     }
   },
   "common": {
+    "participants": "Teilnehmer",
     "language": "Sprache",
     "goToDashboard": "Zum Dashboard gehen",
     "clear": "Leeren",
