@@ -3,8 +3,11 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
+import { useSession, signOut } from "next-auth/react";
 import { cn, getTranslations } from "@/lib/utils";
 import Button from "@/components/ui/Button";
+import AuthLoadingSpinner from "@/components/auth/AuthLoadingSpinner";
+import { User, LogOut, Settings, ChevronDown } from "lucide-react";
 import {
   languages,
   getLocaleFromPathname,
@@ -16,21 +19,26 @@ import {
 } from "@/lib/i18n";
 import { Translations } from "@/types";
 
-
-
 const Navbar: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [windowWidth, setWindowWidth] = useState(0);
   const [currentLocale, setCurrentLocale] = useState<Locale>("pt");
   const [isLanguageMenuOpen, setIsLanguageMenuOpen] = useState(false);
-  const [t, setTranslations] = useState<Translations>({}); // Estado tipado
+  const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
+  const [t, setTranslations] = useState<Translations>({});
 
   const pathname = usePathname();
   const router = useRouter();
 
+  // ✅ ADICIONADO: Session management para auth
+  const { data: session, status } = useSession();
+  const isLoading = status === "loading";
+  const isAuthenticated = !!session?.user;
+
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
   const toggleLanguageMenu = () => setIsLanguageMenuOpen(!isLanguageMenuOpen);
+  const toggleProfileMenu = () => setIsProfileMenuOpen(!isProfileMenuOpen);
 
   // Carregar traduções e locale ao montar o componente
   useEffect(() => {
@@ -44,11 +52,28 @@ const Navbar: React.FC = () => {
     loadTranslations();
   }, [pathname]);
 
+  // ✅ CORRIGIDO: Helper para acesso seguro às traduções
+  const getTranslation = (key: string, fallback?: string): string => {
+    const nav = t.nav as Record<string, any>;
+    if (nav && typeof nav === "object") {
+      return nav[key] || fallback || key;
+    }
+    return fallback || key;
+  };
+
   // Links de navegação com chaves de tradução
   const navLinks = [
-    { href: "/customer/tours", key: "nav.exploreTours" },
-    { href: "/customer/bookings", key: "nav.myBookings" },
-    { href: "/host", key: "nav.hostPortal" },
+    {
+      href: "/customer/tours",
+      key: "exploreTours",
+      fallback: "Explorar Tours",
+    },
+    {
+      href: "/customer/bookings",
+      key: "myBookings",
+      fallback: "As Minhas Reservas",
+    },
+    { href: "/host", key: "hostPortal", fallback: "Portal Anfitrião" },
   ];
 
   useEffect(() => {
@@ -61,6 +86,7 @@ const Navbar: React.FC = () => {
       if (window.innerWidth >= 900) {
         setIsMenuOpen(false);
         setIsLanguageMenuOpen(false);
+        setIsProfileMenuOpen(false);
       }
     };
 
@@ -76,6 +102,12 @@ const Navbar: React.FC = () => {
         !target.closest(".language-toggle")
       ) {
         setIsLanguageMenuOpen(false);
+      }
+      if (
+        !target.closest(".profile-menu") &&
+        !target.closest(".profile-toggle")
+      ) {
+        setIsProfileMenuOpen(false);
       }
     };
 
@@ -109,7 +141,245 @@ const Navbar: React.FC = () => {
     const newPath = `/${newLocale}${pathWithoutLocale === "/" ? "" : pathWithoutLocale}`;
     router.push(newPath);
     setIsLanguageMenuOpen(false);
-    setIsMenuOpen(false); // Fecha o menu mobile ao mudar idioma
+    setIsMenuOpen(false);
+  };
+
+  // ✅ ADICIONADO: Função para fazer logout
+  const handleSignOut = async () => {
+    await signOut({ callbackUrl: `/${currentLocale}` });
+    setIsProfileMenuOpen(false);
+  };
+
+  // ✅ ADICIONADO: Render da secção de autenticação com loading states
+  const renderAuthSection = () => {
+    // 🔄 LOADING STATE - Mostra spinner em vez dos botões
+    if (isLoading) {
+      return (
+        <div className="flex items-center space-x-3">
+          <AuthLoadingSpinner
+            size="md"
+            showText={false}
+            className="px-4 py-2"
+          />
+        </div>
+      );
+    }
+
+    // ✅ AUTHENTICATED - Mostra perfil do utilizador
+    if (isAuthenticated && session?.user) {
+      return (
+        <div className="relative profile-menu">
+          <button
+            onClick={toggleProfileMenu}
+            className="profile-toggle flex items-center space-x-2 px-3 py-2 rounded-lg hover:bg-gray-100 transition-colors"
+          >
+            <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center">
+              {session.user.image ? (
+                <img
+                  src={session.user.image}
+                  alt={session.user.name || "User"}
+                  className="w-8 h-8 rounded-full object-cover"
+                />
+              ) : (
+                <User className="w-4 h-4 text-blue-600" />
+              )}
+            </div>
+            <div className="hidden sm:block">
+              <div className="text-sm font-medium text-gray-900">
+                {session.user.name || session.user.email}
+              </div>
+              <div className="text-xs text-gray-500 capitalize">
+                {session.user.role || "utilizador"}
+              </div>
+            </div>
+            <ChevronDown className="w-4 h-4 text-gray-500" />
+          </button>
+
+          {/* Profile Dropdown */}
+          {isProfileMenuOpen && (
+            <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 z-50">
+              <div className="py-1">
+                <div className="px-4 py-2 border-b border-gray-100">
+                  <div className="text-sm font-medium text-gray-900">
+                    {session.user.name}
+                  </div>
+                  <div className="text-xs text-gray-500">
+                    {session.user.email}
+                  </div>
+                </div>
+
+                {/* Dashboard Link baseado no role */}
+                {session.user.role === "customer" && (
+                  <Link
+                    href={`/${currentLocale}/customer`}
+                    onClick={() => setIsProfileMenuOpen(false)}
+                    className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                  >
+                    <Settings className="w-4 h-4 mr-2" />
+                    {getTranslation("dashboard", "Painel")}
+                  </Link>
+                )}
+
+                {session.user.role === "host" && (
+                  <Link
+                    href={`/${currentLocale}/host`}
+                    onClick={() => setIsProfileMenuOpen(false)}
+                    className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                  >
+                    <Settings className="w-4 h-4 mr-2" />
+                    {getTranslation("hostPortal", "Portal Anfitrião")}
+                  </Link>
+                )}
+
+                <Link
+                  href={`/${currentLocale}/profile`}
+                  onClick={() => setIsProfileMenuOpen(false)}
+                  className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                >
+                  <User className="w-4 h-4 mr-2" />
+                  {getTranslation("profile", "Perfil")}
+                </Link>
+
+                <button
+                  onClick={handleSignOut}
+                  className="flex items-center w-full px-4 py-2 text-sm text-red-600 hover:bg-red-50"
+                >
+                  <LogOut className="w-4 h-4 mr-2" />
+                  {getTranslation("logout", "Sair")}
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
+      );
+    }
+
+    // 🔐 NOT AUTHENTICATED - Mostra botões de login/signup
+    return (
+      <div className="flex items-center space-x-3">
+        <Link href={`/${currentLocale}/auth/login`}>
+          <Button variant="outline" size="sm" className="rounded-lg">
+            {getTranslation("login", "Entrar")}
+          </Button>
+        </Link>
+        <Link href={`/${currentLocale}/auth/signup`}>
+          <Button
+            size="sm"
+            className="rounded-lg bg-blue-600 hover:bg-blue-700"
+          >
+            {getTranslation("signup", "Registrar")}
+          </Button>
+        </Link>
+      </div>
+    );
+  };
+
+  // ✅ ADICIONADO: Render da secção mobile auth
+  const renderMobileAuthSection = () => {
+    if (isLoading) {
+      return (
+        <div className="flex justify-center py-4">
+          <AuthLoadingSpinner size="md" showText={true} text="A verificar..." />
+        </div>
+      );
+    }
+
+    if (isAuthenticated && session?.user) {
+      return (
+        <div className="space-y-4">
+          <div className="flex items-center space-x-3">
+            <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center">
+              {session.user.image ? (
+                <img
+                  src={session.user.image}
+                  alt={session.user.name || "User"}
+                  className="w-10 h-10 rounded-full object-cover"
+                />
+              ) : (
+                <User className="w-5 h-5 text-blue-600" />
+              )}
+            </div>
+            <div>
+              <div className="text-sm font-medium text-gray-900">
+                {session.user.name}
+              </div>
+              <div className="text-xs text-gray-500 capitalize">
+                {session.user.role || "utilizador"}
+              </div>
+            </div>
+          </div>
+
+          <div className="space-y-2">
+            {session.user.role === "customer" && (
+              <Link
+                href={`/${currentLocale}/customer`}
+                onClick={() => setIsMenuOpen(false)}
+                className="flex items-center space-x-2 w-full px-4 py-2 text-left text-gray-700 hover:bg-gray-100 rounded-lg"
+              >
+                <Settings className="w-4 h-4" />
+                <span>{getTranslation("dashboard", "Painel")}</span>
+              </Link>
+            )}
+
+            {session.user.role === "host" && (
+              <Link
+                href={`/${currentLocale}/host`}
+                onClick={() => setIsMenuOpen(false)}
+                className="flex items-center space-x-2 w-full px-4 py-2 text-left text-gray-700 hover:bg-gray-100 rounded-lg"
+              >
+                <Settings className="w-4 h-4" />
+                <span>{getTranslation("hostPortal", "Portal Anfitrião")}</span>
+              </Link>
+            )}
+
+            <Link
+              href={`/${currentLocale}/profile`}
+              onClick={() => setIsMenuOpen(false)}
+              className="flex items-center space-x-2 w-full px-4 py-2 text-left text-gray-700 hover:bg-gray-100 rounded-lg"
+            >
+              <User className="w-4 h-4" />
+              <span>{getTranslation("profile", "Perfil")}</span>
+            </Link>
+
+            <button
+              onClick={handleSignOut}
+              className="flex items-center space-x-2 w-full px-4 py-2 text-left text-red-600 hover:bg-red-50 rounded-lg"
+            >
+              <LogOut className="w-4 h-4" />
+              <span>{getTranslation("logout", "Sair")}</span>
+            </button>
+          </div>
+        </div>
+      );
+    }
+
+    return (
+      <div className="space-y-3">
+        <Link
+          href={`/${currentLocale}/auth/login`}
+          onClick={() => setIsMenuOpen(false)}
+        >
+          <Button
+            variant="outline"
+            size="sm"
+            className="w-full justify-center rounded-lg"
+          >
+            {getTranslation("login", "Entrar")}
+          </Button>
+        </Link>
+        <Link
+          href={`/${currentLocale}/auth/signup`}
+          onClick={() => setIsMenuOpen(false)}
+        >
+          <Button
+            size="sm"
+            className="w-full justify-center rounded-lg bg-blue-600 hover:bg-blue-700"
+          >
+            {getTranslation("signup", "Registrar")}
+          </Button>
+        </Link>
+      </div>
+    );
   };
 
   return (
@@ -150,14 +420,12 @@ const Navbar: React.FC = () => {
                     : "hover:after:absolute hover:after:bottom-0 hover:after:left-0 hover:after:w-full hover:after:h-0.5 hover:after:bg-blue-400 hover:after:rounded-full after:transition-all after:duration-300"
                 )}
               >
-                {t.nav
-                  ? t.nav[
-                      link.key.split(".").pop() ??
-                        (link.key.split(".").pop() || "unknown")
-                    ]
-                  : link.key.split(".").pop() || "unknown"}
+                {/* ✅ CORRIGIDO: Uso da função helper segura */}
+                {getTranslation(link.key, link.fallback)}
               </Link>
             ))}
+
+            {/* Language Selector */}
             <div className="relative language-menu">
               <button
                 onClick={toggleLanguageMenu}
@@ -203,26 +471,14 @@ const Navbar: React.FC = () => {
                 </div>
               )}
             </div>
-            <div className="flex items-center space-x-3 ml-6">
-              <Link href={`/${currentLocale}/auth/login`}>
-                <Button variant="outline" size="sm" className="rounded-lg">
-                  {t.nav?.login || "Entrar"}
-                </Button>
-              </Link>
-              <Link href={`/${currentLocale}/auth/signup`}>
-                <Button
-                  size="sm"
-                  className="rounded-lg bg-blue-600 hover:bg-blue-700"
-                >
-                  {t.nav?.signup || "Registrar"}
-                </Button>
-              </Link>
-            </div>
+
+            {/* ✅ AUTH SECTION - Com loading spinner e perfil */}
+            <div className="ml-6">{renderAuthSection()}</div>
           </div>
 
           {/* Mobile/Tablet Right Section */}
           <div className="lg:hidden flex items-center space-x-4">
-            {isTabletView && (
+            {isTabletView && !isLoading && !isAuthenticated && (
               <div className="flex items-center space-x-2">
                 <Link href={`/${currentLocale}/auth/login`}>
                   <Button
@@ -230,7 +486,7 @@ const Navbar: React.FC = () => {
                     size="sm"
                     className="rounded-lg text-xs"
                   >
-                    {t.nav?.login || "Entrar"}
+                    {getTranslation("login", "Entrar")}
                   </Button>
                 </Link>
                 <Link href={`/${currentLocale}/auth/signup`}>
@@ -238,10 +494,14 @@ const Navbar: React.FC = () => {
                     size="sm"
                     className="rounded-lg bg-blue-600 hover:bg-blue-700 text-xs"
                   >
-                    {t.nav?.signup || "Registrar"}
+                    {getTranslation("signup", "Registrar")}
                   </Button>
                 </Link>
               </div>
+            )}
+            {/* ✅ TABLET: Mostra spinner se loading */}
+            {isTabletView && isLoading && (
+              <AuthLoadingSpinner size="sm" showText={false} />
             )}
             <button
               className="p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 z-50"
@@ -304,12 +564,8 @@ const Navbar: React.FC = () => {
                 )}
                 onClick={() => setIsMenuOpen(false)}
               >
-                {t.nav
-                  ? t.nav[
-                      link.key.split(".").pop() ??
-                        (link.key.split(".").pop() || "unknown")
-                    ]
-                  : link.key.split(".").pop() || "unknown"}
+                {/* ✅ CORRIGIDO: Uso da função helper segura */}
+                {getTranslation(link.key, link.fallback)}
               </Link>
             ))}
           </div>
@@ -317,7 +573,8 @@ const Navbar: React.FC = () => {
           {/* Mobile Language Selector */}
           <div className="border-t border-gray-200 pt-4">
             <p className="text-sm font-medium text-gray-700 mb-3">
-              {t.nav?.language || "Idioma"}
+              {/* ✅ CORRIGIDO: Acesso seguro à tradução de "language" */}
+              {getTranslation("language", "Idioma")}
             </p>
             <div className="grid grid-cols-2 gap-2">
               {Object.entries(languages).map(([code, config]) => (
@@ -338,31 +595,9 @@ const Navbar: React.FC = () => {
             </div>
           </div>
 
-          {/* Mobile Auth Buttons */}
-          <div className="border-t border-gray-200 pt-4 mt-auto space-y-3">
-            <Link
-              href={`/${currentLocale}/auth/login`}
-              onClick={() => setIsMenuOpen(false)}
-            >
-              <Button
-                variant="outline"
-                size="sm"
-                className="w-full justify-center rounded-lg"
-              >
-                {t.nav?.login || "Entrar"}
-              </Button>
-            </Link>
-            <Link
-              href={`/${currentLocale}/auth/signup`}
-              onClick={() => setIsMenuOpen(false)}
-            >
-              <Button
-                size="sm"
-                className="w-full justify-center rounded-lg bg-blue-600 hover:bg-blue-700"
-              >
-                {t.nav?.signup || "Registrar"}
-              </Button>
-            </Link>
+          {/* ✅ Mobile Auth Section - Com loading e perfil */}
+          <div className="border-t border-gray-200 pt-4 mt-auto">
+            {renderMobileAuthSection()}
           </div>
         </div>
       </div>

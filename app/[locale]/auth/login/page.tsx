@@ -4,7 +4,7 @@
 // ===================================================================
 
 import { Suspense } from "react";
-import { getTranslations } from "@/lib/utils";
+import {  getServerTranslations, getTranslations } from "@/lib/utils";
 import LoginForm from "@/components/auth/LoginForm";
 import LoadingSpinner from "@/components/ui/LoadingSpinner"; // ✅ CORRIGIDO: export default
 
@@ -29,10 +29,10 @@ export default async function LoginPage({ params }: LoginPageProps) {
 
 export async function generateMetadata({ params }: LoginPageProps) {
   const { locale } = await params;
-  const t = await getTranslations(locale);
+  const t = await getServerTranslations(locale); // ✅ Retorna função
 
   return {
-    title: `${t("auth.login")} | TravelTrek`,
+    title: `${t("auth.login")} | TravelTrek`, // ✅ Agora funciona
     description: t("auth.loginSubtitle"),
   };
 }

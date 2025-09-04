@@ -1,11 +1,11 @@
 // ===================================================================
 // 📁 app/[locale]/host/layout.tsx
-// Location: CREATE file app/[locale]/host/layout.tsx
+// Location: CRIAR/SUBSTITUIR arquivo app/[locale]/host/layout.tsx
 // ===================================================================
 
 import { ReactNode } from "react";
 import RouteGuard from "@/components/auth/RouteGuard";
-import { getTranslations } from "@/lib/utils";
+import { getServerTranslations } from "@/lib/utils";
 
 interface HostLayoutProps {
   children: ReactNode;
@@ -30,13 +30,14 @@ export default async function HostLayout({
   );
 }
 
+// ✅ CORRIGIDO: generateMetadata usa função de tradução server-side
 export async function generateMetadata({
   params,
 }: {
   params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
-  const t = await getTranslations(locale);
+  const t = await getServerTranslations(locale);
 
   return {
     title: `${t("navigation.hostPortal")} | TravelTrek`,

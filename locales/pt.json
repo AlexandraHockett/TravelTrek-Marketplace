@@ -19,7 +19,8 @@
     "contact": "Contacto",
     "about": "Sobre",
     "terms": "Termos",
-    "privacy": "Privacidade"
+    "privacy": "Privacidade",
+    "language": "Idioma"
   },
   "bookings": {
     "myBookings": "As Minhas Reservas",
@@ -105,6 +106,8 @@
     "citiesWorldwide": "Cidades Mundialmente"
   },
   "navigation": {
+    "customerPortal": "Portal do Cliente",
+    "hostPortal": "Portal do Anfitrião",
     "host": "Anfitrião",
     "customer": "Cliente",
     "language": "Idioma",
@@ -399,27 +402,81 @@
     "professionalStructure": "Estrutura Profissional: Código type-safe e design modular."
   },
   "pages": {
-    "home": {
-      "title": "TravelTrek Marketplace",
-      "subtitle": "Descobre experiências autênticas com anfitriões locais",
-      "description": "Conectamos viajantes a experiências únicas criadas por anfitriões apaixonados.",
-      "cta": "Explorar Tours",
-      "features": {
-        "authentic": "Experiências Autênticas",
-        "local": "Anfitriões Locais",
-        "secure": "Pagamentos Seguros"
+    "customer": {
+      "dashboard": {
+        "title": "Painel do Cliente",
+        "subtitle": "Gira as tuas reservas e explora novos tours"
+      }
+    },
+    "host": {
+      "dashboard": {
+        "title": "Painel do Anfitrião",
+        "subtitle": "Gere os seus tours e acompanhe os seus ganhos"
       }
     },
     "status": {
-      "title": "Estado do Projeto",
-      "subtitle": "TravelTrek Marketplace - Demonstração de Desenvolvimento",
-      "overallProgress": "Progresso Geral",
       "featuresCompleted": "concluídas",
       "featuresInProgress": "em desenvolvimento",
       "featuresPlanned": "planeadas",
       "progress": "Progresso",
+      "status": {
+        "implemented": "Implementado",
+        "inProgress": "Em Desenvolvimento",
+        "planned": "Planeado"
+      },
+      "techStack": "Stack Tecnológica",
+      "techStackItems": {
+        "nextjs": {
+          "title": "Next.js",
+          "subtitle": "Renderização server-side e App Router para performance otimizada."
+        },
+        "tailwind": {
+          "title": "Tailwind CSS",
+          "subtitle": "Framework CSS utility-first para design moderno e responsivo."
+        },
+        "typescript": {
+          "title": "TypeScript",
+          "subtitle": "Desenvolvimento type-safe para código sustentável."
+        },
+        "i18n": {
+          "title": "Internacionalização",
+          "subtitle": "Suporte multi-idioma para alcançar audiência global."
+        }
+      },
+      "portfolioContext": "Contexto do Portfolio",
+      "portfolioDescription": "O TravelTrek Marketplace demonstra uma aplicação web moderna e escalável construída com tecnologias de ponta.",
+      "portfolioPoints": {
+        "modernReact": "Framework React Moderno: Usa Next.js com App Router para renderização dinâmica.",
+        "i18nExpertise": "Expertise em i18n: Suporta cinco idiomas com mudança suave de locale.",
+        "marketplaceArchitecture": "Arquitetura de Marketplace: Estrutura robusta para portais de cliente e anfitrião.",
+        "contemporaryStyling": "Estilo Contemporâneo: Tailwind CSS v4 para UI moderna e responsiva.",
+        "professionalStructure": "Estrutura Profissional: Código type-safe e design modular."
+      },
+      "nextSteps": {
+        "title": "Próximos Passos",
+        "thisWeek": "Esta Semana",
+        "nextWeek": "Próxima Semana",
+        "thisMonth": "Este Mês",
+        "thisWeekItems": {
+          "database": "Configurar base de dados",
+          "envSetup": "Variáveis de ambiente",
+          "firstApi": "Primeira API funcional"
+        },
+        "nextWeekItems": {
+          "auth": "Sistema de autenticação",
+          "tourPages": "Páginas de tours",
+          "uiComponents": "Componentes UI"
+        },
+        "thisMonthItems": {
+          "customerPortal": "Portal do cliente",
+          "bookingSystem": "Sistema de reservas",
+          "hostDashboard": "Dashboard do anfitrião"
+        }
+      },
+      "title": "Estado de Desenvolvimento",
+      "subtitle": "Acompanhe o progresso do desenvolvimento do TravelTrek",
       "categories": {
-        "coreInfrastructure": "Infraestrutura Base",
+        "coreInfrastructure": "Infraestrutura Principal",
         "customerPortal": "Portal do Cliente",
         "hostPortal": "Portal do Anfitrião",
         "backendApi": "Backend & API",
@@ -475,60 +532,17 @@
         "unitTestingDesc": "Testes unitários abrangentes para componentes e funções.",
         "e2eTestingDesc": "Testes end-to-end para fluxos críticos de utilizadores.",
         "cicdPipelineDesc": "Pipeline automatizado de integração e deployment contínuo."
-      },
-      "status": {
-        "implemented": "Implementado",
-        "inProgress": "Em Desenvolvimento",
-        "planned": "Planeado"
-      },
-      "techStack": "Stack Tecnológica",
-      "techStackItems": {
-        "nextjs": {
-          "title": "Next.js",
-          "subtitle": "Renderização server-side e App Router para performance otimizada."
-        },
-        "tailwind": {
-          "title": "Tailwind CSS",
-          "subtitle": "Framework CSS utility-first para design moderno e responsivo."
-        },
-        "typescript": {
-          "title": "TypeScript",
-          "subtitle": "Desenvolvimento type-safe para código sustentável."
-        },
-        "i18n": {
-          "title": "Internacionalização",
-          "subtitle": "Suporte multi-idioma para alcançar audiência global."
-        }
-      },
-      "portfolioContext": "Contexto do Portfolio",
-      "portfolioDescription": "O TravelTrek Marketplace demonstra uma aplicação web moderna e escalável construída com tecnologias de ponta.",
-      "portfolioPoints": {
-        "modernReact": "Framework React Moderno: Usa Next.js com App Router para renderização dinâmica.",
-        "i18nExpertise": "Expertise em i18n: Suporta cinco idiomas com mudança suave de locale.",
-        "marketplaceArchitecture": "Arquitetura de Marketplace: Estrutura robusta para portais de cliente e anfitrião.",
-        "contemporaryStyling": "Estilo Contemporâneo: Tailwind CSS v4 para UI moderna e responsiva.",
-        "professionalStructure": "Estrutura Profissional: Código type-safe e design modular."
-      },
-      "nextSteps": {
-        "title": "Próximos Passos",
-        "thisWeek": "Esta Semana",
-        "nextWeek": "Próxima Semana",
-        "thisMonth": "Este Mês",
-        "thisWeekItems": {
-          "database": "Configurar base de dados",
-          "envSetup": "Variáveis de ambiente",
-          "firstApi": "Primeira API funcional"
-        },
-        "nextWeekItems": {
-          "auth": "Sistema de autenticação",
-          "tourPages": "Páginas de tours",
-          "uiComponents": "Componentes UI"
-        },
-        "thisMonthItems": {
-          "customerPortal": "Portal do cliente",
-          "bookingSystem": "Sistema de reservas",
-          "hostDashboard": "Dashboard do anfitrião"
-        }
+      }
+    },
+    "home": {
+      "title": "TravelTrek Marketplace",
+      "subtitle": "Descobre experiências autênticas com anfitriões locais",
+      "description": "Conectamos viajantes a experiências únicas criadas por anfitriões apaixonados.",
+      "cta": "Explorar Tours",
+      "features": {
+        "authentic": "Experiências Autênticas",
+        "local": "Anfitriões Locais",
+        "secure": "Pagamentos Seguros"
       }
     },
     "bookingDetail": {
@@ -738,6 +752,17 @@
     }
   },
   "auth": {
+    "accessDenied": "Acesso Negado",
+    "accessRestricted": "Acesso Restrito",
+    "loginRequired": "É necessário fazer login para aceder a esta página.",
+    "insufficientPermissions": "Não tem permissões suficientes.",
+    "customerOnly": "Esta página é apenas para clientes.",
+    "hostOnly": "Esta página é apenas para anfitriões.",
+    "adminOnly": "Esta página é apenas para administradores.",
+    "verifyingAccess": "A verificar acesso...",
+    "pleaseWait": "Por favor, aguarde...",
+    "yourRole": "Seu tipo de conta",
+    "requiredRole": "Tipo necessário",
     "loginTitle": "Iniciar Sessão",
     "signupTitle": "Criar Conta",
     "signupSubtitle": "Junta-te à nossa comunidade de viajantes",
@@ -1013,6 +1038,9 @@
     }
   },
   "common": {
+    "language": "Idioma",
+    "goToDashboard": "Ir para o Painel",
+    "clear": "Limpar",
     "fullName": "Nome Completo",
     "fullNamePlaceholder": "Introduza o seu nome completo",
     "emailPlaceholder": "Introduza o seu email",
@@ -1081,6 +1109,11 @@
     "no": "Não",
     "required": "Obrigatório"
   },
+  "roles": {
+    "customer": "Cliente",
+    "host": "Anfitrião",
+    "admin": "Administrador"
+  },
   "customer": {
     "dashboard": {
       "welcome": "Bem-vindo de volta!",
@@ -1103,6 +1136,9 @@
     "becomeHostButton": "Torna-te Anfitrião"
   },
   "footer": {
+    "description": "Descubra experiências únicas com anfitriões locais em todo o mundo.",
+    "quickLinks": "Links Rápidos",
+    "newsletterDescription": "Receba as melhores ofertas e novos destinos directamente no seu email.",
     "top": {
       "explore": "Explorar",
       "host": "Anfitrião",
