@@ -1,116 +1,129 @@
 // ===================================================================
-// 📁 middleware.ts
-// Location: REPLACE existing middleware.ts at project root
+// 📁 middleware.ts - ROLE-BASED ROUTE PROTECTION
+// Location: REPLACE ENTIRE CONTENT of middleware.ts (root)
 // ===================================================================
 
+import { withAuth } from "next-auth/middleware";
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
+import createIntlMiddleware from "next-intl/middleware";
 
-// Configuração de idiomas suportados
-const locales = ["pt", "en", "es", "fr", "de"] as const;
+// ✅ CONFIGURAÇÃO DE LOCALES
+const locales = ["pt", "en", "es", "fr", "de"];
 const defaultLocale = "pt";
 
-type Locale = (typeof locales)[number];
+// ✅ INTL MIDDLEWARE SETUP
+const intlMiddleware = createIntlMiddleware({
+  locales,
+  defaultLocale,
+  localePrefix: "always",
+});
 
-// Obtém o locale do pathname
-function getLocaleFromPathname(pathname: string): Locale | null {
-  const segments = pathname.split("/");
-  const potentialLocale = segments[1];
+// ✅ ROLE-BASED ROUTE PROTECTION
+export default withAuth(
+  function middleware(req: NextRequest & { nextauth?: any }) {
+    const { pathname } = req.nextUrl;
+    const token = req.nextauth?.token;
 
-  if (locales.includes(potentialLocale as Locale)) {
-    return potentialLocale as Locale;
-  }
+    // ✅ Aplicar i18n middleware primeiro
+    const intlResponse = intlMiddleware(req);
+    if (intlResponse) return intlResponse;
 
-  return null;
-}
+    // ✅ EXTRAIR LOCALE DA URL
+    const locale = pathname.split("/")[1];
+    const pathWithoutLocale = pathname.replace(`/${locale}`, "");
 
-// Obtém o locale preferido do cabeçalho Accept-Language
-function getLocaleFromHeader(request: NextRequest): Locale {
-  const acceptLanguage = request.headers.get("Accept-Language");
+    // ✅ ROTAS PÚBLICAS - Não precisam de autenticação
+    const publicPaths = [
+      "/",
+      "/auth/login",
+      "/auth/signup",
+      "/auth/error",
+      "/tours", // Browse tours (público)
+      "/status",
+    ];
 
-  if (!acceptLanguage) return defaultLocale;
-
-  const languages = acceptLanguage
-    .split(",")
-    .map((lang) => {
-      const [language, quality] = lang.split(";");
-      return {
-        language: language.trim().toLowerCase(),
-        quality: quality ? parseFloat(quality.split("=")[1]) : 1.0,
-      };
-    })
-    .sort((a, b) => b.quality - a.quality);
-
-  for (const { language } of languages) {
-    if (locales.includes(language as Locale)) {
-      return language as Locale;
+    if (publicPaths.some((path) => pathWithoutLocale.startsWith(path))) {
+      return NextResponse.next();
     }
-    const langCode = language.split("-")[0];
-    if (locales.includes(langCode as Locale)) {
-      return langCode as Locale;
+
+    // ✅ VERIFICAR AUTENTICAÇÃO
+    if (!token) {
+      const loginUrl = new URL(`/${locale}/auth/login`, req.url);
+      loginUrl.searchParams.set("callbackUrl", req.url);
+      return NextResponse.redirect(loginUrl);
     }
-  }
 
-  return defaultLocale;
-}
+    // ✅ ROLE-BASED ACCESS CONTROL
+    const userRole = token.role as string;
 
-export function middleware(request: NextRequest) {
-  const { pathname, search } = request.nextUrl;
+    // 🔐 CUSTOMER ROUTES - Apenas para customers
+    if (pathWithoutLocale.startsWith("/customer")) {
+      if (userRole !== "customer" && userRole !== "admin") {
+        return NextResponse.redirect(
+          new URL(`/${locale}/auth/access-denied`, req.url)
+        );
+      }
+    }
 
-  // Skip middleware para arquivos estáticos, API routes e assets
-  if (
-    pathname.startsWith("/_next/") ||
-    pathname.startsWith("/api/") ||
-    pathname.startsWith("/_vercel/") ||
-    pathname.includes("/_not-found") ||
-    /\.(ico|png|svg|webp|jpeg|gif|webp|woff|woff2|ttf|eot|css|js|json|txt|xml|pdf)$/.test(
-      pathname
-    )
-  ) {
+    // 🏠 HOST ROUTES - Apenas para hosts
+    if (pathWithoutLocale.startsWith("/host")) {
+      if (userRole !== "host" && userRole !== "admin") {
+        return NextResponse.redirect(
+          new URL(`/${locale}/auth/access-denied`, req.url)
+        );
+      }
+    }
+
+    // 👑 ADMIN ROUTES - Apenas para admins
+    if (pathWithoutLocale.startsWith("/admin")) {
+      if (userRole !== "admin") {
+        return NextResponse.redirect(
+          new URL(`/${locale}/auth/access-denied`, req.url)
+        );
+      }
+    }
+
+    // ✅ Utilizador autorizado - continuar
     return NextResponse.next();
+  },
+  {
+    callbacks: {
+      // ✅ QUANDO EXECUTAR O MIDDLEWARE AUTH
+      authorized: ({ token, req }) => {
+        const { pathname } = req.nextUrl;
+        const locale = pathname.split("/")[1];
+        const pathWithoutLocale = pathname.replace(`/${locale}`, "");
+
+        // Rotas públicas não precisam de token
+        const publicPaths = [
+          "/",
+          "/auth/login",
+          "/auth/signup",
+          "/auth/error",
+          "/tours",
+          "/status",
+        ];
+
+        if (publicPaths.some((path) => pathWithoutLocale.startsWith(path))) {
+          return true;
+        }
+
+        // Todas as outras rotas precisam de token
+        return !!token;
+      },
+    },
   }
+);
 
-  const currentLocale = getLocaleFromPathname(pathname);
-
-  // Se já tem um locale válido no URL, continuar
-  if (currentLocale) {
-    const response = NextResponse.next();
-    response.cookies.set("NEXT_LOCALE", currentLocale, {
-      maxAge: 60 * 60 * 24 * 30, // 30 dias
-      httpOnly: false,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "lax",
-    });
-    return response;
-  }
-
-  // Determina o locale preferido (cookie > browser > default)
-  let preferredLocale: Locale = defaultLocale;
-
-  const cookieLocale = request.cookies.get("NEXT_LOCALE")?.value;
-  if (cookieLocale && locales.includes(cookieLocale as Locale)) {
-    preferredLocale = cookieLocale as Locale;
-  } else {
-    preferredLocale = getLocaleFromHeader(request);
-  }
-
-  // Redireciona para a versão localizada
-  const redirectPathname = `/${preferredLocale}${pathname === "/" ? "" : pathname}`;
-  const redirectUrl = new URL(redirectPathname + search, request.url);
-
-  const response = NextResponse.redirect(redirectUrl);
-  response.cookies.set("NEXT_LOCALE", preferredLocale, {
-    maxAge: 60 * 60 * 24 * 30,
-    httpOnly: false,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: "lax",
-  });
-
-  return response;
-}
-
+// ✅ CONFIGURAÇÃO DE MATCHER - Quais rotas aplicar o middleware
 export const config = {
   matcher: [
-    "/((?!_next/static|_next/image|_vercel|favicon.ico|favicon.svg|.*\\..*).*)",
+    // Aplicar a todas as rotas exceto:
+    "/((?!api|_next/static|_next/image|favicon.ico|public).*)",
+    // Incluir APIs protegidas
+    "/api/bookings/:path*",
+    "/api/tours/:path*",
+    "/api/users/:path*",
   ],
 };
