@@ -269,19 +269,29 @@ export default function SignupForm({ locale }: SignupFormProps) {
   // Handle Google signup (updated to respect selected role)
   const handleGoogleSignup = async () => {
     setLoading(true);
+
     try {
-      // ✅ MANTENDO teu código: Store selected role in sessionStorage before Google auth
+      console.log(`🚀 Starting Google signup for role: ${formData.role}`);
+
+      // ✅ Store role and mark as signup
       if (typeof window !== "undefined") {
         sessionStorage.setItem("pendingRole", formData.role);
+        sessionStorage.setItem("isSignup", "true"); // 🔑 KEY: Mark as signup
       }
 
-      // ✅ FIXED: Só mudei o callbackUrl para usar a nova página de callback
+      // ✅ Use special callbackUrl with signup flag
       await signIn("google", {
-        callbackUrl: `/${locale}/auth/callback/google`, // Era: `/${locale}/${formData.role === "host" ? "host" : "customer"}`
+        callbackUrl: `/${locale}/auth/callback/google?signup=true`,
+        redirect: true,
       });
-    } catch (error) {
+    } catch (error: any) {
       console.error("Google signup error:", error);
-      setErrors({ general: t("auth.error.oauthError") || "Erro do servidor" });
+      setErrors({
+        general:
+          error.message ||
+          t("auth.error.oauthError") ||
+          "Erro no signup Google",
+      });
       setLoading(false);
     }
   };

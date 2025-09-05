@@ -23,74 +23,117 @@ export default function GoogleCallbackPage({
 
   useEffect(() => {
     const handleGoogleCallback = async () => {
-      // Wait for params to be available
       const { locale } = await params;
+      const isSignup = searchParams.get("signup") === "true";
 
-      if (status === "loading") return; // Still loading
+      console.log(
+        `🔍 Google callback - isSignup: ${isSignup}, status: ${status}`
+      );
+
+      if (status === "loading") return;
 
       if (status === "unauthenticated") {
-        // Auth failed, redirect to login
+        // ✅ Check if this was a signup attempt that failed
+        const wasSignup =
+          typeof window !== "undefined"
+            ? sessionStorage.getItem("isSignup") === "true"
+            : false;
+
+        if (wasSignup || isSignup) {
+          console.log(
+            "📝 Signup failed - user doesn't exist, creating account..."
+          );
+
+          // Clear signup markers
+          if (typeof window !== "undefined") {
+            sessionStorage.removeItem("isSignup");
+          }
+
+          // Redirect to signup with Google data if available
+          router.push(`/${locale}/auth/signup?google_signup=true`);
+          return;
+        }
+
+        // Regular login failure
         router.push(`/${locale}/auth/login?error=google_auth_failed`);
         return;
       }
 
       if (status === "authenticated" && session?.user) {
-        // ✅ Check if there's a pending role update needed
+        console.log("✅ Google auth successful");
+
+        // ✅ Check if this was a signup (user was just created)
         const pendingRole =
           typeof window !== "undefined"
             ? sessionStorage.getItem("pendingRole")
             : null;
 
-        if (pendingRole && pendingRole !== session.user.role) {
-          // ✅ Update user role via API
+        const wasSignup =
+          typeof window !== "undefined"
+            ? sessionStorage.getItem("isSignup") === "true"
+            : false;
+
+        // ✅ If signup, create/update user with correct role
+        if ((wasSignup || isSignup) && pendingRole) {
+          console.log(`🆕 Processing signup with role: ${pendingRole}`);
+
           try {
-            const response = await fetch(`/api/users/${session.user.id}`, {
-              method: "PATCH",
+            // Create user in our database
+            const response = await fetch("/api/auth/google-signup", {
+              method: "POST",
               headers: {
                 "Content-Type": "application/json",
               },
               body: JSON.stringify({
+                email: session.user.email,
+                name: session.user.name,
+                image: session.user.image,
                 role: pendingRole,
               }),
             });
 
-            if (response.ok) {
-              console.log(`Updated user role to: ${pendingRole}`);
-              // Clear sessionStorage
-              sessionStorage.removeItem("pendingRole");
-              // Force session refresh
-              window.location.reload();
+            const result = await response.json();
+
+            if (result.success) {
+              console.log(`✅ User created/updated with role: ${pendingRole}`);
+
+              // Clear session storage
+              if (typeof window !== "undefined") {
+                sessionStorage.removeItem("pendingRole");
+                sessionStorage.removeItem("isSignup");
+              }
+
+              // Redirect to correct dashboard
+              const redirectPath =
+                pendingRole === "host" ? "/host" : "/customer";
+              window.location.href = `/${locale}${redirectPath}`;
               return;
             }
           } catch (error) {
-            console.error("Error updating user role:", error);
+            console.error("Error creating user:", error);
           }
         }
 
-        // ✅ Clear any pending role
+        // ✅ Clear any remaining signup markers
         if (typeof window !== "undefined") {
           sessionStorage.removeItem("pendingRole");
+          sessionStorage.removeItem("isSignup");
         }
 
-        // ✅ Redirect based on user role
-        switch (session.user.role) {
-          case "host":
-            router.push(`/${locale}/host`);
-            break;
-          case "customer":
-            router.push(`/${locale}/customer`);
-            break;
-          case "admin":
-            router.push(`/${locale}/admin`);
-            break;
-          default:
-            router.push(`/${locale}`);
-        }
+        // ✅ Regular redirect based on user role
+        const redirectPath =
+          session.user.role === "host"
+            ? "/host"
+            : session.user.role === "admin"
+              ? "/admin"
+              : "/customer";
+
+        router.push(`/${locale}${redirectPath}`);
       }
     };
 
     handleGoogleCallback();
-  }, [session, status, router, params]);
+  }, [session, status, router, params, searchParams]);
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50">

@@ -1,66 +1,11 @@
 // ===================================================================
 // 📁 app/api/users/route.ts
-// Location: ⚠️ CRÍTICO - CRIAR EXACTAMENTE EM: app/api/users/route.ts
-// NÃO em app/[locale]/api/users/ - deve ser FORA da pasta [locale]!
+// Location: CRIAR em app/api/users/route.ts (NÃO dentro de [locale])
 // ===================================================================
 
 import { NextRequest, NextResponse } from "next/server";
 import { userQueries } from "@/lib/db/queries";
 import bcrypt from "bcryptjs";
-
-// GET - Fetch users with filters (opcional)
-export async function GET(request: NextRequest) {
-  try {
-    const { searchParams } = new URL(request.url);
-
-    const roleParam = searchParams.get("role");
-    const role =
-      roleParam && ["customer", "host", "admin"].includes(roleParam)
-        ? (roleParam as "customer" | "host" | "admin")
-        : undefined;
-
-    const filters = {
-      role,
-      limit: searchParams.get("limit") ? Number(searchParams.get("limit")) : 10,
-      offset: searchParams.get("offset")
-        ? Number(searchParams.get("offset"))
-        : 0,
-      search: searchParams.get("search") || undefined,
-    };
-
-    // Remove undefined values
-    Object.keys(filters).forEach((key) => {
-      if (filters[key as keyof typeof filters] === undefined) {
-        delete filters[key as keyof typeof filters];
-      }
-    });
-
-    const result = await userQueries.getAll(filters);
-
-    return NextResponse.json({
-      success: true,
-      data: result.users,
-      pagination: {
-        total: result.total,
-        limit: filters.limit || 10,
-        offset: filters.offset || 0,
-        hasMore: (filters.offset || 0) + (filters.limit || 10) < result.total,
-      },
-      timestamp: new Date().toISOString(),
-    });
-  } catch (error) {
-    console.error("Error fetching users:", error);
-    return NextResponse.json(
-      {
-        success: false,
-        error: "Failed to fetch users",
-        code: "FETCH_USERS_ERROR",
-        timestamp: new Date().toISOString(),
-      },
-      { status: 500 }
-    );
-  }
-}
 
 // ✅ POST - Create a new user (SIGNUP)
 export async function POST(request: NextRequest) {
@@ -68,11 +13,12 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
 
     // ✅ Validação básica
-    if (!body.name || !body.email || !body.password) {
+    if (!body.name || !body.email || (!body.password && !body.isOAuthUser)) {
       return NextResponse.json(
         {
           success: false,
-          error: "Name, email, and password are required",
+          error:
+            "Name, email are required. Password required for non-OAuth users.",
           code: "VALIDATION_ERROR",
           timestamp: new Date().toISOString(),
         },
@@ -94,13 +40,14 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // ✅ Validação password
-    if (body.password.length < 8) {
+    // ✅ Validação role
+    const validRoles = ["customer", "host", "admin"];
+    if (!validRoles.includes(body.role)) {
       return NextResponse.json(
         {
           success: false,
-          error: "Password must be at least 8 characters long",
-          code: "WEAK_PASSWORD",
+          error: "Invalid role. Must be customer, host, or admin",
+          code: "INVALID_ROLE",
           timestamp: new Date().toISOString(),
         },
         { status: 400 }
@@ -114,28 +61,30 @@ export async function POST(request: NextRequest) {
         {
           success: false,
           error: "User with this email already exists",
-          code: "EMAIL_ALREADY_EXISTS",
+          code: "USER_ALREADY_EXISTS",
           timestamp: new Date().toISOString(),
         },
         { status: 409 }
       );
     }
 
-    // ✅ Hash da password
-    const saltRounds = 12;
-    const hashedPassword = await bcrypt.hash(body.password, saltRounds);
+    // ✅ Hash password se for fornecida
+    let hashedPassword = null;
+    if (body.password) {
+      hashedPassword = await bcrypt.hash(body.password, 10);
+    }
 
     // ✅ Criar utilizador
     const newUser = await userQueries.create({
-      name: body.name.trim(),
-      email: body.email.toLowerCase().trim(),
-      role: body.role || "customer", // Default para customer
-      avatar: body.avatar || null,
-      emailVerified: false, // Por defeito não verificado
+      name: body.name,
+      email: body.email,
       password: hashedPassword,
+      role: body.role,
+      avatar: body.avatar || null,
+      emailVerified: body.emailVerified || false,
     });
 
-    // ✅ Remove password da resposta (segurança)
+    // ✅ Remove password from response
     const userResponse = {
       ...newUser,
       password: undefined,
@@ -150,16 +99,17 @@ export async function POST(request: NextRequest) {
       },
       { status: 201 }
     );
-  } catch (error) {
+  } catch (error: any) {
     console.error("Error creating user:", error);
 
-    // ✅ Handle database specific errors
-    if (error instanceof Error && error.message.includes("duplicate key")) {
+    // Handle specific database errors
+    if (error.code === "23505") {
+      // PostgreSQL unique constraint violation
       return NextResponse.json(
         {
           success: false,
           error: "User with this email already exists",
-          code: "EMAIL_ALREADY_EXISTS",
+          code: "USER_ALREADY_EXISTS",
           timestamp: new Date().toISOString(),
         },
         { status: 409 }
@@ -171,6 +121,53 @@ export async function POST(request: NextRequest) {
         success: false,
         error: "Failed to create user",
         code: "CREATE_USER_ERROR",
+        timestamp: new Date().toISOString(),
+      },
+      { status: 500 }
+    );
+  }
+}
+
+// GET - Fetch users with filters (para admin)
+export async function GET(request: NextRequest) {
+  try {
+    const { searchParams } = new URL(request.url);
+
+    const roleParam = searchParams.get("role");
+    const role =
+      roleParam && ["customer", "host", "admin"].includes(roleParam)
+        ? (roleParam as "customer" | "host" | "admin")
+        : undefined;
+
+    const filters = {
+      role,
+      limit: searchParams.get("limit") ? Number(searchParams.get("limit")) : 10,
+      offset: searchParams.get("offset")
+        ? Number(searchParams.get("offset"))
+        : 0,
+      search: searchParams.get("search") || undefined,
+    };
+
+    const result = await userQueries.getAll(filters);
+
+    return NextResponse.json({
+      success: true,
+      data: result.users,
+      pagination: {
+        total: result.total,
+        limit: filters.limit,
+        offset: filters.offset,
+        hasMore: filters.offset + filters.limit < result.total,
+      },
+      timestamp: new Date().toISOString(),
+    });
+  } catch (error) {
+    console.error("Error fetching users:", error);
+    return NextResponse.json(
+      {
+        success: false,
+        error: "Failed to fetch users",
+        code: "FETCH_USERS_ERROR",
         timestamp: new Date().toISOString(),
       },
       { status: 500 }

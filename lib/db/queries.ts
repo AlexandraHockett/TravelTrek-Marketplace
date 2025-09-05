@@ -3,7 +3,7 @@
 // Location: REPLACE the existing lib/db/queries.ts
 // ===================================================================
 
-import { desc, eq, and, gte, lte, sql, ilike, or } from "drizzle-orm";
+import { desc, eq, and, gte, lte, sql, ilike, or, count } from "drizzle-orm";
 import { db } from "./client";
 import { tours, bookings, users } from "./schema";
 import type {
@@ -409,9 +409,9 @@ export const userQueries = {
       search?: string;
     } = {}
   ) {
+    // ✅ Build conditions array
     const conditions = [];
 
-    // Apply filters
     if (filters.role) {
       conditions.push(eq(users.role, filters.role));
     }
@@ -429,55 +429,47 @@ export const userQueries = {
       );
     }
 
-    // Get users with pagination
-    const results = await db
-      .select()
-      .from(users)
-      .where(conditions.length > 0 ? and(...conditions) : undefined)
+    // ✅ FIXED: Proper query building
+    let usersQuery = db.select().from(users);
+
+    if (conditions.length > 0) {
+      usersQuery = usersQuery.where(and(...conditions)) as any;
+    }
+
+    // Get paginated results
+    const usersResult = await usersQuery
       .orderBy(desc(users.createdAt))
       .limit(filters.limit || 10)
       .offset(filters.offset || 0);
 
-    // Get total count
-    const totalResult = await db
-      .select({ count: sql`count(*)` })
-      .from(users)
-      .where(conditions.length > 0 ? and(...conditions) : undefined);
+    // ✅ FIXED: Separate query for count
+    let countQuery = db.select({ count: sql`count(*)` }).from(users);
 
-    return {
-      users: results,
-      total: Number(totalResult[0].count),
-    };
-  },
-
-  // Delete user (soft delete) - NOVA FUNÇÃO CORRIGIDA
-  async delete(id: string): Promise<boolean> {
-    // First get the current user to access their email
-    const currentUser = await db
-      .select({ email: users.email })
-      .from(users)
-      .where(eq(users.id, id))
-      .limit(1);
-
-    if (!currentUser[0]) {
-      return false;
+    if (conditions.length > 0) {
+      countQuery = countQuery.where(and(...conditions)) as any;
     }
 
-    // Soft delete: deactivate instead of actually deleting
-    // This preserves referential integrity with bookings/tours
-    const [result] = await db
-      .update(users)
-      .set({
-        // Mark as deleted by prefixing email
-        email: `deleted_${Date.now()}_${currentUser[0].email}`,
-        name: "Deleted User",
-        avatar: null,
-        updatedAt: new Date(),
-      })
-      .where(eq(users.id, id))
-      .returning();
+    const totalResult = await countQuery;
+    const total = Number(totalResult[0].count);
 
-    return !!result;
+    return {
+      users: usersResult,
+      total,
+    };
+  },
+  // Delete user
+  async delete(id: string): Promise<User | null> {
+    try {
+      const [result] = await db
+        .delete(users)
+        .where(eq(users.id, id))
+        .returning();
+
+      return result || null;
+    } catch (error) {
+      console.error("Error deleting user:", error);
+      return null;
+    }
   },
 
   // Get users with advanced statistics - NOVA FUNÇÃO CORRIGIDA

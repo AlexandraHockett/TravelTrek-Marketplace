@@ -139,28 +139,39 @@ export const authOptions = {
       return session;
     },
     // ✅ FIXED: Google auth - só permite login se user já existir
-    async signIn({ user, account }: { user: any; account: any }) {
+    async signIn({
+      user,
+      account,
+      profile,
+    }: {
+      user: any;
+      account: any;
+      profile?: any;
+    }) {
       if (account?.provider === "google" && user.email) {
         try {
           const existingUser = await userQueries.getByEmail(user.email);
 
           if (!existingUser) {
-            // ✅ FIXED: Se user não existe, retorna false para parar login
-            // Isto vai fazer com que o NextAuth redirecione para error page
+            // ✅ CRITICAL: Se user não existe, SEMPRE bloquear
+            // O signup deve ser feito via API separada, não via NextAuth callback
             console.log(
-              `Google user ${user.email} not found - redirecting to signup`
+              `❌ Google login BLOCKED - User ${user.email} não existe`
             );
-            return false; // Bloqueia login se user não existir
+            console.log("📝 User deve usar o signup primeiro");
+            return false; // ❌ BLOQUEAR login se user não existir
           } else {
             // ✅ User existe - permitir login com role existente
             user.role = existingUser.role;
             user.id = existingUser.id;
+            user.emailVerified = existingUser.emailVerified;
             console.log(
-              `Google login successful for ${user.email} as ${existingUser.role}`
+              `✅ Google login SUCCESS for ${user.email} as ${existingUser.role}`
             );
+            return true;
           }
         } catch (error) {
-          console.error("Error checking user:", error);
+          console.error("Error in Google auth:", error);
           return false;
         }
       }
