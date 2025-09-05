@@ -155,7 +155,7 @@ export const authOptions = {
 
           if (!existingUser) {
             // ✅ NOVO: Verificar se temos cookies de signup
-            const cookieStore = cookies();
+            const cookieStore = await cookies();
             const signupToken = cookieStore.get("google_signup_token");
             const signupRole = cookieStore.get("google_signup_role");
 
