@@ -1,6 +1,6 @@
 // ===================================================================
-// 📁 components/auth/LoginForm.tsx
-// Location: SUBSTITUIR file components/auth/LoginForm.tsx
+// 📁 components/auth/LoginForm.tsx - YOUR VERSION WITH ROLE REDIRECT
+// Location: REPLACE ENTIRE CONTENT of components/auth/LoginForm.tsx
 // ===================================================================
 
 "use client";
@@ -42,7 +42,8 @@ export default function LoginForm({ locale }: LoginFormProps) {
       if (result?.error) {
         setError(t("auth.loginFailed"));
       } else {
-        router.push(`/${locale}/customer`); // Redirect to customer dashboard
+        // 🆕 FIXED: Redirect to redirecting page for role-based redirect
+        router.push(`/${locale}/auth/redirecting`);
       }
     } catch (error) {
       setError(t("auth.loginError"));
@@ -54,7 +55,7 @@ export default function LoginForm({ locale }: LoginFormProps) {
   const handleGoogleLogin = async () => {
     setLoading(true);
     await signIn("google", {
-      callbackUrl: `/${locale}/customer`,
+      callbackUrl: `/${locale}/auth/redirecting`, // 🆕 FIXED: Use redirecting page
     });
   };
 

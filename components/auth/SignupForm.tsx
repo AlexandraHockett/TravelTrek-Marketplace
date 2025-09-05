@@ -1,13 +1,14 @@
 // ===================================================================
-// 📁 components/auth/SignupForm.tsx - FINAL VERSION
-// Location: REPLACE components/auth/SignupForm.tsx completely
+// 📁 components/auth/SignupForm.tsx - CORRECTED WITH ROLE SELECTION
+// Location: REPLACE ENTIRE CONTENT of components/auth/SignupForm.tsx
 // ===================================================================
 
 "use client";
 
 import { useState } from "react";
-import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { signIn } from "next-auth/react";
+import { useTranslations } from "@/lib/i18n";
 
 interface SignupFormProps {
   locale: string;
@@ -18,6 +19,7 @@ interface FormData {
   email: string;
   password: string;
   confirmPassword: string;
+  role: "customer" | "host"; // 🆕 Added role selection
 }
 
 interface FormErrors {
@@ -25,141 +27,40 @@ interface FormErrors {
   email?: string;
   password?: string;
   confirmPassword?: string;
+  role?: string;
   general?: string;
 }
 
-// Simple translation function (internal)
-const getTranslation = (key: string, locale: string): string => {
-  const translations: Record<string, Record<string, string>> = {
-    pt: {
-      "auth.signupTitle": "Criar Conta",
-      "auth.signupSubtitle": "Junta-te à nossa comunidade de viajantes",
-      "auth.namePlaceholder": "O teu nome completo",
-      "auth.emailPlaceholder": "Introduz o teu email",
-      "auth.passwordPlaceholder": "Introduz a tua palavra-passe",
-      "auth.confirmPasswordPlaceholder": "Confirma a tua palavra-passe",
-      "auth.signupButton": "Criar Conta",
-      "auth.signupLoading": "A criar conta...",
-      "auth.orContinueWith": "Ou continua com",
-      "auth.googleLogin": "Continuar com Google",
-      "auth.hasAccount": "Já tens conta?",
-      "auth.loginLink": "Iniciar sessão",
-      "auth.error.required": "Este campo é obrigatório.",
-      "auth.error.invalidEmail": "Email inválido.",
-      "auth.error.weakPassword": "A palavra-passe deve ter pelo menos 8 caracteres.",
-      "auth.error.passwordMismatch": "As palavras-passe não coincidem.",
-      "auth.error.emailExists": "Este email já está registado.",
-      "auth.error.serverError": "Erro do servidor. Tenta novamente mais tarde.",
-      "auth.error.oauthError": "Erro ao iniciar sessão com Google. Tenta novamente."
-    },
-    en: {
-      "auth.signupTitle": "Create Account",
-      "auth.signupSubtitle": "Join our community of travelers",
-      "auth.namePlaceholder": "Your full name",
-      "auth.emailPlaceholder": "Enter your email",
-      "auth.passwordPlaceholder": "Enter your password",
-      "auth.confirmPasswordPlaceholder": "Confirm your password",
-      "auth.signupButton": "Create Account",
-      "auth.signupLoading": "Creating account...",
-      "auth.orContinueWith": "Or continue with",
-      "auth.googleLogin": "Continue with Google",
-      "auth.hasAccount": "Already have an account?",
-      "auth.loginLink": "Log in",
-      "auth.error.required": "This field is required.",
-      "auth.error.invalidEmail": "Invalid email.",
-      "auth.error.weakPassword": "Password must be at least 8 characters long.",
-      "auth.error.passwordMismatch": "Passwords do not match.",
-      "auth.error.emailExists": "This email is already registered.",
-      "auth.error.serverError": "Server error. Please try again later.",
-      "auth.error.oauthError": "Error logging in with Google. Please try again."
-    },
-    es: {
-      "auth.signupTitle": "Crear Cuenta",
-      "auth.signupSubtitle": "Únete a nuestra comunidad de viajeros",
-      "auth.namePlaceholder": "Tu nombre completo",
-      "auth.emailPlaceholder": "Introduzca su email",
-      "auth.passwordPlaceholder": "Introduzca su contraseña",
-      "auth.confirmPasswordPlaceholder": "Confirma tu contraseña",
-      "auth.signupButton": "Crear Cuenta",
-      "auth.signupLoading": "Creando cuenta...",
-      "auth.orContinueWith": "O continuar con",
-      "auth.googleLogin": "Continuar con Google",
-      "auth.hasAccount": "¿Ya tienes cuenta?",
-      "auth.loginLink": "Iniciar sesión",
-      "auth.error.required": "Este campo es obligatorio.",
-      "auth.error.invalidEmail": "Email inválido.",
-      "auth.error.weakPassword": "La contraseña debe tener al menos 8 caracteres.",
-      "auth.error.passwordMismatch": "Las contraseñas no coinciden.",
-      "auth.error.emailExists": "Este email ya está registrado.",
-      "auth.error.serverError": "Error del servidor. Intenta nuevamente más tarde.",
-      "auth.error.oauthError": "Error al iniciar sesión con Google. Intenta nuevamente."
-    },
-    fr: {
-      "auth.signupTitle": "Créer un Compte",
-      "auth.signupSubtitle": "Rejoignez notre communauté de voyageurs",
-      "auth.namePlaceholder": "Votre nom complet",
-      "auth.emailPlaceholder": "Entrez votre email",
-      "auth.passwordPlaceholder": "Entrez votre mot de passe",
-      "auth.confirmPasswordPlaceholder": "Confirmez votre mot de passe",
-      "auth.signupButton": "Créer un Compte",
-      "auth.signupLoading": "Création de compte...",
-      "auth.orContinueWith": "Ou continuez avec",
-      "auth.googleLogin": "Continuer avec Google",
-      "auth.hasAccount": "Vous avez déjà un compte ?",
-      "auth.loginLink": "Se connecter",
-      "auth.error.required": "Ce champ est obligatoire.",
-      "auth.error.invalidEmail": "Email invalide.",
-      "auth.error.weakPassword": "Le mot de passe doit comporter au moins 8 caractères.",
-      "auth.error.passwordMismatch": "Les mots de passe ne correspondent pas.",
-      "auth.error.emailExists": "Cet email est déjà enregistré.",
-      "auth.error.serverError": "Erreur serveur. Veuillez réessayer plus tard.",
-      "auth.error.oauthError": "Erreur lors de la connexion avec Google. Veuillez réessayer."
-    },
-    de: {
-      "auth.signupTitle": "Konto Erstellen",
-      "auth.signupSubtitle": "Werden Sie Teil unserer Reisegemeinschaft",
-      "auth.namePlaceholder": "Ihr vollständiger Name",
-      "auth.emailPlaceholder": "Geben Sie Ihre E-Mail-Adresse ein",
-      "auth.passwordPlaceholder": "Geben Sie Ihr Passwort ein",
-      "auth.confirmPasswordPlaceholder": "Bestätigen Sie Ihr Passwort",
-      "auth.signupButton": "Konto Erstellen",
-      "auth.signupLoading": "Konto wird erstellt...",
-      "auth.orContinueWith": "Oder fortfahren mit",
-      "auth.googleLogin": "Mit Google fortfahren",
-      "auth.hasAccount": "Haben Sie bereits ein Konto?",
-      "auth.loginLink": "Anmelden",
-      "auth.error.required": "Dieses Feld ist erforderlich.",
-      "auth.error.invalidEmail": "Ungültige E-Mail.",
-      "auth.error.weakPassword": "Das Passwort muss mindestens 8 Zeichen lang sein.",
-      "auth.error.passwordMismatch": "Die Passwörter stimmen nicht überein.",
-      "auth.error.emailExists": "Diese E-Mail ist bereits registriert.",
-      "auth.error.serverError": "Serverfehler. Bitte versuchen Sie es später erneut.",
-      "auth.error.oauthError": "Fehler beim Anmelden mit Google. Bitte versuchen Sie es erneut."
-    }
-  };
-
-  return translations[locale]?.[key] || translations.en[key] || key;
-};
-
-// Simple Button component (inline to avoid import issues)
+// Simple Button Component (keeping existing inline approach)
 const SimpleButton: React.FC<{
   type?: "button" | "submit";
   variant?: "primary" | "outline";
   className?: string;
   disabled?: boolean;
-  children: React.ReactNode;
   onClick?: () => void;
-}> = ({ type = "button", variant = "primary", className = "", disabled = false, children, onClick }) => {
-  const baseClasses = "w-full px-4 py-2 rounded-md font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2";
-  const variantClasses = {
-    primary: "bg-blue-600 text-white hover:bg-blue-700 focus:ring-blue-500 disabled:bg-blue-300",
-    outline: "border border-gray-300 text-gray-700 hover:bg-gray-50 focus:ring-blue-500 disabled:bg-gray-100"
+  children: React.ReactNode;
+}> = ({
+  type = "button",
+  variant = "primary",
+  className = "",
+  disabled = false,
+  onClick,
+  children,
+}) => {
+  const baseStyles =
+    "w-full flex justify-center py-2 px-4 border rounded-md text-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 transition-colors";
+
+  const variantStyles = {
+    primary:
+      "border-transparent bg-blue-600 text-white hover:bg-blue-700 focus:ring-blue-500 disabled:bg-blue-400",
+    outline:
+      "border-gray-300 bg-white text-gray-700 hover:bg-gray-50 focus:ring-blue-500 disabled:bg-gray-100",
   };
 
   return (
     <button
       type={type}
-      className={`${baseClasses} ${variantClasses[variant]} ${className}`}
+      className={`${baseStyles} ${variantStyles[variant]} ${className}`}
       disabled={disabled}
       onClick={onClick}
     >
@@ -168,7 +69,7 @@ const SimpleButton: React.FC<{
   );
 };
 
-// Simple Card component (inline to avoid import issues)
+// Simple Card Component (keeping existing inline approach)
 const SimpleCard: React.FC<{
   className?: string;
   children: React.ReactNode;
@@ -180,26 +81,98 @@ const SimpleCard: React.FC<{
   );
 };
 
-// Simple Loading Spinner (inline)
+// Simple Loading Spinner (keeping existing)
 const SimpleSpinner = () => (
   <div className="inline-block w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
 );
 
+// 🆕 Role Selection Card Component
+const RoleCard: React.FC<{
+  role: "customer" | "host";
+  selected: boolean;
+  onClick: () => void;
+  title: string;
+  description: string;
+  icon: React.ReactNode;
+}> = ({ role, selected, onClick, title, description, icon }) => {
+  return (
+    <div
+      onClick={onClick}
+      className={`p-4 border-2 rounded-lg cursor-pointer transition-all ${
+        selected
+          ? "border-blue-500 bg-blue-50 ring-2 ring-blue-200"
+          : "border-gray-200 hover:border-gray-300 hover:bg-gray-50"
+      }`}
+    >
+      <div className="flex items-center space-x-3">
+        <div
+          className={`flex-shrink-0 ${selected ? "text-blue-600" : "text-gray-400"}`}
+        >
+          {icon}
+        </div>
+        <div className="flex-1">
+          <h3
+            className={`text-sm font-medium ${selected ? "text-blue-900" : "text-gray-900"}`}
+          >
+            {title}
+          </h3>
+          <p
+            className={`text-xs ${selected ? "text-blue-700" : "text-gray-600"}`}
+          >
+            {description}
+          </p>
+        </div>
+        <div
+          className={`w-4 h-4 rounded-full border-2 ${
+            selected ? "border-blue-500 bg-blue-500" : "border-gray-300"
+          }`}
+        >
+          {selected && (
+            <div className="w-full h-full flex items-center justify-center">
+              <div className="w-2 h-2 bg-white rounded-full"></div>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+};
+
 export default function SignupForm({ locale }: SignupFormProps) {
-  const t = (key: string) => getTranslation(key, locale);
+  const t = useTranslations(locale);
   const router = useRouter();
-  
+
   const [formData, setFormData] = useState<FormData>({
     name: "",
     email: "",
     password: "",
     confirmPassword: "",
+    role: "customer", // Default to customer
   });
-  
+
   const [errors, setErrors] = useState<FormErrors>({});
   const [loading, setLoading] = useState(false);
 
-  // Form validation
+  // Handle input changes (keeping existing logic)
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+
+    // Clear error when user starts typing
+    if (errors[name as keyof FormErrors]) {
+      setErrors((prev) => ({ ...prev, [name]: undefined }));
+    }
+  };
+
+  // 🆕 Handle role selection
+  const handleRoleChange = (role: "customer" | "host") => {
+    setFormData((prev) => ({ ...prev, role }));
+    if (errors.role) {
+      setErrors((prev) => ({ ...prev, role: undefined }));
+    }
+  };
+
+  // Form validation (keeping existing + adding role validation)
   const validateForm = (): boolean => {
     const newErrors: FormErrors = {};
 
@@ -233,10 +206,10 @@ export default function SignupForm({ locale }: SignupFormProps) {
     return Object.keys(newErrors).length === 0;
   };
 
-  // Handle form submission
+  // Handle form submission (updated to include role)
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!validateForm()) return;
 
     setLoading(true);
@@ -253,7 +226,7 @@ export default function SignupForm({ locale }: SignupFormProps) {
           name: formData.name,
           email: formData.email,
           password: formData.password,
-          role: "customer",
+          role: formData.role, // 🆕 Include selected role
           emailVerified: false,
         }),
       });
@@ -280,11 +253,11 @@ export default function SignupForm({ locale }: SignupFormProps) {
       if (signInResult?.error) {
         setErrors({ general: t("auth.error.serverError") });
       } else {
-        // Success - redirect to customer dashboard
-        router.push(`/${locale}/customer`);
+        // Success - redirect based on role
+        const redirectPath = formData.role === "host" ? "/host" : "/customer";
+        router.push(`/${locale}${redirectPath}`);
         router.refresh();
       }
-
     } catch (error) {
       console.error("Signup error:", error);
       setErrors({ general: t("auth.error.serverError") });
@@ -293,29 +266,22 @@ export default function SignupForm({ locale }: SignupFormProps) {
     }
   };
 
-  // Handle Google signup
+  // Handle Google signup (updated to respect selected role)
   const handleGoogleSignup = async () => {
     setLoading(true);
     try {
+      // Store selected role in sessionStorage before Google auth
+      if (typeof window !== "undefined") {
+        sessionStorage.setItem("pendingRole", formData.role);
+      }
+
       await signIn("google", {
-        callbackUrl: `/${locale}/customer`,
+        callbackUrl: `/${locale}/${formData.role === "host" ? "host" : "customer"}`,
       });
     } catch (error) {
       console.error("Google signup error:", error);
-      setErrors({ general: t("auth.error.oauthError") });
-    } finally {
+      setErrors({ general: t("auth.error.oauthError") || "Erro do servidor" });
       setLoading(false);
-    }
-  };
-
-  // Handle input changes
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
-    
-    // Clear error when user starts typing
-    if (errors[name as keyof FormErrors]) {
-      setErrors(prev => ({ ...prev, [name]: undefined }));
     }
   };
 
@@ -323,10 +289,10 @@ export default function SignupForm({ locale }: SignupFormProps) {
     <div className="max-w-md w-full space-y-8">
       <div>
         <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-          {t("auth.signupTitle")}
+          {t("auth.signupTitle") || "Criar Conta"}
         </h2>
         <p className="mt-2 text-center text-sm text-gray-600">
-          {t("auth.signupSubtitle")}
+          {t("auth.signupSubtitle") || "Junta-te à nossa comunidade"}
         </p>
       </div>
 
@@ -338,11 +304,69 @@ export default function SignupForm({ locale }: SignupFormProps) {
           </div>
         )}
 
+        {/* 🆕 Account Type Selection */}
+        <div className="mb-6">
+          <h3 className="text-lg font-medium text-gray-900 mb-4">
+            {t("auth.chooseAccountType") || "Escolha o tipo de conta"}
+          </h3>
+          <div className="space-y-3">
+            <RoleCard
+              role="customer"
+              selected={formData.role === "customer"}
+              onClick={() => handleRoleChange("customer")}
+              title={t("roles.customer") || "Cliente"}
+              description={
+                t("auth.customerDescription") || "Navegar e reservar tours"
+              }
+              icon={
+                <svg
+                  className="w-6 h-6"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                  />
+                </svg>
+              }
+            />
+            <RoleCard
+              role="host"
+              selected={formData.role === "host"}
+              onClick={() => handleRoleChange("host")}
+              title={t("roles.host") || "Anfitrião"}
+              description={t("auth.hostDescription") || "Criar e gerir tours"}
+              icon={
+                <svg
+                  className="w-6 h-6"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-4m-5 0H3m2 0h4M9 7h6m-6 4h6m-6 4h6"
+                  />
+                </svg>
+              }
+            />
+          </div>
+          {errors.role && (
+            <p className="mt-2 text-sm text-red-600">{errors.role}</p>
+          )}
+        </div>
+
         <form className="space-y-6" onSubmit={handleSubmit}>
           {/* Name Field */}
           <div>
             <label htmlFor="name" className="sr-only">
-              {t("auth.namePlaceholder")}
+              {t("auth.namePlaceholder") || "O teu nome completo"}
             </label>
             <input
               id="name"
@@ -355,7 +379,7 @@ export default function SignupForm({ locale }: SignupFormProps) {
               className={`appearance-none rounded-md relative block w-full px-3 py-2 border ${
                 errors.name ? "border-red-300" : "border-gray-300"
               } placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm`}
-              placeholder={t("auth.namePlaceholder")}
+              placeholder={t("auth.namePlaceholder") || "O teu nome completo"}
               disabled={loading}
             />
             {errors.name && (
@@ -366,7 +390,7 @@ export default function SignupForm({ locale }: SignupFormProps) {
           {/* Email Field */}
           <div>
             <label htmlFor="email" className="sr-only">
-              {t("auth.emailPlaceholder")}
+              {t("auth.emailPlaceholder") || "Introduza o seu email"}
             </label>
             <input
               id="email"
@@ -379,7 +403,9 @@ export default function SignupForm({ locale }: SignupFormProps) {
               className={`appearance-none rounded-md relative block w-full px-3 py-2 border ${
                 errors.email ? "border-red-300" : "border-gray-300"
               } placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm`}
-              placeholder={t("auth.emailPlaceholder")}
+              placeholder={
+                t("auth.emailPlaceholder") || "Introduza o seu email"
+              }
               disabled={loading}
             />
             {errors.email && (
@@ -390,7 +416,7 @@ export default function SignupForm({ locale }: SignupFormProps) {
           {/* Password Field */}
           <div>
             <label htmlFor="password" className="sr-only">
-              {t("auth.passwordPlaceholder")}
+              {t("auth.passwordPlaceholder") || "Introduza a sua palavra-passe"}
             </label>
             <input
               id="password"
@@ -403,7 +429,9 @@ export default function SignupForm({ locale }: SignupFormProps) {
               className={`appearance-none rounded-md relative block w-full px-3 py-2 border ${
                 errors.password ? "border-red-300" : "border-gray-300"
               } placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm`}
-              placeholder={t("auth.passwordPlaceholder")}
+              placeholder={
+                t("auth.passwordPlaceholder") || "Introduza a sua palavra-passe"
+              }
               disabled={loading}
             />
             {errors.password && (
@@ -414,7 +442,8 @@ export default function SignupForm({ locale }: SignupFormProps) {
           {/* Confirm Password Field */}
           <div>
             <label htmlFor="confirmPassword" className="sr-only">
-              {t("auth.confirmPasswordPlaceholder")}
+              {t("auth.confirmPasswordPlaceholder") ||
+                "Confirma a tua palavra-passe"}
             </label>
             <input
               id="confirmPassword"
@@ -427,27 +456,30 @@ export default function SignupForm({ locale }: SignupFormProps) {
               className={`appearance-none rounded-md relative block w-full px-3 py-2 border ${
                 errors.confirmPassword ? "border-red-300" : "border-gray-300"
               } placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm`}
-              placeholder={t("auth.confirmPasswordPlaceholder")}
+              placeholder={
+                t("auth.confirmPasswordPlaceholder") ||
+                "Confirma a tua palavra-passe"
+              }
               disabled={loading}
             />
             {errors.confirmPassword && (
-              <p className="mt-1 text-sm text-red-600">{errors.confirmPassword}</p>
+              <p className="mt-1 text-sm text-red-600">
+                {errors.confirmPassword}
+              </p>
             )}
           </div>
 
           {/* Submit Button */}
-          <SimpleButton
-            type="submit"
-            variant="primary"
-            disabled={loading}
-          >
+          <SimpleButton type="submit" variant="primary" disabled={loading}>
             {loading ? (
               <div className="flex items-center justify-center">
                 <SimpleSpinner />
-                <span className="ml-2">{t("auth.signupLoading")}</span>
+                <span className="ml-2">
+                  {t("auth.signupLoading") || "A criar conta..."}
+                </span>
               </div>
             ) : (
-              t("auth.signupButton")
+              `${t("auth.signupButton") || "Criar Conta"} ${formData.role === "host" ? `(${t("roles.host") || "Anfitrião"})` : `(${t("roles.customer") || "Cliente"})`}`
             )}
           </SimpleButton>
         </form>
@@ -460,7 +492,7 @@ export default function SignupForm({ locale }: SignupFormProps) {
             </div>
             <div className="relative flex justify-center text-sm">
               <span className="px-2 bg-white text-gray-500">
-                {t("auth.orContinueWith")}
+                {t("auth.orContinueWith") || "Ou continua com"}
               </span>
             </div>
           </div>
@@ -491,21 +523,58 @@ export default function SignupForm({ locale }: SignupFormProps) {
                     d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
                   />
                 </svg>
-                {t("auth.googleLogin")}
+                {t("auth.googleLogin") || "Continuar com Google"} (
+                {formData.role === "host"
+                  ? t("roles.host") || "Anfitrião"
+                  : t("roles.customer") || "Cliente"}
+                )
               </div>
             </SimpleButton>
           </div>
         </div>
 
+        {/* 🆕 Host Information */}
+        {formData.role === "host" && (
+          <div className="mt-6 p-4 bg-amber-50 border border-amber-200 rounded-md">
+            <div className="text-sm text-amber-800">
+              <p className="font-medium mb-2">
+                {t("auth.hostInfo") || "Informação para Anfitriões:"}
+              </p>
+              <ul className="space-y-1 text-amber-700 text-xs">
+                <li>
+                  •{" "}
+                  {t("auth.hostBenefit1") ||
+                    "Poderá criar e gerir os seus próprios tours"}
+                </li>
+                <li>
+                  •{" "}
+                  {t("auth.hostBenefit2") ||
+                    "Receber reservas e comunicar com clientes"}
+                </li>
+                <li>
+                  •{" "}
+                  {t("auth.hostBenefit3") ||
+                    "Acompanhar os seus ganhos e estatísticas"}
+                </li>
+                <li>
+                  •{" "}
+                  {t("auth.hostBenefit4") ||
+                    "Acesso a ferramentas de gestão avançadas"}
+                </li>
+              </ul>
+            </div>
+          </div>
+        )}
+
         {/* Login Link */}
         <div className="mt-6 text-center">
           <p className="text-sm text-gray-600">
-            {t("auth.hasAccount")}{" "}
+            {t("auth.hasAccount") || "Já tens conta?"}{" "}
             <a
               href={`/${locale}/auth/login`}
               className="font-medium text-blue-600 hover:text-blue-500"
             >
-              {t("auth.loginLink")}
+              {t("auth.loginLink") || "Iniciar sessão"}
             </a>
           </p>
         </div>

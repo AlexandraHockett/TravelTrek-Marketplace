@@ -1,57 +1,10 @@
-// // ===================================================================
-// // 📁 app/[locale]/host/layout.tsx
-// // Location: CRIAR/SUBSTITUIR arquivo app/[locale]/host/layout.tsx
-// // ===================================================================
-
-// import { ReactNode } from "react";
-// import RouteGuard from "@/components/auth/RouteGuard";
-// import { getServerTranslations } from "@/lib/utils";
-
-// interface HostLayoutProps {
-//   children: ReactNode;
-//   params: Promise<{ locale: string }>;
-// }
-
-// export default async function HostLayout({
-//   children,
-//   params,
-// }: HostLayoutProps) {
-//   const { locale } = await params;
-
-//   return (
-//     <RouteGuard requiredRole="host" requireAuth={true} locale={locale}>
-//       <div className="min-h-screen bg-gray-50">
-//         {/* Host-specific layout elements can go here */}
-//         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-//           {children}
-//         </div>
-//       </div>
-//     </RouteGuard>
-//   );
-// }
-
-// // ✅ CORRIGIDO: generateMetadata usa função de tradução server-side
-// export async function generateMetadata({
-//   params,
-// }: {
-//   params: Promise<{ locale: string }>;
-// }) {
-//   const { locale } = await params;
-//   const t = await getServerTranslations(locale);
-
-//   return {
-//     title: `${t("navigation.hostPortal")} | TravelTrek`,
-//     description: t("pages.host.dashboard.subtitle"),
-//   };
-// }
 // ===================================================================
-// 📁 app/[locale]/host/layout.tsx
-// Location: SUBSTITUIR app/[locale]/host/layout.tsx
+// 📁 app/[locale]/host/layout.tsx - PRODUCTION READY WITH AUTH
+// Location: REPLACE ENTIRE CONTENT of app/[locale]/host/layout.tsx
 // ===================================================================
 
 import { ReactNode } from "react";
 import { getServerTranslations } from "@/lib/utils";
-import DevModeBypass from "@/components/auth/DevModeBypass";
 import RouteGuard from "@/components/auth/RouteGuard";
 
 interface HostLayoutProps {
@@ -65,22 +18,29 @@ export default async function HostLayout({
 }: HostLayoutProps) {
   const { locale } = await params;
 
-  // ✅ DEVELOPMENT MODE - Bypass authentication completely
-  if (process.env.NODE_ENV === "development") {
-    console.log("🔧 DEV MODE: Host layout bypassing authentication");
-    return (
-      <div className="min-h-screen bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          {children}
-        </div>
-      </div>
-    );
-  }
-
-  // ✅ PRODUCTION MODE - Use RouteGuard
+  // ✅ SEMPRE usar autenticação - remover bypass de desenvolvimento
   return (
     <RouteGuard requiredRole="host" requireAuth={true} locale={locale}>
       <div className="min-h-screen bg-gray-50">
+        {/* Host Navigation Header */}
+        <div className="bg-white shadow-sm border-b border-gray-200">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="flex justify-between items-center py-4">
+              <div className="flex items-center">
+                <h1 className="text-xl font-semibold text-gray-900">
+                  Portal do Anfitrião
+                </h1>
+              </div>
+              <div className="flex items-center space-x-4">
+                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                  Host
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Main Content Area */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           {children}
         </div>
@@ -96,25 +56,19 @@ export async function generateMetadata({
 }) {
   const { locale } = await params;
 
-  // Simple fallback for development
-  if (process.env.NODE_ENV === "development") {
-    return {
-      title: `Host Dashboard | TravelTrek`,
-      description: "Host dashboard for managing tours and bookings",
-    };
-  }
-
-  // Production metadata with translations
   try {
     const t = await getServerTranslations(locale);
     return {
-      title: `${t("navigation.hostPortal")} | TravelTrek`,
-      description: t("pages.host.dashboard.subtitle"),
+      title: `${t("navigation.hostPortal") || "Portal do Anfitrião"} | TravelTrek`,
+      description:
+        t("pages.host.dashboard.subtitle") || "Gerir tours e reservas",
+      robots: "noindex, nofollow", // Host area should not be indexed
     };
   } catch (error) {
     return {
-      title: `Host Dashboard | TravelTrek`,
-      description: "Host dashboard for managing tours and bookings",
+      title: `Portal do Anfitrião | TravelTrek`,
+      description: "Dashboard para anfitriões gerirem tours e reservas",
+      robots: "noindex, nofollow",
     };
   }
 }

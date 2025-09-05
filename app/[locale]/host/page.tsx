@@ -22,6 +22,7 @@ import {
 import { useTranslations } from "@/lib/i18n";
 import BookingList from "@/components/host/BookingList";
 import EarningsChart from "@/components/host/EarningsChart";
+import Link from "next/link";
 
 interface HostDashboardProps {
   params: Promise<{ locale: string }>;
@@ -188,10 +189,12 @@ export default function HostDashboard({ params }: HostDashboardProps) {
                 {t("host.dashboard.subtitle") || "Manage tours and bookings"}
               </p>
             </div>
-            <button className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 flex items-center gap-2 transition-colors">
-              <Plus className="w-4 h-4" />
-              {t("host.dashboard.createTour") || "Create Tour"}
-            </button>
+            <Link href={`/${locale}/host/tours/create`}>
+              <button className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 flex items-center gap-2 transition-colors">
+                <Plus className="w-4 h-4" />
+                {t("host.dashboard.createTour") || "Create Tour"}
+              </button>
+            </Link>
           </div>
         </div>
 

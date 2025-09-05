@@ -752,6 +752,14 @@
     }
   },
   "auth": {
+    "hostBenefit1": "Create and manage your own tours",
+    "hostBenefit2": "Receive bookings and communicate with customers",
+    "hostBenefit3": "Track your earnings and statistics",
+    "hostBenefit4": "Access to advanced management tools",
+    "chooseAccountType": "Choose account type",
+    "customerDescription": "Browse and book tours",
+    "hostDescription": "Create and manage tours",
+    "hostInfo": "Information for Hosts:",
     "accessDenied": "Access Denied",
     "accessRestricted": "Access Restricted",
     "loginRequired": "You need to log in to access this page.",
@@ -892,6 +900,8 @@
       "duration": "Duration"
     },
     "categories": {
+      "sports": "Sports",
+      "relaxation": "Relaxation",
       "cultural": "Cultural",
       "fooddrink": "Food and Drink",
       "historical": "Historical",
@@ -973,6 +983,66 @@
     "downloadReceipt": "Download Receipt"
   },
   "host": {
+    "tours": {
+      "create": {
+        "title": "Create New Tour",
+        "subtitle": "Share your expertise and create unforgettable experiences for travellers",
+        "description": "Create a new tour experience for travellers",
+        "steps": {
+          "basicInfo": "Basic Information",
+          "details": "Tour Details",
+          "features": "Features & Requirements",
+          "policies": "Policies & Review"
+        },
+        "form": {
+          "title": "Tour Title",
+          "location": "Location",
+          "category": "Category",
+          "description": "Description",
+          "duration": "Duration (hours)",
+          "maxParticipants": "Max Participants",
+          "price": "Price per Person (€)",
+          "difficulty": "Difficulty Level",
+          "language": "Tour Language",
+          "included": "What's Included",
+          "excluded": "What's Not Included",
+          "requirements": "Requirements",
+          "highlights": "Tour Highlights",
+          "cancellationPolicy": "Cancellation Policy"
+        },
+        "placeholders": {
+          "title": "e.g., Historic Lisbon Walking Tour",
+          "location": "e.g., Lisbon, Portugal",
+          "description": "Describe your tour experience, what makes it special, and what guests can expect...",
+          "included": "e.g., Professional guide",
+          "excluded": "e.g., Meals",
+          "requirements": "e.g., Comfortable walking shoes",
+          "highlights": "e.g., Visit famous landmarks",
+          "cancellationPolicy": "Describe your cancellation and refund policy..."
+        },
+        "buttons": {
+          "addIncluded": "Add included item",
+          "addExcluded": "Add excluded item",
+          "addRequirement": "Add requirement",
+          "addHighlight": "Add highlight",
+          "preview": "Preview",
+          "createTour": "Create Tour",
+          "creating": "Creating..."
+        },
+        "errors": {
+          "titleRequired": "Title is required",
+          "descriptionRequired": "Description is required",
+          "locationRequired": "Location is required",
+          "durationMin": "Duration must be at least 1 hour",
+          "participantsMin": "Must allow at least 1 participant",
+          "priceMin": "Price must be at least €1",
+          "includedRequired": "At least one included item is required"
+        },
+        "review": {
+          "title": "Tour Summary"
+        }
+      }
+    },
     "dashboard": {
       "title": "Host Dashboard",
       "subtitle": "Manage tours and bookings",

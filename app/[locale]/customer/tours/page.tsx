@@ -1,81 +1,79 @@
-import { Metadata } from "next";
-import { Suspense } from "react";
-import { getTranslations } from "@/lib/utils";
-import ToursClient from "./client";
+// File: app/[locale]/customer/tours/page.tsx
+// Location: SUBSTITUIR o ficheiro existente em app/[locale]/customer/tours/page.tsx
 
-interface ToursPageProps {
+import { Metadata } from "next";
+import { getTranslations } from "@/lib/utils";
+import { Tour } from "@/types";
+import CustomerToursClient from "./client";
+
+// ✅ CORRIGIDO: Interface padrão para páginas conforme organização
+interface PageProps {
   params: Promise<{ locale: string }>;
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }
 
-// Generate metadata based on locale
+// Generate metadata
 export async function generateMetadata({
   params,
-}: ToursPageProps): Promise<Metadata> {
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations(locale);
 
   return {
-    title: `${t.customerTours.title} | TravelTrek`,
-    description: t.customerTours.description,
+    title: `${t.tours?.title || "Tours"} | TravelTrek`,
+    description: t.tours?.subtitle || "Discover amazing tours in Portugal",
   };
 }
 
-export default async function ToursPage({
+// Server Component principal
+export default async function CustomerToursPage({
   params,
   searchParams,
-}: ToursPageProps) {
+}: PageProps) {
+  // ✅ CORRIGIDO: Await params conforme Next.js 15
   const { locale } = await params;
-  const searchParamsResolved = await searchParams;
+  const resolvedSearchParams = await searchParams;
 
-  return (
-    <div className="min-h-screen bg-gray-50">
-      <Suspense fallback={<ToursPageSkeleton />}>
-        <ToursClient locale={locale} searchParams={searchParamsResolved} />
-      </Suspense>
-    </div>
+  // Carregar traduções no servidor
+  const t = await getTranslations(locale);
+
+  // Fetch tours from API (using searchParams for filters)
+  const toursResponse = await fetch(
+    `${process.env.NEXTAUTH_URL || "http://localhost:3000"}/api/tours?${new URLSearchParams(
+      Object.fromEntries(
+        Object.entries(resolvedSearchParams).map(([key, value]) => [
+          key,
+          Array.isArray(value) ? value[0] : value || "",
+        ])
+      )
+    )}`,
+    {
+      cache: "no-store", // Fresh data for each request
+      headers: {
+        Accept: "application/json",
+      },
+    }
   );
-}
 
-// Loading skeleton component
-function ToursPageSkeleton() {
+  let tours: Tour[] = [];
+
+  if (toursResponse.ok) {
+    const data = await toursResponse.json();
+    tours = data.success ? data.data : [];
+  } else {
+    console.error("Failed to fetch tours:", toursResponse.statusText);
+    // Fallback to empty array or mock data in development
+    tours = [];
+  }
+
+  // ✅ CORRIGIDO: Passar apenas as props aceites pela interface CustomerToursClientProps
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Header Skeleton */}
-      <div className="bg-white border-b border-gray-200">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <div className="animate-pulse">
-            <div className="h-8 bg-gray-200 rounded w-1/3 mb-4"></div>
-            <div className="h-4 bg-gray-200 rounded w-1/2 mb-8"></div>
-            <div className="flex gap-4">
-              <div className="h-10 bg-gray-200 rounded w-64"></div>
-              <div className="h-10 bg-gray-200 rounded w-32"></div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Tours Grid Skeleton */}
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {Array.from({ length: 9 }).map((_, i) => (
-            <div
-              key={i}
-              className="bg-white rounded-lg shadow-md overflow-hidden animate-pulse"
-            >
-              <div className="h-48 bg-gray-200"></div>
-              <div className="p-4 space-y-3">
-                <div className="h-4 bg-gray-200 rounded"></div>
-                <div className="h-4 bg-gray-200 rounded w-2/3"></div>
-                <div className="flex justify-between">
-                  <div className="h-4 bg-gray-200 rounded w-1/4"></div>
-                  <div className="h-4 bg-gray-200 rounded w-1/4"></div>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    </div>
+    <CustomerToursClient
+      initialTours={tours}
+      translations={t}
+      locale={locale}
+    />
   );
 }

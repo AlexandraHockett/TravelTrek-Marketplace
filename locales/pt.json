@@ -752,6 +752,14 @@
     }
   },
   "auth": {
+    "hostBenefit1": "Poderá criar e gerir os seus próprios tours",
+    "hostBenefit2": "Receber reservas e comunicar com clientes",
+    "hostBenefit3": "Acompanhar os seus ganhos e estatísticas",
+    "hostBenefit4": "Acesso a ferramentas de gestão avançadas",
+    "chooseAccountType": "Escolha o tipo de conta",
+    "customerDescription": "Navegar e reservar tours",
+    "hostDescription": "Criar e gerir tours",
+    "hostInfo": "Informação para Anfitriões:",
     "accessDenied": "Acesso Negado",
     "accessRestricted": "Acesso Restrito",
     "loginRequired": "É necessário fazer login para aceder a esta página.",
@@ -892,6 +900,8 @@
       "duration": "Duração"
     },
     "categories": {
+      "sports": "Desporto",
+      "relaxation": "Relaxamento",
       "cultural": "Cultural",
       "fooddrink": "Comida e Bebida",
       "historical": "Histórico",
@@ -973,6 +983,66 @@
     "downloadReceipt": "Descarregar Recibo"
   },
   "host": {
+    "tours": {
+      "create": {
+        "title": "Criar Novo Tour",
+        "subtitle": "Partilhe a sua experiência e crie experiências inesquecíveis para viajantes",
+        "description": "Crie uma nova experiência de tour para viajantes",
+        "steps": {
+          "basicInfo": "Informação Básica",
+          "details": "Detalhes do Tour",
+          "features": "Características e Requisitos",
+          "policies": "Políticas e Revisão"
+        },
+        "form": {
+          "title": "Título do Tour",
+          "location": "Localização",
+          "category": "Categoria",
+          "description": "Descrição",
+          "duration": "Duração (horas)",
+          "maxParticipants": "Máximo de Participantes",
+          "price": "Preço por Pessoa (€)",
+          "difficulty": "Nível de Dificuldade",
+          "language": "Idioma do Tour",
+          "included": "O que está Incluído",
+          "excluded": "O que não está Incluído",
+          "requirements": "Requisitos",
+          "highlights": "Destaques do Tour",
+          "cancellationPolicy": "Política de Cancelamento"
+        },
+        "placeholders": {
+          "title": "ex: Tour Pedestre pelo Histórico de Lisboa",
+          "location": "ex: Lisboa, Portugal",
+          "description": "Descreva a experiência do seu tour, o que o torna especial e o que os hóspedes podem esperar...",
+          "included": "ex: Guia profissional",
+          "excluded": "ex: Refeições",
+          "requirements": "ex: Sapatos confortáveis para caminhar",
+          "highlights": "ex: Visitar marcos famosos",
+          "cancellationPolicy": "Descreva a sua política de cancelamento e reembolso..."
+        },
+        "buttons": {
+          "addIncluded": "Adicionar item incluído",
+          "addExcluded": "Adicionar item excluído",
+          "addRequirement": "Adicionar requisito",
+          "addHighlight": "Adicionar destaque",
+          "preview": "Pré-visualizar",
+          "createTour": "Criar Tour",
+          "creating": "A criar..."
+        },
+        "errors": {
+          "titleRequired": "O título é obrigatório",
+          "descriptionRequired": "A descrição é obrigatória",
+          "locationRequired": "A localização é obrigatória",
+          "durationMin": "A duração deve ser pelo menos 1 hora",
+          "participantsMin": "Deve permitir pelo menos 1 participante",
+          "priceMin": "O preço deve ser pelo menos €1",
+          "includedRequired": "Pelo menos um item incluído é obrigatório"
+        },
+        "review": {
+          "title": "Resumo do Tour"
+        }
+      }
+    },
     "dashboard": {
       "title": "Dashboard do Anfitrião",
       "subtitle": "Gerir tours e reservas",
