@@ -280,8 +280,8 @@ class MockDatabase {
       description:
         "Discover the beautiful historic center of Porto with a local guide. Visit the most iconic landmarks and learn about the rich history of this UNESCO World Heritage city.",
       shortDescription: "Explore Porto's historic center with a local guide",
-      image: "/images/tours/porto-historic.jpg",
-      images: ["/images/tours/porto-historic.jpg"],
+      image: "/images/tours/porto-food.webp",
+      images: ["/images/tours/porto-food.webp"],
       price: 25,
       originalPrice: 35,
       currency: "EUR",

@@ -35,8 +35,8 @@ const mockTours = [
     description:
       "Discover the enchanting historic center of Porto with our expert local guide.",
     shortDescription: "Explore Porto's historic center with a local guide",
-    image: "/images/tours/porto-historic.jpg",
-    images: ["/images/tours/porto-historic.jpg"],
+    image: "/images/tours/porto-food.webp",
+    images: ["/images/tours/porto-food.webp"],
     price: "25.00",
     originalPrice: "35.00",
     currency: "EUR",

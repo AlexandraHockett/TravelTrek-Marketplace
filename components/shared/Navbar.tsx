@@ -89,7 +89,7 @@ const Navbar: React.FC = () => {
             icon: LayoutDashboard,
           },
           {
-            href: `/${currentLocale}/tours`,
+            href: `/${currentLocale}/customer/tours`,
             label: getTranslation("navigation.browseTours", "Explorar Tours"),
             icon: MapPin,
           },
@@ -112,19 +112,9 @@ const Navbar: React.FC = () => {
             icon: LayoutDashboard,
           },
           {
-            href: `/${currentLocale}/host/tours`,
-            label: getTranslation("navigation.myTours", "Meus Tours"),
+            href: `/${currentLocale}/host/tours/create`,
+            label: getTranslation("host.dashboard.createTour", "Criar Tour"),
             icon: MapPin,
-          },
-          {
-            href: `/${currentLocale}/host/bookings`,
-            label: getTranslation("navigation.bookings", "Reservas"),
-            icon: Calendar,
-          },
-          {
-            href: `/${currentLocale}/host/earnings`,
-            label: getTranslation("navigation.earnings", "Ganhos"),
-            icon: DollarSign,
           },
         ];
 

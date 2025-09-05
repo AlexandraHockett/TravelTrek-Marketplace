@@ -11,9 +11,9 @@ export const mockTours: Tour[] = [
     description:
       "Explore the UNESCO World Heritage historic center of Porto with a knowledgeable local guide. Visit the most iconic landmarks and learn about the rich history of this beautiful Portuguese city.",
     shortDescription: "Explore Porto's historic center with a local guide",
-    image: "/images/tours/porto-historic.jpg",
+    image: "/images/tours/porto-food.webp",
     images: [
-      "/images/tours/porto-historic.jpg",
+      "/images/tours/porto-food.webp",
       "/images/tours/porto-cathedral.jpg",
       "/images/tours/porto-ribeira.jpg",
     ],

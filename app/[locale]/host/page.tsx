@@ -164,19 +164,6 @@ export default function HostDashboard({ params }: HostDashboardProps) {
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Development Mode Banner */}
-        {isDevelopment && (
-          <div className="mb-6 bg-yellow-100 border border-yellow-300 rounded-lg p-4">
-            <div className="flex items-center gap-2">
-              <div className="w-2 h-2 bg-yellow-500 rounded-full animate-pulse"></div>
-              <span className="text-sm font-medium text-yellow-800">
-                🔧{" "}
-                {t("common.devModeMessage") ||
-                  "Development Mode: Authentication bypassed for testing"}
-              </span>
-            </div>
-          </div>
-        )}
 
         {/* Header */}
         <div className="mb-8">

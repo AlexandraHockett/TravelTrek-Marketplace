@@ -17,7 +17,7 @@ import { cn } from "@/lib/utils";
 interface TourCardProps {
   tour: Tour;
   locale: string;
-  translations: Translations; // ✅ FIXED: Now expects translations object, not function
+  translations: Translations;
   compact?: boolean;
   className?: string;
   showQuickBook?: boolean;
@@ -30,7 +30,7 @@ interface TourCardProps {
 const TourCard: React.FC<TourCardProps> = ({
   tour,
   locale,
-  translations: t, // ✅ FIXED: Now receives translations object
+  translations: t,
   compact = false,
   className,
   showQuickBook = false,
@@ -61,14 +61,28 @@ const TourCard: React.FC<TourCardProps> = ({
     );
   };
 
-  const formatRating = (rating: number) => {
-    return rating.toFixed(1);
+  // ✅ FIXED: Safe rating formatting with type checking
+  const formatRating = (rating: number | string | null | undefined) => {
+    if (rating === null || rating === undefined) return "0.0";
+
+    // Convert to number if it's a string
+    const numericRating =
+      typeof rating === "string" ? parseFloat(rating) : rating;
+
+    // Check if it's a valid number
+    if (isNaN(numericRating)) return "0.0";
+
+    return numericRating.toFixed(1);
   };
 
-  const formatReviewCount = (count: number) => {
-    if (count === 0) return t.tours?.noReviews || "Sem avaliações";
-    if (count === 1) return `1 ${t.tours?.review || "avaliação"}`;
-    return `${count} ${t.tours?.reviews || "avaliações"}`;
+  const formatReviewCount = (count: number | string | null | undefined) => {
+    // Convert to number if it's a string
+    const numericCount =
+      typeof count === "string" ? parseInt(count) : count || 0;
+
+    if (numericCount === 0) return t.tours?.noReviews || "Sem avaliações";
+    if (numericCount === 1) return `1 ${t.tours?.review || "avaliação"}`;
+    return `${numericCount} ${t.tours?.reviews || "avaliações"}`;
   };
 
   const handleWishlistClick = (e: React.MouseEvent) => {
@@ -101,32 +115,23 @@ const TourCard: React.FC<TourCardProps> = ({
             )}
           >
             <Image
-              src={tour.image || "/images/tours/placeholder.jpg"}
+              src={tour.image}
               alt={tour.title}
               fill
               className="object-cover group-hover:scale-105 transition-transform duration-300"
-              sizes={
-                compact
-                  ? "(max-width: 768px) 100vw, 300px"
-                  : "(max-width: 768px) 100vw, 400px"
-              }
+              sizes={compact ? "300px" : "400px"}
             />
 
             {/* Wishlist Button */}
             {showWishlist && (
               <button
                 onClick={handleWishlistClick}
-                className="absolute top-3 right-3 p-2 rounded-full bg-white/90 hover:bg-white shadow-sm transition-colors z-10"
-                aria-label={
-                  isWishlisted
-                    ? t.tours?.removeFromWishlist || "Remover dos favoritos"
-                    : t.tours?.addToWishlist || "Adicionar aos favoritos"
-                }
+                className="absolute top-3 right-3 p-2 bg-white/80 backdrop-blur-sm rounded-full hover:bg-white transition-colors z-10"
               >
                 <Heart
                   className={cn(
                     "w-4 h-4 transition-colors",
-                    isWishlisted ? "fill-red-500 text-red-500" : "text-gray-600"
+                    isWishlisted ? "text-red-500 fill-current" : "text-gray-600"
                   )}
                 />
               </button>
@@ -134,18 +139,11 @@ const TourCard: React.FC<TourCardProps> = ({
 
             {/* Discount Badge */}
             {tour.originalPrice && tour.originalPrice > tour.price && (
-              <div className="absolute top-3 left-3">
-                <Badge
-                  variant="secondary"
-                  className="bg-red-500 text-white font-medium"
-                >
-                  -
-                  {Math.round(
-                    ((tour.originalPrice - tour.price) / tour.originalPrice) *
-                      100
-                  )}
-                  %
-                </Badge>
+              <div className="absolute top-3 left-3 bg-red-500 text-white px-2 py-1 rounded text-xs font-medium">
+                {Math.round(
+                  ((tour.originalPrice - tour.price) / tour.originalPrice) * 100
+                )}
+                % OFF
               </div>
             )}
 
@@ -153,7 +151,7 @@ const TourCard: React.FC<TourCardProps> = ({
             <div className="absolute bottom-3 left-3">
               <Badge
                 variant="default"
-                className="bg-white/90 text-gray-800 font-medium"
+                className="bg-white/90 backdrop-blur-sm text-gray-700 text-xs"
               >
                 {getDifficultyLabel(tour.difficulty)}
               </Badge>
@@ -161,7 +159,7 @@ const TourCard: React.FC<TourCardProps> = ({
           </div>
 
           {/* Content */}
-          <div className={cn("p-4", compact ? "p-3" : "p-5")}>
+          <div className={cn(compact ? "p-3" : "p-5")}>
             {/* Location */}
             <div className="flex items-center text-gray-600 text-sm mb-2">
               <MapPin className="w-4 h-4 mr-1 flex-shrink-0" />
@@ -254,16 +252,16 @@ const TourCard: React.FC<TourCardProps> = ({
                 {tour.tags.slice(0, 3).map((tag) => (
                   <Badge
                     key={tag}
-                    variant="outline"
-                    className="text-xs px-2 py-1"
+                    variant="default"
+                    className="text-xs px-2 py-1 bg-gray-100 text-gray-700"
                   >
                     {getCategoryLabel(tag)}
                   </Badge>
                 ))}
                 {tour.tags.length > 3 && (
                   <Badge
-                    variant="outline"
-                    className="text-xs px-2 py-1 text-gray-500"
+                    variant="default"
+                    className="text-xs px-2 py-1 text-gray-500 bg-gray-50"
                   >
                     +{tour.tags.length - 3} {t.tours?.more || "mais"}
                   </Badge>

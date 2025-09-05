@@ -105,7 +105,7 @@ const mockBookings: Booking[] = [
     tourTitle: "Porto Historic Walking Tour",
     tourDescription:
       "Explore Porto's historic center with a knowledgeable local guide",
-    tourImage: "/images/tours/porto-historic.jpg",
+    tourImage: "/images/tours/porto-food.webp",
     location: "Porto, Portugal",
     duration: 180, // ✅ Now properly typed as number (minutes)
 

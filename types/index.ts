@@ -161,7 +161,7 @@ export interface Translations {
     bookNow?: string;
     all?: string;
   };
-  // ✅ FIXED: Added tours property that was missing
+  // ✅ FIXED: Added complete tours property with all required fields
   tours?: {
     title?: string;
     subtitle?: string;
@@ -172,6 +172,8 @@ export interface Translations {
     noToursFound?: string;
     noToursFoundDesc?: string;
     noReviews?: string;
+    review?: string;
+    reviews?: string;
     anyRating?: string;
     stars?: string;
     maxParticipants?: string;
@@ -253,84 +255,23 @@ export interface Translations {
     requiredDate?: string;
     minDateTomorrow?: string;
     maxDateThreeMonths?: string;
-    minParticipants?: string;
-    maxParticipants?: string;
-    maxSpecialRequestsLength?: string;
-    bookButton?: string;
-    processing?: string;
-    perPerson?: string;
-    save?: string;
-    includedTaxes?: string;
-    freeCancellation?: string;
-    bookingError?: string;
-    allergiesPlaceholder?: string;
-    maxPersons?: string;
-    bookForMultiple?: string;
-    noChargeYet?: string;
-    experienceDate?: string;
     participants?: string;
     specialRequests?: string;
-    bookExperience?: string;
-    originalPrice?: string;
-    continueToPayment?: string;
-    agreeToTerms?: string;
-    termsOfService?: string;
-    privacyPolicy?: string;
-    total?: string;
-    serviceFees?: string;
-    included?: string;
-    instantConfirmation?: string;
-  };
-  auth?: {
-    pleaseLogin?: string;
-  };
-  api?: {
-    errors?: {
-      tourNotFound?: string;
-      bookingNotFound?: string;
-      invalidData?: string;
-      maxParticipantsExceeded?: string;
-      bookingNotCancellable?: string;
-      paymentFailed?: string;
-      serverError?: string;
-      unauthorised?: string;
-      validationFailed?: string;
-    };
-  };
-  pages?: {
-    customerBookings?: {
-      title?: string;
-      description?: string;
-      subtitle?: string;
-      browseTours?: string;
-      noBookingsDescription?: string;
-      stats?: {
-        totalBookings?: string;
-        upcoming?: string;
-        totalSpent?: string;
-      };
-      filters?: {
-        all?: string;
-        bookingStatusLabel?: string;
-        sortByLabel?: string;
-      };
-      sort?: {
-        dateDesc?: string;
-        dateAsc?: string;
-        amountDesc?: string;
-        amountAsc?: string;
-      };
-    };
-    customerTours?: {
-      title?: string;
-      description?: string;
-    };
-    customerDashboard?: {
-      title?: string;
-      description?: string;
-    };
+    specialRequestsPlaceholder?: string;
+    totalPrice?: string;
+    bookingFee?: string;
+    payNow?: string;
+    termsAgreement?: string;
+    termsLink?: string;
+    privacyLink?: string;
+    processing?: string;
   };
   bookingList?: {
+    title?: string;
+    noBookings?: string;
+    noBookingsDesc?: string;
+    filterStatus?: string;
+    allStatuses?: string;
     pending?: string;
     confirmed?: string;
     completed?: string;
@@ -339,88 +280,19 @@ export interface Translations {
     paid?: string;
     refunded?: string;
     viewDetails?: string;
-    pay?: string;
-    cancel?: string;
-    rebook?: string;
-    bookingNumber?: string;
-    date?: string;
-    participants?: string;
-    totalAmount?: string;
-    specialRequests?: string;
-    createdAt?: string;
-    next?: string;
-    person?: string;
-    persons?: string;
-    noBookings?: string;
-    view?: string;
-    vegetarianRequest?: string;
-    pendingLabel?: string;
-    confirmedLabel?: string;
-    completedLabel?: string;
-    cancelledLabel?: string;
-    leaveReview?: string;
-    bookFirstTour?: string;
-    location?: string;
-  };
-  tourDetails?: {
-    bookingSuccess?: string;
-    backToTours?: string;
-    duration?: string;
-    participants?: string;
-    included?: string;
-    excluded?: string;
-    meetingPoint?: string;
-    difficulty?: string;
-    rating?: string;
-    reviews?: string;
-    bookNow?: string;
-    from?: string;
-    person?: string;
-    persons?: string;
-    cancellationPolicy?: string;
-    location?: string;
-  };
-  bookingDetails?: {
-    meetingPointDetails?: string;
-    specialRequests?: string;
-    tourDescription?: string;
-    bookingDetails?: string;
-    bookingInformation?: string;
-    hostInformation?: string;
-    importantInformation?: string;
-    actions?: string;
-    paymentCompleted?: string;
-    paymentCompletedDescription?: string;
-    paymentPending?: string;
-    paymentPendingDescription?: string;
-    payNow?: string;
-    serviceFees?: string;
-    included?: string;
-    viewTourDetails?: string;
-    viewTour?: string;
-    contactHost?: string;
     cancelBooking?: string;
+    payNow?: string;
+    contactHost?: string;
     leaveReview?: string;
-    responseTime?: string;
-    confirmedBooking?: string;
-    meetingInstructions?: string;
-    cancellationPolicy?: string;
-    cancellationDescription?: string;
-    cancelReasonRequired?: string;
-    cancelDescription?: string;
-    refundInfo?: string;
-    willBeRefunded?: string;
-    cancelReason?: string;
-    cancelReasonPlaceholder?: string;
+    downloadReceipt?: string;
+    bookingDate?: string;
+    tourDate?: string;
+    status?: string;
+    paymentStatus?: string;
+    actions?: string;
     confirmCancel?: string;
-    cancelSuccess?: string;
-    cancelError?: string;
-    redirectingPayment?: string;
-    paymentError?: string;
-    contactHostMessage?: string;
-    partialRefund?: string;
-    noRefund?: string;
-    paymentInstructions?: string;
+    cancelReason?: string;
+    refundInfo?: string;
     pendingMessage?: string;
     confirmedMessage?: string;
     completedMessage?: string;
@@ -601,7 +473,7 @@ export interface PaymentData {
 export type BookingListProps = {
   bookings: Booking[];
   locale: string;
-  translations: Translations; // ✅ FIXED: Now expects Translations object
+  translations: Translations;
   onCancelBooking?: (bookingId: string) => void;
   onPayBooking?: (bookingId: string) => void;
   className?: string;
@@ -630,7 +502,7 @@ export interface DetailPageProps {
 export interface TourCardProps {
   tour: Tour;
   locale: string;
-  translations: Translations; // ✅ FIXED: Now expects Translations object
+  translations: Translations;
   compact?: boolean;
   className?: string;
   showQuickBook?: boolean;
