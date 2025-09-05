@@ -1,3 +1,4 @@
+//app\[locale]\customer\tours\[id]\client.tsx
 "use client";
 
 import Image from "next/image";
