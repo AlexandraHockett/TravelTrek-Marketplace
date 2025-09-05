@@ -270,13 +270,14 @@ export default function SignupForm({ locale }: SignupFormProps) {
   const handleGoogleSignup = async () => {
     setLoading(true);
     try {
-      // Store selected role in sessionStorage before Google auth
+      // ✅ MANTENDO teu código: Store selected role in sessionStorage before Google auth
       if (typeof window !== "undefined") {
         sessionStorage.setItem("pendingRole", formData.role);
       }
 
+      // ✅ FIXED: Só mudei o callbackUrl para usar a nova página de callback
       await signIn("google", {
-        callbackUrl: `/${locale}/${formData.role === "host" ? "host" : "customer"}`,
+        callbackUrl: `/${locale}/auth/callback/google`, // Era: `/${locale}/${formData.role === "host" ? "host" : "customer"}`
       });
     } catch (error) {
       console.error("Google signup error:", error);

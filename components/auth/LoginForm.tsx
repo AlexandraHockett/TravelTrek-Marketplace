@@ -1,16 +1,16 @@
 // ===================================================================
-// 📁 components/auth/LoginForm.tsx - YOUR VERSION WITH ROLE REDIRECT
-// Location: REPLACE ENTIRE CONTENT of components/auth/LoginForm.tsx
+// 📁 components/auth/LoginForm.tsx - FLUXO CORRETO (VOLTAR AO ORIGINAL)
+// Location: SUBSTITUIR ficheiro existente
 // ===================================================================
 
 "use client";
 
 import { useState } from "react";
-import { signIn } from "next-auth/react";
+import { signIn, getSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useTranslations } from "@/lib/i18n";
-import Button from "@/components/ui/Button"; // ✅ CORRIGIDO: export default
-import Card from "@/components/ui/Card"; // ✅ CORRIGIDO: export default
+import Button from "@/components/ui/Button";
+import Card from "@/components/ui/Card";
 
 interface LoginFormProps {
   locale: string;
@@ -27,6 +27,34 @@ export default function LoginForm({ locale }: LoginFormProps) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
+  // ✅ FIXED: Direct role-based redirect after login
+  const redirectToRoleDashboard = async () => {
+    try {
+      const session = await getSession();
+      if (session?.user?.role) {
+        switch (session.user.role) {
+          case "customer":
+            router.push(`/${locale}/customer`);
+            break;
+          case "host":
+            router.push(`/${locale}/host`);
+            break;
+          case "admin":
+            router.push(`/${locale}/admin`);
+            break;
+          default:
+            router.push(`/${locale}`);
+        }
+        router.refresh();
+      } else {
+        router.push(`/${locale}`);
+      }
+    } catch (error) {
+      console.error("Error redirecting:", error);
+      router.push(`/${locale}`);
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
@@ -40,13 +68,13 @@ export default function LoginForm({ locale }: LoginFormProps) {
       });
 
       if (result?.error) {
-        setError(t("auth.loginFailed"));
-      } else {
-        // 🆕 FIXED: Redirect to redirecting page for role-based redirect
-        router.push(`/${locale}/auth/redirecting`);
+        setError(t("auth.loginFailed") || "Falha no login");
+      } else if (result?.ok) {
+        await redirectToRoleDashboard();
       }
     } catch (error) {
-      setError(t("auth.loginError"));
+      console.error("Login error:", error);
+      setError(t("auth.loginError") || "Erro no servidor");
     } finally {
       setLoading(false);
     }
@@ -54,9 +82,16 @@ export default function LoginForm({ locale }: LoginFormProps) {
 
   const handleGoogleLogin = async () => {
     setLoading(true);
-    await signIn("google", {
-      callbackUrl: `/${locale}/auth/redirecting`, // 🆕 FIXED: Use redirecting page
-    });
+    try {
+      // ✅ FIXED: Para Google, se user não existir, vai para signup
+      await signIn("google", {
+        callbackUrl: `/${locale}/auth/login`, // Volta para login para processar
+      });
+    } catch (error) {
+      console.error("Google login error:", error);
+      setError(t("auth.oauthError") || "Erro na autenticação");
+      setLoading(false);
+    }
   };
 
   return (
@@ -64,9 +99,11 @@ export default function LoginForm({ locale }: LoginFormProps) {
       <Card className="w-full max-w-md p-8">
         <div className="text-center mb-8">
           <h1 className="text-2xl font-bold text-gray-900">
-            {t("auth.login")}
+            {t("auth.login") || "Iniciar Sessão"}
           </h1>
-          <p className="text-gray-600 mt-2">{t("auth.loginSubtitle")}</p>
+          <p className="text-gray-600 mt-2">
+            {t("auth.loginSubtitle") || "Aceda à sua conta"}
+          </p>
         </div>
 
         {error && (
@@ -81,7 +118,7 @@ export default function LoginForm({ locale }: LoginFormProps) {
               htmlFor="email"
               className="block text-sm font-medium text-gray-700"
             >
-              {t("common.email")}
+              {t("common.email") || "Email"}
             </label>
             <input
               id="email"
@@ -92,7 +129,7 @@ export default function LoginForm({ locale }: LoginFormProps) {
               onChange={(e) =>
                 setFormData({ ...formData, email: e.target.value })
               }
-              placeholder={t("auth.emailPlaceholder")}
+              placeholder={t("auth.emailPlaceholder") || "seu@email.com"}
             />
           </div>
 
@@ -101,7 +138,7 @@ export default function LoginForm({ locale }: LoginFormProps) {
               htmlFor="password"
               className="block text-sm font-medium text-gray-700"
             >
-              {t("common.password")}
+              {t("common.password") || "Palavra-passe"}
             </label>
             <input
               id="password"
@@ -112,7 +149,7 @@ export default function LoginForm({ locale }: LoginFormProps) {
               onChange={(e) =>
                 setFormData({ ...formData, password: e.target.value })
               }
-              placeholder={t("auth.passwordPlaceholder")}
+              placeholder={t("auth.passwordPlaceholder") || "••••••••"}
             />
           </div>
 
@@ -122,7 +159,9 @@ export default function LoginForm({ locale }: LoginFormProps) {
             disabled={loading}
             variant="primary"
           >
-            {loading ? t("common.loading") : t("auth.loginButton")}
+            {loading
+              ? t("common.loading") || "A carregar..."
+              : t("auth.loginButton") || "Entrar"}
           </Button>
         </form>
 
@@ -133,7 +172,7 @@ export default function LoginForm({ locale }: LoginFormProps) {
             </div>
             <div className="relative flex justify-center text-sm">
               <span className="px-2 bg-white text-gray-500">
-                {t("auth.or")}
+                {t("auth.or") || "ou"}
               </span>
             </div>
           </div>
@@ -163,18 +202,18 @@ export default function LoginForm({ locale }: LoginFormProps) {
                 d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
               />
             </svg>
-            {t("auth.googleLogin")}
+            {t("auth.googleLogin") || "Continuar com Google"}
           </Button>
         </div>
 
         <div className="mt-6 text-center">
           <p className="text-sm text-gray-600">
-            {t("auth.noAccount")}{" "}
+            {t("auth.noAccount") || "Não tem conta?"}{" "}
             <a
               href={`/${locale}/auth/signup`}
               className="font-medium text-blue-600 hover:text-blue-500"
             >
-              {t("auth.signup")}
+              {t("auth.signup") || "Registar-se"}
             </a>
           </p>
         </div>

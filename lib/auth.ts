@@ -1,6 +1,6 @@
 // ===================================================================
-// 📁 lib/auth.ts - NEXTAUTH v4 CORRECTED VERSION
-// Location: REPLACE ENTIRE CONTENT of lib/auth.ts
+// 📁 lib/auth.ts - FIXED MANTENDO TUAS DECLARAÇÕES E ESTRUTURA BASE
+// Location: SUBSTITUIR ficheiro existente
 // ===================================================================
 
 import NextAuth from "next-auth";
@@ -9,7 +9,7 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import { userQueries } from "@/lib/db/queries";
 import bcrypt from "bcryptjs";
 
-// Extend NextAuth types for NextAuth v4
+// ✅ MANTENDO tuas declarações NextAuth exactas
 declare module "next-auth" {
   interface Session {
     user: {
@@ -39,7 +39,7 @@ declare module "next-auth/jwt" {
   }
 }
 
-// Helper function to convert emailVerified from DB (Date | boolean | null) to NextAuth format (boolean | undefined)
+// ✅ MANTENDO tua função helper exacta
 function normalizeEmailVerified(
   value: Date | boolean | null | undefined
 ): boolean | undefined {
@@ -49,7 +49,24 @@ function normalizeEmailVerified(
   return undefined;
 }
 
-// Export authOptions for server-side usage (getServerSession)
+// ✅ FIXED: Helper to get pending role from sessionStorage
+function getPendingRole(): "customer" | "host" | "admin" {
+  // Check if we're in browser environment
+  if (typeof window !== "undefined") {
+    const pendingRole = sessionStorage.getItem("pendingRole");
+    // Clear it after reading
+    sessionStorage.removeItem("pendingRole");
+
+    if (pendingRole === "host" || pendingRole === "admin") {
+      return pendingRole;
+    }
+  }
+
+  // Default to customer
+  return "customer";
+}
+
+// ✅ MANTENDO tua estrutura authOptions exacta
 export const authOptions = {
   providers: [
     GoogleProvider({
@@ -84,7 +101,7 @@ export const authOptions = {
 
           if (!isValid) return null;
 
-          // Convert database types to NextAuth types with proper type handling
+          // ✅ MANTENDO teu return exacto
           return {
             id: user.id,
             name: user.name,
@@ -105,6 +122,7 @@ export const authOptions = {
     error: "/auth/error",
   },
   callbacks: {
+    // ✅ MANTENDO tuas callbacks JWT e session exactas
     async jwt({ token, user }: { token: any; user: any }) {
       if (user) {
         token.role = user.role;
@@ -120,23 +138,29 @@ export const authOptions = {
       }
       return session;
     },
+    // ✅ FIXED: Google auth - só permite login se user já existir
     async signIn({ user, account }: { user: any; account: any }) {
       if (account?.provider === "google" && user.email) {
         try {
           const existingUser = await userQueries.getByEmail(user.email);
 
           if (!existingUser) {
-            await userQueries.create({
-              name: user.name || "",
-              email: user.email,
-              role: "customer",
-              avatar: user.image || null,
-              emailVerified: true,
-              password: null,
-            });
+            // ✅ FIXED: Se user não existe, retorna false para parar login
+            // Isto vai fazer com que o NextAuth redirecione para error page
+            console.log(
+              `Google user ${user.email} not found - redirecting to signup`
+            );
+            return false; // Bloqueia login se user não existir
+          } else {
+            // ✅ User existe - permitir login com role existente
+            user.role = existingUser.role;
+            user.id = existingUser.id;
+            console.log(
+              `Google login successful for ${user.email} as ${existingUser.role}`
+            );
           }
         } catch (error) {
-          console.error("Error creating user:", error);
+          console.error("Error checking user:", error);
           return false;
         }
       }
@@ -149,5 +173,5 @@ export const authOptions = {
   secret: process.env.NEXTAUTH_SECRET,
 };
 
-// NextAuth v4 Configuration - Use authOptions
+// ✅ MANTENDO teu export exacto
 export default NextAuth(authOptions);
