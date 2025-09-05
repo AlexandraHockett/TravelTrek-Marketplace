@@ -8,6 +8,7 @@ import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { userQueries } from "@/lib/db/queries";
 import bcrypt from "bcryptjs";
+import { cookies } from "next/headers";
 
 // ✅ MANTENDO tuas declarações NextAuth exactas
 declare module "next-auth" {
@@ -153,15 +154,46 @@ export const authOptions = {
           const existingUser = await userQueries.getByEmail(user.email);
 
           if (!existingUser) {
-            // ✅ CRITICAL: Se user não existe, SEMPRE bloquear
-            // O signup deve ser feito via API separada, não via NextAuth callback
+            // ✅ NOVO: Verificar se temos cookies de signup
+            const cookieStore = cookies();
+            const signupToken = cookieStore.get("google_signup_token");
+            const signupRole = cookieStore.get("google_signup_role");
+
+            if (signupToken && signupRole) {
+              console.log(
+                `🆕 Google signup detected - Creating user ${user.email} as ${signupRole.value}`
+              );
+
+              // Criar novo user
+              const newUser = await userQueries.create({
+                name: user.name || user.email?.split("@")[0] || "User",
+                email: user.email,
+                avatar: user.image || null,
+                role: signupRole.value as "customer" | "host",
+                emailVerified: true,
+                password: null, // OAuth user
+              });
+
+              // Definir propriedades do user para a sessão
+              user.role = newUser.role;
+              user.id = newUser.id;
+              user.emailVerified = true;
+
+              console.log(
+                `✅ Google signup SUCCESS - User created: ${user.email} as ${signupRole.value}`
+              );
+
+              return true;
+            }
+
+            // Não é signup - bloquear login
             console.log(
               `❌ Google login BLOCKED - User ${user.email} não existe`
             );
             console.log("📝 User deve usar o signup primeiro");
-            return false; // ❌ BLOQUEAR login se user não existir
+            return false;
           } else {
-            // ✅ User existe - permitir login com role existente
+            // User existe - permitir login
             user.role = existingUser.role;
             user.id = existingUser.id;
             user.emailVerified = existingUser.emailVerified;

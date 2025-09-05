@@ -83,12 +83,9 @@ export default function LoginForm({ locale }: LoginFormProps) {
   const handleGoogleLogin = async () => {
     setLoading(true);
     try {
-      // ✅ FIXED: Remover callbackUrl para permitir redirect automático
-      // O NextAuth vai automaticamente:
-      // - Se user existe → redireciona para dashboard correto
-      // - Se user NÃO existe → vai para /auth/error → auto-redirect para signup
+      // LOGIN SIMPLES - Sem preparação de signup
       await signIn("google", {
-        redirect: true, // Permite redirect automático
+        redirect: true,
       });
     } catch (error) {
       console.error("Google login error:", error);

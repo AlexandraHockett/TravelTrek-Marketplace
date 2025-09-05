@@ -271,26 +271,46 @@ export default function SignupForm({ locale }: SignupFormProps) {
     setLoading(true);
 
     try {
-      console.log(`🚀 Starting Google signup for role: ${formData.role}`);
-
-      // ✅ Store role and mark as signup
-      if (typeof window !== "undefined") {
-        sessionStorage.setItem("pendingRole", formData.role);
-        sessionStorage.setItem("isSignup", "true"); // 🔑 KEY: Mark as signup
+      if (!formData.role) {
+        setErrors({
+          general:
+            t("auth.error.selectRole") ||
+            "Por favor selecione se é Cliente ou Anfitrião",
+        });
+        setLoading(false);
+        return;
       }
 
-      // ✅ Use special callbackUrl with signup flag
+      console.log(`🚀 Preparing Google signup for role: ${formData.role}`);
+
+      // PASSO 1: Preparar signup no servidor
+      const prepareResponse = await fetch("/api/auth/prepare-google-signup", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ role: formData.role }),
+      });
+
+      const prepareResult = await prepareResponse.json();
+
+      if (!prepareResult.success) {
+        throw new Error(prepareResult.error || "Failed to prepare signup");
+      }
+
+      console.log(`✅ Signup prepared with token: ${prepareResult.token}`);
+
+      // PASSO 2: Fazer OAuth com Google
+      // Agora o servidor vai detectar os cookies e criar o user
       await signIn("google", {
-        callbackUrl: `/${locale}/auth/callback/google?signup=true`,
+        callbackUrl: `/${locale}/${formData.role === "host" ? "host" : "customer"}`,
         redirect: true,
       });
     } catch (error: any) {
-      console.error("Google signup error:", error);
+      console.error("❌ Google signup error:", error);
       setErrors({
         general:
-          error.message ||
+          error?.message ||
           t("auth.error.oauthError") ||
-          "Erro no signup Google",
+          "Erro ao autenticar com Google",
       });
       setLoading(false);
     }
