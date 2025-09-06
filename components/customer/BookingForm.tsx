@@ -147,38 +147,57 @@ export default function BookingForm({
     setErrors({});
 
     try {
-      // ✅ FIXED: Updated API call to match backend format
+      // ✅ FIXED: Send exactly what the API expects
+      const bookingPayload = {
+        tourId: tour.id,
+        date: selectedDate,
+        time: "10:00", // Default time or get from form
+        participants: participants,
+        customerName: contactInfo.fullName.trim(),
+        customerEmail: contactInfo.email.trim(),
+        specialRequests: specialRequests.trim() || undefined,
+        // ✅ Don't send customerId - API will create customer if needed
+      };
+
+      console.log("Sending booking payload:", bookingPayload);
+
       const response = await fetch("/api/bookings", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          tourId: tour.id,
-          date: selectedDate,
-          participants,
-          specialRequests: specialRequests.trim() || undefined,
-          customerName: contactInfo.fullName.trim(),
-          customerEmail: contactInfo.email.trim(),
-          customerPhone: contactInfo.phone.trim(),
-          totalAmount, // Include total amount
-        }),
+        body: JSON.stringify(bookingPayload),
       });
 
+      console.log("Response status:", response.status);
+
       if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || `HTTP ${response.status}`);
+        let errorMessage = `HTTP ${response.status}`;
+        try {
+          const errorData = await response.json();
+          console.error("API Error:", errorData);
+          errorMessage = errorData.error || errorData.details || errorMessage;
+        } catch (parseError) {
+          console.error("Failed to parse error response:", parseError);
+        }
+        throw new Error(errorMessage);
       }
 
       const result = await response.json();
+      console.log("Booking result:", result);
 
-      // ✅ FIXED: Handle API response format
+      // ✅ FIXED: Handle both success and error responses
       if (result.success && result.data) {
+        // Success - booking created
+        console.log("Booking created successfully:", result.data);
+
         onSuccess?.(result.data);
         onBookingComplete?.(result.data);
 
         // Show success message
-        alert(t("bookingForm.bookingSuccess", "Booking created successfully!"));
+        alert(
+          "Reserva criada com sucesso! Vai receber uma confirmação por email."
+        );
 
         // Reset form
         setSelectedDate("");
@@ -187,12 +206,38 @@ export default function BookingForm({
         setContactInfo({ fullName: "", email: "", phone: "" });
         setShowForm(false);
       } else {
-        throw new Error(result.error || "Booking creation failed");
+        // API returned success: false
+        const errorMessage =
+          result.error || result.details || "Falha na criação da reserva";
+        console.error("Booking failed:", errorMessage);
+        throw new Error(errorMessage);
       }
     } catch (error) {
       console.error("Booking error:", error);
-      const errorMessage =
-        error instanceof Error ? error.message : "Something went wrong";
+
+      let errorMessage = "Algo correu mal. Tente novamente.";
+
+      if (error instanceof Error) {
+        // Parse specific error messages
+        if (error.message.includes("Tour not found")) {
+          errorMessage =
+            "Tour não encontrado. Recarregue a página e tente novamente.";
+        } else if (error.message.includes("VALIDATION_ERROR")) {
+          errorMessage =
+            "Dados inválidos. Verifique os campos e tente novamente.";
+        } else if (error.message.includes("TOUR_VALIDATION_ERROR")) {
+          errorMessage = "Problema na validação do tour. Contacte o suporte.";
+        } else if (error.message.includes("CREATE_BOOKING_ERROR")) {
+          errorMessage =
+            "Erro na criação da reserva. Tente novamente em alguns minutos.";
+        } else if (error.message.includes("Database")) {
+          errorMessage =
+            "Problema temporário na base de dados. Tente novamente.";
+        } else {
+          errorMessage = error.message;
+        }
+      }
+
       setErrors({ general: errorMessage });
       onError?.(errorMessage);
     } finally {

@@ -9,6 +9,7 @@ import Navbar from "@/components/shared/Navbar";
 import Footer from "@/components/shared/Footer";
 import SessionProvider from "@/components/auth/SessionProvider";
 import "../globals.css";
+import DevelopmentBanner from "@/components/shared/DevelopmentBanner";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -76,6 +77,7 @@ export default async function RootLayout({
       </head>
       <body className="min-h-screen flex flex-col bg-gray-50 antialiased font-sans">
         <SessionProvider>
+          <DevelopmentBanner locale={locale} />
           <Navbar />
           <main className="flex-1 relative">{children}</main>
           <Footer params={{ locale }} />

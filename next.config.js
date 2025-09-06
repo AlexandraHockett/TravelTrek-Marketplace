@@ -1,6 +1,3 @@
-// File: next.config.js
-// Location: RENAME next.config.ts to next.config.js and REPLACE with this content
-
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   // 🚀 DEPLOYMENT CONFIG - IGNORE ALL ERRORS
@@ -68,7 +65,6 @@ const nextConfig = {
   },
 
   // Additional deployment optimizations
-  
   compress: true,
   trailingSlash: false,
 };

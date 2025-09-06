@@ -5,8 +5,8 @@
     "bookings": "Bookings",
     "profile": "Profile",
     "host": "Host",
-    "login": "Log In",
-    "signup": "Sign Up",
+    "login": "Log in",
+    "signup": "Sign up",
     "exploreTours": "Explore Tours",
     "myBookings": "My Bookings",
     "hostPortal": "Host Portal",
@@ -14,13 +14,30 @@
     "earnings": "Earnings",
     "messages": "Messages",
     "settings": "Settings",
-    "logout": "Log Out",
+    "logout": "Log out",
     "help": "Help",
     "contact": "Contact",
     "about": "About",
     "terms": "Terms",
     "privacy": "Privacy",
     "language": "Language"
+  },
+  "home": {
+    "title": "TravelTrek Marketplace",
+    "subtitle": "Discover authentic experiences with local hosts",
+    "description": "We connect travellers to unique experiences created by passionate hosts.",
+    "cta": "Explore Tours",
+    "features": {
+      "authentic": "Authentic Experiences",
+      "local": "Local Hosts",
+      "secure": "Secure Bookings"
+    }
+  },
+  "banner": {
+    "showcase": "TravelTrek Marketplace - Functional Showcase Platform",
+    "techDemo": "✅ Functional APIs | ✅ Authentication | ✅ Database | ✅ i18n (5 languages)",
+    "status": "Project Status",
+    "productionReady": "✅ Production Ready"
   },
   "bookings": {
     "myBookings": "My Bookings",
@@ -94,14 +111,14 @@
   },
   "hostCta": {
     "title": "Share Your Local Knowledge",
-    "subtitle": "Join our community of local hosts and turn your passion for your city into income. Create unique tours and share unforgettable experiences with travelers.",
+    "subtitle": "Join our community of local hosts and turn your passion for your city into income. Create unique tours and share unforgettable experiences with travellers.",
     "startTodayButton": "Start Today",
     "learnEarningsButton": "Learn About Earnings",
     "startHosting": "Start Hosting",
     "learnMore": "Learn More"
   },
   "statistics": {
-    "happyTravelers": "Happy Travelers",
+    "happyTravelers": "Happy Travellers",
     "uniqueTours": "Unique Tours",
     "citiesWorldwide": "Cities Worldwide"
   },
@@ -118,9 +135,9 @@
     "tours": "Tours",
     "bookings": "Bookings",
     "profile": "Profile",
-    "login": "Log In",
-    "signup": "Sign Up",
-    "logout": "Log Out",
+    "login": "Log in",
+    "signup": "Sign up",
+    "logout": "Log out",
     "dashboard": "Dashboard",
     "help": "Help",
     "contact": "Contact",
@@ -245,7 +262,7 @@
     "bookingError": "Error processing booking. Please try again.",
     "maxPersons": "Maximum",
     "bookForMultiple": "person",
-    "noChargeYet": "You won't be charged yet. Confirm the details before payment.",
+    "noChargeYet": "You won't be charged yet. Confirm details before payment.",
     "experienceDate": "Experience Date",
     "agreeToTerms": "By continuing, you agree to our",
     "termsOfService": "Terms of Service",
@@ -325,19 +342,204 @@
     "description": "Explore authentic experiences created by passionate local hosts."
   },
   "status": {
-    "title": "Project Status",
-    "subtitle": "TravelTrek Marketplace Development Demo",
+    "meta": {
+      "title": "Project Status | TravelTrek Portfolio",
+      "description": "Track the development progress of the TravelTrek marketplace - A complete showcase of Next.js, React and modern technologies",
+      "keywords": "TravelTrek, Next.js, React, TypeScript, development, portfolio, marketplace",
+      "openGraph": {
+        "title": "TravelTrek - Development Status",
+        "description": "Tours and experiences marketplace built with Next.js 15, React 19 and modern technologies"
+      }
+    },
+    "statusLabels": {
+      "live": "LIVE",
+      "completed": "Completed",
+      "progress": "In Progress",
+      "planned": "Planned",
+      "production": "Production",
+      "operational": "Operational"
+    },
+    "demo": {
+      "title": "Active Demos",
+      "subtitle": "Explore implemented features in real-time"
+    },
+    "demoLinks": {
+      "browseTours": {
+        "label": "Browse Tours",
+        "description": "Browse tour listings with filters and search"
+      },
+      "authDemo": {
+        "label": "Authentication System",
+        "description": "Login with Google OAuth and session management"
+      },
+      "customerDashboard": {
+        "label": "Customer Portal",
+        "description": "Personalised dashboard for users"
+      },
+      "hostPortal": {
+        "label": "Host Portal",
+        "description": "Interface for managing tours and bookings"
+      }
+    },
+    "tech": {
+      "title": "Technical Architecture",
+      "subtitle": "Modern and scalable tech stack"
+    },
+    "techStack": {
+      "frontend": {
+        "category": "Frontend",
+        "technologies": {
+          "nextjs": "Next.js 15 App Router",
+          "react": "React 19 Server Components",
+          "typescript": "TypeScript 5",
+          "tailwind": "Tailwind CSS v4"
+        }
+      },
+      "backend": {
+        "category": "Backend",
+        "technologies": {
+          "apiRoutes": "Next.js API Routes",
+          "postgresql": "PostgreSQL (Neon)",
+          "drizzle": "Drizzle ORM",
+          "neon": "Neon Database"
+        }
+      },
+      "auth": {
+        "category": "Authentication",
+        "technologies": {
+          "nextAuth": "NextAuth.js v5",
+          "googleOAuth": "Google OAuth",
+          "roleBasedAccess": "Access Control",
+          "protectedRoutes": "Protected Routes"
+        }
+      },
+      "i18n": {
+        "category": "Internationalisation",
+        "technologies": {
+          "languages": "5 Languages Supported",
+          "dynamicRouting": "Dynamic Routing",
+          "nextIntl": "Custom i18n System",
+          "localeSwitching": "Language Switching"
+        }
+      }
+    },
+    "highlights": {
+      "title": "Implementation Highlights",
+      "subtitle": "Key features developed and operational",
+      "database": {
+        "title": "Production Database",
+        "description": "PostgreSQL with Drizzle ORM, complete schema for users, tours and bookings"
+      },
+      "auth": {
+        "title": "Complete Authentication",
+        "description": "NextAuth.js with Google OAuth, role-based access control",
+        "metric": "Functional login"
+      },
+      "i18n": {
+        "title": "Multilingual System",
+        "description": "Full support for 5 languages with dynamic routing"
+      },
+      "techStack": {
+        "title": "Modern Stack",
+        "description": "Next.js 15, React 19, TypeScript 5 and Tailwind CSS v4",
+        "metric": "Current technologies"
+      }
+    },
+    "progress": {
+      "title": "Detailed Progress",
+      "subtitle": "Current development status by category"
+    },
     "categories": {
       "coreInfrastructure": "Core Infrastructure",
       "customerPortal": "Customer Portal",
       "hostPortal": "Host Portal",
-      "integrations": "Integrations"
+      "backendApi": "Backend API",
+      "integrations": "Integrations",
+      "testingQuality": "Testing & Quality",
+      "core": {
+        "name": "Core Infrastructure",
+        "features": {
+          "nextjs": "Next.js 15 + App Router",
+          "typescript": "TypeScript Integration",
+          "tailwind": "Tailwind CSS v4",
+          "architecture": "Project Architecture",
+          "i18n": "Complete i18n System"
+        }
+      },
+      "database": {
+        "name": "Database",
+        "features": {
+          "postgresql": "PostgreSQL + Neon",
+          "drizzle": "Drizzle ORM",
+          "crud": "CRUD Operations",
+          "validation": "Data Validation",
+          "errorHandling": "Error Handling"
+        }
+      },
+      "auth": {
+        "name": "Authentication",
+        "features": {
+          "nextAuth": "NextAuth.js v5",
+          "googleOAuth": "Google OAuth",
+          "roleBasedAccess": "Access Control",
+          "protectedRoutes": "Protected Routes",
+          "session": "Session Management"
+        }
+      },
+      "ui": {
+        "name": "User Interface",
+        "features": {
+          "browsing": "Tour Browsing",
+          "customerDashboard": "Customer Dashboard",
+          "hostDashboard": "Host Dashboard",
+          "booking": "Booking System",
+          "responsive": "Responsive Design"
+        }
+      }
+    },
+    "skills": {
+      "title": "Technical Skills Demonstrated",
+      "frontend": {
+        "title": "Frontend",
+        "nextjs": "Next.js 15 + App Router",
+        "react": "React 19 + Server Components",
+        "typescript": "TypeScript 5",
+        "responsive": "Responsive Design",
+        "state": "State Management"
+      },
+      "backend": {
+        "title": "Backend",
+        "postgresql": "PostgreSQL + Neon",
+        "api": "API Routes",
+        "orm": "Drizzle ORM",
+        "validation": "Data Validation",
+        "error": "Error Handling"
+      },
+      "devops": {
+        "title": "DevOps",
+        "auth": "Secure Authentication",
+        "security": "Security",
+        "env": "Environment Management",
+        "migrations": "DB Migrations",
+        "deployment": "Deployment"
+      }
+    },
+    "title": "Project Status",
+    "subtitle": "TravelTrek Marketplace development showcase",
+    "featuresCompleted": "implemented",
+    "featuresInProgress": "in development",
+    "featuresPlanned": "planned",
+    "status": {
+      "implemented": "Implemented",
+      "inProgress": "In Development",
+      "planned": "Planned"
     },
     "features": {
-      "i18nSystem": "Internationalization System",
+      "i18nSystem": "Internationalisation System",
       "nextjsReact": "Next.js 15 + React 19",
       "responsiveNavigation": "Responsive Navigation",
       "typescriptIntegration": "TypeScript Integration",
+      "projectStructure": "Project Structure",
       "tourBrowsing": "Tour Browsing",
       "bookingSystem": "Booking System",
       "userDashboard": "User Dashboard",
@@ -346,149 +548,72 @@
       "tourCreation": "Tour Creation",
       "earningsDashboard": "Earnings Dashboard",
       "messagingSystem": "Messaging System",
+      "databaseSchema": "Database Schema",
+      "apiRoutes": "API Routes",
+      "dataValidation": "Data Validation",
       "stripeIntegration": "Stripe Integration",
-      "databasePostgres": "Postgres Database",
+      "authenticationSystem": "Authentication System",
       "viatorApiIntegration": "Viator API Integration",
-      "authenticationSystem": "Authentication System"
+      "emailSystem": "Email System",
+      "unitTesting": "Unit Testing",
+      "e2eTesting": "E2E Testing",
+      "cicdPipeline": "CI/CD Pipeline"
     },
     "descriptions": {
-      "i18nSystemDesc": "Full support for 5 languages with smooth navigation between locales.",
+      "i18nSystemDesc": "Full support for 5 languages with smooth locale navigation.",
       "nextjsReactDesc": "Built with Next.js App Router and React for a modern and scalable frontend.",
-      "responsiveNavigationDesc": "Optimized mobile and desktop navigation with Tailwind CSS v4.",
+      "responsiveNavigationDesc": "Mobile and desktop navigation optimised with Tailwind CSS v4.",
       "typescriptIntegrationDesc": "Type-safe code with TypeScript for robust development.",
+      "projectStructureDesc": "Well-organised architecture following Next.js best practices.",
       "tourBrowsingDesc": "Browse and filter tours with real-time data from the simulated Viator API.",
-      "bookingSystemDesc": "Booking system in progress with state management and Stripe integration.",
+      "bookingSystemDesc": "Planned booking system with state management and Stripe integration.",
       "userDashboardDesc": "Customer dashboard to manage bookings and profile settings.",
       "reviewSystemDesc": "Planned system for users to leave reviews of tours and hosts.",
       "bookingManagementDesc": "Tools for hosts to manage bookings and communicate with customers.",
-      "tourCreationDesc": "System in progress for hosts to create and edit tours.",
+      "tourCreationDesc": "Planned system for hosts to create and edit tours.",
       "earningsDashboardDesc": "Dashboard for hosts to track earnings and performance metrics.",
       "messagingSystemDesc": "Planned messaging system for host-customer communication.",
-      "stripeIntegrationDesc": "Stripe integration in progress for secure payment processing.",
-      "databasePostgresDesc": "Postgres database to store tours, bookings, and user data.",
-      "viatorApiIntegrationDesc": "Planned integration with Viator API for tour data synchronization.",
-      "authenticationSystemDesc": "Planned authentication system for secure user access."
+      "databaseSchemaDesc": "Postgres schema for tours, bookings and user data.",
+      "apiRoutesDesc": "RESTful APIs for all marketplace CRUD operations.",
+      "dataValidationDesc": "Robust data validation using Zod or similar.",
+      "stripeIntegrationDesc": "Planned Stripe integration for secure payment processing.",
+      "authenticationSystemDesc": "Planned authentication system for secure user access.",
+      "viatorApiIntegrationDesc": "Planned integration with Viator API for tour data synchronisation.",
+      "emailSystemDesc": "Email notification system for confirmations and updates.",
+      "unitTestingDesc": "Comprehensive unit tests for components and functions.",
+      "e2eTestingDesc": "End-to-end tests for critical user flows.",
+      "cicdPipelineDesc": "Automated continuous integration and deployment pipeline."
     },
-    "implemented": "Implemented",
-    "inProgress": "In Development",
-    "planned": "Planned"
-  },
-  "techStack": "Tech Stack",
-  "techStackItems": {
-    "nextjs": {
-      "title": "Next.js",
-      "subtitle": "Server-side rendering and App Router for optimized performance."
-    },
-    "tailwind": {
-      "title": "Tailwind CSS",
-      "subtitle": "Utility-first CSS framework for modern and responsive design."
-    },
-    "typescript": {
-      "title": "TypeScript",
-      "subtitle": "Type-safe development for sustainable code."
-    },
-    "i18n": {
-      "title": "Internationalization",
-      "subtitle": "Multi-language support to reach a global audience."
-    }
-  },
-  "portfolioContext": "Portfolio Context",
-  "portfolioDescription": "TravelTrek Marketplace demonstrates a modern and scalable web application built with cutting-edge technologies.",
-  "portfolioPoints": {
-    "modernReact": "Modern React Framework: Uses Next.js with App Router for dynamic rendering.",
-    "i18nExpertise": "i18n Expertise: Supports five languages with smooth locale switching.",
-    "marketplaceArchitecture": "Marketplace Architecture: Robust structure for customer and host portals.",
-    "contemporaryStyling": "Contemporary Styling: Tailwind CSS v4 for modern and responsive UI.",
-    "professionalStructure": "Professional Structure: Type-safe code and modular design."
-  },
-  "pages": {
-    "customer": {
-      "dashboard": {
-        "title": "Customer Dashboard",
-        "subtitle": "Manage your bookings and explore new tours"
-      }
-    },
-    "host": {
-      "dashboard": {
-        "title": "Host Dashboard",
-        "subtitle": "Manage your tours and track your earnings"
-      }
-    },
-    "status": {
-      "featuresCompleted": "completed",
-      "featuresInProgress": "in development",
-      "featuresPlanned": "planned",
-      "progress": "Progress",
-      "status": {
-        "implemented": "Implemented",
-        "inProgress": "In Development",
-        "planned": "Planned"
+    "techStackItems": {
+      "nextjs": {
+        "title": "Next.js",
+        "subtitle": "Server-side rendering and App Router for optimised performance."
       },
-      "techStack": "Tech Stack",
-      "techStackItems": {
-        "nextjs": {
-          "title": "Next.js",
-          "subtitle": "Server-side rendering and App Router for optimized performance."
-        },
-        "tailwind": {
-          "title": "Tailwind CSS",
-          "subtitle": "Utility-first CSS framework for modern and responsive design."
-        },
-        "typescript": {
-          "title": "TypeScript",
-          "subtitle": "Type-safe development for sustainable code."
-        },
-        "i18n": {
-          "title": "Internationalization",
-          "subtitle": "Multi-language support to reach a global audience."
-        }
+      "tailwind": {
+        "title": "Tailwind CSS",
+        "subtitle": "Utility-first CSS framework for modern and responsive design."
       },
-      "portfolioContext": "Portfolio Context",
-      "portfolioDescription": "The TravelTrek Marketplace demonstrates a modern and scalable web application built with cutting-edge technologies.",
-      "portfolioPoints": {
-        "modernReact": "Modern React Framework: Uses Next.js with App Router for dynamic rendering.",
-        "i18nExpertise": "i18n Expertise: Supports five languages with smooth locale switching.",
-        "marketplaceArchitecture": "Marketplace Architecture: Robust structure for customer and host portals.",
-        "contemporaryStyling": "Contemporary Styling: Tailwind CSS v4 for modern and responsive UI.",
-        "professionalStructure": "Professional Structure: Type-safe code and modular design."
+      "typescript": {
+        "title": "TypeScript",
+        "subtitle": "Type-safe development for sustainable code."
       },
-      "nextSteps": {
-        "title": "Next Steps",
-        "thisWeek": "This Week",
-        "nextWeek": "Next Week",
-        "thisMonth": "This Month",
-        "thisWeekItems": {
-          "database": "Set up database",
-          "envSetup": "Environment variables",
-          "firstApi": "First functional API"
-        },
-        "nextWeekItems": {
-          "auth": "Authentication system",
-          "tourPages": "Tour pages",
-          "uiComponents": "UI components"
-        },
-        "thisMonthItems": {
-          "customerPortal": "Customer portal",
-          "bookingSystem": "Booking system",
-          "hostDashboard": "Host dashboard"
-        }
+      "i18n": {
+        "title": "Internationalisation",
+        "subtitle": "Multi-language support to reach a global audience."
       },
-      "title": "Development Status",
-      "subtitle": "Track the development progress of TravelTrek",
+      "title": "Project Status",
+      "subtitle": "TravelTrek Marketplace development showcase",
       "categories": {
         "coreInfrastructure": "Core Infrastructure",
         "customerPortal": "Customer Portal",
         "hostPortal": "Host Portal",
-        "backendApi": "Backend & API",
-        "integrations": "Integrations",
-        "testingQuality": "Testing & Quality"
+        "integrations": "Integrations"
       },
       "features": {
-        "i18nSystem": "Internationalization System",
+        "i18nSystem": "Internationalisation System",
         "nextjsReact": "Next.js 15 + React 19",
         "responsiveNavigation": "Responsive Navigation",
         "typescriptIntegration": "TypeScript Integration",
-        "projectStructure": "Project Structure",
         "tourBrowsing": "Tour Browsing",
         "bookingSystem": "Booking System",
         "userDashboard": "User Dashboard",
@@ -497,833 +622,977 @@
         "tourCreation": "Tour Creation",
         "earningsDashboard": "Earnings Dashboard",
         "messagingSystem": "Messaging System",
-        "databaseSchema": "Database Schema",
-        "apiRoutes": "API Routes",
-        "dataValidation": "Data Validation",
         "stripeIntegration": "Stripe Integration",
-        "authenticationSystem": "Authentication System",
+        "databasePostgres": "Postgres Database",
         "viatorApiIntegration": "Viator API Integration",
-        "emailSystem": "Email System",
-        "unitTesting": "Unit Testing",
-        "e2eTesting": "E2E Testing",
-        "cicdPipeline": "CI/CD Pipeline"
+        "authenticationSystem": "Authentication System"
       },
       "descriptions": {
         "i18nSystemDesc": "Full support for 5 languages with smooth locale switching.",
         "nextjsReactDesc": "Built with Next.js App Router and React for a modern and scalable frontend.",
-        "responsiveNavigationDesc": "Optimized mobile and desktop navigation with Tailwind CSS v4.",
+        "responsiveNavigationDesc": "Mobile and desktop navigation optimised with Tailwind CSS v4.",
         "typescriptIntegrationDesc": "Type-safe code with TypeScript for robust development.",
-        "projectStructureDesc": "Well-organized architecture following Next.js best practices.",
         "tourBrowsingDesc": "Browse and filter tours with real-time data from the simulated Viator API.",
-        "bookingSystemDesc": "Planned booking system with state management and Stripe integration.",
+        "bookingSystemDesc": "Booking system in progress with state management and Stripe integration.",
         "userDashboardDesc": "Customer dashboard to manage bookings and profile settings.",
         "reviewSystemDesc": "Planned system for users to leave reviews of tours and hosts.",
         "bookingManagementDesc": "Tools for hosts to manage bookings and communicate with customers.",
-        "tourCreationDesc": "Planned system for hosts to create and edit tours.",
+        "tourCreationDesc": "System in progress for hosts to create and edit tours.",
         "earningsDashboardDesc": "Dashboard for hosts to track earnings and performance metrics.",
         "messagingSystemDesc": "Planned messaging system for host-customer communication.",
-        "databaseSchemaDesc": "Postgres schema for tours, bookings, and user data.",
-        "apiRoutesDesc": "RESTful APIs for all marketplace CRUD operations.",
-        "dataValidationDesc": "Robust data validation using Zod or similar.",
-        "stripeIntegrationDesc": "Planned Stripe integration for secure payment processing.",
-        "authenticationSystemDesc": "Planned authentication system for secure user access.",
-        "viatorApiIntegrationDesc": "Planned integration with Viator API for tour data synchronization.",
-        "emailSystemDesc": "Email notification system for confirmations and updates.",
-        "unitTestingDesc": "Comprehensive unit tests for components and functions.",
-        "e2eTestingDesc": "End-to-end tests for critical user flows.",
-        "cicdPipelineDesc": "Automated continuous integration and deployment pipeline."
-      }
-    },
-    "home": {
-      "title": "TravelTrek Marketplace",
-      "subtitle": "Discover authentic experiences with local hosts",
-      "description": "We connect travelers to unique experiences created by passionate hosts.",
-      "cta": "Explore Tours",
-      "features": {
-        "authentic": "Authentic Experiences",
-        "local": "Local Hosts",
-        "secure": "Secure Payments"
-      }
-    },
-    "bookingDetail": {
-      "title": "Booking Details",
-      "description": "View and manage your booking details"
-    },
-    "customerTours": {
-      "title": "Tours & Experiences - TravelTrek",
-      "description": "Discover amazing tours and experiences"
-    },
-    "customerDashboard": {
-      "title": "Customer Dashboard - TravelTrek",
-      "description": "Manage your bookings and discover experiences"
-    },
-    "notFound": {
-      "title": "Page not found",
-      "description": "The requested page was not found"
-    },
-    "customerBookings": {
-      "title": "My Bookings",
-      "description": "Manage your tour and experience bookings",
-      "subtitle": "Manage your tour and experience bookings",
-      "browseTours": "Browse Tours",
-      "noBookingsDescription": "Discover unique experiences in Portugal and make your first booking!",
-      "stats": {
-        "totalBookings": "Total Bookings",
-        "upcoming": "Upcoming",
-        "totalSpent": "Total Spent"
+        "stripeIntegrationDesc": "Stripe integration in progress for secure payment processing.",
+        "databasePostgresDesc": "Postgres database to store tours, bookings and user data.",
+        "viatorApiIntegrationDesc": "Planned integration with Viator API for tour data synchronisation.",
+        "authenticationSystemDesc": "Planned authentication system for secure user access."
       },
-      "filters": {
-        "all": "All",
-        "bookingStatusLabel": "Booking Status",
-        "sortByLabel": "Sort by"
+      "implemented": "Implemented",
+      "inProgress": "In Development",
+      "planned": "Planned"
+    },
+    "portfolioContext": "Portfolio Context",
+    "portfolioDescription": "TravelTrek Marketplace demonstrates a modern, scalable web application built with cutting-edge technologies.",
+    "portfolioPoints": {
+      "modernReact": "Modern React Framework: Uses Next.js with App Router for dynamic rendering.",
+      "i18nExpertise": "i18n Expertise: Supports five languages with smooth locale switching.",
+      "marketplaceArchitecture": "Marketplace Architecture: Robust structure for customer and host portals.",
+      "contemporaryStyling": "Contemporary Styling: Tailwind CSS v4 for modern, responsive UI.",
+      "professionalStructure": "Professional Structure: Type-safe code and modular design."
+    },
+    "pages": {
+      "customer": {
+        "dashboard": {
+          "title": "Customer Dashboard",
+          "subtitle": "Manage your bookings and explore new tours"
+        }
       },
-      "sort": {
-        "dateDesc": "Most recent date",
-        "dateAsc": "Oldest date",
-        "amountDesc": "Highest amount",
-        "amountAsc": "Lowest amount",
-        "createdDesc": "Most recent booking",
-        "status": "Status"
-      }
-    }
-  },
-  "bookingList": {
-    "location": "Location",
-    "person": "person",
-    "persons": "people",
-    "specialRequests": "Special Requests",
-    "vegetarianRequest": "Vegetarian option requested",
-    "bookingNumber": "Booking",
-    "createdAt": "Created on",
-    "completed": "Completed",
-    "pending": "Pending",
-    "confirmed": "Confirmed",
-    "cancelled": "Cancelled",
-    "pendingPayment": "Payment Pending",
-    "paid": "Paid",
-    "refunded": "Refunded",
-    "viewDetails": "View Details",
-    "pay": "Pay",
-    "cancel": "Cancel",
-    "rebook": "Book Again",
-    "participants": "Participants",
-    "totalAmount": "Total Amount",
-    "noBookings": "You don't have any bookings yet.",
-    "bookFirstTour": "Book First Experience",
-    "date": "Date",
-    "next": "Next",
-    "pendingLabel": "Pending",
-    "confirmedLabel": "Confirmed",
-    "completedLabel": "Completed",
-    "cancelledLabel": "Cancelled",
-    "leaveReview": "Leave Review",
-    "view": "View"
-  },
-  "bookingDetails": {
-    "location": "Location",
-    "serviceFees": "Service Fees",
-    "included": "Included",
-    "payNow": "Pay Now",
-    "bookingDetails": "Booking Details",
-    "bookingInformation": "Booking Information",
-    "hostInformation": "Host Information",
-    "importantInformation": "Important Information",
-    "actions": "Actions",
-    "paymentCompleted": "Payment Completed",
-    "paymentCompletedDescription": "Your booking is confirmed and paid.",
-    "paymentPending": "Payment Pending",
-    "paymentPendingDescription": "Complete payment to confirm your booking.",
-    "viewTourDetails": "View Tour Details",
-    "viewTour": "View Tour",
-    "contactHost": "Contact Host",
-    "cancelBooking": "Cancel Booking",
-    "leaveReview": "Leave Review",
-    "responseTime": "Response time",
-    "confirmedBooking": "Booking Confirmed",
-    "meetingInstructions": "Arrive at the location 15 minutes before the experience starts.",
-    "cancellationPolicy": "Cancellation Policy",
-    "cancellationDescription": "Free cancellation up to 24 hours before the tour starts. Late cancellations may incur fees.",
-    "cancelReasonRequired": "Please state the reason for cancellation.",
-    "cancelDescription": "Are you sure you want to cancel this booking? This action cannot be undone.",
-    "refundInfo": "Refund",
-    "willBeRefunded": "will be refunded",
-    "cancelReason": "Cancellation reason",
-    "cancelReasonPlaceholder": "Please explain the reason for cancellation...",
-    "confirmCancel": "Confirm Cancellation",
-    "cancelSuccess": "Booking cancelled successfully",
-    "cancelError": "Error cancelling booking. Please try again.",
-    "redirectingPayment": "Redirecting to payment...",
-    "paymentError": "Error processing payment. Please try again.",
-    "contactHostMessage": "Opening chat with host...",
-    "partialRefund": "Partial refund of",
-    "noRefund": "No refund available",
-    "paymentInstructions": "Complete payment to confirm your booking.",
-    "pendingMessage": "Waiting for host confirmation",
-    "confirmedMessage": "Your booking has been confirmed!",
-    "completedMessage": "Experience completed",
-    "cancelledMessage": "Booking cancelled",
-    "time": "Time",
-    "meetingPoint": "Meeting Point",
-    "needHelp": "Need Help?",
-    "supportMessage": "Our team is available 24/7 for support.",
-    "contactSupport": "Contact Support",
-    "tourDescription": {
-      "portoFoodWine": "Discover the authentic flavors of Porto in a unique gastronomic experience with local wines.",
-      "sintraPalaces": "Visit the majestic palaces of Sintra, a UNESCO World Heritage site, with a specialized guide.",
-      "douroCruise": "Panoramic cruise on the Douro River with stunning vineyard landscapes.",
-      "lisbonTukTuk": "Explore Lisbon in a fun way by tuk-tuk, discovering hidden corners of the city."
-    },
-    "specialRequests": {
-      "vegetarian": "Vegetarian options, please",
-      "wheelchair": "Wheelchair access required"
-    },
-    "meetingPointDetails": {
-      "portoCathedral": "Porto Cathedral - Main Entrance",
-      "sintraStation": "Sintra Train Station",
-      "douroPort": "Gaia Pier - River Terminal",
-      "lisbonSquare": "Commerce Square - Center"
-    },
-    "cancellationPolicyDetails": {
-      "flexible": "Flexible - Full refund up to 24h before",
-      "moderate": "Moderate - 50% refund up to 48h before",
-      "strict": "Strict - No refund 7 days before"
-    }
-  },
-  "errors": {
-    "serverError": "Server error. Contact support.",
-    "paymentFailed": "Failed to process payment.",
-    "bookingFailed": "Could not process booking.",
-    "unauthorized": "Unauthorized",
-    "validation": "Invalid data",
-    "generic": "Error loading data",
-    "network": "Internet connection error",
-    "notFound": "Resource not found",
-    "invalidPriceFormat": "Invalid price format",
-    "invalidOriginalPriceFormat": "Invalid original price format"
-  },
-  "api": {
-    "errors": {
-      "tourNotFound": "Tour not found",
-      "bookingNotFound": "Booking not found",
-      "invalidData": "Invalid data",
-      "maxParticipantsExceeded": "Maximum participants exceeded",
-      "bookingNotCancellable": "Booking cannot be cancelled",
-      "paymentFailed": "Payment failed",
-      "serverError": "Server error",
-      "unauthorised": "Unauthorized",
-      "userNotFound": "User not found",
-      "emailAlreadyExists": "Email already exists",
-      "fetchUsersError": "Error loading users",
-      "fetchUserError": "Error loading user",
-      "createUserError": "Error creating user",
-      "updateUserError": "Error updating user",
-      "deleteUserError": "Error deleting user",
-      "fetchHostsError": "Error loading hosts",
-      "fetchCustomersError": "Error loading customers"
-    }
-  },
-  "users": {
-    "title": "Users",
-    "create": "Create User",
-    "edit": "Edit User",
-    "delete": "Delete User",
-    "roles": {
-      "customer": "Customer",
-      "host": "Host",
-      "admin": "Administrator"
-    },
-    "status": {
-      "verified": "Verified",
-      "unverified": "Unverified"
-    },
-    "stats": {
-      "totalBookings": "Total Bookings",
-      "totalSpent": "Total Spent",
-      "totalEarnings": "Total Earnings",
-      "totalTours": "Total Tours",
-      "averageRating": "Average Rating"
-    },
-    "messages": {
-      "userCreated": "User created successfully",
-      "userUpdated": "User updated successfully",
-      "userDeleted": "User deleted successfully",
-      "confirmDelete": "Are you sure you want to delete this user?",
-      "noUsersFound": "No users found"
-    }
-  },
-  "auth": {
-    "hostBenefit1": "Create and manage your own tours",
-    "hostBenefit2": "Receive bookings and communicate with customers",
-    "hostBenefit3": "Track your earnings and statistics",
-    "hostBenefit4": "Access to advanced management tools",
-    "chooseAccountType": "Choose account type",
-    "customerDescription": "Browse and book tours",
-    "hostDescription": "Create and manage tours",
-    "hostInfo": "Information for Hosts:",
-    "accessDenied": "Access Denied",
-    "accessRestricted": "Access Restricted",
-    "loginRequired": "You need to log in to access this page.",
-    "insufficientPermissions": "You do not have sufficient permissions.",
-    "customerOnly": "This page is for customers only.",
-    "hostOnly": "This page is for hosts only.",
-    "adminOnly": "This page is for administrators only.",
-    "verifyingAccess": "Verifying access...",
-    "pleaseWait": "Please wait...",
-    "yourRole": "Your account type",
-    "requiredRole": "Required type",
-    "loginTitle": "Log In",
-    "signupTitle": "Create Account",
-    "signupSubtitle": "Join our community of travelers",
-    "confirmPasswordPlaceholder": "Confirm your password",
-    "namePlaceholder": "Your full name",
-    "signupButton": "Create Account",
-    "forgotPassword": "Forgot your password?",
-    "hasAccount": "Already have an account?",
-    "signupLink": "Create account",
-    "loginLink": "Log in",
-    "orContinueWith": "Or continue with",
-    "loading": "Processing...",
-    "loginLoading": "Logging in...",
-    "signupLoading": "Creating account...",
-    "login": "Log In",
-    "loginSubtitle": "Access your TravelTrek account",
-    "loginButton": "Log In",
-    "loginFailed": "Invalid credentials. Please check your email and password.",
-    "loginError": "An error occurred during login. Please try again.",
-    "emailPlaceholder": "Enter your email",
-    "passwordPlaceholder": "Enter your password",
-    "or": "or",
-    "googleLogin": "Continue with Google",
-    "noAccount": "Don't have an account?",
-    "signup": "Sign Up",
-    "error": {
-      "invalidCredentials": "Invalid credentials. Check your email and password.",
-      "userNotFound": "User not found.",
-      "wrongPassword": "Incorrect password.",
-      "emailExists": "This email is already registered.",
-      "weakPassword": "Password must be at least 8 characters long.",
-      "passwordMismatch": "Passwords do not match.",
-      "required": "This field is required.",
-      "invalidEmail": "Invalid email.",
-      "serverError": "Server error. Please try again later.",
-      "oauthError": "Error logging in with Google. Please try again.",
-      "sessionExpired": "Session expired. Please log in again.",
-      "unauthorized": "You do not have permission to access this page."
-    },
-    "success": {
-      "loginSuccess": "Logged in successfully!",
-      "signupSuccess": "Account created successfully! Welcome!",
-      "logoutSuccess": "Logged out successfully.",
-      "passwordReset": "Recovery email sent."
-    },
-    "logout": "Log Out",
-    "profile": "Profile",
-    "dashboard": "Dashboard",
-    "settings": "Settings"
-  },
-  "tours": {
-    "maxParticipants": "Max",
-    "more": "more",
-    "anyRating": "Any Rating",
-    "stars": "Stars",
-    "newest": "Newest",
-    "priceLowHigh": "Price: Low to High",
-    "priceHighLow": "Price: High to Low",
-    "bestRated": "Best Rated",
-    "showingResults": "Showing {count} of {total} tours",
-    "noResultsDesc": "Try adjusting your search criteria or browse all available tours.",
-    "aboutExperience": "About this experience",
-    "itinerary": "Itinerary",
-    "language": "Language",
-    "easy": "Easy",
-    "moderate": "Moderate",
-    "challenging": "Challenging",
-    "cultural": "Cultural",
-    "adventure": "Adventure",
-    "fooddrink": "Food and Drink",
-    "nature": "Nature",
-    "historical": "Historical",
-    "lowToHigh": "Low to High",
-    "highToLow": "High to Low",
-    "noToursFound": "No tours found",
-    "noToursFoundDesc": "Try adjusting the search criteria.",
-    "browseAllTours": "Browse All Tours",
-    "toursFound": "{count} tours found",
-    "title": "Discover Unique Experiences",
-    "subtitle": "Connect with authentic local hosts",
-    "duration": "Duration",
-    "category": "Category",
-    "rating": "Rating",
-    "showMore": "Show more",
-    "showLess": "Show less",
-    "reviewsCount": "reviews",
-    "fromPrice": "from",
-    "freeWifi": "Free Wi-Fi",
-    "breakfast": "Breakfast",
-    "transport": "Transport",
-    "guide": "Local Guide",
-    "createSuccess": "Tour created successfully",
-    "searchPlaceholder": "Search tours...",
-    "result": "result",
-    "results": "results",
-    "filters": "Filters",
-    "clearFilters": "Clear Filters",
-    "noResultsDescription": "Try adjusting the filters to find more options.",
-    "from": "from",
-    "perPerson": "per person",
-    "upTo": "up to",
-    "viewDetails": "View Details",
-    "addToWishlist": "Add to Wishlist",
-    "removeFromWishlist": "Remove from Wishlist",
-    "availableTours": "Available Tours",
-    "averageRating": "Average Rating",
-    "totalReviews": "Reviews",
-    "destinations": "Destinations",
-    "popularCategories": "Popular Categories",
-    "priceRange": "Price Range",
-    "location": "Location",
-    "allLocations": "All Locations",
-    "allDifficulties": "All Difficulties",
-    "sortBy": "Sort by",
-    "difficulty": {
-      "label": "Difficulty",
-      "easy": "Easy",
-      "moderate": "Moderate",
-      "challenging": "Challenging"
-    },
-    "sort": {
-      "newest": "Newest",
-      "popular": "Most Popular",
-      "priceAsc": "Price Low to High",
-      "priceDesc": "Price High to Low",
-      "rating": "Best Rated",
-      "duration": "Duration"
-    },
-    "categories": {
-      "sports": "Sports",
-      "relaxation": "Relaxation",
-      "cultural": "Cultural",
-      "fooddrink": "Food and Drink",
-      "historical": "Historical",
-      "food": "Food",
-      "culture": "Culture",
-      "nature": "Nature",
-      "adventure": "Adventure",
-      "history": "History",
-      "beaches": "Beaches",
-      "wine": "Wine",
-      "walking": "Walking",
-      "family": "Family",
-      "art": "Art",
-      "nightlife": "Nightlife"
-    },
-    "hostCta": {
-      "title": "Run a tourism business?",
-      "description": "Join our platform and reach thousands of travelers interested in your unique experiences.",
-      "button": "Become a Host"
-    },
-    "featuredTours": "Featured Experiences",
-    "allTours": "All Experiences",
-    "searchTours": "Search experiences...",
-    "filterByLocation": "Filter by location",
-    "filterByPrice": "Filter by price",
-    "filterByDuration": "Filter by duration",
-    "sortPopular": "Most popular",
-    "sortPrice": "Price",
-    "sortRating": "Rating",
-    "sortDuration": "Duration",
-    "noResults": "No experiences found.",
-    "loadMore": "Load more",
-    "bookingSuccess": "Booking made successfully!",
-    "bookingError": "Error making booking. Please try again.",
-    "details": {
-      "overview": "Overview",
-      "itinerary": "Itinerary",
-      "included": "Included",
-      "excluded": "Not Included",
-      "cancellation": "Cancellation Policy",
-      "reviews": "Reviews",
-      "host": "Host",
-      "meetingPoint": "Meeting Point",
-      "difficulty": "Difficulty",
-      "minAge": "Minimum Age",
-      "maxParticipants": "Maximum Participants",
-      "languages": "Languages",
-      "duration": "Duration"
-    }
-  },
-  "booking": {
-    "selectDate": "Select Date",
-    "selectTime": "Select Time",
-    "participants": "Participants",
-    "adults": "Adults",
-    "children": "Children",
-    "totalPrice": "Total Price",
-    "proceedPayment": "Proceed to Payment",
-    "bookingDetails": "Booking Details",
-    "customerInfo": "Customer Information",
-    "specialRequests": "Special Requests",
-    "confirmBooking": "Confirm Booking",
-    "paymentSuccess": "Payment made successfully!",
-    "paymentError": "Payment error. Please try again.",
-    "status": {
-      "pending": "Pending",
-      "confirmed": "Confirmed",
-      "completed": "Completed",
-      "cancelled": "Cancelled",
-      "refunded": "Refunded"
-    },
-    "myBookings": "My Bookings",
-    "upcomingBookings": "Upcoming Bookings",
-    "pastBookings": "Past Bookings",
-    "cancelBooking": "Cancel Booking",
-    "rescheduleBooking": "Reschedule Booking",
-    "contactHost": "Contact Host",
-    "leaveReview": "Leave Review",
-    "downloadReceipt": "Download Receipt"
-  },
-  "host": {
-    "tours": {
-      "create": {
-        "title": "Create New Tour",
-        "subtitle": "Share your expertise and create unforgettable experiences for travellers",
-        "description": "Create a new tour experience for travellers",
-        "steps": {
-          "basicInfo": "Basic Information",
-          "details": "Tour Details",
-          "features": "Features & Requirements",
-          "policies": "Policies & Review"
+      "host": {
+        "dashboard": {
+          "title": "Host Dashboard",
+          "subtitle": "Manage your tours and track your earnings"
+        }
+      },
+      "status": {
+        "featuresCompleted": "completed",
+        "featuresInProgress": "in development",
+        "featuresPlanned": "planned",
+        "progress": "Progress",
+        "status": {
+          "implemented": "Implemented",
+          "inProgress": "In Development",
+          "planned": "Planned"
         },
-        "form": {
-          "title": "Tour Title",
-          "location": "Location",
-          "category": "Category",
-          "description": "Description",
-          "duration": "Duration (hours)",
-          "maxParticipants": "Max Participants",
-          "price": "Price per Person (€)",
-          "difficulty": "Difficulty Level",
-          "language": "Tour Language",
-          "included": "What's Included",
-          "excluded": "What's Not Included",
-          "requirements": "Requirements",
-          "highlights": "Tour Highlights",
-          "cancellationPolicy": "Cancellation Policy"
+        "techStack": "Tech Stack",
+        "techStackItems": {
+          "nextjs": {
+            "title": "Next.js",
+            "subtitle": "Server-side rendering and App Router for optimised performance."
+          },
+          "tailwind": {
+            "title": "Tailwind CSS",
+            "subtitle": "Utility-first CSS framework for modern and responsive design."
+          },
+          "typescript": {
+            "title": "TypeScript",
+            "subtitle": "Type-safe development for sustainable code."
+          },
+          "i18n": {
+            "title": "Internationalisation",
+            "subtitle": "Multi-language support to reach a global audience."
+          }
         },
-        "placeholders": {
-          "title": "e.g., Historic Lisbon Walking Tour",
-          "location": "e.g., Lisbon, Portugal",
-          "description": "Describe your tour experience, what makes it special, and what guests can expect...",
-          "included": "e.g., Professional guide",
-          "excluded": "e.g., Meals",
-          "requirements": "e.g., Comfortable walking shoes",
-          "highlights": "e.g., Visit famous landmarks",
-          "cancellationPolicy": "Describe your cancellation and refund policy..."
+        "portfolioContext": "Portfolio Context",
+        "portfolioDescription": "TravelTrek Marketplace demonstrates a modern, scalable web application built with cutting-edge technologies.",
+        "portfolioPoints": {
+          "modernReact": "Modern React Framework: Uses Next.js with App Router for dynamic rendering.",
+          "i18nExpertise": "i18n Expertise: Supports five languages with smooth locale switching.",
+          "marketplaceArchitecture": "Marketplace Architecture: Robust structure for customer and host portals.",
+          "contemporaryStyling": "Contemporary Styling: Tailwind CSS v4 for modern, responsive UI.",
+          "professionalStructure": "Professional Structure: Type-safe code and modular design."
         },
-        "buttons": {
-          "addIncluded": "Add included item",
-          "addExcluded": "Add excluded item",
-          "addRequirement": "Add requirement",
-          "addHighlight": "Add highlight",
-          "preview": "Preview",
-          "createTour": "Create Tour",
-          "creating": "Creating..."
+        "nextSteps": {
+          "title": "Next Steps",
+          "thisWeek": "This Week",
+          "nextWeek": "Next Week",
+          "thisMonth": "This Month",
+          "thisWeekItems": {
+            "database": "Set up database",
+            "envSetup": "Environment variables",
+            "firstApi": "First functional API"
+          },
+          "nextWeekItems": {
+            "auth": "Authentication system",
+            "tourPages": "Tour pages",
+            "uiComponents": "UI components"
+          },
+          "thisMonthItems": {
+            "customerPortal": "Customer portal",
+            "bookingSystem": "Booking system",
+            "hostDashboard": "Host dashboard"
+          }
         },
-        "errors": {
-          "titleRequired": "Title is required",
-          "descriptionRequired": "Description is required",
-          "locationRequired": "Location is required",
-          "durationMin": "Duration must be at least 1 hour",
-          "participantsMin": "Must allow at least 1 participant",
-          "priceMin": "Price must be at least €1",
-          "includedRequired": "At least one included item is required"
+        "title": "Development Status",
+        "subtitle": "Track the development progress of TravelTrek",
+        "categories": {
+          "coreInfrastructure": "Core Infrastructure",
+          "customerPortal": "Customer Portal",
+          "hostPortal": "Host Portal",
+          "backendApi": "Backend & API",
+          "integrations": "Integrations",
+          "testingQuality": "Testing & Quality"
         },
-        "review": {
-          "title": "Tour Summary"
+        "features": {
+          "i18nSystem": "Internationalisation System",
+          "nextjsReact": "Next.js 15 + React 19",
+          "responsiveNavigation": "Responsive Navigation",
+          "typescriptIntegration": "TypeScript Integration",
+          "projectStructure": "Project Structure",
+          "tourBrowsing": "Tour Browsing",
+          "bookingSystem": "Booking System",
+          "userDashboard": "User Dashboard",
+          "reviewSystem": "Review System",
+          "bookingManagement": "Booking Management",
+          "tourCreation": "Tour Creation",
+          "earningsDashboard": "Earnings Dashboard",
+          "messagingSystem": "Messaging System",
+          "databaseSchema": "Database Schema",
+          "apiRoutes": "API Routes",
+          "dataValidation": "Data Validation",
+          "stripeIntegration": "Stripe Integration",
+          "authenticationSystem": "Authentication System",
+          "viatorApiIntegration": "Viator API Integration",
+          "emailSystem": "Email System",
+          "unitTesting": "Unit Testing",
+          "e2eTesting": "E2E Testing",
+          "cicdPipeline": "CI/CD Pipeline"
+        },
+        "descriptions": {
+          "i18nSystemDesc": "Full support for 5 languages with smooth locale switching.",
+          "nextjsReactDesc": "Built with Next.js App Router and React for a modern and scalable frontend.",
+          "responsiveNavigationDesc": "Mobile and desktop navigation optimised with Tailwind CSS v4.",
+          "typescriptIntegrationDesc": "Type-safe code with TypeScript for robust development.",
+          "projectStructureDesc": "Well-organised architecture following Next.js best practices.",
+          "tourBrowsingDesc": "Browse and filter tours with real-time data from the simulated Viator API.",
+          "bookingSystemDesc": "Planned booking system with state management and Stripe integration.",
+          "userDashboardDesc": "Customer dashboard to manage bookings and profile settings.",
+          "reviewSystemDesc": "Planned system for users to leave reviews of tours and hosts.",
+          "bookingManagementDesc": "Tools for hosts to manage bookings and communicate with customers.",
+          "tourCreationDesc": "Planned system for hosts to create and edit tours.",
+          "earningsDashboardDesc": "Dashboard for hosts to track earnings and performance metrics.",
+          "messagingSystemDesc": "Planned messaging system for host-customer communication.",
+          "databaseSchemaDesc": "Postgres schema for tours, bookings and user data.",
+          "apiRoutesDesc": "RESTful APIs for all marketplace CRUD operations.",
+          "dataValidationDesc": "Robust data validation using Zod or similar.",
+          "stripeIntegrationDesc": "Planned Stripe integration for secure payment processing.",
+          "authenticationSystemDesc": "Planned authentication system for secure user access.",
+          "viatorApiIntegrationDesc": "Planned integration with Viator API for tour data synchronisation.",
+          "emailSystemDesc": "Email notification system for confirmations and updates.",
+          "unitTestingDesc": "Comprehensive unit tests for components and functions.",
+          "e2eTestingDesc": "End-to-end tests for critical user flows.",
+          "cicdPipelineDesc": "Automated continuous integration and deployment pipeline."
+        }
+      },
+      "home": {
+        "title": "TravelTrek Marketplace",
+        "subtitle": "Discover authentic experiences with local hosts",
+        "description": "We connect travellers to unique experiences created by passionate hosts.",
+        "cta": "Explore Tours",
+        "features": {
+          "authentic": "Authentic Experiences",
+          "local": "Local Hosts",
+          "secure": "Secure Payments"
+        }
+      },
+      "bookingDetail": {
+        "title": "Booking Details",
+        "description": "View and manage your booking details"
+      },
+      "customerTours": {
+        "title": "Tours & Experiences - TravelTrek",
+        "description": "Discover amazing tours and experiences"
+      },
+      "customerDashboard": {
+        "title": "Customer Dashboard - TravelTrek",
+        "description": "Manage your bookings and discover experiences"
+      },
+      "notFound": {
+        "title": "Page not found",
+        "description": "The requested page was not found"
+      },
+      "customerBookings": {
+        "title": "My Bookings",
+        "description": "Manage your tour and experience bookings",
+        "subtitle": "Manage your tour and experience bookings",
+        "browseTours": "Browse Tours",
+        "noBookingsDescription": "Discover unique experiences in Portugal and make your first booking!",
+        "stats": {
+          "totalBookings": "Total Bookings",
+          "upcoming": "Upcoming",
+          "totalSpent": "Total Spent"
+        },
+        "filters": {
+          "all": "All",
+          "bookingStatusLabel": "Booking Status",
+          "sortByLabel": "Sort by"
+        },
+        "sort": {
+          "dateDesc": "Most recent date",
+          "dateAsc": "Oldest date",
+          "amountDesc": "Highest amount",
+          "amountAsc": "Lowest amount",
+          "createdDesc": "Most recent booking",
+          "status": "Status"
         }
       }
     },
-    "dashboard": {
-      "title": "Host Dashboard",
-      "subtitle": "Manage tours and bookings",
-      "createTour": "Create Tour",
+    "bookingList": {
+      "location": "Location",
+      "person": "person",
+      "persons": "people",
+      "specialRequests": "Special Requests",
+      "vegetarianRequest": "Vegetarian option requested",
+      "bookingNumber": "Booking",
+      "createdAt": "Created on",
+      "completed": "Completed",
+      "pending": "Pending",
+      "confirmed": "Confirmed",
+      "cancelled": "Cancelled",
+      "pendingPayment": "Payment Pending",
+      "paid": "Paid",
+      "refunded": "Refunded",
+      "viewDetails": "View Details",
+      "pay": "Pay",
+      "cancel": "Cancel",
+      "rebook": "Book Again",
+      "participants": "Participants",
+      "totalAmount": "Total Amount",
+      "noBookings": "You don't have any bookings yet.",
+      "bookFirstTour": "Book First Experience",
+      "date": "Date",
+      "next": "Next",
+      "pendingLabel": "Pending",
+      "confirmedLabel": "Confirmed",
+      "completedLabel": "Completed",
+      "cancelledLabel": "Cancelled",
+      "leaveReview": "Leave Review",
+      "view": "View"
+    },
+    "bookingDetails": {
+      "location": "Location",
+      "serviceFees": "Service Fees",
+      "included": "Included",
+      "payNow": "Pay Now",
+      "bookingDetails": "Booking Details",
+      "bookingInformation": "Booking Information",
+      "hostInformation": "Host Information",
+      "importantInformation": "Important Information",
+      "actions": "Actions",
+      "paymentCompleted": "Payment Completed",
+      "paymentCompletedDescription": "Your booking is confirmed and paid.",
+      "paymentPending": "Payment Pending",
+      "paymentPendingDescription": "Complete payment to confirm your booking.",
+      "viewTourDetails": "View Tour Details",
+      "viewTour": "View Tour",
+      "contactHost": "Contact Host",
+      "cancelBooking": "Cancel Booking",
+      "leaveReview": "Leave Review",
+      "responseTime": "Response time",
+      "confirmedBooking": "Booking Confirmed",
+      "meetingInstructions": "Please arrive at the location 15 minutes before the experience starts.",
+      "cancellationPolicy": "Cancellation Policy",
+      "cancellationDescription": "Free cancellation up to 24 hours before the tour starts. Late cancellations may incur fees.",
+      "cancelReasonRequired": "Please provide a reason for cancellation.",
+      "cancelDescription": "Are you sure you want to cancel this booking? This action cannot be undone.",
+      "refundInfo": "Refund",
+      "willBeRefunded": "will be refunded",
+      "cancelReason": "Cancellation reason",
+      "cancelReasonPlaceholder": "Please explain the reason for cancellation...",
+      "confirmCancel": "Confirm Cancellation",
+      "cancelSuccess": "Booking cancelled successfully",
+      "cancelError": "Error cancelling booking. Please try again.",
+      "redirectingPayment": "Redirecting to payment...",
+      "paymentError": "Error processing payment. Please try again.",
+      "contactHostMessage": "Opening chat with host...",
+      "partialRefund": "Partial refund of",
+      "noRefund": "No refund available",
+      "paymentInstructions": "Complete payment to confirm your booking.",
+      "pendingMessage": "Waiting for host confirmation",
+      "confirmedMessage": "Your booking has been confirmed!",
+      "completedMessage": "Experience completed",
+      "cancelledMessage": "Booking cancelled",
+      "time": "Time",
+      "meetingPoint": "Meeting Point",
+      "needHelp": "Need Help?",
+      "supportMessage": "Our team is available 24/7 for support.",
+      "contactSupport": "Contact Support",
+      "tourDescription": {
+        "portoFoodWine": "Discover the authentic flavours of Porto in a unique gastronomic experience with local wines.",
+        "sintraPalaces": "Visit the majestic palaces of Sintra, UNESCO World Heritage, with a specialised guide.",
+        "douroCruise": "Panoramic cruise on the Douro River with stunning vineyard landscapes.",
+        "lisbonTukTuk": "Explore Lisbon in a fun way by tuk-tuk, discovering hidden corners of the city."
+      },
+      "specialRequests": {
+        "vegetarian": "Vegetarian options, please",
+        "wheelchair": "Wheelchair access required"
+      },
+      "meetingPointDetails": {
+        "portoCathedral": "Porto Cathedral - Main Entrance",
+        "sintraStation": "Sintra Train Station",
+        "douroPort": "Gaia Pier - River Terminal",
+        "lisbonSquare": "Commerce Square - Centre"
+      },
+      "cancellationPolicyDetails": {
+        "flexible": "Flexible - Full refund up to 24h before",
+        "moderate": "Moderate - 50% refund up to 48h before",
+        "strict": "Strict - No refund 7 days before"
+      }
+    },
+    "errors": {
+      "serverError": "Server error. Contact support.",
+      "paymentFailed": "Failed to process payment.",
+      "bookingFailed": "Could not process booking.",
+      "unauthorized": "Unauthorised",
+      "validation": "Invalid data",
+      "generic": "Error loading data",
+      "network": "Internet connection error",
+      "notFound": "Resource not found",
+      "invalidPriceFormat": "Invalid price format",
+      "invalidOriginalPriceFormat": "Invalid original price format"
+    },
+    "api": {
+      "errors": {
+        "tourNotFound": "Tour not found",
+        "bookingNotFound": "Booking not found",
+        "invalidData": "Invalid data",
+        "maxParticipantsExceeded": "Maximum participants exceeded",
+        "bookingNotCancellable": "Booking cannot be cancelled",
+        "paymentFailed": "Payment failed",
+        "serverError": "Server error",
+        "unauthorised": "Unauthorised",
+        "userNotFound": "User not found",
+        "emailAlreadyExists": "Email already exists",
+        "fetchUsersError": "Error loading users",
+        "fetchUserError": "Error loading user",
+        "createUserError": "Error creating user",
+        "updateUserError": "Error updating user",
+        "deleteUserError": "Error deleting user",
+        "fetchHostsError": "Error loading hosts",
+        "fetchCustomersError": "Error loading customers"
+      }
+    },
+    "users": {
+      "title": "Users",
+      "create": "Create User",
+      "edit": "Edit User",
+      "delete": "Delete User",
+      "roles": {
+        "customer": "Customer",
+        "host": "Host",
+        "admin": "Administrator"
+      },
+      "status": {
+        "verified": "Verified",
+        "unverified": "Unverified"
+      },
+      "stats": {
+        "totalBookings": "Total Bookings",
+        "totalSpent": "Total Spent",
+        "totalEarnings": "Total Earnings",
+        "totalTours": "Total Tours",
+        "averageRating": "Average Rating"
+      },
+      "messages": {
+        "userCreated": "User created successfully",
+        "userUpdated": "User updated successfully",
+        "userDeleted": "User deleted successfully",
+        "confirmDelete": "Are you sure you want to delete this user?",
+        "noUsersFound": "No users found"
+      }
+    },
+    "auth": {
+      "hostBenefit1": "You will be able to create and manage your own tours",
+      "hostBenefit2": "Receive bookings and communicate with customers",
+      "hostBenefit3": "Track your earnings and statistics",
+      "hostBenefit4": "Access to advanced management tools",
+      "chooseAccountType": "Choose account type",
+      "customerDescription": "Browse and book tours",
+      "hostDescription": "Create and manage tours",
+      "hostInfo": "Information for Hosts:",
+      "accessDenied": "Access Denied",
+      "accessRestricted": "Access Restricted",
+      "loginRequired": "Login required to access this page.",
+      "insufficientPermissions": "You do not have sufficient permissions.",
+      "customerOnly": "This page is for customers only.",
+      "hostOnly": "This page is for hosts only.",
+      "adminOnly": "This page is for administrators only.",
+      "verifyingAccess": "Verifying access...",
+      "pleaseWait": "Please wait...",
+      "yourRole": "Your account type",
+      "requiredRole": "Required type",
+      "loginTitle": "Log In",
+      "signupTitle": "Create Account",
+      "signupSubtitle": "Join our community of travellers",
+      "confirmPasswordPlaceholder": "Confirm your password",
+      "namePlaceholder": "Your full name",
+      "signupButton": "Create Account",
+      "forgotPassword": "Forgot your password?",
+      "hasAccount": "Already have an account?",
+      "signupLink": "Create account",
+      "loginLink": "Log in",
+      "orContinueWith": "Or continue with",
+      "loading": "Processing...",
+      "loginLoading": "Logging in...",
+      "signupLoading": "Creating account...",
+      "login": "Log In",
+      "loginSubtitle": "Access your TravelTrek account",
+      "loginButton": "Log In",
+      "loginFailed": "Invalid credentials. Please check your email and password.",
+      "loginError": "An error occurred during login. Please try again.",
+      "emailPlaceholder": "Enter your email",
+      "passwordPlaceholder": "Enter your password",
+      "or": "or",
+      "googleLogin": "Continue with Google",
+      "noAccount": "Don't have an account?",
+      "signup": "Sign up",
       "error": {
-        "loadFailed": "Error loading dashboard data"
+        "invalidCredentials": "Invalid credentials. Please check your email and password.",
+        "userNotFound": "User not found.",
+        "wrongPassword": "Incorrect password.",
+        "emailExists": "This email is already registered.",
+        "weakPassword": "Password must be at least 8 characters.",
+        "passwordMismatch": "Passwords do not match.",
+        "required": "This field is required.",
+        "invalidEmail": "Invalid email.",
+        "serverError": "Server error. Please try again later.",
+        "oauthError": "Error logging in with Google. Please try again.",
+        "sessionExpired": "Session expired. Please log in again.",
+        "unauthorized": "You don't have permission to access this page."
+      },
+      "success": {
+        "loginSuccess": "Logged in successfully!",
+        "signupSuccess": "Account created successfully! Welcome!",
+        "logoutSuccess": "Logged out successfully.",
+        "passwordReset": "Recovery email sent."
+      },
+      "logout": "Log Out",
+      "profile": "Profile",
+      "dashboard": "Dashboard",
+      "settings": "Settings"
+    },
+    "tours": {
+      "maxParticipants": "Max",
+      "more": "more",
+      "anyRating": "Any Rating",
+      "stars": "Stars",
+      "newest": "Newest",
+      "priceLowHigh": "Price: Low to High",
+      "priceHighLow": "Price: High to Low",
+      "bestRated": "Best Rated",
+      "showingResults": "Showing {count} of {total} tours",
+      "noResultsDesc": "Try adjusting your search criteria or browse all available tours.",
+      "aboutExperience": "About this experience",
+      "itinerary": "Itinerary",
+      "language": "Language",
+      "easy": "Easy",
+      "moderate": "Moderate",
+      "challenging": "Challenging",
+      "cultural": "Cultural",
+      "adventure": "Adventure",
+      "fooddrink": "Food & Drink",
+      "nature": "Nature",
+      "historical": "Historical",
+      "lowToHigh": "Low to High",
+      "highToLow": "High to Low",
+      "noToursFound": "No tours found",
+      "noToursFoundDesc": "Try adjusting the search criteria.",
+      "browseAllTours": "View All Tours",
+      "toursFound": "{count} tours found",
+      "title": "Discover Unique Experiences",
+      "subtitle": "Connect with authentic local hosts",
+      "duration": "Duration",
+      "category": "Category",
+      "rating": "Rating",
+      "showMore": "Show more",
+      "showLess": "Show less",
+      "reviewsCount": "reviews",
+      "fromPrice": "from",
+      "freeWifi": "Free Wi-Fi",
+      "breakfast": "Breakfast",
+      "transport": "Transport",
+      "guide": "Local Guide",
+      "createSuccess": "Tour created successfully",
+      "searchPlaceholder": "Search tours...",
+      "result": "result",
+      "results": "results",
+      "filters": "Filters",
+      "clearFilters": "Clear Filters",
+      "noResultsDescription": "Try adjusting the filters to find more options.",
+      "from": "from",
+      "perPerson": "per person",
+      "upTo": "up to",
+      "viewDetails": "View Details",
+      "addToWishlist": "Add to Wishlist",
+      "removeFromWishlist": "Remove from Wishlist",
+      "availableTours": "Available Tours",
+      "averageRating": "Average Rating",
+      "totalReviews": "Reviews",
+      "destinations": "Destinations",
+      "popularCategories": "Popular Categories",
+      "priceRange": "Price Range",
+      "location": "Location",
+      "allLocations": "All Locations",
+      "allDifficulties": "All Difficulties",
+      "sortBy": "Sort by",
+      "difficulty": {
+        "label": "Difficulty",
+        "easy": "Easy",
+        "moderate": "Moderate",
+        "challenging": "Challenging"
+      },
+      "sort": {
+        "newest": "Newest",
+        "popular": "Most Popular",
+        "priceAsc": "Price Low to High",
+        "priceDesc": "Price High to Low",
+        "rating": "Best Rated",
+        "duration": "Duration"
+      },
+      "categories": {
+        "sports": "Sports",
+        "relaxation": "Relaxation",
+        "cultural": "Cultural",
+        "fooddrink": "Food & Drink",
+        "historical": "Historical",
+        "food": "Food",
+        "culture": "Culture",
+        "nature": "Nature",
+        "adventure": "Adventure",
+        "history": "History",
+        "beaches": "Beaches",
+        "wine": "Wine",
+        "walking": "Walking",
+        "family": "Family",
+        "art": "Art",
+        "nightlife": "Nightlife"
+      },
+      "hostCta": {
+        "title": "Run a tourism business?",
+        "description": "Join our platform and reach thousands of travellers interested in your unique experiences.",
+        "button": "Become a Host"
+      },
+      "featuredTours": "Featured Experiences",
+      "allTours": "All Experiences",
+      "searchTours": "Search experiences...",
+      "filterByLocation": "Filter by location",
+      "filterByPrice": "Filter by price",
+      "filterByDuration": "Filter by duration",
+      "sortPopular": "Most popular",
+      "sortPrice": "Price",
+      "sortRating": "Rating",
+      "sortDuration": "Duration",
+      "noResults": "No experiences found.",
+      "loadMore": "Load more",
+      "bookingSuccess": "Booking made successfully!",
+      "bookingError": "Error making booking. Please try again.",
+      "details": {
+        "overview": "Overview",
+        "itinerary": "Itinerary",
+        "included": "Included",
+        "excluded": "Not Included",
+        "cancellation": "Cancellation Policy",
+        "reviews": "Reviews",
+        "host": "Host",
+        "meetingPoint": "Meeting Point",
+        "difficulty": "Difficulty",
+        "minAge": "Minimum Age",
+        "maxParticipants": "Maximum Participants",
+        "languages": "Languages",
+        "duration": "Duration"
+      }
+    },
+    "booking": {
+      "selectDate": "Select Date",
+      "selectTime": "Select Time",
+      "participants": "Participants",
+      "adults": "Adults",
+      "children": "Children",
+      "totalPrice": "Total Price",
+      "proceedPayment": "Proceed to Payment",
+      "bookingDetails": "Booking Details",
+      "customerInfo": "Customer Information",
+      "specialRequests": "Special Requests",
+      "confirmBooking": "Confirm Booking",
+      "paymentSuccess": "Payment made successfully!",
+      "paymentError": "Payment error. Please try again.",
+      "status": {
+        "pending": "Pending",
+        "confirmed": "Confirmed",
+        "completed": "Completed",
+        "cancelled": "Cancelled",
+        "refunded": "Refunded"
+      },
+      "myBookings": "My Bookings",
+      "upcomingBookings": "Upcoming Bookings",
+      "pastBookings": "Past Bookings",
+      "cancelBooking": "Cancel Booking",
+      "rescheduleBooking": "Reschedule Booking",
+      "contactHost": "Contact Host",
+      "leaveReview": "Leave Review",
+      "downloadReceipt": "Download Receipt"
+    },
+    "host": {
+      "tours": {
+        "create": {
+          "title": "Create New Tour",
+          "subtitle": "Share your experience and create unforgettable experiences for travellers",
+          "description": "Create a new tour experience for travellers",
+          "steps": {
+            "basicInfo": "Basic Information",
+            "details": "Tour Details",
+            "features": "Features and Requirements",
+            "policies": "Policies and Review"
+          },
+          "form": {
+            "title": "Tour Title",
+            "location": "Location",
+            "category": "Category",
+            "description": "Description",
+            "duration": "Duration (hours)",
+            "maxParticipants": "Maximum Participants",
+            "price": "Price per Person (€)",
+            "difficulty": "Difficulty Level",
+            "language": "Tour Language",
+            "included": "What's Included",
+            "excluded": "What's Not Included",
+            "requirements": "Requirements",
+            "highlights": "Tour Highlights",
+            "cancellationPolicy": "Cancellation Policy"
+          },
+          "placeholders": {
+            "title": "ex: Walking Tour of Historic Lisbon",
+            "location": "ex: Lisbon, Portugal",
+            "description": "Describe your tour experience, what makes it special and what guests can expect...",
+            "included": "ex: Professional guide",
+            "excluded": "ex: Meals",
+            "requirements": "ex: Comfortable walking shoes",
+            "highlights": "ex: Visiting famous landmarks",
+            "cancellationPolicy": "Describe your cancellation and refund policy..."
+          },
+          "buttons": {
+            "addIncluded": "Add included item",
+            "addExcluded": "Add excluded item",
+            "addRequirement": "Add requirement",
+            "addHighlight": "Add highlight",
+            "preview": "Preview",
+            "createTour": "Create Tour",
+            "creating": "Creating..."
+          },
+          "errors": {
+            "titleRequired": "Title is required",
+            "descriptionRequired": "Description is required",
+            "locationRequired": "Location is required",
+            "durationMin": "Duration must be at least 1 hour",
+            "participantsMin": "Must allow at least 1 participant",
+            "priceMin": "Price must be at least €1",
+            "includedRequired": "At least one included item is required"
+          },
+          "review": {
+            "title": "Tour Summary"
+          }
+        }
+      },
+      "dashboard": {
+        "title": "Host Dashboard",
+        "subtitle": "Manage tours and bookings",
+        "createTour": "Create Tour",
+        "error": {
+          "loadFailed": "Error loading dashboard data"
+        },
+        "stats": {
+          "totalBookings": "Total Bookings",
+          "monthlyEarnings": "Monthly Earnings",
+          "averageRating": "Average Rating",
+          "activeListings": "Active Tours",
+          "confirmed": "Confirmed",
+          "pending": "Pending",
+          "completed": "Completed"
+        },
+        "tabs": {
+          "overview": "Overview",
+          "bookings": "Bookings",
+          "earnings": "Earnings"
+        },
+        "recentActivity": {
+          "title": "Recent Activity",
+          "empty": "No recent activity",
+          "newBooking": "New booking for {tour} by {customer}"
+        },
+        "upcomingBookings": {
+          "title": "Upcoming Bookings",
+          "empty": "No upcoming bookings"
+        },
+        "quickStats": {
+          "title": "Quick Stats"
+        },
+        "earnings": {
+          "summary": "Earnings Summary",
+          "thisMonth": "This Month",
+          "lastMonth": "Last Month",
+          "growth": "Growth"
+        }
+      },
+      "welcome": "Welcome to your host dashboard",
+      "tabs": {
+        "overview": "Overview",
+        "bookings": "Bookings",
+        "earnings": "Earnings",
+        "tours": "Tours",
+        "messages": "Messages"
       },
       "stats": {
         "totalBookings": "Total Bookings",
         "monthlyEarnings": "Monthly Earnings",
         "averageRating": "Average Rating",
-        "activeListings": "Active Listings",
-        "confirmed": "Confirmed",
-        "pending": "Pending",
-        "completed": "Completed"
+        "activeListings": "Active Listings"
       },
-      "tabs": {
-        "overview": "Overview",
-        "bookings": "Bookings",
-        "earnings": "Earnings"
+      "bookings": {
+        "title": "Bookings",
+        "newBooking": "New Booking",
+        "viewDetails": "View Details",
+        "accept": "Accept",
+        "decline": "Decline",
+        "markComplete": "Mark as Complete",
+        "contactCustomer": "Contact Customer",
+        "customerDetails": "Customer Details",
+        "tourDetails": "Experience Details",
+        "bookingNotes": "Booking Notes",
+        "manageBookings": "Manage Bookings",
+        "customerName": "Customer",
+        "tourName": "Tour",
+        "participants": "Participants",
+        "amount": "Amount",
+        "status": "Status",
+        "actions": "Actions",
+        "confirm": "Confirm",
+        "complete": "Complete",
+        "noBookings": "You don't have any bookings yet",
+        "noResults": "No bookings match the filters",
+        "noBookingsDesc": "Your bookings will appear here when customers start booking your tours.",
+        "updateStatus": "Update Status",
+        "updateStatusDesc": "Are you sure you want to update the status of this booking?",
+        "newBookings": "New Bookings",
+        "confirmedBookings": "Confirmed Bookings",
+        "completedBookings": "Completed Bookings",
+        "date": "Date"
       },
-      "recentActivity": {
-        "title": "Recent Activity",
-        "empty": "No recent activity",
-        "newBooking": "New booking for {tour} by {customer}"
-      },
-      "upcomingBookings": {
-        "title": "Upcoming Bookings",
-        "empty": "No upcoming bookings"
-      },
-      "quickStats": {
-        "title": "Quick Stats"
-      },
-      "earnings": {
-        "summary": "Earnings Summary",
-        "thisMonth": "This Month",
-        "lastMonth": "Last Month",
-        "growth": "Growth"
-      }
-    },
-    "welcome": "Welcome to your host dashboard",
-    "tabs": {
-      "overview": "Overview",
-      "bookings": "Bookings",
-      "earnings": "Earnings",
-      "tours": "Tours",
-      "messages": "Messages"
-    },
-    "stats": {
+      "welcomeBack": "Welcome back!",
+      "manageBookings": "Manage Bookings",
       "totalBookings": "Total Bookings",
       "monthlyEarnings": "Monthly Earnings",
-      "averageRating": "Average Rating",
-      "activeListings": "Active Listings"
+      "avgRating": "Average Rating",
+      "activeListings": "Active Experiences",
+      "recentBookings": "Recent Bookings",
+      "viewAllBookings": "View All Bookings",
+      "manageListings": "Manage Experiences",
+      "earnings": {
+        "title": "Earnings Report",
+        "thisMonth": "This Month",
+        "lastMonth": "Last Month",
+        "totalEarnings": "Total Earnings",
+        "pendingPayouts": "Pending Payouts",
+        "completedPayouts": "Completed Payouts",
+        "chartTitle": "Earnings Over Time"
+      }
     },
-    "bookings": {
-      "title": "Bookings",
-      "newBooking": "New Booking",
-      "viewDetails": "View Details",
-      "accept": "Accept",
-      "decline": "Decline",
-      "markComplete": "Mark as Complete",
-      "contactCustomer": "Contact Customer",
-      "customerDetails": "Customer Details",
-      "tourDetails": "Experience Details",
-      "bookingNotes": "Booking Notes",
-      "manageBookings": "Manage Bookings",
-      "customerName": "Customer",
-      "tourName": "Tour",
-      "participants": "Participants",
-      "amount": "Amount",
-      "status": "Status",
-      "actions": "Actions",
+    "common": {
+      "participants": "participants",
+      "language": "Language",
+      "goToDashboard": "Go to Dashboard",
+      "clear": "Clear",
+      "fullName": "Full Name",
+      "fullNamePlaceholder": "Enter your full name",
+      "emailPlaceholder": "Enter your email",
+      "phone": "Phone",
+      "phonePlaceholder": "Enter your phone number",
+      "contactInfo": "Contact Information",
+      "invalidEmail": "Invalid email format",
+      "characters": "characters",
+      "tryAgain": "Try Again",
+      "email": "Email",
+      "password": "Password",
+      "confirmPassword": "Confirm Password",
+      "name": "Name",
+      "location": "Location",
+      "bookNow": "Book Now",
+      "total": "Total",
+      "person": "person",
+      "persons": "people",
+      "currency": {
+        "symbol": "€",
+        "code": "EUR"
+      },
+      "search": "Search",
+      "export": "Export",
+      "refresh": "Refresh",
+      "all": "All",
+      "date": "Date",
+      "cancel": "Cancel",
       "confirm": "Confirm",
-      "complete": "Complete",
-      "noBookings": "You don't have any bookings yet",
-      "noResults": "No bookings match the filters",
-      "noBookingsDesc": "Your bookings will appear here when customers start booking your tours.",
-      "updateStatus": "Update Status",
-      "updateStatusDesc": "Are you sure you want to update the status of this booking?",
-      "newBookings": "New Bookings",
-      "confirmedBookings": "Confirmed Bookings",
-      "completedBookings": "Completed Bookings",
-      "date": "Date"
+      "processing": "Processing...",
+      "retry": "Try again",
+      "sort": {
+        "dateDesc": "Most recent date",
+        "dateAsc": "Oldest date",
+        "amountDesc": "Highest amount",
+        "amountAsc": "Lowest amount",
+        "status": "Status"
+      },
+      "book": "Book",
+      "payNow": "Pay Now",
+      "viewAll": "View all",
+      "reviews": "reviews",
+      "review": "review",
+      "welcome": "Welcome",
+      "hours": "hours",
+      "hour": "hour",
+      "from": "from",
+      "to": "to",
+      "loading": "Loading...",
+      "error": "Error",
+      "success": "Success",
+      "back": "Back",
+      "next": "Next",
+      "previous": "Previous",
+      "and": "and",
+      "optional": "Optional",
+      "save": "Save",
+      "edit": "Edit",
+      "delete": "Delete",
+      "view": "View",
+      "close": "Close",
+      "filter": "Filter",
+      "time": "Time",
+      "price": "Price",
+      "yes": "Yes",
+      "no": "No",
+      "required": "Required"
     },
-    "welcomeBack": "Welcome back!",
-    "manageBookings": "Manage Bookings",
-    "totalBookings": "Total Bookings",
-    "monthlyEarnings": "Monthly Earnings",
-    "avgRating": "Average Rating",
-    "activeListings": "Active Experiences",
-    "recentBookings": "Recent Bookings",
-    "viewAllBookings": "View All Bookings",
-    "manageListings": "Manage Experiences",
-    "earnings": {
-      "title": "Earnings Report",
-      "thisMonth": "This Month",
-      "lastMonth": "Last Month",
-      "totalEarnings": "Total Earnings",
-      "pendingPayouts": "Pending Payouts",
-      "completedPayouts": "Completed Payouts",
-      "chartTitle": "Earnings Over Time"
-    }
-  },
-  "common": {
-    "participants": "participants",
-    "language": "Language",
-    "goToDashboard": "Go to Dashboard",
-    "clear": "Clear",
-    "fullName": "Full Name",
-    "fullNamePlaceholder": "Enter your full name",
-    "emailPlaceholder": "Enter your email",
-    "phone": "Phone",
-    "phonePlaceholder": "Enter your phone number",
-    "contactInfo": "Contact Information",
-    "invalidEmail": "Invalid email format",
-    "characters": "characters",
-    "tryAgain": "Try Again",
-    "email": "Email",
-    "password": "Password",
-    "confirmPassword": "Confirm Password",
-    "name": "Name",
-    "location": "Location",
-    "bookNow": "Book Now",
-    "total": "Total",
-    "person": "person",
-    "persons": "people",
-    "currency": {
-      "symbol": "€",
-      "code": "EUR"
-    },
-    "search": "Search",
-    "export": "Export",
-    "refresh": "Refresh",
-    "all": "All",
-    "date": "Date",
-    "cancel": "Cancel",
-    "confirm": "Confirm",
-    "processing": "Processing...",
-    "retry": "Try again",
-    "sort": {
-      "dateDesc": "Most recent date",
-      "dateAsc": "Oldest date",
-      "amountDesc": "Highest amount",
-      "amountAsc": "Lowest amount",
-      "status": "Status"
-    },
-    "book": "Book",
-    "payNow": "Pay Now",
-    "viewAll": "View all",
-    "reviews": "reviews",
-    "review": "review",
-    "welcome": "Welcome",
-    "hours": "hours",
-    "hour": "hour",
-    "from": "from",
-    "to": "to",
-    "loading": "Loading...",
-    "error": "Error",
-    "success": "Success",
-    "back": "Back",
-    "next": "Next",
-    "previous": "Previous",
-    "and": "and",
-    "optional": "Optional",
-    "save": "Save",
-    "edit": "Edit",
-    "delete": "Delete",
-    "view": "View",
-    "close": "Close",
-    "filter": "Filter",
-    "time": "Time",
-    "price": "Price",
-    "yes": "Yes",
-    "no": "No",
-    "required": "Required"
-  },
-  "roles": {
-    "customer": "Customer",
-    "host": "Host",
-    "admin": "Administrator"
-  },
-  "customer": {
-    "dashboard": {
-      "welcome": "Welcome back!",
-      "subtitle": "Here you can manage your bookings and discover new experiences.",
-      "stats": {
-        "totalBookings": "Total Bookings",
-        "upcomingTrips": "Upcoming Trips",
-        "completedTrips": "Completed Trips",
-        "totalSpent": "Total Spent"
-      }
-    }
-  },
-  "hero": {
-    "searchPlaceholder": "Where do you want to go?",
-    "exploreButton": "Explore Experiences",
-    "title": "Discover the ",
-    "highlight": "Extraordinary",
-    "subtitle": "Connect with local hosts and discover authentic experiences.",
-    "exploreToursButton": "Explore Tours",
-    "becomeHostButton": "Become a Host"
-  },
-  "footer": {
-    "description": "Discover unique experiences with local hosts around the world.",
-    "quickLinks": "Quick Links",
-    "newsletterDescription": "Get the best deals and new destinations directly to your email.",
-    "top": {
-      "explore": "Explore",
+    "roles": {
+      "customer": "Customer",
       "host": "Host",
-      "support": "Support",
+      "admin": "Administrator"
+    },
+    "customer": {
+      "dashboard": {
+        "welcome": "Welcome back!",
+        "subtitle": "Here you can manage your bookings and discover new experiences.",
+        "stats": {
+          "totalBookings": "Total Bookings",
+          "upcomingTrips": "Upcoming Trips",
+          "completedTrips": "Completed Trips",
+          "totalSpent": "Total Spent"
+        }
+      }
+    },
+    "hero": {
+      "portfolio": "PORTFOLIO",
+      "title": "TravelTrek Marketplace",
+      "subtitle": "A complete showcase of modern development with Next.js 15, React 19 and scalable architecture",
+      "metrics": {
+        "complete": "Complete",
+        "apiEndpoints": "APIs",
+        "languages": "Languages",
+        "liveUsers": "Users"
+      },
+      "searchPlaceholder": "Where do you want to go?",
+      "exploreButton": "Explore Experiences",
+      "highlight": "Extraordinary",
+      "exploreToursButton": "Explore Tours",
+      "becomeHostButton": "Become a Host"
+    },
+    "footer": {
+      "home": "Home",
+      "tours": "Tours",
+      "faq": "FAQ",
+      "rights": "All rights reserved.",
+      "description": "Discover unique experiences with local hosts around the world.",
+      "quickLinks": "Quick Links",
+      "newsletterDescription": "Get the best deals and new destinations directly to your email.",
+      "top": {
+        "explore": "Explore",
+        "host": "Host",
+        "support": "Support",
+        "company": "Company",
+        "popularDestinations": "Popular Destinations",
+        "allDestinations": "All Destinations",
+        "tourCategories": "Tour Categories",
+        "becomeHost": "Become a Host",
+        "hostResources": "Host Resources",
+        "responsibleHosting": "Responsible Hosting",
+        "helpCenter": "Help Centre",
+        "safetyInfo": "Safety Information",
+        "cancellationOptions": "Cancellation Options",
+        "aboutUs": "About Us",
+        "newsroom": "Newsroom",
+        "careers": "Careers",
+        "investors": "Investors",
+        "copyright": "TravelTrek",
+        "rights": "All rights reserved."
+      },
+      "explore": {
+        "title": "Explore",
+        "links": {
+          "tours": "Tours",
+          "destinations": "Destinations",
+          "experiences": "Experiences"
+        }
+      },
+      "host": {
+        "title": "Host",
+        "links": {
+          "portal": "Host Portal",
+          "earnings": "Earnings",
+          "bookings": "Bookings"
+        }
+      },
+      "support": {
+        "title": "Support",
+        "links": {
+          "help": "Help Centre",
+          "terms": "Terms of Use",
+          "privacy": "Privacy",
+          "login": "Log in",
+          "signup": "Sign up",
+          "contact": "Contact"
+        }
+      },
+      "brand": {
+        "description": "Discover the best travel experiences and connect with unique local hosts.",
+        "copyright": "TravelTrek",
+        "rights": "All rights reserved."
+      },
+      "bottom": {
+        "privacy": "Privacy Policy",
+        "terms": "Terms of Service",
+        "cookies": "Cookies",
+        "about": "About",
+        "status": "Project Status",
+        "help": "Help"
+      },
       "company": "Company",
-      "popularDestinations": "Popular Destinations",
-      "allDestinations": "All Destinations",
-      "tourCategories": "Tour Categories",
-      "becomeHost": "Become a Host",
-      "hostResources": "Host Resources",
-      "responsibleHosting": "Responsible Hosting",
-      "helpCenter": "Help Center",
-      "safetyInfo": "Safety Information",
-      "cancellationOptions": "Cancellation Options",
-      "aboutUs": "About Us",
-      "newsroom": "Newsroom",
+      "about": "About Us",
       "careers": "Careers",
-      "investors": "Investors",
-      "copyright": "TravelTrek",
-      "rights": "All rights reserved."
-    },
-    "explore": {
-      "title": "Explore",
-      "links": {
-        "tours": "Tours",
-        "destinations": "Destinations",
-        "experiences": "Experiences"
-      }
-    },
-    "host": {
-      "title": "Host",
-      "links": {
-        "portal": "Host Portal",
-        "earnings": "Earnings",
-        "bookings": "Bookings"
-      }
-    },
-    "support": {
-      "title": "Support",
-      "links": {
-        "help": "Help Center",
-        "terms": "Terms of Use",
-        "privacy": "Privacy",
-        "login": "Log In",
-        "signup": "Sign Up",
-        "contact": "Contact"
-      }
-    },
-    "brand": {
-      "description": "Discover the best travel experiences and connect with unique local hosts.",
-      "copyright": "TravelTrek",
-      "rights": "All rights reserved."
-    },
-    "bottom": {
+      "press": "Press",
+      "help": "Help Centre",
+      "contact": "Contact",
+      "legal": "Legal",
+      "terms": "Terms of Use",
       "privacy": "Privacy Policy",
-      "terms": "Terms of Service",
-      "cookies": "Cookies",
-      "about": "About",
-      "status": "Project Status",
-      "help": "Help"
-    },
-    "company": "Company",
-    "about": "About Us",
-    "careers": "Careers",
-    "press": "Press",
-    "help": "Help Center",
-    "contact": "Contact",
-    "legal": "Legal",
-    "terms": "Terms of Use",
-    "privacy": "Privacy Policy",
-    "cookies": "Cookie Policy",
-    "followUs": "Follow Us",
-    "newsletter": "Newsletter",
-    "newsletterText": "Get the best deals and unique experiences.",
-    "subscribe": "Subscribe",
-    "allRightsReserved": "All rights reserved."
+      "cookies": "Cookie Policy",
+      "followUs": "Follow Us",
+      "newsletter": "Newsletter",
+      "newsletterText": "Get the best deals and unique experiences.",
+      "subscribe": "Subscribe",
+      "allRightsReserved": "All rights reserved."
+    }
   }
 }

@@ -238,7 +238,7 @@ export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
 
-    // 🔧 FIXED: Validate required fields
+    // 🔧 Validate required fields
     const requiredFields = [
       "tourId",
       "date",
@@ -285,14 +285,56 @@ export async function POST(request: NextRequest) {
       });
     }
 
-    // Try database creation
+    // ✅ Get tour data to extract real hostId
+    let tourData;
     try {
+      const { tourQueries } = await import("@/lib/db/queries");
+      tourData = await tourQueries.getById(body.tourId);
+
+      if (!tourData) {
+        return NextResponse.json(
+          {
+            success: false,
+            error: "Tour not found",
+            code: "TOUR_NOT_FOUND",
+            timestamp: new Date().toISOString(),
+          },
+          { status: 404 }
+        );
+      }
+    } catch (error) {
+      console.error("Error fetching tour:", error);
+      return NextResponse.json(
+        {
+          success: false,
+          error: "Failed to validate tour",
+          code: "TOUR_VALIDATION_ERROR",
+          timestamp: new Date().toISOString(),
+        },
+        { status: 500 }
+      );
+    }
+
+    // Try database creation with real hostId
+    try {
+      // ✅ Calculate total price: tour price × participants
+      const tourPrice = Number(tourData.price);
+      const totalPrice = tourPrice * body.participants;
+
       const result = await bookingQueries.create({
-        ...body,
+        tourId: body.tourId,
         customerId: body.customerId || "user1", // Default for development
-        hostId: body.hostId || "host1", // Should come from tour data
+        hostId: tourData.hostId, // USE REAL HOST ID FROM TOUR
+        customerName: body.customerName,
+        customerEmail: body.customerEmail,
+        date: body.date,
+        time: body.time,
+        participants: body.participants,
+        totalPrice: totalPrice.toString(), // ✅ CALCULATE AND PROVIDE TOTAL PRICE
+        currency: "EUR",
         status: "pending",
         paymentStatus: "pending",
+        specialRequests: body.specialRequests || null,
       });
 
       return NextResponse.json({
@@ -301,6 +343,10 @@ export async function POST(request: NextRequest) {
         meta: {
           usingMockData: false,
           source: "database",
+          tourTitle: tourData.title,
+          hostId: tourData.hostId,
+          calculatedPrice: totalPrice,
+          pricePerPerson: tourPrice,
         },
         timestamp: new Date().toISOString(),
       });
@@ -313,20 +359,20 @@ export async function POST(request: NextRequest) {
           error: "Failed to create booking",
           code: "CREATE_BOOKING_ERROR",
           details:
-            dbError instanceof Error ? dbError.message : "Database error",
+            dbError instanceof Error ? dbError.message : "Unknown database error",
           timestamp: new Date().toISOString(),
         },
         { status: 500 }
       );
     }
   } catch (error) {
-    console.error("Error creating booking:", error);
+    console.error("Error in bookings API:", error);
 
     return NextResponse.json(
       {
         success: false,
         error: "Failed to process booking request",
-        code: "BOOKING_REQUEST_ERROR",
+        code: "BOOKING_PROCESSING_ERROR",
         details: error instanceof Error ? error.message : "Unknown error",
         timestamp: new Date().toISOString(),
       },
